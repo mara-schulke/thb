@@ -1,6 +1,5 @@
 package com.maximilianschulke.gdp2.le04;
 
-
 public class Rectangle {
 
 	private double x;
