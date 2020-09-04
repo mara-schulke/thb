@@ -15,10 +15,12 @@ public class Polygon {
 		setPoints(points);
 	}
 	
+
 	private double[] nextPoint(int index) {
 		return points[index == points.length - 1 ? 0 : index + 1];
 	}
 
+	
 	/**
 	 * @see https://www.mathopenref.com/coordpolygonarea.html
 	 * @return Area of the Polygon
@@ -40,6 +42,7 @@ public class Polygon {
 
 		return Math.abs(accum / 2);
 	}
+
 
 	/**
 	 * @see https://www.mathopenref.com/polygonperimeter.html
