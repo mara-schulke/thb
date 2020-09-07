@@ -7,7 +7,7 @@ public class Rectangle {
 	private double a;
 	private double b;
 
-	
+
 	public Rectangle(double x, double y, double lengthA, double lengthB) {
 
 	}
@@ -17,12 +17,12 @@ public class Rectangle {
 		return a * b;
 	}
 
-	
+
 	public double perimeter() {
 		return a + a + b + b;
 	}
 
-	
+
 	public void show() {
 		System.out.println("a = " + a);
 		System.out.println("b = " + b);

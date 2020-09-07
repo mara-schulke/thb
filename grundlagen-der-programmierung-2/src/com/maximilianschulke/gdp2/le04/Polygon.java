@@ -8,19 +8,19 @@ public class Polygon {
 	private double y;
 	private double[][] points;
 
-	
+
 	public Polygon(double x, double y, double[][] points) {
 		setX(x);
 		setY(y);
 		setPoints(points);
 	}
-	
+
 
 	private double[] nextPoint(int index) {
 		return points[index == points.length - 1 ? 0 : index + 1];
 	}
 
-	
+
 	/**
 	 * @see https://www.mathopenref.com/coordpolygonarea.html
 	 * @return Area of the Polygon
@@ -54,25 +54,25 @@ public class Polygon {
 		for (int i = 0; i < points.length; i++) {
 			double[] current = points[i];
 			double[] next = nextPoint(i);
-			
+
 			double[] vec = {
 				(next[0] - current[0]),
 				(next[1] - current[1])
 			};
 
 			double len = Math.sqrt(Math.pow(vec[0], 2) + Math.pow(vec[1], 2));
-			
+
 			accum += Math.abs(len);
 		}
-		
+
 		return accum;
 	}
 
-	
+
 	public void show() {
 		System.out.println("x = " + x);
 		System.out.println("y = " + y);
-		
+
 		System.out.println("points = {");
 		Arrays.stream(points)
 			.map(p -> "[" + p[0] + "; " + p[1] + "]")
@@ -102,8 +102,8 @@ public class Polygon {
 	public void setY(double y) {
 		this.y = y;
 	}
-	
-	
+
+
 	public double[][] getPoints() {
 		return points;
 	}

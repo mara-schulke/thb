@@ -1,12 +1,12 @@
 package com.maximilianschulke.gdp2.le04;
 
-public class Circle extends Ellipse {	
-	
+public class Circle extends Ellipse {
+
 	public Circle(double x, double y, double radius) {
 		super(x, y, radius, radius);
 	}
 
-	
+
 	public double circumference() {
 		return perimeter();
 	}
@@ -21,5 +21,5 @@ public class Circle extends Ellipse {
 		setRadiusX(radius);
 		setRadiusY(radius);
 	}
-	
+
 }
