@@ -4,16 +4,16 @@ import java.util.Arrays;
 
 public class Polygon extends Figure implements Sizeable {
 
-	private double[][] points;
+	private Point[] points;
 
 
-	public Polygon(Point pos, double[][] points) {
+	public Polygon(Point pos, Point[] points) {
 		super(pos);
 		setPoints(points);
 	}
 
 
-	private double[] nextPoint(int index) {
+	private Point nextPoint(int index) {
 		return points[index == points.length - 1 ? 0 : index + 1];
 	}
 
@@ -26,15 +26,10 @@ public class Polygon extends Figure implements Sizeable {
 		double accum = 0.0;
 
 		for (int i = 0; i < points.length; i++) {
-			double[] current = points[i];
-			double[] next = nextPoint(i);
+			Point current = points[i];
+			Point next = nextPoint(i);
 
-			double x1 = current[0];
-			double y1 = current[1];
-			double x2 = next[0];
-			double y2 = next[1];
-
-			accum += (x1 * y2 - y1 * x2);
+			accum += (current.getX() * next.getY() - current.getY() * next.getX());
 		}
 
 		return Math.abs(accum / 2);
@@ -49,17 +44,15 @@ public class Polygon extends Figure implements Sizeable {
 		double accum = 0;
 
 		for (int i = 0; i < points.length; i++) {
-			double[] current = points[i];
-			double[] next = nextPoint(i);
+			Point current = points[i];
+			Point next = nextPoint(i);
 			
-			double[] vec = {
-				(next[0] - current[0]),
-				(next[1] - current[1])
-			};
-
-			double len = Math.sqrt(Math.pow(vec[0], 2) + Math.pow(vec[1], 2));
+			Line vec = new Line(
+				new Point(0, 0),
+				new Point(current.xDistanceTo(next), current.yDistanceTo(next))
+			);
 			
-			accum += Math.abs(len);
+			accum += vec.length();
 		}
 
 		return accum;
@@ -72,7 +65,6 @@ public class Polygon extends Figure implements Sizeable {
 
 		System.out.println("points = {");
 		Arrays.stream(points)
-			.map(p -> "[" + p[0] + "; " + p[1] + "]")
 			.forEach(p -> System.out.println("  " + p + ","));
 		System.out.println("}");
 
@@ -81,12 +73,12 @@ public class Polygon extends Figure implements Sizeable {
 	}
 
 
-	public double[][] getPoints() {
+	public Point[] getPoints() {
 		return points;
 	}
 
 
-	public void setPoints(double[][] points) {
+	public void setPoints(Point[] points) {
 		this.points = points;
 	}
 

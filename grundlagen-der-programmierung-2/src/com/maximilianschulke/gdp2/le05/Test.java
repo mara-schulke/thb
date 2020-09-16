@@ -11,10 +11,10 @@ public class Test {
 		System.out.println("\nCircle:");
 		c.show();
 
-		Polygon p = new Polygon(new Point(0, 0), new double[][] {
-			{0, 0},
-			{0, 4},
-			{4, 4}
+		Polygon p = new Polygon(new Point(0, 0), new Point[] {
+			new Point(0, 0),
+			new Point(0, 4),
+			new Point(4, 4)
 		});
 		System.out.println("\nPolygon:");
 		p.show();
