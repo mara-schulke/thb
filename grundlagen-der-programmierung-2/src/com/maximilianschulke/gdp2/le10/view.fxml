@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+ 
+<VBox fx:controller="com.maximilianschulke.gdp2.le10.Controller" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+
+	</children>
+</VBox>
