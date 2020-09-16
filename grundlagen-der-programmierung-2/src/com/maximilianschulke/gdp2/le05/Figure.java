@@ -10,12 +10,6 @@ abstract class Figure {
 	}
 
 
-	public void show() {
-		System.out.println("x = " + pos.getX());
-		System.out.println("y = " + pos.getY());
-	}
-
-
 	public Point getPos() {
 		return pos;
 	}

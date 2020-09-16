@@ -30,13 +30,15 @@ public class Ellipse {
 	}
 
 
-	public void show() {
-		System.out.println("x = " + getX());
-		System.out.println("y = " + getX());
-		System.out.println("radiusX = " + getRadiusX());
-		System.out.println("radiusY = " + getRadiusY());
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+	public String toString() {
+		String s = "";
+		s += "x = " + getX() + "\n";
+		s += "y = " + getY() + "\n";
+		s += "radiusX = " + getRadiusX() + "\n";
+		s += "radiusY = " + getRadiusY() + "\n";
+		s += "area = " + area() + "\n";
+		s += "perimeter = " + perimeter() + "\n";
+		return s;
 	}
 
 

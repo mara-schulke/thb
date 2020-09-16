@@ -59,17 +59,19 @@ public class Polygon extends Figure implements Sizeable {
 	}
 
 
-	public void show() {
-		System.out.println("x = " + getPos().getX());
-		System.out.println("y = " + getPos().getY());
+	public String toString() {
+		String s = "";
+		s += "pos = " + getPos() + "\n";
+		s += "points = {\n";
 
-		System.out.println("points = {");
-		Arrays.stream(points)
-			.forEach(p -> System.out.println("  " + p + ","));
-		System.out.println("}");
+		for (Point p : points) {
+			s += "\t" + p + "\n";
+		}
 
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+		s += "}\n";
+		s += "area = " + area() + "\n";
+		s += "perimeter = " + perimeter() + "\n";
+		return s;
 	}
 
 

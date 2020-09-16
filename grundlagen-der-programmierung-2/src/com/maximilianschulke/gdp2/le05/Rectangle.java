@@ -43,12 +43,14 @@ public class Rectangle extends Figure implements Sizeable {
 	}
 
 
-	public void show() {
-		super.show();
-		System.out.println("a = " + a);
-		System.out.println("b = " + b);
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+	public String toString() {
+		String s = "";
+		s += "pos = " + getPos() +  "\n";
+		s += "a = " + getA() +  "\n";
+		s += "b = " + getB() +  "\n";
+		s += "area = " + area() +  "\n";
+		s += "perimeter = " + perimeter() +  "\n";
+		return s;
 	}
 
 }

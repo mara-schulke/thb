@@ -69,18 +69,20 @@ public class Polygon {
 	}
 
 
-	public void show() {
-		System.out.println("x = " + x);
-		System.out.println("y = " + y);
+	public String toString() {
+		String s = "";
+		s += "x = " + getX() + "\n";
+		s += "y = " + getY() + "\n";
+		s += "points = {\n";
 
-		System.out.println("points = {");
-		Arrays.stream(points)
-			.map(p -> "[" + p[0] + "; " + p[1] + "]")
-			.forEach(p -> System.out.println("  " + p + ","));
-		System.out.println("}");
+		for (double[] p : points) {
+			s += "\t [" + p[0] + "; " + p[1] + "]\n";
+		}
 
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+		s += "}\n";
+		s += "area = " + area() + "\n";
+		s += "perimeter = " + perimeter() + "\n";
+		return s;
 	}
 
 

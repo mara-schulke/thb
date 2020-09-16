@@ -8,8 +8,11 @@ public class Rectangle {
 	private double b;
 
 
-	public Rectangle(double x, double y, double lengthA, double lengthB) {
-
+	public Rectangle(double x, double y, double a, double b) {
+		setX(x);
+		setY(y);
+		setA(a);
+		setB(b);
 	}
 
 	
@@ -23,11 +26,13 @@ public class Rectangle {
 	}
 
 
-	public void show() {
-		System.out.println("a = " + a);
-		System.out.println("b = " + b);
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+	public String toString() {
+		String s = "";
+		s += "a = " + getA() +  "\n";
+		s += "b = " + getB() +  "\n";
+		s += "area = " + area() +  "\n";
+		s += "perimeter = " + perimeter() +  "\n";
+		return s;
 	}
 
 

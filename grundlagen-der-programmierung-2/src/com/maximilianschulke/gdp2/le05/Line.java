@@ -19,10 +19,12 @@ public class Line extends Figure {
 	}
 
 
-	public void show() {
-		System.out.println("a = " + getPos());
-		System.out.println("b = " + getDest());
-		System.out.println("length = " + length());
+	public String toString() {
+		String s = "";
+		s += "a = " + getPos() + "\n";
+		s += "b = " + getDest() + "\n";
+		s += "length = " + length() + "\n";
+		return s;
 	}
 
 

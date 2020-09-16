@@ -27,13 +27,14 @@ public class Ellipse extends Figure implements Sizeable {
 	}
 
 
-	public void show() {
-		System.out.println("x = " + getPos().getX());
-		System.out.println("y = " + getPos().getY());
-		System.out.println("radiusX = " + getRadiusX());
-		System.out.println("radiusY = " + getRadiusY());
-		System.out.println("area = " + area());
-		System.out.println("perimeter = " + perimeter());
+	public String toString() {
+		String s = "";
+		s += "pos = " + getPos() + "\n";
+		s += "radiusX = " + getRadiusX() + "\n";
+		s += "radiusY = " + getRadiusY() + "\n";
+		s += "area = " + area() + "\n";
+		s += "perimeter = " + perimeter() + "\n";
+		return s;
 	}
 
 
