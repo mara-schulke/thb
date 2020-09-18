@@ -19,52 +19,54 @@ public class GUIBsp extends Application {
 	Label label;
 	Button button;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("GUIBsp");
-        hello = new Label();
-        hello.setText("Hallo");
-        name = new Label();
-        
-        FlowPane layout = new FlowPane();
-        layout.setOrientation(Orientation.VERTICAL);
-        layout.setVgap(25);
-        layout.setAlignment(Pos.CENTER);
 
-        FlowPane outputPane = new FlowPane();
-        outputPane.setHgap(5);
-        outputPane.getChildren().addAll(hello, name);
-        
-        layout.getChildren().add(outputPane);
-        
-        label = new Label();
-        label.setText("Name:");
-        input = new TextField();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle("GUIBsp");
+		hello = new Label();
+		hello.setText("Hallo");
+		name = new Label();
 
-        FlowPane inputPane = new FlowPane();
-        inputPane.setHgap(25);
-        inputPane.getChildren().addAll(label, input);
+		FlowPane layout = new FlowPane();
+		layout.setOrientation(Orientation.VERTICAL);
+		layout.setVgap(25);
+		layout.setAlignment(Pos.CENTER);
 
-        layout.getChildren().add(inputPane);
-        
-        button = new Button();
-        button.setText("Grüßen");
-        
-        layout.getChildren().add(button);
-        
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-        	name.setText(input.getText() + "!");
-        	input.clear();
-        });
+		FlowPane outputPane = new FlowPane();
+		outputPane.setHgap(5);
+		outputPane.getChildren().addAll(hello, name);
 
-        Scene scene = new Scene(layout, 300, 250);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+		layout.getChildren().add(outputPane);
+
+		label = new Label();
+		label.setText("Name:");
+		input = new TextField();
+
+		FlowPane inputPane = new FlowPane();
+		inputPane.setHgap(25);
+		inputPane.getChildren().addAll(label, input);
+
+		layout.getChildren().add(inputPane);
+
+		button = new Button();
+		button.setText("Grüßen");
+
+		layout.getChildren().add(button);
+
+		button.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+			name.setText(input.getText() + "!");
+			input.clear();
+		});
+
+		Scene scene = new Scene(layout, 300, 250);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 
 
 	public static void main(String[] args) {
-	    launch(args);
+		launch(args);
 	}
 
 }
+
