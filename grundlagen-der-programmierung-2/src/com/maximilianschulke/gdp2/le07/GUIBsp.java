@@ -17,7 +17,8 @@ public class GUIBsp extends Application {
 	Label name;
 	TextField input;
 	Label label;
-	Button button;
+	Button ok;
+	Button cancel;
 
 
 	@Override
@@ -47,15 +48,32 @@ public class GUIBsp extends Application {
 
 		layout.getChildren().add(inputPane);
 
-		button = new Button();
-		button.setText("Grüßen");
+		FlowPane controlPane = new FlowPane();
+		controlPane.setHgap(10);
 
-		layout.getChildren().add(button);
+		ok = new Button();
+		ok.setText("Ok");
 
-		button.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+		cancel = new Button();
+		cancel.setText("Cancel");
+
+		ok.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+			if (input.getText().trim().equals("")) {
+				input.clear();
+				return;
+			}
+
 			name.setText(input.getText() + "!");
 			input.clear();
 		});
+
+		cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+			name.setText("");
+			input.clear();
+		});
+
+		controlPane.getChildren().addAll(ok, cancel);
+		layout.getChildren().add(controlPane);
 
 		Scene scene = new Scene(layout);
 		primaryStage.setScene(scene);
