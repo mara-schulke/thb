@@ -1,14 +1,14 @@
 package com.maximilianschulke.gdp2.le07;
 
 import javafx.application.Application;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUIBsp extends Application {
@@ -27,10 +27,9 @@ public class GUIBsp extends Application {
 		hello.setText("Hallo");
 		name = new Label();
 
-		FlowPane layout = new FlowPane();
-		layout.setOrientation(Orientation.VERTICAL);
-		layout.setVgap(25);
-		layout.setAlignment(Pos.CENTER);
+		VBox layout = new VBox();
+		layout.setPadding(new Insets(25, 25, 25, 25));
+		layout.setSpacing(10);
 
 		FlowPane outputPane = new FlowPane();
 		outputPane.setHgap(5);
@@ -43,7 +42,7 @@ public class GUIBsp extends Application {
 		input = new TextField();
 
 		FlowPane inputPane = new FlowPane();
-		inputPane.setHgap(25);
+		inputPane.setHgap(10);
 		inputPane.getChildren().addAll(label, input);
 
 		layout.getChildren().add(inputPane);
@@ -58,8 +57,10 @@ public class GUIBsp extends Application {
 			input.clear();
 		});
 
-		Scene scene = new Scene(layout, 300, 250);
+		Scene scene = new Scene(layout);
 		primaryStage.setScene(scene);
+		primaryStage.setMinWidth(300);
+		primaryStage.setMinHeight(150);
 		primaryStage.show();
 	}
 
