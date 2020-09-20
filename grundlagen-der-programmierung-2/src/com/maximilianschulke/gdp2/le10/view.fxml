@@ -14,14 +14,22 @@
 	fx:id="layout"
 >
 	<center>
-		<Canvas fx:id="canvas" />
+		<Pane
+			style="-fx-border-color: red; -fx-border-width: 2; -fx-border-style: dashed; -fx-overflow: hidden;"
+			fx:id="root"
+			prefWidth="500"
+			prefHeight="500"
+			onMousePressed="#onMouseDown"
+			onMouseClicked="#onMouseUp"
+			onMouseDragged="#onMouseMove"
+		/>
 	</center>
 	<bottom>
 		<HBox alignment="CENTER_LEFT">
 		    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
 			<HBox alignment="CENTER_LEFT" spacing="5">
 				<Label text="Shape:" />
-				<ChoiceBox fx:id="typeBox" value="Circle" onAction="#onTypeSelect">
+				<ChoiceBox fx:id="typeBox" value="Circle">
 					<items>
 						<FXCollections fx:factory="observableArrayList">
 							<String fx:value="Circle" />
