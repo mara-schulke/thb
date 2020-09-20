@@ -1,12 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import java.lang.String?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.Group?>
 
-
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.maximilianschulke.gdp2.le10.Controller">
-    
-    <Label text="I love bacon"/>
-    <Button text="Submit"/>
-    
-</VBox>
+<BorderPane
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+	fx:controller="com.maximilianschulke.gdp2.le10.Controller"
+	fx:id="layout"
+>
+	<center>
+		<Canvas fx:id="canvas" />
+	</center>
+	<bottom>
+		<HBox alignment="CENTER_LEFT">
+		    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+			<HBox alignment="CENTER_LEFT" spacing="5">
+				<Label text="Shape:" />
+				<ChoiceBox fx:id="typeBox" value="Circle" onAction="#onTypeSelect">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="Circle" />
+				            <String fx:value="Ellipse" />
+			    	        <String fx:value="Line" />
+			    	        <String fx:value="Rectangle" />
+			    	        <String fx:value="Square" />
+			    	        <String fx:value="Polygon" />
+			    	        <String fx:value="Triangle" />	    	        
+						</FXCollections>
+				    </items>
+				</ChoiceBox>
+			</HBox>
+			<Region>
+			    <HBox.hgrow>
+			    	<Priority fx:value="ALWAYS" />
+		    	</HBox.hgrow>
+			</Region>
+			<HBox spacing="5">
+				<Label text="Mouse Position: " />
+				<Label text="0.0" />
+				<Label text=" / " />
+				<Label text="0.0" />
+			</HBox>
+		</HBox>
+	</bottom>
+</BorderPane>

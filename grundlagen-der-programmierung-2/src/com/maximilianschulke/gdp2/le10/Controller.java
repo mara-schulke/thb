@@ -1,27 +1,51 @@
 package com.maximilianschulke.gdp2.le10;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import com.maximilianschulke.gdp2.le10.model.*;
 
-public class Controller extends Application {
+import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.canvas.*;
 
-	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("view.fxml"));
+public class Controller {
 
-		Scene scene = new Scene(root, 800, 800);
+	private Figure figure;
 
-		stage.setTitle("Drawing App");
-		stage.setScene(scene);
-		stage.show();
-	}
+	@FXML private BorderPane layout;
+	@FXML private Canvas canvas;
+	@FXML private ChoiceBox<String> typeBox;
 
+	@FXML protected void onMouseDrag() {}
 
-	public static void main(String[] args) {
-		launch(args);
+	@FXML protected void onTypeSelect(ActionEvent ev) {
+		System.out.println("Selected type -> " + typeBox.getValue());
+
+		switch (typeBox.getValue().toLowerCase()) {
+			case "circle":
+				figure = new Circle();
+				break;
+			case "ellipse":
+				figure = new Ellipse();
+				break;
+			case "line":
+				figure = new Line();
+				break;
+			case "rectangle":
+				figure = new Rectangle();
+				break;
+			case "square":
+				figure = new Square();
+				break;
+			case "polygon":
+				figure = new Polygon();
+				break;
+			case "triangle":
+				figure = new Polygon();
+				break;
+		}
+
+		System.out.println(figure);
 	}
 
 }
