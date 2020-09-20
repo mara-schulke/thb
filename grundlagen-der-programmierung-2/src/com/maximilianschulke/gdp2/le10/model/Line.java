@@ -1,8 +1,15 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.shape.Shape;
+
 public class Line extends Figure {
 
 	private Point dest;
+
+
+	public Line() {
+		super();
+	}
 
 
 	public Line(Point start, Point dest) {
@@ -35,6 +42,11 @@ public class Line extends Figure {
 
 	public void setDest(Point dest) {
 		this.dest = dest;
+	}
+
+
+	public Shape intoShape() {
+		return new javafx.scene.shape.Line(getPos().getX(), getPos().getY(), getDest().getX(), getDest().getY());
 	}
 
 }

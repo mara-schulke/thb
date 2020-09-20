@@ -1,9 +1,16 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.shape.Shape;
+
 public class Ellipse extends Figure implements Sizeable {
 
 	private double radiusX;
 	private double radiusY;
+
+
+	public Ellipse() {
+		super();
+	}
 
 
 	public Ellipse(Point pos, double rx, double ry) {
@@ -55,6 +62,11 @@ public class Ellipse extends Figure implements Sizeable {
 
 	public void setRadiusY(double radiusY) {
 		this.radiusY = radiusY;
+	}
+
+
+	public Shape intoShape() {
+		return new javafx.scene.shape.Ellipse(getPos().getX(), getPos().getY(), getRadiusX(), getRadiusY());
 	}
 
 }

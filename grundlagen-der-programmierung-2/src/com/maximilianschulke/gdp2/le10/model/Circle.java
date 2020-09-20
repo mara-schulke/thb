@@ -2,6 +2,11 @@ package com.maximilianschulke.gdp2.le10.model;
 
 public class Circle extends Ellipse {	
 
+	public Circle() {
+		super();
+	}
+
+
 	public Circle(Point pos, double radius) {
 		super(pos, radius, radius);
 	}

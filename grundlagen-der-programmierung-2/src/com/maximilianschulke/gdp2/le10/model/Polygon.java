@@ -1,9 +1,15 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.shape.Shape;
 
 public class Polygon extends Figure implements Sizeable {
 
 	private Point[] points;
+
+
+	public Polygon() {
+		super();
+	}
 
 
 	public Polygon(Point pos, Point[] points) {
@@ -81,6 +87,20 @@ public class Polygon extends Figure implements Sizeable {
 
 	public void setPoints(Point[] points) {
 		this.points = points;
+	}
+
+
+	public Shape intoShape() {
+		double[] coords = new double[] {};
+		int i = 0;
+
+		for (Point point : points) {
+			coords[i] = point.getX();
+			coords[i + 1] = point.getY();
+			i += 2;
+		}
+
+		return new javafx.scene.shape.Polygon(coords);
 	}
 
 }

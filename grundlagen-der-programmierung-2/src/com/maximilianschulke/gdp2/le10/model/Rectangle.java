@@ -1,11 +1,18 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.shape.Shape;
+
 public class Rectangle extends Figure implements Sizeable {
 
 	private double a;
 	private double b;
 
-	
+
+	public Rectangle() {
+		super();
+	}
+
+
 	public Rectangle(Point pos, double a, double b) {
 		super(pos);
 		setA(a);
@@ -51,6 +58,11 @@ public class Rectangle extends Figure implements Sizeable {
 		s += "area = " + area() +  "\n";
 		s += "perimeter = " + perimeter() +  "\n";
 		return s;
+	}
+
+
+	public Shape intoShape() {
+		return new javafx.scene.shape.Rectangle(getPos().getX(), getPos().getY(), getA(), getB());
 	}
 
 }

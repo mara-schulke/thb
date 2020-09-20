@@ -1,8 +1,13 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.shape.Shape;
+
 public abstract class Figure {
 
 	private Point pos;
+
+
+	public Figure() {}
 
 
 	public Figure(Point pos) {
@@ -18,5 +23,8 @@ public abstract class Figure {
 	public void setPos(Point pos) {
 		this.pos = pos;
 	}
+
+
+	abstract public Shape intoShape();
 
 }
