@@ -7,8 +7,9 @@ public class Polygon extends Figure implements Sizeable {
 	private Point[] points;
 
 
-	public Polygon() {
-		super();
+	public Polygon(Point pos) {
+		super(pos);
+		setPoints(new Point[] {});
 	}
 
 

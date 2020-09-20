@@ -2,8 +2,8 @@ package com.maximilianschulke.gdp2.le10.model;
 
 public class Square extends Rectangle {
 
-	public Square() {
-		super();
+	public Square(Point pos) {
+		super(pos);
 	}
 
 

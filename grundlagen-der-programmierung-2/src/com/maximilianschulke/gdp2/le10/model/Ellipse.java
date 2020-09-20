@@ -8,8 +8,10 @@ public class Ellipse extends Figure implements Sizeable {
 	private double radiusY;
 
 
-	public Ellipse() {
-		super();
+	public Ellipse(Point pos) {
+		super(pos);
+		setRadiusX(0);
+		setRadiusY(0);
 	}
 
 

@@ -7,8 +7,9 @@ public class Line extends Figure {
 	private Point dest;
 
 
-	public Line() {
-		super();
+	public Line(Point pos) {
+		super(pos);
+		setDest(new Point(pos.getX(), pos.getY()));
 	}
 
 

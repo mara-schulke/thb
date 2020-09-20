@@ -8,8 +8,10 @@ public class Rectangle extends Figure implements Sizeable {
 	private double b;
 
 
-	public Rectangle() {
-		super();
+	public Rectangle(Point pos) {
+		super(pos);
+		setA(0);
+		setB(0);
 	}
 
 

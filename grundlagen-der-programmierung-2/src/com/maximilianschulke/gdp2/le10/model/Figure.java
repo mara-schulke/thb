@@ -7,9 +7,6 @@ public abstract class Figure {
 	private Point pos;
 
 
-	public Figure() {}
-
-
 	public Figure(Point pos) {
 		setPos(pos);
 	}
