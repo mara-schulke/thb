@@ -1,9 +1,16 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.paint.Paint;
+
 public class Circle extends Ellipse {	
 
 	public Circle(Point pos) {
 		super(pos);
+	}
+
+
+	public Circle(Point pos, Paint color) {
+		super(pos, color);
 	}
 
 

@@ -1,5 +1,6 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 public class Rectangle extends Figure implements Sizeable {
@@ -14,6 +15,12 @@ public class Rectangle extends Figure implements Sizeable {
 		setB(0);
 	}
 
+	
+	public Rectangle(Point pos, Paint color) {
+		this(pos);
+		setColor(color);
+	}
+	
 
 	public Rectangle(Point pos, double a, double b) {
 		super(pos);
@@ -64,7 +71,9 @@ public class Rectangle extends Figure implements Sizeable {
 
 
 	public Shape intoShape() {
-		return new javafx.scene.shape.Rectangle(getPos().getX(), getPos().getY(), getA(), getB());
+		Shape shape = new javafx.scene.shape.Rectangle(getPos().getX(), getPos().getY(), getA(), getB());
+		shape.setFill(getColor());
+		return shape;
 	}
 
 }

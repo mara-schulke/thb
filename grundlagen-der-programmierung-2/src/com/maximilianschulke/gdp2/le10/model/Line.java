@@ -1,5 +1,6 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 public class Line extends Figure {
@@ -10,6 +11,12 @@ public class Line extends Figure {
 	public Line(Point pos) {
 		super(pos);
 		setDest(new Point(pos.getX(), pos.getY()));
+	}
+
+	
+	public Line(Point pos, Paint color) {
+		this(pos);
+		setColor(color);
 	}
 
 
@@ -47,7 +54,9 @@ public class Line extends Figure {
 
 
 	public Shape intoShape() {
-		return new javafx.scene.shape.Line(getPos().getX(), getPos().getY(), getDest().getX(), getDest().getY());
+		Shape shape = new javafx.scene.shape.Line(getPos().getX(), getPos().getY(), getDest().getX(), getDest().getY());
+		shape.setStroke(getColor());
+		return shape;
 	}
 
 }

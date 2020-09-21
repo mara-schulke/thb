@@ -1,5 +1,6 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 public class Polygon extends Figure implements Sizeable {
@@ -10,6 +11,12 @@ public class Polygon extends Figure implements Sizeable {
 	public Polygon(Point pos) {
 		super(pos);
 		setPoints(new Point[] {});
+	}
+	
+
+	public Polygon(Point pos, Paint color) {
+		this(pos);
+		setColor(color);
 	}
 
 
@@ -101,7 +108,9 @@ public class Polygon extends Figure implements Sizeable {
 			i += 2;
 		}
 
-		return new javafx.scene.shape.Polygon(coords);
+		Shape shape = new javafx.scene.shape.Polygon(coords);
+		shape.setFill(getColor());
+		return shape;
 	}
 
 }

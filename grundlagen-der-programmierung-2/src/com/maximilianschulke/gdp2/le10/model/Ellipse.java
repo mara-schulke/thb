@@ -1,5 +1,6 @@
 package com.maximilianschulke.gdp2.le10.model;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 public class Ellipse extends Figure implements Sizeable {
@@ -12,6 +13,12 @@ public class Ellipse extends Figure implements Sizeable {
 		super(pos);
 		setRadiusX(0);
 		setRadiusY(0);
+	}
+	
+
+	public Ellipse(Point pos, Paint color) {
+		this(pos);
+		setColor(color);
 	}
 
 
@@ -68,7 +75,9 @@ public class Ellipse extends Figure implements Sizeable {
 
 
 	public Shape intoShape() {
-		return new javafx.scene.shape.Ellipse(getPos().getX(), getPos().getY(), getRadiusX(), getRadiusY());
+		Shape shape = new javafx.scene.shape.Ellipse(getPos().getX(), getPos().getY(), getRadiusX(), getRadiusY());
+		shape.setFill(getColor());
+		return shape;
 	}
 
 }
