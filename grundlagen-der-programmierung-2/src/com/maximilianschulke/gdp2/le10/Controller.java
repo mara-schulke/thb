@@ -3,6 +3,7 @@ package com.maximilianschulke.gdp2.le10;
 import com.maximilianschulke.gdp2.le10.model.*;
 
 import javafx.fxml.FXML;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
@@ -67,20 +68,40 @@ enum FigureType {
 
 public class Controller {
 
+	private Drawing drawing = new Drawing(new Figure[] {});  
 	private Figure figure;
 	private Point start;
 
 	@FXML private BorderPane layout;
 	@FXML private Pane root;
 	@FXML private ChoiceBox<String> typeBox;
+	
+
+	@FXML
+	public void initialize() {
+		drawing.getList().addListener(new ListChangeListener<Figure>() {
+			@Override
+	        public void onChanged(ListChangeListener.Change<? extends Figure> c) {
+	            if(c.next()){
+	            	System.out.println("Before ->" + root.getChildren());
+	            	root.getChildren().clear();
+	            	c.getList().iterator().forEachRemaining(f -> {
+	            		root.getChildren().add(f.intoShape());
+	            	});
+	            	System.out.println("After ->" + root.getChildren());
+            	}
+	        }
+	    });
+	}
 
 
 	@FXML protected void onMouseDown(MouseEvent ev) {
 		if (!ev.isPrimaryButtonDown()) return;
+		System.out.println("Start Shape");
 
 		start = new Point(ev.getX(), ev.getY());
 		figure = FigureType.fromString(typeBox.getValue()).intoFigure(start);
-		root.getChildren().add(figure.intoShape());
+		drawing.add(figure);
 	}
 	
 
@@ -114,6 +135,8 @@ public class Controller {
 			case TRIANGLE:
 				break;
 		}
+
+		drawing.update(figure);
 	}
 
 
@@ -121,6 +144,12 @@ public class Controller {
 		if(!ev.getButton().equals(MouseButton.PRIMARY)) return;
 
 		System.out.println("End Shape");
+
+		if(start.getX() == ev.getX() && start.getY() == ev.getY()) {
+			drawing.remove(figure);
+			System.out.println("Remove Figure");
+		}
+
 		start = null;
 		figure = null;
 	}

@@ -2,13 +2,16 @@ package com.maximilianschulke.gdp2.le10.model;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Drawing {
 
-	private ArrayList<Figure> figures;
+	private ObservableList<Figure> figures;
 
 
 	public Drawing(Figure[] figs) {
-		this.figures = new ArrayList<Figure>();
+		this.figures = FXCollections.observableArrayList();
 
 		for (Figure f : figs) {
 			add(f);
@@ -26,6 +29,11 @@ public class Drawing {
 	}
 
 
+	public void update(Figure f) {
+		figures.set(figures.indexOf(f), f);
+	}
+
+
 	public void move(int index, Point pos) {
 		figures.get(index).setPos(pos);
 	}
@@ -33,6 +41,11 @@ public class Drawing {
 
 	public void clear() {
 		figures.clear();
+	}
+
+
+	public ObservableList<Figure> getList() {
+		return figures;
 	}
 
 }
