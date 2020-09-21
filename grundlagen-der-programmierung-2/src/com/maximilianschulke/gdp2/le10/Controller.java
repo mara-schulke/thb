@@ -4,12 +4,15 @@ import com.maximilianschulke.gdp2.le10.model.*;
 
 import javafx.fxml.FXML;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 
 
 enum FigureType {
@@ -43,12 +46,12 @@ enum FigureType {
 	}
 
 
-	public Figure intoFigure(Point pos) {
+	public Figure intoFigure(Point pos, Paint color) {
 		switch (this) {
 			case CIRCLE:
-				return new Circle(pos);
+				return new Circle(pos, color);
 			case ELLIPSE:
-				return new Ellipse(pos);
+				return new Ellipse(pos, color);
 			case LINE:
 				return new Line(pos);
 			case RECTANGLE:
@@ -74,11 +77,13 @@ public class Controller {
 	@FXML private BorderPane layout;
 	@FXML private Pane root;
 	@FXML private ChoiceBox<String> typeBox;
+	@FXML private ColorPicker colorPicker;
 	@FXML private Label mousePosition;
+	@FXML private Label area;
+	@FXML private Label perimeter;
 
 
-	@FXML
-	public void initialize() {
+	@FXML public void initialize() {
 		drawing.getList().addListener(new ListChangeListener<Figure>() {
 			@Override
 	        public void onChanged(ListChangeListener.Change<? extends Figure> c) {
@@ -98,13 +103,15 @@ public class Controller {
 		System.out.println("Start Shape");
 
 		start = new Point(ev.getX(), ev.getY());
-		figure = FigureType.fromString(typeBox.getValue()).intoFigure(start);
+		figure = FigureType.fromString(typeBox.getValue()).intoFigure(start, colorPicker.getValue());
 		drawing.add(figure);
 	}
 
 
 	@FXML protected void onMouseDragged(MouseEvent ev) {
 		if (!ev.isPrimaryButtonDown()) return;
+
+		onMouseMoved(ev);
 
 		Point current = new Point(ev.getX(), ev.getY());
 
@@ -120,12 +127,18 @@ public class Controller {
 				((Line) figure).setDest(current);
 				break;
 			case RECTANGLE:
+				System.out.println(start + " " + current + " " + figure);
 				((Rectangle) figure).setA(start.xDistanceTo(current));
 				((Rectangle) figure).setB(start.yDistanceTo(current));
 				break;
 			case SQUARE:
-				((Square) figure).setA(Math.abs(start.xDistanceTo(current)));
-				((Square) figure).setB(Math.abs(start.xDistanceTo(current)));
+				if (start.xDistanceTo(current) < start.yDistanceTo(current)) {
+					((Square) figure).setA(start.yDistanceTo(current));
+					((Square) figure).setB(start.yDistanceTo(current));
+				} else {
+					((Square) figure).setA(start.xDistanceTo(current));
+					((Square) figure).setB(start.xDistanceTo(current));
+				}
 				break;
 			case POLYGON:
 				break;
@@ -134,6 +147,14 @@ public class Controller {
 		}
 
 		drawing.update(figure);
+
+		if (figure instanceof Sizeable) {
+			area.setText((int)((Sizeable) figure).area() + "");
+			perimeter.setText((int)((Sizeable) figure).perimeter() + "");
+		} else {
+			area.setText("0.0");
+			perimeter.setText("0.0");
+		}
 	}
 
 
@@ -144,21 +165,24 @@ public class Controller {
 
 		if (figure instanceof Sizeable && ((Sizeable) figure).perimeter() < 0) {
 			drawing.remove(figure);
-			System.out.println("Remove Figure");
-		}
-
-		if (start.getX() == ev.getX() && start.getY() == ev.getY()) {
+		} else if (start.getX() == ev.getX() && start.getY() == ev.getY()) {
 			drawing.remove(figure);
-			System.out.println("Remove Figure");
 		}
 
 		start = null;
 		figure = null;
+		area.setText("0.0");
+		perimeter.setText("0.0");
 	}
 
 
 	@FXML protected void onMouseMoved(MouseEvent ev) {
 		mousePosition.setText(ev.getX() + " / " + ev.getY());
+	}
+
+
+	@FXML protected void onClear(ActionEvent ev) {
+		drawing.clear();
 	}
 
 }
