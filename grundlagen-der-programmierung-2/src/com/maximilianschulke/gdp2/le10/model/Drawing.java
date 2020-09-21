@@ -1,7 +1,5 @@
 package com.maximilianschulke.gdp2.le10.model;
 
-import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
