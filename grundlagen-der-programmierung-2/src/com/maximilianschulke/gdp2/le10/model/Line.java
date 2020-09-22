@@ -35,11 +35,7 @@ public class Line extends Figure {
 
 
 	public String toString() {
-		String s = "";
-		s += "a = " + getPos() + "\n";
-		s += "b = " + getDest() + "\n";
-		s += "length = " + length() + "\n";
-		return s;
+		return "Line [ Pos " + getPos() + ", Color " + getColor() + ", Dest " + getDest() + ", Length " + length() + " ]";
 	}
 
 

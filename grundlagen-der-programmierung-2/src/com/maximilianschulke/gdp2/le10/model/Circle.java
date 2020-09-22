@@ -24,6 +24,11 @@ public class Circle extends Ellipse {
 	}
 
 
+	public String toString() {
+		return super.toString().replaceAll("Ellipse", "Circle");
+	}
+
+
 	public double getRadius() {
 		return getRadiusX();
 	}

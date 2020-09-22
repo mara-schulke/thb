@@ -60,13 +60,7 @@ public class Rectangle extends Figure implements Sizeable {
 
 
 	public String toString() {
-		String s = "";
-		s += "pos = " + getPos() +  "\n";
-		s += "a = " + getA() +  "\n";
-		s += "b = " + getB() +  "\n";
-		s += "area = " + area() +  "\n";
-		s += "perimeter = " + perimeter() +  "\n";
-		return s;
+		return "Rectangle [ Pos " + getPos() + ", Color " + getColor() + ", A " + getA() + ", B " + getB() + ", Area " + area() + ", Perimeter " + perimeter() + " ]";
 	}
 
 

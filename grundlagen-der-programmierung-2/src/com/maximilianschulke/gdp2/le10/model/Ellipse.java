@@ -44,13 +44,7 @@ public class Ellipse extends Figure implements Sizeable {
 
 
 	public String toString() {
-		String s = "";
-		s += "pos = " + getPos() + "\n";
-		s += "radiusX = " + getRadiusX() + "\n";
-		s += "radiusY = " + getRadiusY() + "\n";
-		s += "area = " + area() + "\n";
-		s += "perimeter = " + perimeter() + "\n";
-		return s;
+		return "Ellipse [ Pos " + getPos() + ", Color " + getColor() + ", RadiusX " + getRadiusX() + ", RadiusY " + getRadiusY() + ", Area " + area() + ", Perimeter " + perimeter() + " ]";
 	}
 
 

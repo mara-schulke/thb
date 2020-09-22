@@ -73,17 +73,13 @@ public class Polygon extends Figure implements Sizeable {
 
 
 	public String toString() {
-		String s = "";
-		s += "pos = " + getPos() + "\n";
-		s += "points = {\n";
+		String s = "Polygon [ Pos " + getPos() + ", Color " + getColor() + ", Points [ ";
 
 		for (Point p : points) {
-			s += "\t" + p + "\n";
+			s += p + ", ";
 		}
 
-		s += "}\n";
-		s += "area = " + area() + "\n";
-		s += "perimeter = " + perimeter() + "\n";
+		s += " ], Area " + area() + ", Perimeter " + perimeter() + " ]";
 		return s;
 	}
 

@@ -18,4 +18,9 @@ public class Triangle extends Polygon {
 		super(pos, new Point[] {a, b, c});
 	}
 
+
+	public String toString() {
+		return super.toString().replaceAll("Polygon", "Triangle");
+	}
+
 }
