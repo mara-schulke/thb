@@ -53,15 +53,15 @@ enum FigureType {
 			case ELLIPSE:
 				return new Ellipse(pos, color);
 			case LINE:
-				return new Line(pos);
+				return new Line(pos, color);
 			case RECTANGLE:
-				return new Rectangle(pos);
+				return new Rectangle(pos, color);
 			case SQUARE:
-				return new Square(pos);
+				return new Square(pos, color);
 			case POLYGON:
-				return new Polygon(pos);
+				return new Polygon(pos, color);
 			case TRIANGLE:
-				return new Triangle(pos);
+				return new Triangle(pos, color);
 		}
 
 		return null;
@@ -100,7 +100,6 @@ public class Controller {
 
 	@FXML protected void onMouseDown(MouseEvent ev) {
 		if (!ev.isPrimaryButtonDown()) return;
-		System.out.println("Start Shape");
 
 		start = new Point(ev.getX(), ev.getY());
 		figure = FigureType.fromString(typeBox.getValue()).intoFigure(start, colorPicker.getValue());
@@ -127,7 +126,6 @@ public class Controller {
 				((Line) figure).setDest(current);
 				break;
 			case RECTANGLE:
-				System.out.println(start + " " + current + " " + figure);
 				((Rectangle) figure).setA(start.xDistanceTo(current));
 				((Rectangle) figure).setB(start.yDistanceTo(current));
 				break;
@@ -159,9 +157,7 @@ public class Controller {
 
 
 	@FXML protected void onMouseUp(MouseEvent ev) {
-		if(!ev.getButton().equals(MouseButton.PRIMARY)) return;
-
-		System.out.println("End Shape");
+		if (!ev.getButton().equals(MouseButton.PRIMARY)) return;
 
 		if (figure instanceof Sizeable && ((Sizeable) figure).perimeter() < 0) {
 			drawing.remove(figure);
