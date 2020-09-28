@@ -1,6 +1,5 @@
 package com.maximilianschulke.gdp2.le05;
 
-import java.util.Arrays;
 
 public class Polygon extends Figure implements Sizeable {
 

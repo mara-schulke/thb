@@ -1,7 +1,5 @@
 package com.maximilianschulke.gdp2.le04;
 
-import java.util.Arrays;
-
 public class Polygon {
 
 	private double x;
