@@ -2,7 +2,7 @@ package com.maximilianschulke.gdp2.le03;
 
 
 /**
- * Diese Klasse kann dazu verwendet werden den Flächeninhalt oder Umfang
+ * Diese Klasse kann dazu verwendet werden den Flaecheninhalt oder Umfang
  * eines Kreises zu berechnen und auf die Konsole auszugeben.
  * 
  * @author Maximilian Schulke <schulke@th-brandenburg.de>
@@ -11,7 +11,7 @@ package com.maximilianschulke.gdp2.le03;
 public class Circle {
 
 	/**
-	 * Hält den Radius des Kreises.
+	 * Haelt den Radius des Kreises.
 	 */
 	private double r;
 
@@ -34,25 +34,33 @@ public class Circle {
 	}
 
 	/**
-	 * Berechnet den Flächeninhalt anhand des gesetzten Radius.
+	 * Berechnet den Flaecheninhalt anhand des gesetzten Radius.
 	 * 
-	 * @return Flächeninhalt
+	 * @return Flaecheninhalt
 	 */
 	public double area() {
 		return Math.PI * Math.pow(r, 2);
 	}
 
+
 	/**
-	 * Gibt den Radius, den Umfang und den Flächeninhalt auf die Konsole aus.
+	 * Formatiert die Instanz als String.
+	 *
+	 * @return String der Klasse
 	 */
-	public void show() {
-		System.out.println("Radius = " + r);
-		System.out.println("Umfang = " + circumference());
-		System.out.println("Area = " + area());
+	public String toString() {
+		return "Circle [ Radius " + getValue() + ", Area " + area() + ", Circumference " + circumference() + " ]";
 	}
 
 	/**
-	 * Überschreibt den Radius des Kreises.
+	 * Gibt den Radius, den Umfang und den Flaecheninhalt auf die Konsole aus.
+	 */
+	public void show() {
+		System.out.println(toString());
+	}
+
+	/**
+	 * Ueberschreibt den Radius des Kreises.
 	 * 
 	 * @param radius Neuer Radius
 	 */
@@ -61,7 +69,7 @@ public class Circle {
 	}
 
 	/**
-	 * Gibt den Radius des Kreises zurück.
+	 * Gibt den Radius des Kreises zurueck.
 	 * 
 	 * @return Radius des Kreises
 	 */
