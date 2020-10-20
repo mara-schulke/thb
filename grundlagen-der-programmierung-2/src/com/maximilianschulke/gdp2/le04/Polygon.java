@@ -1,12 +1,38 @@
 package com.maximilianschulke.gdp2.le04;
 
+
+/**
+ * Diese Klasse kann dazu verwendet werden den Flaecheninhalt
+ * oder Umfang eines Polygons zu berechnen.
+ * 
+ * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @version 1.0.0
+ */
 public class Polygon {
 
+	/**
+	 * X-Positon
+	 */
 	private double x;
+
+	/**
+	 * Y-Positon
+	 */
 	private double y;
+
+	/**
+	 * Liste der Punkte
+	 */
 	private double[][] points;
 
 
+	/**
+	 * Der Konstruktor
+	 * 
+	 * @param x X-Position
+	 * @param y Y-Position
+	 * @param points Liste von Punkten
+	 */
 	public Polygon(double x, double y, double[][] points) {
 		setX(x);
 		setY(y);
@@ -14,14 +40,22 @@ public class Polygon {
 	}
 
 
+	/**
+	 * Gibt den nächsten Punkt für einen belibigen Index zurück
+	 * 
+	 * @param index
+	 * @return Punkt
+	 */
 	private double[] nextPoint(int index) {
 		return points[index == points.length - 1 ? 0 : index + 1];
 	}
 
 
 	/**
+	 * Berechnet den Flächeninhalt
+	 * 
 	 * @see https://www.mathopenref.com/coordpolygonarea.html
-	 * @return Area of the Polygon
+	 * @return Flächeninhalt
 	 */
 	public double area() {
 		double accum = 0.0;
@@ -43,8 +77,10 @@ public class Polygon {
 
 
 	/**
+	 * Berechnet den Umfang
+	 * 
 	 * @see https://www.mathopenref.com/polygonperimeter.html
-	 * @return Perimeter of the Polygon
+	 * @return Umfang
 	 */
 	public double perimeter() {
 		double accum = 0;
@@ -67,6 +103,11 @@ public class Polygon {
 	}
 
 
+	/**
+	 * Formatiert die Instanz als String
+	 * 
+	 * @return String-Darstellung
+	 */
 	public String toString() {
 		String s = "Polygon [ Pos [ " + getX() + ", " + getY() + " ], Points = [  ";
 
@@ -79,31 +120,61 @@ public class Polygon {
 	}
 
 
+	/**
+	 * Getter für X
+	 * 
+	 * @return X
+	 */
 	public double getX() {
 		return x;
 	}
 
 
+	/**
+	 * Setter für X
+	 * 
+	 * @param X
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
 
+	/**
+	 * Getter für Y
+	 * 
+	 * @return Y
+	 */
 	public double getY() {
 		return y;
 	}
 
 
+	/**
+	 * Setter für Y
+	 * 
+	 * @param Y
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
 
+	/**
+	 * Getter für Punkte
+	 * 
+	 * @return Punkte
+	 */
 	public double[][] getPoints() {
 		return points;
 	}
 
 
+	/**
+	 * Setter für Punkte
+	 * 
+	 * @param Punkte
+	 */
 	public void setPoints(double[][] points) {
 		this.points = points;
 	}
