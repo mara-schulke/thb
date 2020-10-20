@@ -25,11 +25,7 @@ public class Line {
 
 
 	public String toString() {
-		String s = "";
-		s += "a = (" + getAX() + ";" + ay + ")\n";
-		s += "b = (" + bx + ";" + by + ")\n";
-		s += "length = " + length() + "\n";
-		return s;
+		return "Line [ Pos [ " + getAX() + ", " + getAY() + " ], Dest [ " + getBX() + ", " + getBY() + " ], Length " + length() + " ]";
 	}
 
 

@@ -7,4 +7,9 @@ public class Square extends Rectangle {
 		super(x, y, a, a);
 	}
 
+
+	public String toString()  {
+		return super.toString().replaceAll("Rectangle", "Square");
+	}
+
 }

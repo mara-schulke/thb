@@ -31,14 +31,7 @@ public class Ellipse {
 
 
 	public String toString() {
-		String s = "";
-		s += "x = " + getX() + "\n";
-		s += "y = " + getY() + "\n";
-		s += "radiusX = " + getRadiusX() + "\n";
-		s += "radiusY = " + getRadiusY() + "\n";
-		s += "area = " + area() + "\n";
-		s += "perimeter = " + perimeter() + "\n";
-		return s;
+		return "Ellipse [ Pos [ " + getX() + ", " + getY() + " ], RadiusX " + getRadiusX() + ", RadiusY " + getRadiusY() + ", Area " + area() + ", Perimeter " + perimeter() + " ]";
 	}
 
 

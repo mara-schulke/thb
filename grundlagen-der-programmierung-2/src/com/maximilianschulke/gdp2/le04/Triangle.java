@@ -10,4 +10,9 @@ public class Triangle extends Polygon {
 		});
 	}
 
+
+	public String toString()  {
+		return super.toString().replaceAll("Polygon", "Triangle");
+	}
+
 }

@@ -22,4 +22,9 @@ public class Circle extends Ellipse {
 		setRadiusY(radius);
 	}
 
+
+	public String toString() {
+		return super.toString().replaceAll("Ellipse", "Circle").replaceAll("Perimeter", "Circumference");
+	}
+
 }

@@ -27,12 +27,7 @@ public class Rectangle {
 
 
 	public String toString() {
-		String s = "";
-		s += "a = " + getA() +  "\n";
-		s += "b = " + getB() +  "\n";
-		s += "area = " + area() +  "\n";
-		s += "perimeter = " + perimeter() +  "\n";
-		return s;
+		return "Rectangle [ Pos [ " + getX() + ", " + getY() + " ], A " + getA() + ", B " + getB() + ", Area " + area() + ", Perimeter " + perimeter() + " ]";
 	}
 
 

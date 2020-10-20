@@ -68,18 +68,13 @@ public class Polygon {
 
 
 	public String toString() {
-		String s = "";
-		s += "x = " + getX() + "\n";
-		s += "y = " + getY() + "\n";
-		s += "points = {\n";
+		String s = "Polygon [ Pos [ " + getX() + ", " + getY() + " ], Points = [  ";
 
 		for (double[] p : points) {
-			s += "\t [" + p[0] + "; " + p[1] + "]\n";
+			s += "[" + p[0] + "; " + p[1] + "], ";
 		}
 
-		s += "}\n";
-		s += "area = " + area() + "\n";
-		s += "perimeter = " + perimeter() + "\n";
+		s += "], Area " + area() + ", Perimeter " + perimeter() + " ]";
 		return s;
 	}
 
