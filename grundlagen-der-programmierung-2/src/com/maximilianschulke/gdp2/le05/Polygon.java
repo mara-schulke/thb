@@ -1,25 +1,49 @@
 package com.maximilianschulke.gdp2.le05;
 
 
+/**
+ * Diese Klasse kann dazu verwendet werden den Flaecheninhalt
+ * oder Umfang eines Polygons zu berechnen.
+ * 
+ * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @version 1.0.0
+ */
 public class Polygon extends Figure implements Sizeable {
 
+	/**
+	 * Liste der Punkte
+	 */
 	private Point[] points;
 
 
+	/**
+	 * Der Konstruktor
+	 * 
+	 * @param pos Position
+	 * @param points Liste der Punkte
+	 */
 	public Polygon(Point pos, Point[] points) {
 		super(pos);
 		setPoints(points);
 	}
 
 
+	/**
+	 * Gibt den nächsten Punkt für einen belibigen Index zurück
+	 * 
+	 * @param index
+	 * @return Punkt
+	 */
 	private Point nextPoint(int index) {
 		return points[index == points.length - 1 ? 0 : index + 1];
 	}
 
 
 	/**
+	 * Berechnet den Flächeninhalt
+	 * 
 	 * @see https://www.mathopenref.com/coordpolygonarea.html
-	 * @return Area of the Polygon
+	 * @return Flächeninhalt
 	 */
 	public double area() {
 		double accum = 0.0;
@@ -36,8 +60,10 @@ public class Polygon extends Figure implements Sizeable {
 
 
 	/**
+	 * Berechnet den Umfang
+	 * 
 	 * @see https://www.mathopenref.com/polygonperimeter.html
-	 * @return Perimeter of the Polygon
+	 * @return Umfang
 	 */
 	public double perimeter() {
 		double accum = 0;
@@ -58,29 +84,40 @@ public class Polygon extends Figure implements Sizeable {
 	}
 
 
-	public String toString() {
-		String s = "";
-		s += "pos = " + getPos() + "\n";
-		s += "points = {\n";
-
-		for (Point p : points) {
-			s += "\t" + p + "\n";
-		}
-
-		s += "}\n";
-		s += "area = " + area() + "\n";
-		s += "perimeter = " + perimeter() + "\n";
-		return s;
-	}
-
-
+	/**
+	 * Getter für Punkte
+	 * 
+	 * @return Punkte
+	 */
 	public Point[] getPoints() {
 		return points;
 	}
 
 
+	/**
+	 * Setter für Punkte
+	 * 
+	 * @param Punkte
+	 */
 	public void setPoints(Point[] points) {
 		this.points = points;
+	}
+
+
+	/**
+	 * Formatiert die Instanz als String
+	 * 
+	 * @return String-Darstellung
+	 */
+	public String toString() {
+		String s = "Polygon [ Pos " + getPos() + ", Points = [  ";
+
+		for (Point p : points) {
+			s += p + ", ";
+		}
+
+		s += "], Area " + area() + ", Perimeter " + perimeter() + " ]";
+		return s;
 	}
 
 }
