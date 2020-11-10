@@ -3,20 +3,37 @@ package com.maximilianschulke.gdp2.le06;
 import java.util.ArrayList;
 
 
+/**
+ * Eine lineare Queue-Implementation
+ * 
+ * @author Maximilian Schulke <schulke@th-brandenbug.de>
+ * @version 1.0.0
+ */
 public class LinearQueue<T> implements IQueue<T> {
-	
-	private int max;
 
+	/**
+	 * Maximalgröße der Queue
+	 */
+	private int size;
 
+	/**
+	 * Enthält die Elemente der Queue
+	 */
 	private ArrayList<T> queue;
 
 
+	/**
+	 * Der Konstruktor
+	 */
 	public LinearQueue() {
-		max = Integer.MAX_VALUE;
+		size = Integer.MAX_VALUE;
 		queue = new ArrayList<>();
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public void push(T el) throws QueueException {
 		if (isFull()) {
@@ -27,6 +44,9 @@ public class LinearQueue<T> implements IQueue<T> {
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public T pop() throws QueueException {
 		if (queue.isEmpty()) {			
@@ -39,6 +59,9 @@ public class LinearQueue<T> implements IQueue<T> {
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public T head() throws QueueException {
 		if (queue.isEmpty()) {
@@ -49,6 +72,9 @@ public class LinearQueue<T> implements IQueue<T> {
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public T tail() throws QueueException {
 		if (queue.isEmpty()) {
@@ -59,46 +85,69 @@ public class LinearQueue<T> implements IQueue<T> {
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
-	public int size() {
+	public int length() {
 		return queue.size();
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public boolean isFull() {
-		return queue.size() >= this.max;
+		return queue.size() >= this.size;
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public boolean isEmpty() {
 		return queue.isEmpty();
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
 	public void clear() {
 		queue.clear();
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
-	public int getMaximumSize() {
-		return max;
+	public int getSize() {
+		return size;
 	}
 
 
+	/**
+	 * @see IQueue
+	 */
 	@Override
-	public void setMaximumSize(int max) throws QueueException {
-		if (queue.size() > max) {
-			throw new QueueException("You can't set a maximum which is smaller than the length of the queue");
+	public void setSize(int size) throws QueueException {
+		if (queue.size() > size) {
+			throw new QueueException("You can't set a maximum size which is smaller than the length of the queue");
 		}
-		
-		this.max = max;
+
+		this.size = size;
 	}
 
 
+	/**
+	 * Formatiert die Instanz als String
+	 * 
+	 * @return String
+	 */
 	public String toString() {
 		String s = "LinearQueue [ ";
 		String items = "";
@@ -114,7 +163,13 @@ public class LinearQueue<T> implements IQueue<T> {
 
 		return s;
 	}
-	
+
+
+	/**
+	 * Testet die Klasse
+	 * 
+	 * @param args Commandline Argumente
+	 */
 	public static void main(String[] args) {
 		LinearQueue<Integer> q = new LinearQueue<Integer>();
 
