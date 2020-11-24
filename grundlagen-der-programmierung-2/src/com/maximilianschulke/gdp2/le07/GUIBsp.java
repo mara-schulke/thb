@@ -11,23 +11,62 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+/**
+ * Eine Beispiel GUI
+ * 
+ * @version 1.0.0
+ * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ */
 public class GUIBsp extends Application {
 
+	/**
+	 * Das Hello Label
+	 */
 	Label hello;
+
+	/**
+	 * Das Name Label
+	 */
 	Label name;
+
+	/**
+	 * Das Textfeld für die Eingabe
+	 */
 	TextField input;
+
+	/**
+	 * Das Label für das Textfeld
+	 */
 	Label label;
+
+	/**
+	 * Der Button um zu bestätigen
+	 */
 	Button ok;
+
+	/**
+	 * Der Button um abzubrechen
+	 */
 	Button cancel;
 
 
+	/**
+	 * Baut die GUI auf einer Stage
+	 * 
+	 * @param primaryStage Stage
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Setze Window-Titel
 		primaryStage.setTitle("GUIBsp");
+
+		// Erstelle Labels
 		hello = new Label();
 		hello.setText("Hallo");
 		name = new Label();
 
+		// Erstelle Layouts und füge Ausgabe-Labels hinzu
 		VBox layout = new VBox();
 		layout.setPadding(new Insets(25, 25, 25, 25));
 		layout.setSpacing(10);
@@ -38,6 +77,7 @@ public class GUIBsp extends Application {
 
 		layout.getChildren().add(outputPane);
 
+		// Erstelle Eingabe-Textfeld
 		label = new Label();
 		label.setText("Name:");
 		input = new TextField();
@@ -48,6 +88,7 @@ public class GUIBsp extends Application {
 
 		layout.getChildren().add(inputPane);
 
+		// Erstelle Buttons
 		FlowPane controlPane = new FlowPane();
 		controlPane.setHgap(10);
 
@@ -57,6 +98,7 @@ public class GUIBsp extends Application {
 		cancel = new Button();
 		cancel.setText("Cancel");
 
+		// EventHandler für "OK"
 		ok.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
 			if (input.getText().trim().equals("")) {
 				input.clear();
@@ -67,6 +109,7 @@ public class GUIBsp extends Application {
 			input.clear();
 		});
 
+		// EventHandler für "Abbrechen"
 		cancel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
 			name.setText("");
 			input.clear();
@@ -75,6 +118,7 @@ public class GUIBsp extends Application {
 		controlPane.getChildren().addAll(ok, cancel);
 		layout.getChildren().add(controlPane);
 
+		// Zeichne das Layout mit Größenbeschränkungen
 		Scene scene = new Scene(layout);
 		primaryStage.setScene(scene);
 		primaryStage.setMinWidth(300);
@@ -83,9 +127,13 @@ public class GUIBsp extends Application {
 	}
 
 
+	/**
+	 * Main Methode
+	 * 
+	 * @param args CLI Argumente
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 }
-
