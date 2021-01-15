@@ -7,22 +7,39 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
+/**
+ * Die GUIPaint Anwendung
+ * 
+ * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @version 1.0.0
+ */
 public class GUIPaint extends Application {
 
+	/**
+	 * Variablen zum tracken der Rechteck-Position.
+	 */
 	public double x0,x1,y0,y1;
 
+	/**
+	 * Die Start Methode zeichnet das Haus und registriert
+	 * die EventHandler.
+	 * 
+	 * @param primaryStage Die Bühne
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			Group root = new Group();
 			Scene scene = new Scene(root, 600, 400);
 
+			// Definiert Window-Verhalten
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("GUIPaint");
 			primaryStage.setMinWidth(600);
 			primaryStage.setMinHeight(400);
 			primaryStage.show();
 
+			// Hintergrund
 			Rectangle sky = new Rectangle(0, 000, 600, 300);
 			sky.setFill(Color.LIGHTBLUE);
 
@@ -31,6 +48,7 @@ public class GUIPaint extends Application {
 
 			Group house = new Group();
 
+			// Das Haus
 			Polygon roof = new Polygon(200.0, 150.0, 300.0, 100.0, 400.0, 150.0);
 			roof.setFill(Color.ORANGE);
 
@@ -58,6 +76,7 @@ public class GUIPaint extends Application {
 			house.getChildren().addAll(roof, body, window1, window2, door, window3, window4, window5);
 			root.getChildren().addAll(sky, earth, house);
 
+			// EventHandler
 			scene.setOnKeyTyped(me -> {
 				System.out.println(me.getEventType() + " " + me.getCharacter() + " " + me.getSource());
 			});
@@ -80,6 +99,11 @@ public class GUIPaint extends Application {
 	}
 
 
+	/**
+	 * Die Main-Methode
+	 * 
+	 * @param args CLI Argumente
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
