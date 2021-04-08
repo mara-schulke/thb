@@ -1,6 +1,6 @@
 # ER Modelling
 
-All `.graphml` Files were created (and can be viewed) using the [yEd-Live](https://www.yworks.com/yed-live/] tool.
+All `.graphml` Files were created (and can be viewed) using the [yEd-Live](https://www.yworks.com/yed-live/) tool.
 
 ## Exercise 1 - Company (`company.graphml`)
 
