@@ -1,0 +1,78 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Online Studiengang Medieninformatik \\
+		Fachbereich Informatik \\
+		Softwaretechnik
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 1: Requirements Engineering}\\[0.5em]
+		\large{Sommersemester 2021}\\[0.25em]
+		\large{Abgabetermin 18.04.2021}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Maximilian Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\section{Aufgabenstellung}
+
+
+
+\section{Projekt}
+
+Als Projekt für dieses Semester verwende ich ein privates Freizeit-Projekt von mir – einen kleinen,
+minimalistischen Tiling-Window-Manager für Linux bzw. X11.
+
+\subsection{Zusammenfassung der Domain}
+
+Für den Fall, dass Sie noch keinen Kontakt mit dieser Domain, hatten gehe ich nun kurz darauf ein,
+welche Aufgaben ein Tiling-Window-Manager (kurz. \emph{TWM} oder nur \emph{WM}) typischer Weise übernimmt.
+Die generelle Aufgabe eines WM's besteht hauptsächlich darin sich um die Kommunikation mit dem
+Window-Server (i.d.R. X11 oder Wayland auf Linux, Quartz Compositor auf MacOS) zu kümmern, und die
+tatsächliche Anordnung der Fenster auf dem Bildschirm zu regeln (in Ebenen, Kacheln etc. – die Möglichkeiten
+sind nahe zu unbegrenzt). Typische Window-Manager von z.B. MacOS können diverse, für uns als Endnutzer
+mittlerweile als üblich angesehene, Anordnungen wie Floating, Split-Screen und Fullscreen realisieren. \par
+Ein Tiling-Window-Manager hat nun die Besonderheit, dass er anders als von Windows, MacOS oder diversen Linux
+Desktop-Umgebungen bekannt, die Aufteilung der Fenster automatisch und bestmöglich regelt. Typischerweise
+hat ein TWM eine feste Konfiguration mit Layouts, in die er die Fenster einsortieren kann (z.B. ``Master
+and Stack``). Somit muss sich der Anwender eines solchen TWM's (zumindest initial) nicht selber um die
+Anordnung kümmern.
+
+\subsection{Projekt-Ziel}
+
+Das Problem von bestehenden Window-Managern ist in der Regel deren Alter (bspw. ist das Projekt ``Toms
+Window Manager`` im Jahr 1987 entstanden). Aufgrund des Alters sind viele dieser Window-Manager noch in
+C, C++ oder einer vergleichbaren Sprache verfasst worden und mit der Zeit immer weiter gewachsen. Dies
+macht, nicht von den Entwicklern vorhergesehene, grundlegende Änderungen – zumindest für mich – äußert
+schwer.
+
+% Da ich erstens C & C++ nicht behersche und die Projektgröße sowas ich ohnehin, die meisten Standardfunktionalitäten nicht 
+% "Rust TWM Library" um selber mit rust knowledge seine twm zusammen zu schrauben.
+
+
+\section{User Stories}
+
+
+
+\end{document}
