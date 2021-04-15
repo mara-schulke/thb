@@ -101,17 +101,17 @@ Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) 
 
 \begin{align*}
 	f(n) & = 2n^2 + 3n\log_2n - 72 \\
-		 & \geq 2n^2 - 72 \\
+	     & \geq 2n^2 - 72          \\
 	     & \geq n^2
 \end{align*}
 
 Nun können wir $n_0$ als Schnittpunkt der beiden Funktionen $2n^2 - 72$ und $n^2$ berechnen.
 
 \begin{align*}
-	2n^2 - 72 & = n^2 \mid - 2n^2  \\
-		 - 72 & = -n^2 \mid * -1 \\
-		   72 & = n^2 \\
-		    n & = \sqrt{72}
+	2n^2 - 72 & = n^2 \mid - 2n^2 \\
+	- 72      & = -n^2 \mid * -1  \\
+	72        & = n^2             \\
+	n         & = \sqrt{72}
 \end{align*}
 
 Also, mit $c = 1$ und $n_0 = \sqrt{72}$ gilt $f(n) \in \Omega(n^2)$
@@ -120,5 +120,17 @@ Also, mit $c = 1$ und $n_0 = \sqrt{72}$ gilt $f(n) \in \Omega(n^2)$
 
 $\Theta(g)$ ist im Skript mit der \emph{Definition 2.5} als $\{ \, f \mid f \in O(g) \wedge f \in \Omega(g) \, \}$ definiert.\\[0.5em]
 Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2.1 und 2.2 gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
+
+\section{Average-Case-Aufwand der binären Suche}
+
+\subsection{Durchschnittliche Anzahl der Vergleiche für einen Hit}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+	\hline
+	Element    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+	\hline
+	Vergleiche & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+	\hline
+\end{tabular}
 
 \end{document}
