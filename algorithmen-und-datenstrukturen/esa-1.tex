@@ -1,0 +1,84 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{color}
+
+\lstset{
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Online Studiengang Medieninformatik \\
+		Fachbereich Informatik \\
+		Algorithmen und Datenstrukturen
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 1}\\[0.5em]
+		\large{Sommersemester 2021}\\[0.25em]
+		\large{Abgabetermin 18.04.2021}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Maximilian Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{1. Zweitkleinstes Element einer Folge}
+
+Das zweitkleinste Element einer Folge von n $\geq$ 2 Zahlen soll bestimmt werden.
+
+\subsection*{a) Algorithmus in Pseudocode}
+
+\begin{lstlisting}
+def second_minimum(list):
+    second = list[0]
+    minimum = list[0]
+
+    for n in list[1:]:
+        if n > minimum:
+            second = n
+            break
+
+    for n in list[1:]:
+        if n < minimum:
+            second = minimum
+            minimum = n
+
+    return second
+\end{lstlisting}
+
+\subsection*{b) Laufzeit-Analyse}
+
+Der Algorithmus braucht im \textbf{Best-Case n} Vergleiche, liegt also dementsprechend in $\Omega(n)$. Der Best-Case tritt ein,
+wenn direkt das zweite Element größer als das erste ist, da dann die erste Schleife nach dem ersten Schritt abgebrochen wird und
+die 2. Schleife immer genau $n - 1$ vergleiche ausführt.
+
+Er braucht im \textbf{Worst-Case 2(n - 1)} Vergleiche und liegt daher in $O(n)$. Der Worst-Case kommt zustande wenn wir z.B. eine List der
+Länge n betrachten, die n mal das gleiche Element enthält. Dann benötigen wir beim der ersten und der zweiten Schleife $n - 1$ Vergleiche.
+
+\end{document}
