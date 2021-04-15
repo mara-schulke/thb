@@ -3,3 +3,12 @@ bin
 .classpath
 .settings
 .project
+
+# LaTeX
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.toc
+*.synctex.gz
