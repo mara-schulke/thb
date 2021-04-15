@@ -49,9 +49,7 @@
 
 \newpage
 
-\section{Zweitkleinstes Element einer Folge}
-
-Das zweitkleinste Element einer Folge von n $\geq$ 2 Zahlen soll bestimmt werden.
+\section{Zweitkleinstes Element einer Folge  von $n \geq 2$ Zahlen}
 
 \subsection{Algorithmus in Pseudocode}
 
@@ -95,7 +93,9 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 	     & = 5n^2
 \end{align*}
 
-Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) \in O(n^2)$ gilt
+\begin{flushleft}
+	Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) \in O(n^2)$ gilt
+\end{flushleft}
 
 \subsection{Beweis von $f(n) \in \Omega(n^2)$}
 
@@ -105,7 +105,9 @@ Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) 
 	     & \geq n^2
 \end{align*}
 
-Nun können wir $n_0$ als Schnittpunkt der beiden Funktionen $2n^2 - 72$ und $n^2$ berechnen.
+\begin{flushleft}
+	Nun können wir $n_0$ als Schnittpunkt der beiden Funktionen $2n^2 - 72$ und $n^2$ berechnen.
+\end{flushleft}
 
 \begin{align*}
 	2n^2 - 72 & = n^2 \mid - 2n^2 \\
@@ -114,7 +116,10 @@ Nun können wir $n_0$ als Schnittpunkt der beiden Funktionen $2n^2 - 72$ und $n^
 	n         & = \sqrt{72}
 \end{align*}
 
-Also, mit $c = 1$ und $n_0 = \lceil\sqrt{72}\rceil = 9$ gilt $f(n) \in \Omega(n^2)$
+\begin{flushleft}
+	Also, mit $c = 1$ und $n_0 = \lceil\sqrt{72}\rceil = 9$ gilt $f(n) \in \Omega(n^2)$
+\end{flushleft}
+
 
 \subsection{Gilt $f(n) \in \Theta(n^2)$ ?}
 
@@ -190,10 +195,13 @@ zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$. Um jetzt auf die durchschnittlichen Vergl
 die Gesamtanzahl durch die Anzahl der Elemente geteilt werden. Also entweder $\sum_{i=0}^{k - 1} \frac{(i + 1) * 2^i}{2^k - 1}$
 $\frac{\sum_{i=0}^{k - 1} (i + 1) * 2^i}{2^k - 1}$
 
+\newpage
+
 \subsection{Laufzeit-Analyse}
 
-
 TBD
+
+\newpage
 
 
 \section{Analyse einer rekursiven Funktion}
@@ -223,5 +231,7 @@ $$F(n) = \frac{n}{2} + \frac{n^2}{4}$$
 	                        & = \frac{n}{2} + \frac{n^2}{4} + \frac{4n + 4}{4} + \frac{2}{2}                                                         \\
 	                        & = F(n) + (n + 2) = F(n + 2)                                                                                            \\
 \end{align*}
+
+\subsection{Stellen Sie eine Rekursionsgleichung für $T(n)$ auf und geben Sie eine geschlossene Formel für $T(n)$ an.}
 
 \end{document}
