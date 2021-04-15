@@ -77,8 +77,9 @@ Der Algorithmus braucht im \textbf{Best-Case n} Vergleiche, liegt also dementspr
 wenn direkt das zweite Element größer als das erste ist, da dann die erste Schleife nach dem ersten Schritt abgebrochen wird und
 die 2. Schleife immer genau $n - 1$ vergleiche ausführt.
 
-Er braucht im \textbf{Worst-Case 2(n - 1)} Vergleiche und liegt daher in $O(n)$. Der Worst-Case kommt zustande wenn wir z.B. eine List der
-Länge n betrachten, die n mal das gleiche Element enthält. Dann benötigen wir beim der ersten und der zweiten Schleife $n - 1$ Vergleiche.
+Er braucht im \textbf{Worst-Case 2(n - 1)} Vergleiche und liegt daher in $O(n)$. Der Worst-Case kommt zustande wenn wir z.B. eine
+List der Länge n betrachten, die n mal das gleiche Element enthält. Dann benötigen wir beim durchlaufen der ersten und der zweiten
+Schleife $n - 1$ Vergleiche.
 
 \section{Asymptotische Notation}
 
@@ -116,15 +117,21 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 	n         & = \sqrt{72}
 \end{align*}
 
+\vspace{1em}
+
 \begin{flushleft}
 	Also, mit $c = 1$ und $n_0 = \lceil\sqrt{72}\rceil = 9$ gilt $f(n) \in \Omega(n^2)$
 \end{flushleft}
 
-
 \subsection{Gilt $f(n) \in \Theta(n^2)$ ?}
 
-$\Theta(g)$ ist im Skript mit der \emph{Definition 2.5} als $\{ \, f \mid f \in O(g) \wedge f \in \Omega(g) \, \}$ definiert.\\[0.5em]
-Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2.1 und 2.2 gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
+\begin{flushleft}
+	$\Theta(g)$ ist im Skript mit der \emph{Definition 2.5} als $\{ \, f \mid f \in O(g) \wedge f \in \Omega(g) \, \}$ definiert.
+
+	\hspace{0.5em}
+
+	Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2.1 und 2.2 gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
+\end{flushleft}
 
 \section{Average-Case-Aufwand der binären Suche}
 
