@@ -182,12 +182,13 @@ Macht in Summe 29 Vergleiche und somit $\frac{29}{10} = 2.9$ Vergleiche im Durch
 \newpage
 
 Es gibt bei $2^k - 1$ immer einen perfekten, gleichmäßigen Baum und immer genau $\log_2n$ bzw. $k$ Ebenen.
-Auf (einer 0 indizierten) Ebene $i$ haben wir den Baum $i$ Mal geteilt und vergleichen $(i + 1) * 2^i$ Elemente.
-Wenn wir nun alle Ebenen addieren möchten, um die gesamt Anzahl der verglichenen Elemente bekommen möchten,
-müssen wir lediglich alle Ebenen addieren. Also bei $k = 4$ wären wir bei $1 * 2^0 + 2 * 2^1 + 3 * 2^2 + 4 * 2^3$ Vergleichen.
-Dies lässt sich durch die gaußsche Summenformel eleganter (und allgemeingültiger) Zusammenfassen zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$.
+Auf (einer 0 indizierten) Ebene $i$ haben wir den Baum $i$ Mal geteilt und haben $(i + 1) 2^i$ Vergleiche
+auf dieser Ebene. Wenn wir nun alle Ebenen addieren möchten, um die gesamt Anzahl der Vergleiche zu bekommen,
+müssen wir lediglich alle Ebenen addieren. Also bei $k = 4$ wären wir bei $1 * 2^0 + 2 * 2^1 + 3 * 2^2 + 4 * 2^3$
+Vergleichen. Dies lässt sich durch die gaußsche Summenformel eleganter (und allgemeingültiger) Zusammenfassen
+zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$.
 
-
+\subsection{Laufzeit-Analyse}
 
 
 \end{document}
