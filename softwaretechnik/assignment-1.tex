@@ -4,6 +4,14 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+}
 
 \begin{document}
 
@@ -12,7 +20,8 @@
 		TH Brandenburg \\
 		Online Studiengang Medieninformatik \\
 		Fachbereich Informatik \\
-		Softwaretechnik
+		Softwaretechnik \\
+		Prof. Dr-Ing. Martin Schafföner
 	\end{flushleft}
 
 	\vfill
@@ -38,41 +47,76 @@
 \section{Aufgabenstellung}
 
 
+\vspace{100px}
+\begin{center}
+	\large{To be inserted!}
+\end{center}
+\vspace{100px}
 
 \section{Projekt}
 
-Als Projekt für dieses Semester verwende ich ein privates Freizeit-Projekt von mir – einen kleinen,
-minimalistischen Tiling-Window-Manager für Linux bzw. X11.
+Als Projekt für dieses Semester verwende ich eine Idee die mir schon seit längerem im Kopf rumgeistert
+– einen kleinen, minimalistischen \emph{Tiling Window Manager} für Linux bzw. X11, der deutlich flexibler
+und entwicklerfreundlicher ist, als bestehende, vergleichbare Software.
 
 \subsection{Zusammenfassung der Domain}
 
-Für den Fall, dass Sie noch keinen Kontakt mit dieser Domain, hatten gehe ich nun kurz darauf ein,
-welche Aufgaben ein Tiling-Window-Manager (kurz. \emph{TWM} oder nur \emph{WM}) typischer Weise übernimmt.
-Die generelle Aufgabe eines WM's besteht hauptsächlich darin sich um die Kommunikation mit dem
-Window-Server (i.d.R. X11 oder Wayland auf Linux, Quartz Compositor auf MacOS) zu kümmern, und die
+Für den Fall, dass Sie noch keinen Kontakt mit dieser Domain hatten, gehe ich im folgenden kurz darauf ein,
+welche Aufgaben ein \emph{Tiling Window Manager} (kurz. \emph{TWM} oder nur \emph{WM}) typischer Weise
+übernimmt. Die generelle Aufgabe eines WM's besteht hauptsächlich darin sich um die Kommunikation mit dem
+\emph{Window-Server} (i.d.R. X11 oder Wayland auf Linux, Quartz Compositor auf MacOS) zu kümmern, und die
 tatsächliche Anordnung der Fenster auf dem Bildschirm zu regeln (in Ebenen, Kacheln etc. – die Möglichkeiten
-sind nahe zu unbegrenzt). Typische Window-Manager von z.B. MacOS können diverse, für uns als Endnutzer
+sind nahe zu unbegrenzt). Typische \emph{Window Manager} von z.B. MacOS können diverse, für uns als Endnutzer
 mittlerweile als üblich angesehene, Anordnungen wie Floating, Split-Screen und Fullscreen realisieren. \par
-Ein Tiling-Window-Manager hat nun die Besonderheit, dass er anders als von Windows, MacOS oder diversen Linux
-Desktop-Umgebungen bekannt, die Aufteilung der Fenster automatisch und bestmöglich regelt. Typischerweise
-hat ein TWM eine feste Konfiguration mit Layouts, in die er die Fenster einsortieren kann (z.B. ``Master
-and Stack``). Somit muss sich der Anwender eines solchen TWM's (zumindest initial) nicht selber um die
-Anordnung kümmern.
+Ein \emph{Tiling Window Managers} hat nun die Besonderheit, dass er anders als von Windows, MacOS oder diversen
+Linux Desktop-Umgebungen bekannt, die Aufteilung der Fenster automatisch und bestmöglich regelt. Typischerweise
+hat ein \emph{TWM} eine feste Konfiguration mit Layouts, in die er die Fenster einsortieren kann (z.B. ``Master
+and Stack``). Somit muss sich der Anwender eines solchen \emph{TWM's} (zumindest initial) nicht selber um die
+Anordnung seiner Fenster kümmern. Desweiteren zählt die Möglichkeit Keybindings zur Navigation oder Veränderung
+der Aufteilung zu definieren zu den typischen Features eines \emph{Tiling Window Managers}.
 
 \subsection{Projekt-Ziel}
 
-Das Problem von bestehenden Window-Managern ist in der Regel deren Alter (bspw. ist das Projekt ``Toms
-Window Manager`` im Jahr 1987 entstanden). Aufgrund des Alters sind viele dieser Window-Manager noch in
-C, C++ oder einer vergleichbaren Sprache verfasst worden und mit der Zeit immer weiter gewachsen. Dies
-macht, nicht von den Entwicklern vorhergesehene, grundlegende Änderungen – zumindest für mich – äußert
-schwer.
+Das Problem von bestehenden \emph{Window Managern} ist in der Regel deren Alter (bspw. ist das Projekt ``Toms
+Window Manager`` im Jahr 1987 entstanden). Aufgrund des Alters sind viele dieser \emph{Window Manager} noch in
+C, C++ oder einer vergleichbaren Sprache verfasst worden und mit der Zeit immer weiter gewachsen. Dies macht es
+deutlich schwerer als es sein müsste, grundlegende Änderungen, die nicht von den Entwicklern vorhergesehen waren,
+vorzunehmen. \par
+Ziel ist es einen \emph{minimalen Window Manager} zu entwickeln, der \emph{durch eigenen Programm-Code konfiguriert}
+und erweitert werden kann, zu entwickeln. Dieses Konzept ist schon öfter Implementiert worden (als Inspiration für
+dieses Modell dienen die Projekte \emph{XMonad\footnotemark} und \emph{DWM\footnotemark}), allerdings sind diese
+Projekte leider meistens schlecht Dokumentiert und haben i.d.R. unnötig komplexe \emph{API's}.
 
-% Da ich erstens C & C++ nicht behersche und die Projektgröße sowas ich ohnehin, die meisten Standardfunktionalitäten nicht 
-% "Rust TWM Library" um selber mit rust knowledge seine twm zusammen zu schrauben.
+\footnotetext[1]{XMonad wurde 2007 erstmals veröffentlicht. Dieses wurde in Haskell geschrieben und wird auch damit
+	konfiguriert. Siehe \url{https://xmonad.org/} für weitere Informationen.}
+\footnotetext[2]{DWM ist ein äußerst kleiner (unter 2000 Zeilen Source-Code) Window Manager geschrieben in C. Er
+	hat keine Konfigurationsdatei und wird durch Patchen des Codes konfiguriert. Siehe \url{https://dwm.suckless.org/}
+	für weitere Informationen.}
 
+\section{Erfassung der Anforderungen}
 
-\section{User Stories}
+Zur Erfassung der Anforderungen verwende ich das Projektmanagement Feature von GitHub. Dieses hat zumindest im
+kleinen Rahmen, diverse Vorteile gegenüber herkömmlicher Software für Agile Projekte (z.B. Jira von Atlassian).
+Unter anderem folgende:
 
+\begin{itemize}
+	\item Übersichtlicher durch kleineren Umfang und somit leichter zu Bedienen
+	\item Direkte Integration mit dem Entwicklungsprozess (Issues können z.B.
+	      geschlossen werden sobald ein Feature merged wurde)
+	\item Nutzer der Software können direkt Issues anlegen
+\end{itemize}
 
+Diese Entscheidung hat keine Endgültigkeit. Wenn es ein echtes Team mit einem klaren Vorgehensmodell gibt, können
+andere Tools besser geeignet sein. Außerdem sei erwähnt, dass Jira mit diversen Integrationen erweitert werden
+kann, um die oben beschriebene Funktionalität nach zu rüsten. Zur geordneten Erfassung von Anforderungen, deren
+priorisierung, kategorisierung und Abnahme reicht GitHub Projects allerdings vorerst vollkommen aus. Es gibt die
+Möglichkeit Sprint oder Kanban Boards anzulegen, diese zu automatisieren oder komplett eigene Prozesse zu
+integrieren.
+
+\vspace{100px}
+\begin{center}
+	\large{Bild Vom Fertigen Board einfügen!}
+\end{center}
+\vspace{100px}
 
 \end{document}
