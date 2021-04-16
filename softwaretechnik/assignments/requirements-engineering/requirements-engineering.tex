@@ -5,6 +5,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
 
 \hypersetup{
     colorlinks=true,
@@ -87,9 +90,9 @@ und erweitert werden kann. Dieses Konzept ist schon öfter Implementiert worden 
 dienen die Projekte \emph{XMonad\footnotemark} und \emph{DWM\footnotemark}), allerdings sind diese Projekte leider
 meistens schlecht dokumentiert und haben i.d.R. unnötig komplexe \emph{API's}.
 
-\footnotetext[1]{XMonad wurde 2007 erstmals veröffentlicht. Dieses wurde in Haskell geschrieben und wird auch damit
+\footnotetext[1]{wurde 2007 erstmals veröffentlicht. Wurde in Haskell geschrieben und wird auch damit
 	konfiguriert. Siehe \url{https://xmonad.org/} für weitere Informationen.}
-\footnotetext[2]{DWM ist ein äußerst kleiner (unter 2000 Zeilen Source-Code) Window Manager geschrieben in C. Er
+\footnotetext[2]{ist ein äußerst kleiner (unter 2000 Zeilen Source-Code) Window Manager geschrieben in C. Er
 	hat keine Konfigurationsdatei und wird durch Patchen des Codes konfiguriert. Siehe \url{https://dwm.suckless.org/}
 	für weitere Informationen.}
 
@@ -109,14 +112,21 @@ Unter anderem Folgende:
 Diese Entscheidung hat keine Endgültigkeit. Wenn es ein echtes Team mit einem klaren Vorgehensmodell gibt, können
 andere Tools besser geeignet sein. Außerdem sei erwähnt, dass Jira mit diversen Integrationen erweitert werden
 kann, um die oben beschriebene Funktionalität nachzurüsten. Zur geordneten Erfassung von Anforderungen, deren
-Priorisierung, Kategorisierung und Abnahme, reicht GitHub Projects allerdings vorerst vollkommen aus. Es gibt die
+Priorisierung, Kategorisierung und Abnahme, reicht \emph{GitHub Projects} allerdings vorerst vollkommen aus. Es gibt die
 Möglichkeit Sprint oder Kanban Boards anzulegen, diese zu automatisieren oder komplett eigene Prozesse zu
 integrieren.
 
-\vspace{100px}
-\begin{center}
-	\large{Bild Vom Fertigen Board einfügen!}
-\end{center}
-\vspace{100px}
+\vspace{1em}
+
+\begin{figure}[h]
+	\includegraphics[width=0.6\textwidth]{github-projects}
+	\centering
+	\caption{\emph{GitHub Projects} Board}
+\end{figure}
+
+\newpage
+
+\section{Anforderungen}
+
 
 \end{document}
