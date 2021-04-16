@@ -11,4 +11,5 @@ bin
 *.fls
 *.log
 *.toc
+*.out
 *.synctex.gz
