@@ -1,0 +1,164 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[table]{xcolor}
+\usepackage{enumerate}
+
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Online Studiengang Medieninformatik \\
+		Fachbereich Informatik und Medien \\
+		Kommunikationsnetze 1 \\
+		Prof. Dr.-Ing. habil. Michael Syrjakow
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 1}\\[0.5em]
+		\large{Sommersemester 2021}\\[0.25em]
+		\large{Abgabetermin 18.04.2021}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Maximilian Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section{Datensicherungsschicht}
+
+\subsection{Bestimmen Sie die Quer- und Längsparität (gerade Parität) bei dem zum übertragenden Datenblock}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+		\hline
+		0                    & 1                    & 1                    & 0                    & 1                    & 1                    & 0                    & 0                    & \cellcolor{gray!25}0 \\
+		\hline
+		1                    & 1                    & 0                    & 0                    & 0                    & 1                    & 1                    & 0                    & \cellcolor{gray!25}0 \\
+		\hline
+		0                    & 0                    & 0                    & 1                    & 1                    & 1                    & 0                    & 0                    & \cellcolor{gray!25}1 \\
+		\hline
+		\cellcolor{gray!25}1 & \cellcolor{gray!25}0 & \cellcolor{gray!25}1 & \cellcolor{gray!25}1 & \cellcolor{gray!25}0 & \cellcolor{gray!25}1 & \cellcolor{gray!25}1 & \cellcolor{gray!25}0 & \cellcolor{gray!25}1 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{An die zu übertragende Bitfolge \texttt{1100011011} (Nutzdaten) soll zur Fehlersicherung ein 4 Bit langer Kontrollblock (Frame Check Sequence) angehängt werden. Das Generatorpolynom sei \texttt{10011}. Berechnen Sie den Kontrollblock mittels Polynomdivision.}
+
+\begin{verbatim}
+    1 1 0 0 0 1 1 0 1 1 0 0 0 0
+    1 0 0 1 1
+    ---------
+    0 1 0 1 1 1
+      1 0 0 1 1
+      ---------
+      0 0 1 0 0 1 0
+          1 0 0 1 1
+          ---------
+          0 0 0 0 1 1 1 0 0
+                  1 0 0 1 1
+                  ---------
+                  0 1 1 1 1 0
+                    1 0 0 1 1
+                    ---------
+                    0 1 1 0 1 0
+                      1 0 0 1 1
+                      ---------
+                      0 1 0 0 1
+\end{verbatim}
+
+Dadurch ergibt sich der Kontrollblock \texttt{1001}
+
+\subsection{Wie groß ist die MTU bei Ethernet?}
+
+Bei Ethernet II 1500 Byte und bei IEEE 802.3 1492 Byte.
+
+\subsection{Welches Vielfachzugriffsverfahren wird von Ethernet benutzt?}
+
+\emph{Carrier Sense Multiple Access/Collision Detection} (kurz \emph{CSMCA/CD})
+
+\section{Internet-Protokoll}
+
+\subsection{Wie wird das Endlos-Kreisen von IP-Paketen im Netz verhindert?}
+
+Durch die Header TTL bei IPv4 bzw. Hop-Limit bei IPv6 werden die maximale Anzahl der Weiterleitungen über Router festgelegt.
+Er wird bei jeder Weiterleitungen durch einen Router um 1 verringert – erreicht er den Wert 0 wird das betroffene IP-Paket verworfen.
+
+\subsection{Welche verschiedenen Klassen von IP-Adressen gibt es?}
+
+Bis 1993 wurden IP-Adressen in 5 Klassen eingeteilt:
+
+\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Klasse} & \textbf{Beginnt mit} & \textbf{Subnetzmaske}  & \textbf{Netzeanzahl} & \textbf{Hostanzahl} \\
+		\hline
+		A               & 0-128            & \texttt{255.0.0.0}     & $2^7$                & $2^{24} - 2$        \\
+		\hline
+		B               & 129-191          & \texttt{255.255.0.0}   & $2^14$               & $2^{16} - 2$        \\
+		\hline
+		C               & 192-223          & \texttt{255.255.255.0} & $2^21$               & $2^{8} - 2$         \\
+		\hline
+		D               & 224-239          & Nicht vorhanden        &                      &                     \\
+		\hline
+		E               & 240-255          & Nicht vorhanden        &                      &                     \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Wie viele Hosts können in einem Class C Netz maximal installiert werden?}
+
+$2^8 - 2 = 254$
+
+\subsection{Zu welcher Klasse gehört die IP-Adresse 129.3.1.13? Ist das eine Netz oder Host-Adresse?}
+
+Da diese Adresse mit 129 beginnt, gehört sie zur Klasse B und hat die Subnetzmasken 255.255.0.0.
+Dementsprechend ist der für diese Frage relevante Teil \texttt{1.13}. In diesen beiden Bytes sind
+weder alle Bits auf 0 noch alle Bits auf 1, deshalb handelt es sich um eine Host-Adresse.
+
+\subsection{Kann die IP-Adresse 192.168.128.4 im Internet vorkommen}
+
+Nein, Adressen die mit \texttt{192.168} Anfangen sind immer privat.
+
+\subsection{Ist 192.256.20.132 eine gültige IP-Adresse?}
+
+Nein \texttt{256} kann man nicht in einem Byte codieren.
+
+\subsection{Was bedeutet Subnetting?}
+
+Durch Subnetting lassen sich größere Netze in kleinere aufteilen, in dem der Host-Anteil eines zugewiesenen IP-Adressbereichs
+noch weiter in Subnetz-ID und Host-ID unterteilt wird. Somit können Adressbereiche effizienter ausgenutzt werden.
+
+\subsection{Sie benötigen im Netz 198.200.40.0 mehrere Subnetze, wobei in jedem Subnetz bis maximal 13 Hosts installiert werden sollen. Definieren Sie alle möglichen Subnetzmasken}
+
+\begin{center}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Subnetzmaske}    & \textbf{Subnetze} & \textbf{Hosts} \\
+		\hline
+		\texttt{255.255.255.240} & $2^4$             & $2^4 - 2$   \\
+		\hline
+		\texttt{255.255.255.224} & $2^3$             & $2^5 - 2$   \\
+		\hline
+		\texttt{255.255.255.192} & $2^2$             & $2^6 - 2$    \\
+		\hline
+		\texttt{255.255.255.128} & $2^1$             & $2^7 - 2$    \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\end{document}
