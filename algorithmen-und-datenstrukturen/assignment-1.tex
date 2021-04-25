@@ -77,11 +77,11 @@ def second_minimum(list):
 \subsection{Laufzeit-Analyse}
 
 Der Algorithmus braucht im \textbf{Best-Case n} Vergleiche, liegt also dementsprechend in $\Omega(n)$. Der Best-Case tritt ein,
-wenn direkt das zweite Element größer als das erste ist, da dann die erste Schleife nach dem ersten Schritt abgebrochen wird und
-die 2. Schleife immer genau $n - 1$ vergleiche ausführt.
+wenn direkt das zweite Element größer als das Erste ist, da dann die erste Schleife nach dem ersten Schritt abgebrochen wird und
+die 2. Schleife immer genau $n - 1$ Vergleiche ausführt.
 
-Er braucht im \textbf{Worst-Case 2(n - 1)} Vergleiche und liegt daher in $O(n)$. Der Worst-Case kommt zustande wenn wir z.B. eine
-List der Länge n betrachten, die n mal das gleiche Element enthält. Dann benötigen wir beim durchlaufen der ersten und der zweiten
+Er braucht im \textbf{Worst-Case 2(n - 1)} Vergleiche und liegt daher in $O(n)$. Der Worst-Case kommt zustande, wenn wir z.B. eine
+List der Länge n betrachten, die n mal das gleiche Element enthält. Dann benötigen wir bei dem Durchlaufen der ersten und der zweiten
 Schleife $n - 1$ Vergleiche.
 
 \section{Asymptotische Notation}
@@ -98,7 +98,7 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 \end{align*}
 
 \begin{flushleft}
-	Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) \in O(n^2)$ gilt
+	Somit können wir sagen, dass mit $c \geq 5$ und $n_0 = 1$ die Behauptung $f(n) \in O(n^2)$ gilt.
 \end{flushleft}
 
 \subsection{Beweis von $f(n) \in \Omega(n^2)$}
@@ -123,7 +123,7 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 \vspace{1em}
 
 \begin{flushleft}
-	Also, mit $c = 1$ und $n_0 = \lceil\sqrt{72}\rceil = 9$ gilt $f(n) \in \Omega(n^2)$
+	Also mit $c = 1$ und $n_0 = \lceil\sqrt{72}\rceil = 9$ gilt $f(n) \in \Omega(n^2)$
 \end{flushleft}
 
 \subsection{Gilt $f(n) \in \Theta(n^2)$ ?}
@@ -131,7 +131,7 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 \begin{flushleft}
 	$\Theta(g)$ ist im Skript mit der \emph{Definition 2.5} als $\{ \, f \mid f \in O(g) \wedge f \in \Omega(g) \, \}$ definiert.
 
-	\hspace{0.5em}
+	\vspace{0.5em}
 
 	Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2 a) und 2 b) gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
 \end{flushleft}
@@ -163,7 +163,7 @@ Macht in Summe 29 Vergleiche und somit $\frac{29}{10} = 2.9$ Vergleiche im Durch
 
 	Beispiel für $k = 3$
 
-	\vspace{1em}
+	\vspace{0.5em}
 
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
@@ -175,11 +175,11 @@ Macht in Summe 29 Vergleiche und somit $\frac{29}{10} = 2.9$ Vergleiche im Durch
 		\hline
 	\end{tabular}
 
-	\vspace{2em}
+	\vspace{1.5em}
 
 	Beispiel für $k = 4$
 
-	\vspace{1em}
+	\vspace{0.5em}
 
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline
@@ -198,14 +198,14 @@ Macht in Summe 29 Vergleiche und somit $\frac{29}{10} = 2.9$ Vergleiche im Durch
 
 Es gibt bei $2^k - 1$ immer einen perfekten, gleichmäßigen Baum und immer genau $\log_2n$ bzw. $k$ Ebenen.
 Auf (einer 0 indizierten) Ebene $i$ haben wir den Baum $i$ Mal geteilt und haben $(i + 1) 2^i$ Vergleiche
-auf dieser Ebene. Wenn wir nun alle Ebenen addieren möchten, um die gesamt Anzahl der Vergleiche zu bekommen,
+auf dieser Ebene. Wenn wir nun alle Ebenen addieren möchten, um die Gesamtanzahl der Vergleiche zu bekommen,
 müssen wir lediglich alle Ebenen addieren. Also bei $k = 4$ wären wir bei $1 * 2^0 + 2 * 2^1 + 3 * 2^2 + 4 * 2^3$
-Vergleichen. Dies lässt sich durch die gaußsche Summenformel eleganter (und allgemeingültiger) Zusammenfassen
-zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$. Um jetzt auf die durchschnittlichen Vergleiche zu kommen muss nun einfach
+Vergleichen. Dies lässt sich durch die Gaußsche Summenformel eleganter (und allgemeingültiger) Zusammenfassen
+zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$. Um jetzt auf die durchschnittlichen Vergleiche zu kommen, muss nun einfach
 die Gesamtanzahl durch die Anzahl der Elemente geteilt werden. Also entweder $\sum_{i=0}^{k - 1} \frac{(i + 1) * 2^i}{2^k - 1}$
 oder alternativ $\frac{1}{2^k - 1}\sum_{i=0}^{k - 1} (i + 1) * 2^i$
 
-\subsection{Laufzeit-Analyse für Average-Case und vergleich mit Worst-Case}
+\subsection{Laufzeit-Analyse für Average-Case und Vergleich mit Worst-Case}
 
 \vspace{1em}
 
@@ -240,16 +240,15 @@ $$\lim_{n\to\infty} \lceil\log_2 n\rceil + \frac{\lceil\log_2 n\rceil}{n} - 1 = 
 
 \begin{flushleft}
 	Somit können wir sagen, dass der Average-Case der binären Suche asymptotisch gesehen nur um 1 Schritt
-	besser ist, als der Wort-Case $\log_2n$
+	besser ist als der Wort-Case $\log_2n$
 \end{flushleft}
-
 
 \section{Analyse einer rekursiven Funktion}
 
 \subsection{Für welche n terminiert die Rekursion, für welche nicht?}
 
-Die Funktion terminiert nur für gerade postive Zahlen und $n = 0$. Bei ungeraden positiven Zahlen, verfehlen wir den
-Basis-Fall immer um genau 1 und landen danach in einer Endlosschleife. Bei negativen Zahlen, sind wir schon initial
+Die Funktion terminiert nur für gerade postive Zahlen und $n = 0$. Bei ungeraden positiven Zahlen verfehlen wir den
+Basis-Fall immer um genau 1 und landen danach in einer Endlosschleife. Bei negativen Zahlen sind wir schon initial
 ``unter`` dem Basis-Fall.
 
 \subsection{Geben Sie F als geschlossene nicht-rekursive Formel an und beweisen Sie Ihre Formel durch Induktion.}
