@@ -21,6 +21,8 @@
   tabsize=4
 }
 
+\renewcommand\thesubsection{\alph{subsection})}
+
 \begin{document}
 
 \begin{titlepage}
@@ -37,7 +39,7 @@
 	\begin{center}
 		\Large{Einsendeaufgabe 1}\\[0.5em]
 		\large{Sommersemester 2021}\\[0.25em]
-		\large{Abgabetermin 18.04.2021}
+		\large{Abgabetermin 25.04.2021}
 	\end{center}
 
 	\vfill
@@ -131,7 +133,7 @@ Gegeben sei die Funktion $f(n) = 2n^2 + 3n\log_2n - 72$
 
 	\hspace{0.5em}
 
-	Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2.1 und 2.2 gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
+	Somit wissen wir, dass $f(n) \in \Theta(n^2)$, da wir in 2 a) und 2 b) gezeigt haben, dass $f \in O(g)$ und $f \in \Omega(g)$ gelten.
 \end{flushleft}
 
 \section{Average-Case-Aufwand der binären Suche}
@@ -201,15 +203,45 @@ müssen wir lediglich alle Ebenen addieren. Also bei $k = 4$ wären wir bei $1 *
 Vergleichen. Dies lässt sich durch die gaußsche Summenformel eleganter (und allgemeingültiger) Zusammenfassen
 zu $\sum_{i=0}^{k - 1} (i + 1) * 2^i$. Um jetzt auf die durchschnittlichen Vergleiche zu kommen muss nun einfach
 die Gesamtanzahl durch die Anzahl der Elemente geteilt werden. Also entweder $\sum_{i=0}^{k - 1} \frac{(i + 1) * 2^i}{2^k - 1}$
-$\frac{\sum_{i=0}^{k - 1} (i + 1) * 2^i}{2^k - 1}$
+oder alternativ $\frac{1}{2^k - 1}\sum_{i=0}^{k - 1} (i + 1) * 2^i$
 
-\newpage
+\subsection{Laufzeit-Analyse für Average-Case und vergleich mit Worst-Case}
 
-\subsection{Laufzeit-Analyse}
+\vspace{1em}
 
-TBD
+$$\frac{1}{2^k - 1}\sum_{i=0}^{k - 1} (i + 1) * 2^i = \frac{1}{2^k - 1}\sum_{i=1}^k i * 2^{i - 1} = k + \frac{k}{2^k - 1} - 1$$
 
-\newpage
+\begin{center}
+	Von \texttt{http://www.mcs.sdsmt.edu/ecorwin/cs251/binavg/binavg.html}
+\end{center}
+
+\vspace{1em}
+
+\begin{flushleft}
+	Der Worst-Case der binären Suche ist $O(\log_2 n)$. Wenn wir in der o.g. geschlossenen Formel $k$
+	durch $\lceil\log_2 n\rceil$ ersetzen erhalten wir:
+\end{flushleft}
+
+\vspace{0em}
+
+$$\lceil\log_2 n\rceil + \frac{\lceil\log_2 n\rceil}{n} - 1$$
+
+\vspace{0em}
+
+\begin{flushleft}
+	Wenn wir diese Gleichung nun asymptotisch betrachten entfällt $\frac{\lceil\log_2 n\rceil}{n}$
+\end{flushleft}
+
+\vspace{0em}
+
+$$\lim_{n\to\infty} \lceil\log_2 n\rceil + \frac{\lceil\log_2 n\rceil}{n} - 1 = \lceil\log_2 n\rceil + 0 - 1 = \lceil\log_2 n\rceil - 1$$
+
+\vspace{0em}
+
+\begin{flushleft}
+	Somit können wir sagen, dass der Average-Case der binären Suche asymptotisch gesehen nur um 1 Schritt
+	besser ist, als der Wort-Case $\log_2n$
+\end{flushleft}
 
 
 \section{Analyse einer rekursiven Funktion}
@@ -247,7 +279,7 @@ $$F(n) = \frac{n}{2} + \frac{n^2}{4}$$
 Rekursionsgleichung:
 
 \begin{align*}
-	T(0) & = 0 \\
+	T(0) & = 0               \\
 	T(n) & = \, T(n - 2) + 2
 \end{align*}
 
