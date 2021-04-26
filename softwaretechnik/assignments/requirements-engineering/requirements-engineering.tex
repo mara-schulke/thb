@@ -4,8 +4,10 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{float}
 
 \graphicspath{ {./images/} }
 
@@ -32,7 +34,7 @@
 	\begin{center}
 		\Large{Einsendeaufgabe 1: Requirements Engineering}\\[0.5em]
 		\large{Sommersemester 2021}\\[0.25em]
-		\large{Abgabetermin 25.04.2021}
+		\large{Abgabetermin 27.04.2021}
 	\end{center}
 
 	\vfill
@@ -140,19 +142,167 @@ zu integrieren.
 
 \vspace{0.5em}
 
-\begin{figure}[h]
-	\includegraphics[width=0.6\textwidth]{github-projects}
+\begin{figure}[ht]
+	\includegraphics[width=1\textwidth]{github-projects}
 	\centering
 	\caption{\emph{GitHub Projects} Board}
 \end{figure}
 
+\vspace{0em}
+\newpage
+
 \section{Anforderungen}
 
-\begin{figure}[h]
-	\includegraphics[width=\textwidth]{product-backlog}
+Um die Lesbarkeit zu gewährleisten, habe ich hier eine Kopie des Backlogs aus GitHub Projects eingefügt.
+Einen Screenshot des Interfaces finden Sie weiter unten (Abbildung \ref{fig:backlog} auf Seite \pageref{fig:backlog}).
+
+\vspace{1em}
+
+\begin{tabularx}{\textwidth}{|c|X|}
+	\hline
+	\textbf{ID} & \textbf{Story}                                                                                                                                                          \\
+	\hline
+	\#10        & Als Benutzer möchte ich typische Operationen für Fenster ausführen können (z.B. Beenden oder Verschieben), damit ich Fenster einfach über mein Programm verwalten kann. \\
+	\hline
+	\#18        & Als Benutzer möchte ich Keyboard-Shortcuts definieren, um meine Maus so selten wie möglich zu verwenden.                                                                \\
+	\hline
+	\#7         & Als Benutzer möchte ich Layouts definieren, damit meine Fenster bestmöglich angeordnet werden.                                                                          \\
+	\hline
+	\#20        & Als Benutzer möchte ich zwischen verschiedenen Workspaces hin und her wechseln, um mehrere Workspaces auf einem Monitor haben zu können.                                \\
+	\hline
+	\#16        & Als Benutzer möchte ich ein Fenster in Fullscreen anzeigen können, damit ich ablenkungsfrei arbeiten kann.                                                              \\
+	\hline
+	\#19        & Als Benutzer möchte ich Fenster zwischen verschiedenen Workspaces verschieben, um die Kontrolle über die angezeigten Fenster je Workspace zu haben.                     \\
+	\hline
+	\#17        & Als Benutzer möchte ich Border für Fenster fetlegen können, um zu sehen welches Fenster aktiv ist.                                                                      \\
+	\hline
+	\#9         & Als Benutzer möchte ich eine Statusleiste einbinden können, um den Status, wie z.B. den momentanen Workspace, angezeigt zu kriegen.                                     \\
+	\hline
+	\#6         & Als Benutzer möchte ich Regeln definieren, um Fenster einer Anwendung in einen Workspace einzusortieren.                                                                \\
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{|c|X|}
+	\#8  & Als Benutzer möchte austauschbare Layouts, um eigene Layouts implementieren und verwenden zu können.                                                        \\
+	\hline
+	\#12 & Als Benutzer möchte ich eine gute Dokumentation der Schnittstellen-Funktionen, damit ich ohne weitreichendes Fachwissen eine Konfiguration erstellen kann.  \\
+	\hline
+	\#11 & Als Benutzer möchte ich auf Metadaten von Fenstern zugreifen können, um in Abhängigkeit der Metadaten (z.B. Initiale Fenstergröße) Operationen auszuführen. \\
+	\hline
+	\#4  & Als Benutzer möchte ich eine Liste der angeschlossenen Bildschirme erhalten, um Regeln pro Bildschirm festzulegen.                                          \\
+	\hline
+	\#13 & Als Benutzer möchte ich einfach Zugriff auf Community Erweiterungen haben, um so wenig wie möglich zu programmieren.                                        \\
+	\hline
+	\#5  & Als Benutzer möchte ich beliebig viele Workspaces haben, um bestimmte Fenster in bestimmten Layouts anzuzeigen.                                             \\
+	\hline
+	\#15 & Als Benutzer möchte ich einfach mit Maus-Events arbeiten, um die Maus als Alternative zur Tastatur verwenden.                                               \\
+	\hline
+	\#14 & Als Benutzer möchte ich Hooks haben, damit ich die Funktionsweise grundlegend beeinflussen kann ohne die Schnittstelle zu Patchen.                          \\
+	\hline
+\end{tabularx}
+
+\begin{figure}[ht]
+	\includegraphics[width=1\textwidth]{product-backlog}
 	\centering
 	\caption{\emph{Product Backlog}}
+	\label{fig:backlog}
 \end{figure}
 
+\vspace{1em}
+
+Die Priorisierung der Anforderungen erfolgt relativ über die Reihenfolge im oben gezeigten Product-Backlog.
+Innerhalb von GitHub Projects können die einzelnen Stories noch über Flags kategorisiert werden (z.B. als
+Funktional oder als Epic)
+
+\subsection{Detaillierte Betrachtung einzelner Anforderungen}
+
+\subsubsection{Details zur User Story \#10}
+
+\begin{tabularx}{\textwidth}{r X}
+	\textbf{ID}                 & \#10                                                                                                                                                                    \\
+	\\
+	\textbf{Story}              & Als Benutzer möchte ich typische Operationen für Fenster ausführen können (z.B. Beenden oder Verschieben), damit ich Fenster einfach über mein Programm verwalten kann. \\
+	\\
+	\textbf{Typ}                & Funktional                                                                                                                                                              \\
+	\\
+	\textbf{Akzeptanzkriterien} & Szenario 1 - Fenster schließen
+	\begin{quote}
+		Gegeben einer gültigen Fenster-Referenz (z.B. durch ID)
+
+		Wenn der Nutzer dieses Fenster schließen will
+
+		Dann schließt sich dieses Fenster
+	\end{quote}
+	Szenario 2 - Fenster verschieben
+	\begin{quote}
+		Gegeben einer gültigen Fenster-Referenz (z.B. durch ID)
+
+		Wenn der Nutzer dieses Fenster an eine Stelle (X, Y) bewegen will
+
+		Dann render dieses Fenster auf dem Bildschirm an die Koordinaten
+	\end{quote}
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{r X}
+	\hspace*{7.75em} & Szenario 3 - Ungültiges Fenster
+	\begin{quote}
+		Gegeben einer ungültigen Fenster-Referenz (z.B. da das Programm abgestürzt ist)
+
+		Wenn der Nutzer versucht eine Operation (Beenden / Verschieben etc.) auszuführen
+
+		Dann gebe dem Nutzer eine Fehlermeldung zurück
+	\end{quote}
+\end{tabularx}
+
+\subsubsection{Details zur User Story \#20}
+
+\begin{tabularx}{\textwidth}{r X}
+	\textbf{ID}                 & \#20                                                                                                                                     \\
+	\\
+	\textbf{Story}              & Als Benutzer möchte ich zwischen verschiedenen Workspaces hin und her wechseln, um mehrere Workspaces auf einem Monitor haben zu können. \\
+	\\
+	\textbf{Typ}                & Funktional                                                                                                                               \\
+	\\
+	\textbf{Akzeptanzkriterien} & Szenario 1 - Workspace wechseln
+	\begin{quote}
+		Gegeben einer gültigen Workspace-ID
+
+		Wenn der Nutzer zu dem Workspace wechseln möchte
+
+		Dann verstecke alle Fenster im momentanen Workspace und zeige alle Fenster aus dem Workspace mit der gegebenen ID.
+	\end{quote}
+	Szenario 2 - Zum letzten Workspace
+	\begin{quote}
+		Gegeben eines vorherigen Workspace-Wechsels
+
+		Wenn der Nutzer zum letzten Workspace möchte
+
+		Dann verstecke alle Fenster im momentanen Workspace und zeige alle Fenster aus dem vorherigen Workspace.
+	\end{quote}
+	Szenario 3 - Ungültiger Workspace
+	\begin{quote}
+		Gegeben einer ungültigen Workspace-ID
+
+		Wenn der Nutzer zu dem Workspace wechseln möchte
+
+		Dann bleibe auf dem momentanen Workspace und gebe dem Nutzer eine Fehlermeldung zurück.
+	\end{quote}
+\end{tabularx}
+
+\newpage
+
+\subsection{Weitere Merkmale von Anforderungen}
+
+Durch das Issue-Feature von GitHub werden viele Merkmale guter Anforderungen automatisch mit aufgenommen. Zum Beispiel werden
+in der Detail-Ansicht eines Issues (die als Story markiert werden kann) immer der Autor, die ID, das Erstellungsdatum, die Historie,
+ein Kommentarverlauf / bzw. eine Diskussion zu diesem Issue, der Status (Offen / Duplikat / Closed etc.) und ggf. die Person(en) die gerade
+an diesem Issue arbeitet/en festgehalten. \par
+Außerdem kann man projektspezifische Templates für Issues anlegen, um z.B. Akzeptanzkriterien / Abnahmeszenarien immer in einem
+gewissen Umfang und einer ähnlichen Form zu erfassen.
+
+\begin{figure}[H]
+	\includegraphics[width=0.8\textwidth]{issue-detail}
+	\centering
+	\caption{Detail-Ansicht einer Story}
+\end{figure}
 
 \end{document}
