@@ -88,17 +88,17 @@ und entwicklerfreundlicher ist als bestehende, vergleichbare Software.
 \subsection{Zusammenfassung der Domain}
 
 Für den Fall, dass Sie noch keinen Kontakt mit dieser Domain hatten, gehe ich im folgenden kurz darauf ein,
-welche Aufgaben ein \emph{Tiling Window Manager} (kurz. \emph{TWM} oder nur \emph{WM}) typischer Weise
+welche Aufgaben ein \emph{Tiling Window Manager} (kurz. \emph{TWM} oder nur \emph{WM}) typischerweise
 übernimmt. Die generelle Aufgabe eines WM's besteht hauptsächlich darin sich um die Kommunikation mit dem
-\emph{Window-Server} (i.d.R. X11 oder Wayland auf Linux, Quartz Compositor auf MacOS) zu kümmern, und die
+\emph{Window-Server} (i.d.R. X11 oder Wayland auf Linux, Quartz Compositor auf MacOS) zu kümmern und die
 tatsächliche Anordnung der Fenster auf dem Bildschirm zu regeln (in Ebenen, Kacheln etc. – die Möglichkeiten
 sind nahe zu unbegrenzt). Typische \emph{Window Manager} von z.B. MacOS können diverse, für uns als Endnutzer
 mittlerweile als üblich angesehene, Anordnungen wie Floating, Split-Screen und Fullscreen realisieren. \par
-Ein \emph{Tiling Window Managers} hat nun die Besonderheit, dass er anders als von Windows, MacOS oder diversen
+Ein \emph{Tiling Window Manager} hat nun die Besonderheit, dass er anders als von Windows, MacOS oder diversen
 Linux Desktop-Umgebungen bekannt, die Aufteilung der Fenster automatisch und bestmöglich regelt. Typischerweise
 hat ein \emph{TWM} eine feste Konfiguration mit Layouts, in die er die Fenster einsortieren kann (z.B. ``Master
 and Stack``). Somit muss sich der Anwender eines solchen \emph{TWM's} (zumindest initial) nicht selber um die
-Anordnung seiner Fenster kümmern. Desweiteren zählt die Möglichkeit, Keybindings zur Navigation oder Veränderung
+Anordnung seiner Fenster kümmern. Des Weiteren zählt die Möglichkeit, Keybindings zur Navigation oder Veränderung
 der Aufteilung zu definieren, zu den typischen Features eines \emph{Tiling Window Managers}.
 
 \subsection{Projekt-Ziel}
@@ -106,14 +106,14 @@ der Aufteilung zu definieren, zu den typischen Features eines \emph{Tiling Windo
 Das Problem von bestehenden \emph{Window Managern} ist in der Regel deren Alter (bspw. ist das Projekt ``Toms
 Window Manager`` im Jahr 1987 entstanden). Aufgrund des Alters sind viele dieser \emph{Window Manager} noch in
 C, C++ oder einer vergleichbaren Sprache verfasst worden und mit der Zeit immer weiter gewachsen. Dies macht es
-deutlich schwerer als es sein müsste, grundlegende Änderungen, die nicht von den Entwicklern vorhergesehen waren,
+deutlich schwerer, als es sein müsste, grundlegende Änderungen, die nicht von den Entwicklern vorhergesehen waren,
 vorzunehmen. \par
 Ziel ist es einen \emph{minimalen Window Manager} zu entwickeln, der \emph{durch eigenen Programm-Code konfiguriert}
 und erweitert werden kann. Dieses Konzept ist schon öfter Implementiert worden (als Inspiration für dieses Modell
 dienen die Projekte \emph{XMonad\footnotemark} und \emph{DWM\footnotemark}), allerdings sind diese Projekte leider
-meistens schlecht dokumentiert und haben i.d.R. unnötig komplexe \emph{API's}. Zu den typischen Anwendern dieser
+meistens schlecht dokumentiert und haben i. d. R. unnötig komplexe \emph{API's}. Zu den typischen Anwendern dieser
 \emph{Window Manager} gehören (meiner subjektiven Erfahrung nach) Software Entwickler, System Administratoren und
-Power User. Diese drei Kategorien fasse ich im folgenden zur Nutzerrolle ``Konfigurierender`` zusammen, da alle
+Power User. Diese drei Kategorien fasse ich im Folgenden zur Nutzerrolle ``Konfigurierender`` zusammen, da alle
 einen (für diesen Kontext) recht ähnlichen Kenntnisstand bzgl. der Domain haben.
 
 \footnotetext[1]{wurde 2007 erstmals veröffentlicht. Wurde in Haskell geschrieben und wird auch damit
