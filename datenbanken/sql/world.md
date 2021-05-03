@@ -124,3 +124,77 @@ SELECT name, population FROM country
 ORDER BY population DESC
 LIMIT 10;
 ```
+
+## Show all countries of europe
+
+## Show all countries which start with 'N'
+
+## What is the population of the biggest city?
+
+## Show all cities which have over 1000000 citizens
+
+## Which countries have more than 50 million citizens?
+
+## Show all countries where the population density is greater than 100 citizens / qkm
+
+## Which countries are in the region 'Polynesia'?
+
+## Which countries have a identical name and localname?
+
+## How many citizens are living in Africa?
+
+## In which country is Jirja located?
+
+## Whats the capital of Azerbaijan?
+
+## Show all cities which have over 1000000 citizens in Asia
+
+## Which countries are speaking Uzbek?
+
+## Which cities are located in Bolivia?
+
+## Which cities are located in Caribbean?
+
+## How many citizens has the biggest capital?
+
+## Show all countries which are located in Asia with more than 5.000.000 citizens or in Europe with more than 3.000.000 citizens.
+
+## Which country has the most citizens?
+
+## In which country do 10 or more percent of the population live in the capital?
+
+## Show all countries where more than 5% of the population speaks german
+
+## How many citizens are living in Africa?
+
+## How many countries have less than 20.000.000 citizens?
+
+## Show the number of countries a language is spoken in
+
+## Show the number of countries where a language is spoken by more than 10% of the population
+
+## List all countries and the number of thier cities with over 1.000.000 citizens
+
+## List all countries with have more than 5 cities which have at least 1.000.000 citizens
+
+## Show all languages which are spoken in more than 5 countries where at least 10% of the citizens speak them
+
+## Which countries speak more than 4 languages?
+
+## Which countries have more than two official languages?
+
+## Which countries speak 'Uzbek' but not 'Ukrainian'?
+
+## Which countries speak a language which is spoken is sweden?
+
+## Which countries have a offical language which is spoken in sweden?
+
+## Show the population density for all countries in Asia
+
+## Calculate the population density of Europe
+
+## Calculate the population density for each continent
+
+## Which countries have a higher population density than germany?
+
+## Find all city names which occur more than once
