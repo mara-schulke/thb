@@ -14,9 +14,9 @@
 
 ## erkrankung
 
-| _rezept_ | _patient_ |
-| -------- | --------- |
-| 1        | 1         |
+| _krankheit_ | _patient_ |
+| ----------- | --------- |
+| 1           | 1         |
 
 ## teil_von_rezept
 
