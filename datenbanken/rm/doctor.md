@@ -6,17 +6,17 @@
 | ---- | ------- | -------- | --------------- | ---------- | ------ | ----- |
 | 1    | John    | Doe      | Friedrichstraße | 1          | Berlin | 10969 |
 
-## verschreibung
+## rezept
+
+| _id_ |  _patient_ | datum      |
+| ---- | ---------- | ---------- |
+| 1    | 1          | 30.04.2021 |
+
+## erkrankung
 
 | _rezept_ | _patient_ |
 | -------- | --------- |
 | 1        | 1         |
-
-## rezept
-
-| _id_ | datum      |
-| ---- | ---------- |
-| 1    | 30.04.2021 |
 
 ## teil_von_rezept
 
