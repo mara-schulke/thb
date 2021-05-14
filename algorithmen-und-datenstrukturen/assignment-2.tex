@@ -1,0 +1,152 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\lstset{
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Online Studiengang Medieninformatik \\
+		Fachbereich Informatik und Medien \\
+		Algorithmen und Datenstrukturen \\
+		Prof. Dr. rer. nat. Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 2}\\[0.5em]
+		\large{Sommersemester 2021}\\[0.25em]
+		\large{Abgabetermin XX.05.2021}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Maximilian Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section{Finde die falsche Münze}
+
+\subsection{Man kann das Problem lösen, indem man die erste Münze nacheinander mit
+allen anderen vergleicht. Geben Sie den Worst-Case und Best-Case Aufwand dafür an.}
+
+Falls der Best-Case entritt (die falsche Münze liegt an einer der ersten beiden
+Positionen) haben wir nur einen einzigen Vergleich dementsprechen $O(1)$. Der Worst-
+Case tritt dementsprechen im umgekehrten Fall ein, also wenn die falsche Münze ganz
+am Ende der Folge liegt - dann benötigen wir $n - 1$ Vergleiche und liegen somit in
+$O(n)$.
+
+\subsection{Entwerfen und beschreiben Sie umgangssprachlich einen rekursiven Divide-And-Conquer
+Algorithmus, der das Problem für große $n$ deutlich schneller löst.}
+
+Am besten geht man hier mit einer modifizierten Version der binären Suche vor.
+Da $n$ immer glatt durch 2 teilbar ist, haben wir immer eine identische Menge an Münzen
+auf der linken und auf der rechten Seite, wenn wir die Ausgangsmenge in der exakten
+Mitte teilen. Nun kann man diese beiden Mengen miteinander vergleichen. Falls die Anzahl
+der Münzen in jeder Hälfte größer als 1 ist, muss dieser Vorgang wiederholt werden, bis
+nurnoch 2 Münzen miteinander verglichen werden, dann ist die leichtere der beiden die
+falsche Münze.
+
+\subsection{Analysieren Sie den Worst-Case und Best-Case Aufwand dafür. Zählen Sie
+die Anzahl der Wiegevorgänge dabei genau (nicht asymptotisch)}
+
+Nun unterscheidet sich der o.g. Algorithmus von der normalen binären Suche dadurch, dass
+wir keinen Vergleich mit einem einzelnen Element haben, mit dem wir vorzeitig abbrechen
+könnten. Wir müssen also jedes mal, selbst wenn die falsche Münze in der Mitte liegt,
+die Hälften immer ganz abarbeiten was bei 2k Elementen zu genau $log_2 n$ oder anders
+ausgedrückt $k$ Vergleichen führt.
+
+\section{Modifizierter Mergesort}
+
+\subsection{Beschreiben Sie die Arbeitsweise von $merge4$ umgangssprachlich. Bestimmen
+Sie die worst-case-Anzahl von Vergleichen von Vergleichen für $merge4$ auf 4 gleich
+großen sortierten Folgen von je $m$ Elementen. Zählen Sie die Vergleiche genau (keine
+O-Notation).}
+
+Beim normalen $merge$ werden zwei in sich sortierten Listen zu einer großen sortierten
+Liste zusammen gefügt, in dem immer das kleinere der beiden Elemente der beiden Teillisten
+zu erst in die neue Liste geschrieben wird, dieser Vorgang kostet einen Vergleich.
+
+Nun müssen bei $merge4$ nicht 2 sondern 4 Listen verglichen werden, es muss also bei jedem
+Vorgang das minimum von 4 Elementen identifiziert werden, das kostet 3 Vergleiche. Sobald
+die Anzahl aller Elemente der Teillisten 4 ist brauchen wir nur $3!$ Vergleiche um die restlichen
+Elemente einzusortieren.
+
+Also anders ausgedrückt braucht $merge4$ im Worst-Case $((m - 1) * 4 * 3) + 3!$ Vergleiche.
+Der Worst-Case tritt ein, wenn die Elemente gleichmäßig auf die Teillisten verteilt ist, also
+bei $m = 2$ die erste Liste $[1, 5]$, die zweite Liste $[2, 6]$, die dritte Liste $[3, 7]$
+und die vierte Liste $[4, 8]$ ist. Diese Aufteilung verhindert das vorzeitige Abarbeiten
+einer einzelenen Liste wodurch Vergleiche eingespart werden könnten.
+
+\subsection{T(n) sei die worst-case Anzahl von Vergleichen des Sortierverfahrens auf
+einer Inputfolge der Länge $n$. Nehmen Sie an, dass $n$ ein Vielfaches von 4 ist.
+Stellen Sie die Rekursionsgleichung für T(n) auf.}
+
+\begin{align*}
+	         T(4) & = 0                                        \\
+	         T(n) & = \, 4T(\frac{n}{4}) + merge4(\frac{n}{4}) \\
+	\\
+	    merge4(m) & = ((m - 1) * 4 * 3) + 3!
+\end{align*}
+
+\subsection{Lösen Sie die Rekursionsgleichung asymptotisch mit dem Master-Theorem}
+
+\subsection{Wird diese Variante in der Praxis schneller sein als der Standard-Mergesort?}
+
+Nein. Der Aufwand der einzelenen Merge-Vorgänge ist deutlich höher, viel mehr Elemente
+gleichzeitig betrachtet werden müssen.
+
+\section{Umdrehen von Listen}
+
+\begin{lstlisting}
+def reverse(head):
+    first = copy(head)
+
+    while first.next is not Null:
+        old_head = copy(head)
+        head = first.next
+        first.next = head.next
+        head.next = old_head
+
+    return head
+\end{lstlisting}
+
+%3. Umdrehen von Listen (5 Punkte)Beschreiben Sie in Pseudocode einen Algorithmus, der eine gegebene einfach verkettete Listedestruktiv umkehrt, d.h. alle Verzeigerungen zwischen den Listenelementen umdreht, ohne dieElemente zu kopieren.1
+%Input ist ein Zeiger auf das erste Element der Liste, Output ist ein Zeiger auf das erste Elementder umgekehrten Liste (=letztes Element der ursprünglichen Liste).4. Datenstrom-Analyse (5 Punkte)Sie sollen die Umsätze eines Web-Shops kontinutierlich überwachen und erhalten zu jedemVerkauf den Umsatz als Zahl übermittelt. Ihr Input ist also ein beliebig langer fortlaufenderStrom von Zahlen. Weiterhin wird vom Anwender beim Start des Algorithmus eine natürlicheZahlk >1gewählt.kbleibt während der Laufzeit unverändert.Das zu lösende Problem besteht aus zwei Teilproblemen:1.Jede neu eingehende Zahl einzeln geeignet verarbeiten, damit Sie die Anfragen in 2.beantworten können.2.Jederzeitauf Anfrage diekkleinsten allerbisher empfangenenUmsatzzahlen in irgendeinerReihenfolge auszugeben.(Sie können davon ausgehen, dass Anfragen erst gestellt werden, wenn schon mindestenskZahlen eingegangen sind.)Beispiel:k= 3, Zahlenfolge5 3 1 4 6 A 2 0 A(A steht für eine Anfrage zu diesem Zeitpunkt).Dann liefert die erste Anfrage3,1,4und die zweite Anfrage2,1,0.a.(3P) Entwerfen und beschreiben Sie umgangssprachlich einen Algorithmus, der die beidenTeilprobleme unter Verwendung einer Prioritätswarteschlange effizient löst.Die Laufzeit Ihres Algorithmus darf nur vonkabhängen, nicht aber von der Anzahlder empfangenen Umsatzzahlen! Brauchen Sie dafür eine Maximum- oder Minimum-Prioritätswarteschlange? Gehen Sie davon aus, dass die Proritätswarteschlange als Heap mitSpeicherung in einem Array implementiert ist und Ihnen die Zugriffsmethodeninsert()undremoveMax()bzw.removeMin()zur Verfügung stehen. Sie müssen also den Heapnicht selbst implementieren.b.(2P) Analysieren Sie den asymptotischen Aufwand Ihres Algorithmus für Teilproblem 1und 2 in Abhängigkeit vonk.
+
+
+% 1(n-1)! * level!!
+
+% 16(n-1)!
+% 4 (n-1)!
+% 1 (n-1)!
+
+\end{document}
+
