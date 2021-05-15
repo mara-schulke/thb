@@ -1,13 +1,134 @@
 @startuml
-abstract        abstract
-abstract class  "abstract class"
-annotation      annotation
-circle          circle
-()              circle_short_form
-class           class
-diamond         diamond
-<>              diamond_short_form
-entity          entity
-enum            enum
-interface       interface
+
+class X11Connection {}
+
+WindowManager ---- X11Connection
+WindowManager ---- X11Error
+WindowManager ---- WindowRepository
+
+class WindowManager {
+	- name: String,
+	+ getName(): String
+	+ start(X11Connection connection): void throws X11Error
+}
+
+WindowManager o--- Layout
+
+WindowManager *--- Workspace
+WindowManager o--- EventHandler
+
+WindowManager ---- KeyEventPoller
+WindowManager ---- MouseEventPoller
+
+
+EventPoller <|-- KeyEventPoller
+EventPoller <|-- MouseEventPoller
+
+interface EventPoller {
+	+ pollEvents(): Event
+}
+
+class KeyEventPoller
+
+class MouseEventPoller
+
+
+Event <|-- KeyEvent
+Event <|-- MouseEvent
+
+interface Event
+
+class KeyEvent {
+	- pressed: char[]
+	+ getPressed(): char[]
+}
+
+class MouseEvent {
+	- isLeftDown: bool
+	- isRightDown: bool
+	- isMiddleDown: bool
+	- x: float
+	- y: float
+
+	+ getIsLeftDown(): bool
+	+ getIsRightDown(): bool
+	+ getIsMiddleDown(): bool
+	+ getX(): float
+	+ getY(): float
+}
+
+class Workspace {
+	- windowIds: int[]
+	- name: String
+	+ getName(): String
+	+ getWindows(): Window[]
+}
+
+Workspace ---- Layout
+Workspace *--- Window
+
+interface Layout {
+	+ getName(): String
+	+ arrange(Window[] windows): void
+}
+
+EventHandler ---- Event
+
+class EventHandler<E: implements Event> {
+
+	+ handle(E event): void
+}
+
+
+
+
+
+class        Decoration
+
+class Position {
+	- x: float
+	- y: float
+	+ getX(): float
+	+ getY(): float
+	+ setX(float x): void
+	+ setY(float y): void
+}
+
+Window ---- Position
+
+class Window {
+	- className: String
+	- name: String
+	+ getClassName(): String
+	+ getName(): String
+	+ getPosX(): 
+}
+
+Window ---- Decoration
+
+X11Query ---- Window
+
+enum X11Query {
+	ClassName(String)
+	Name(String)
+	Position(Float, Float)
+	ProcessCommand(String)
+
+	{method} + matches(Window window): bool
+}
+
+WindowRepository ---- X11Connection
+WindowRepository *--- Window
+WindowRepository ---- X11Query
+
+class WindowRepository {
+	+ getAllWindows(): Window[] throws X11Error
+	+ getWindowByQuery(Query query): Windows[] throws X11Error
+	+ getWindowByQuery(Query query): Window throws X11Error
+}
+
+
+class X11Error {}
+
+
 @enduml
