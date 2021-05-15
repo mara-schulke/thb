@@ -1,6 +1,13 @@
 version: '3'
 services:
-  db:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: secure
+    ports:
+      - 127.0.0.1:6543:5432
+
+  worlddb:
     image: ghusta/postgres-world-db:2.3
     ports:
       - 127.0.0.1:5432:5432
