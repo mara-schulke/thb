@@ -13,3 +13,7 @@ bin
 *.toc
 *.out
 *.synctex.gz
+
+# PlantUML Dist Files
+softwaretechnik/**/diagrams/*.png
+
