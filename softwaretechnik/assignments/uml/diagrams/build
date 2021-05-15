@@ -1,2 +1,15 @@
 #!/bin/sh
-plantuml *plantuml
+
+GLOB=*.plantuml
+PLANTUML_COMMAND="plantuml $GLOB"
+
+case "$1" in
+	--watch)
+		watchman watch . >> /dev/null
+		watchman -- trigger . plantuml $GLOB -- $PLANTUML_COMMAND >> /dev/null
+		echo "Started watchman service" ;;
+	--stop)
+		OUTPUT=$(watchman trigger-del . plantuml)
+		echo "Stopped watchman service? $(echo $OUTPUT | ter filter 'equals "true," or equals "false,"' -m word)" ;;
+	*) $PLANTUML_COMMAND ;;
+esac
