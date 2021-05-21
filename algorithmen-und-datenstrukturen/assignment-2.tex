@@ -118,10 +118,29 @@ Stellen Sie die Rekursionsgleichung für T(n) auf.}
 
 \subsection{Lösen Sie die Rekursionsgleichung asymptotisch mit dem Master-Theorem}
 
+\begin{align*}
+	         T(n) & = \, aT(\frac{n}{b}) + merge4(\frac{n}{b}) \\
+		merge4(m) & \in \Theta(m^d)                            \\
+				  & \Rightarrow a = 4                          \\
+				  & \Rightarrow b = 4                          \\
+				  & \Rightarrow c = 1                          \\
+				  & \Rightarrow d = \log_b a                   \\
+				  & \Rightarrow T(n) \in \Theta(n \log_2 n)
+\end{align*}
+
+
 \subsection{Wird diese Variante in der Praxis schneller sein als der Standard-Mergesort?}
 
 Nein. Der Aufwand der einzelenen Merge-Vorgänge ist deutlich höher, viel mehr Elemente
-gleichzeitig betrachtet werden müssen.
+gleichzeitig betrachtet werden müssen. Grob betrachtet ist der Aufwand für $merge2$ für
+2 Elemente der Länge $m$ $= 2m - 1$ der Aufwand für $merge4$ war ja bereits oben als
+$((m - 1) * 4 * 3) + 3!$ definiert. Also bei 16 Elementen wäre der Aufwand von
+$merge2(8) = 2 * 8 - 1 = 15$ und der Aufwand von $merge4(4) = ((4 - 1) * 4 * 3) + 3! = 36 + 6 = 42$.
+Die größten Bestandteile der Laufzeit von $merge2$ bzw. $merge4$ sind bei $merge2 = 2m$
+und bei $merge4 = 12(m - 1)$ – somit wird $merge4$ in der Praxis eigentlich immer langsamer
+sein.
+
+\newpage
 
 \section{Umdrehen von Listen}
 
@@ -138,8 +157,20 @@ def reverse(head):
     return head
 \end{lstlisting}
 
-%3. Umdrehen von Listen (5 Punkte)Beschreiben Sie in Pseudocode einen Algorithmus, der eine gegebene einfach verkettete Listedestruktiv umkehrt, d.h. alle Verzeigerungen zwischen den Listenelementen umdreht, ohne dieElemente zu kopieren.1
-%Input ist ein Zeiger auf das erste Element der Liste, Output ist ein Zeiger auf das erste Elementder umgekehrten Liste (=letztes Element der ursprünglichen Liste).4. Datenstrom-Analyse (5 Punkte)Sie sollen die Umsätze eines Web-Shops kontinutierlich überwachen und erhalten zu jedemVerkauf den Umsatz als Zahl übermittelt. Ihr Input ist also ein beliebig langer fortlaufenderStrom von Zahlen. Weiterhin wird vom Anwender beim Start des Algorithmus eine natürlicheZahlk >1gewählt.kbleibt während der Laufzeit unverändert.Das zu lösende Problem besteht aus zwei Teilproblemen:1.Jede neu eingehende Zahl einzeln geeignet verarbeiten, damit Sie die Anfragen in 2.beantworten können.2.Jederzeitauf Anfrage diekkleinsten allerbisher empfangenenUmsatzzahlen in irgendeinerReihenfolge auszugeben.(Sie können davon ausgehen, dass Anfragen erst gestellt werden, wenn schon mindestenskZahlen eingegangen sind.)Beispiel:k= 3, Zahlenfolge5 3 1 4 6 A 2 0 A(A steht für eine Anfrage zu diesem Zeitpunkt).Dann liefert die erste Anfrage3,1,4und die zweite Anfrage2,1,0.a.(3P) Entwerfen und beschreiben Sie umgangssprachlich einen Algorithmus, der die beidenTeilprobleme unter Verwendung einer Prioritätswarteschlange effizient löst.Die Laufzeit Ihres Algorithmus darf nur vonkabhängen, nicht aber von der Anzahlder empfangenen Umsatzzahlen! Brauchen Sie dafür eine Maximum- oder Minimum-Prioritätswarteschlange? Gehen Sie davon aus, dass die Proritätswarteschlange als Heap mitSpeicherung in einem Array implementiert ist und Ihnen die Zugriffsmethodeninsert()undremoveMax()bzw.removeMin()zur Verfügung stehen. Sie müssen also den Heapnicht selbst implementieren.b.(2P) Analysieren Sie den asymptotischen Aufwand Ihres Algorithmus für Teilproblem 1und 2 in Abhängigkeit vonk.
+
+\section{Datenstrom-Analyse}
+Sie sollen die Umsätze eines Web-Shops kontinutierlich überwachen und erhalten zu jedem
+Verkauf den Umsatz als Zahl übermittelt. Ihr Input ist also ein beliebig langer fortlaufender
+Strom von Zahlen. Weiterhin wird vom Anwender beim Start des Algorithmus eine natürliche Zahl
+$k > 1$ gewählt. $k$ bleibt während der Laufzeit unverändert. Das zu lösende Problem besteht
+aus zwei Teilproblemen:
+
+\begin{enumerate}
+	\item{Jede neu eingehende Zahl einzeln geeignet verarbeiten, damit Sie die Anfragen in 2.
+		beantworten können.}
+\end{enumerate}
+
+2.Jederzeitauf Anfrage diekkleinsten allerbisher empfangenenUmsatzzahlen in irgendeinerReihenfolge auszugeben.(Sie können davon ausgehen, dass Anfragen erst gestellt werden, wenn schon mindestenskZahlen eingegangen sind.)Beispiel:k= 3, Zahlenfolge5 3 1 4 6 A 2 0 A(A steht für eine Anfrage zu diesem Zeitpunkt).Dann liefert die erste Anfrage3,1,4und die zweite Anfrage2,1,0.a.(3P) Entwerfen und beschreiben Sie umgangssprachlich einen Algorithmus, der die beidenTeilprobleme unter Verwendung einer Prioritätswarteschlange effizient löst.Die Laufzeit Ihres Algorithmus darf nur vonkabhängen, nicht aber von der Anzahlder empfangenen Umsatzzahlen! Brauchen Sie dafür eine Maximum- oder Minimum-Prioritätswarteschlange? Gehen Sie davon aus, dass die Proritätswarteschlange als Heap mitSpeicherung in einem Array implementiert ist und Ihnen die Zugriffsmethodeninsert()undremoveMax()bzw.removeMin()zur Verfügung stehen. Sie müssen also den Heapnicht selbst implementieren.b.(2P) Analysieren Sie den asymptotischen Aufwand Ihres Algorithmus für Teilproblem 1und 2 in Abhängigkeit vonk.
 
 
 % 1(n-1)! * level!!
