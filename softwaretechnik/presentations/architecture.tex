@@ -1,0 +1,164 @@
+\documentclass{beamer}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{graphicx}
+
+\usecolortheme{seagull}
+\usefonttheme{serif}
+
+
+\title{Softwarearchitektur}
+\subtitle{5 in 5 Zusammenfassung}
+\author{Maximilian Schulke}
+
+\begin{document}
+
+\begin{frame}
+	Softwaretechnik \hfill SS21
+	\titlepage
+	Prof. Dr. Martin Schafföner
+\end{frame}
+
+\begin{frame}{Übersicht}
+	\tableofcontents
+\end{frame}
+
+\begin{frame}{Was ist Architektur?}
+
+	- Ordentlich, sauberstrukturierte Komponenten
+	- Patterns, kapselung, Abstraktion
+	- Dienste Aufteilen => Kleinere Services die einzelne Aufgaben erledigen und bspw. über eine fest definierte REST / GraphQL API reden
+\end{frame}
+
+\begin{frame}{Wieso braucht man Architektur?}
+	Software sollte nicht in Form eines Big Ball of Mud, also eines großen Schlammhaufens vorliegen.
+	Die unstrukturierte Anhäufung von (oft funktionalen) Codeeinheiten wird unübersichtlich.
+
+	Wird der Code komplex, kann er besser verstanden werden, wenn er strukturiert ist. Man findet sich besser zurecht.
+
+	Code kann besser erweitert und gewartet werden wenn er strukturiert ist.
+
+	Struktur im Softwaresystem spiegelt Domänen auf Aufgabenbereiche wieder. Diese können dann wiederum viel besser und unabhängig von den jeweiligen spezialisierten Personen bearbeitet werden.
+
+	Korrektheit und Qualität lassen sich in einer guten Architektur besser sicherstellen.
+\end{frame}
+
+\begin{frame}{Ziele der Architektur}
+	Wartbarkeit, erweiterbarkeit
+
+	kOHÄSION / Kopplung
+
+	Grundsätzlich ist eine schwache / lose Kopplung erstrebenswert. Es gibt mehrere Möglichkeiten dies zu erreichen, unter anderem:
+
+	der Einsatz von Dependency Injection Frameworks
+
+	der Einsatz von Design Patterns wie Factories
+	die Kommunikation über ein Protokoll, z. B. durch Middleware / Messaging.
+\end{frame}
+
+\begin{frame}{Sample Page 2}{An Example of Lists}
+
+	Architektur Ebenen? Vert vs Horiz
+\end{frame}
+
+\begin{frame}{Standardisierung}
+	Die folgenden Punkte sollten innerhalb einer Architektur standardisiert sein:
+
+	\begin{itemize}
+		\item Codestyle
+		\item Test und Buildframeworks
+		\item CI/CD Pipeline
+		\item uvm...
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Architekturstile}{Grobe Stilübersicht}
+
+	\begin{itemize}
+		\item Kommunizierende Prozesse (z. B. Middleware oder Bussysteme)
+		\item Call and Return (z. B. Prozedurale Programmierung)
+		\item Datenorientierter Fluss (z. B. Batch Processing)
+		\item Datenzentriert (z. B. Repositories oder Blackboards)
+		\item Virtuelle Maschine (z. B. DSL oder Regelbasierte Sytsteme)
+	\end{itemize}
+
+	% Technologiearchitektur
+
+	% Containerarchitektur? Komponenten Wrappen und fachfreie Logik (sicherheit, auth, log / monitoring, etc.) in container auslagern
+
+	% Middleware architekturen (Im web beliebt)
+
+	% P2P, Dezentralearchitektur
+\end{frame}
+
+\begin{frame}{Prinzipien der Architektur}
+
+Die bisherigen Auflistungen von Werkzeugen und Stilmitteln, die dem Architekten zur Verfügung stehen, werden von verschiedenen Autoren wie beispielsweise von VOGEL ET AL. variiert, zusammengefasst und erweitert.
+
+Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
+
+    Inkrementalität
+    - durch Prototyping und schrittweises Wachstum
+    Lose Kopplung
+    - durch Gesetz von Demeter und Vermeidung von Zyklen
+    Entwurf für Veränderung
+    - Test was passiert, wenn Komponenten sich ändern oder wegfallen
+    Hohe Kohäsion
+    - gute fachliche Gruppierungen überleben auch Technologieshifts (z. B. wie vor langer Zeit von Corba nach JavaEE)
+    Rückverfolgbarkeit
+    - Änderungen, Fehler (Exceptions) und Datenflüsse transparent machen
+    Abstraktion
+    - Interfaces als explizite Schnittstellen, Subclassing, Polymorphie
+    Information Hiding
+    - Fassaden, Black Box Prinzip, Schichtenbildung
+    Separation of Concerns
+    - Analyse der Zuständigkeiten
+    Modularität
+    - Anwendung der Sprachmittel für Gruppierung
+    Selbstdokumentation
+    - Namensgebung, interne und externe Dokumentation
+\end{frame}
+
+\begin{frame}
+		Middleware im Detail
+
+		P2P (dezentrale Architektur) Im Detail
+		    Sie organisieren sich selbst.
+
+    Sie handeln mit ihren Ressourcen autonom.
+
+    Dienste und Ressourcen können wandern.
+
+    Peers können anbieten und nutzen.
+
+    Verhalten, Zustand oder Durchsatz kann nicht vorhergesagt werden und erinnert eher an einen Schwarm.
+\end{frame}
+
+\begin{frame}{Frameworks}
+	Es gibt frameworks, die ändern sich aber ständig.
+\end{frame}
+
+\begin{frame}
+% https://vfhswt.eduloop.de/loop/Enterprise_Design_Patterns_ARC
+\end{frame}
+
+\begin{frame}{Architektur im Detail}{Domain-Specific-Language}
+	DSL etc hier her!!
+\end{frame}
+
+\begin{frame}
+	ADL statt UML manchmal
+\end{frame}
+
+% https://vfhswt.eduloop.de/loop/Nichtfunktionale_Anforderungen
+
+
+% https://vfhswt.eduloop.de/loop/Was_machen_gute_Architekt/innen%3F
+
+
+% https://vfhswt.eduloop.de/loop/Architektur_Ebenen_ARC
+%	https://vfhswt.eduloop.de/loop/Packages_und_Namensgebung_ARC
+\end{document}
+
