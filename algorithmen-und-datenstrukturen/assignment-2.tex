@@ -168,16 +168,53 @@ aus zwei Teilproblemen:
 \begin{enumerate}
 	\item{Jede neu eingehende Zahl einzeln geeignet verarbeiten, damit Sie die Anfragen in 2.
 		beantworten können.}
+	\item{Jederzeit auf Anfrage die $k$ kleinsten alle rbisher empfangenen Umsatzzahlen in
+		irgendeiner Reihenfolge auszugeben. (Sie können davon ausgehen, dass Anfragen erst
+		gestellt werden, wenn schon mindestens $k$ Zahlen eingegangen sind.)}
 \end{enumerate}
 
-2.Jederzeitauf Anfrage diekkleinsten allerbisher empfangenenUmsatzzahlen in irgendeinerReihenfolge auszugeben.(Sie können davon ausgehen, dass Anfragen erst gestellt werden, wenn schon mindestenskZahlen eingegangen sind.)Beispiel:k= 3, Zahlenfolge5 3 1 4 6 A 2 0 A(A steht für eine Anfrage zu diesem Zeitpunkt).Dann liefert die erste Anfrage3,1,4und die zweite Anfrage2,1,0.a.(3P) Entwerfen und beschreiben Sie umgangssprachlich einen Algorithmus, der die beidenTeilprobleme unter Verwendung einer Prioritätswarteschlange effizient löst.Die Laufzeit Ihres Algorithmus darf nur vonkabhängen, nicht aber von der Anzahlder empfangenen Umsatzzahlen! Brauchen Sie dafür eine Maximum- oder Minimum-Prioritätswarteschlange? Gehen Sie davon aus, dass die Proritätswarteschlange als Heap mitSpeicherung in einem Array implementiert ist und Ihnen die Zugriffsmethodeninsert()undremoveMax()bzw.removeMin()zur Verfügung stehen. Sie müssen also den Heapnicht selbst implementieren.b.(2P) Analysieren Sie den asymptotischen Aufwand Ihres Algorithmus für Teilproblem 1und 2 in Abhängigkeit vonk.
+\subsection{Entwerfen und beschreiben Sie umgangssprachlich einen Algorithmus, der die beiden
+Teilprobleme unter Verwendung einer Prioritätswarteschlange effizient löst. Die Laufzeit Ihres
+Algorithmus darf nur von $k$ abhängen, nicht aber von der Anzahl der empfangenen Umsatzzahlen!
+Brauchen Sie dafür eine Maximum- oder Minimum-Prioritätswarteschlange?}
 
+Es muss lediglich eine einzige Maximum-Prioritätswarteschlange der Länge $k$ gepflegt werden.
+Sind noch weniger als $k$ Zahlen in der Prioritätswarteschlange, kann die Zahl in jedem Fall
+einfach über $insert()$ eingefügt werden.
 
-% 1(n-1)! * level!!
+Ansonsten muss die eintreffende Zahl mit der jeweils höchsten Zahl bzw. dem Root der Prioritätswarteschlange
+verglichen werden. Wenn die neue Zahl kleiner als die alte Root ist, qualifiziert sich die neue
+dafür in den $k$ kleinsten der bisher eingetroffenen Zahlen zu sein. Wenn die eintreffende Zahl
+qualifiziert ist, kann sie über $insert()$ eingefügt werden und anschließend kann die größte Zahl
+über $removeMax()$ entfernt werden.
 
-% 16(n-1)!
-% 4 (n-1)!
-% 1 (n-1)!
+Sobald eine Anfrage eintrifft, die $k$ kleinsten Zahlen auszugeben, gibt es 2 Möglichkeiten.
+Entweder es wird eine Referenz zur Prioritätswarteschlange zurückgegeben, was zwar sehr effizient
+ist, aber unter Umständen ungewünschte Seiteneffekte nach sich ziehen könnte, falls jemand von
+''außen'' in die Prioritätswarteschlange schreibt. Alternativ, könnte eine ineffizientere, aber
+sichere Variante sein, eine Kopie der Inhalte der Prioritätswarteschlange zu erstellen und diese
+zurückzugegeben - so können ungewünschte Seiteneffekte vermieden werden, außerdem würden sich die
+Daten des Abfragenden nach der Abfrage nicht mehr ändern. Würde die Referenz zurückgegeben werden,
+müsste quasi nur ein einziges Mal eine Anfrage gestellt werden, da jedes Mal über die Referenz
+zugegriffen werden könnte.
+
+Im Zuge der Sicherheit würde ich zu der langsameren aber stabilieren Variante - der Kopie - raten.
+
+\subsection{Analysieren Sie den asymptotischen Aufwand Ihres Algorithmus für Teilproblem 1 und 2 in
+Abhängigkeit von $k$.}
+
+Der Vorgang einen Umsatz zu empfangen, liegt im BestCase in $\Omega(1)$ (falls die Zahl größer als das alte
+Maximum ist). Im WorstCase muss der neue Wert eingefügt und der alte Wert entfernt werden. Ein $insert()$
+in eine Prioritätswarteschlange kostet $log_2k$ und ein $removeMax()$ kostet $2log_2k$. Somit ist der 
+Gesamtaufwand im WorstCase ca. $3log_2k$ und liegt daher in $O(log_2k)$. Der AverageCase dürfte in der Praxis
+weit unter $log_2k$ liegen, da bei unendlich vielen Zahlen die Wahrscheinlichkeit zunehmend abnimmt, dass
+eine Zahl erfasst wird, die kleiner als die bisherigen Zahlen ist.
+
+Die Ausgabe der $k$ kleinsten Zahlen bei einer Anfrage zu tätigen, muss die $k$ Zahlen lange Prioritätswarteschlange
+kopiert werden - dies liegt in $\Theta(k)$.
+
+Um nun eine Zusammenfassende Auskunft über den tatsächlichen AverageCase zu treffen fehlen Eckdaten, wie
+der (bisherige) maximale Umsatz, häufigkeit der Abfragen und Wahrscheinlichkeit bestimmter Umsatzgrößen.
 
 \end{document}
 
