@@ -13,6 +13,12 @@
 \subtitle{5 in 5 Zusammenfassung}
 \author{Maximilian Schulke}
 
+\AtBeginSection[]{
+	\begin{frame}{Übersicht}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
 \begin{document}
 
 \begin{frame}
@@ -21,9 +27,7 @@
 	Prof. Dr. Martin Schafföner
 \end{frame}
 
-\begin{frame}{Übersicht}
-	\tableofcontents
-\end{frame}
+\section{Was ist Architektur?}
 
 \begin{frame}{Was ist Architektur?}
 
@@ -32,18 +36,21 @@
 	- Dienste Aufteilen => Kleinere Services die einzelne Aufgaben erledigen und bspw. über eine fest definierte REST / GraphQL API reden
 \end{frame}
 
-\begin{frame}{Wieso braucht man Architektur?}
-	Software sollte nicht in Form eines Big Ball of Mud, also eines großen Schlammhaufens vorliegen.
-	Die unstrukturierte Anhäufung von (oft funktionalen) Codeeinheiten wird unübersichtlich.
+\section{Wieso braucht man Architektur?}
 
-	Wird der Code komplex, kann er besser verstanden werden, wenn er strukturiert ist. Man findet sich besser zurecht.
+\begin{frame}{Einleitung}{Wieso braucht man Architektur?}
 
-	Code kann besser erweitert und gewartet werden wenn er strukturiert ist.
-
-	Struktur im Softwaresystem spiegelt Domänen auf Aufgabenbereiche wieder. Diese können dann wiederum viel besser und unabhängig von den jeweiligen spezialisierten Personen bearbeitet werden.
-
-	Korrektheit und Qualität lassen sich in einer guten Architektur besser sicherstellen.
+	\begin{itemize}
+		\item Vermeidung des "Big Ball of Mud".
+		\item Unstrukturierte Anhäufung von Code wird unübersichtlich.
+		\item Bei steigender Komplexität hilft Strukturierung.
+		\item Strukturierter Code ist leichter erweiterbar und wartbar.
+		\item Hilft die Software in Teilsysteme zu zerlegen die einzeln bearbeitet werden können.
+		\item Korrektheit und Qualität lässt sich leichter sicherstellen.
+	\end{itemize}
 \end{frame}
+
+\section{Ziele der Architektur}
 
 \begin{frame}{Ziele der Architektur}
 	Wartbarkeit, erweiterbarkeit
@@ -58,10 +65,18 @@
 	die Kommunikation über ein Protokoll, z. B. durch Middleware / Messaging.
 \end{frame}
 
-\begin{frame}{Sample Page 2}{An Example of Lists}
+\section{Architekturebenen}
+
+\begin{frame}{Architekturebenen}
 
 	Architektur Ebenen? Vert vs Horiz
+
+	Bild einfügen!!!
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{frame}
+
+\section{Standardisierung}
 
 \begin{frame}{Standardisierung}
 	Die folgenden Punkte sollten innerhalb einer Architektur standardisiert sein:
@@ -70,12 +85,13 @@
 		\item Codestyle
 		\item Test und Buildframeworks
 		\item CI/CD Pipeline
-		\item uvm...
+		\item ...
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Architekturstile}{Grobe Stilübersicht}
+\section{Architekturstile}
 
+\begin{frame}{Architekturstile}{Grobe Stilübersicht}
 	\begin{itemize}
 		\item Kommunizierende Prozesse (z. B. Middleware oder Bussysteme)
 		\item Call and Return (z. B. Prozedurale Programmierung)
@@ -92,6 +108,8 @@
 
 	% P2P, Dezentralearchitektur
 \end{frame}
+
+\section{Prinzipien der Architektur}
 
 \begin{frame}{Prinzipien der Architektur}
 
@@ -121,6 +139,8 @@ Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
     - Namensgebung, interne und externe Dokumentation
 \end{frame}
 
+\section{Architekturen im Detail}
+
 \begin{frame}
 		Middleware im Detail
 
@@ -136,14 +156,6 @@ Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
     Verhalten, Zustand oder Durchsatz kann nicht vorhergesagt werden und erinnert eher an einen Schwarm.
 \end{frame}
 
-\begin{frame}{Frameworks}
-	Es gibt frameworks, die ändern sich aber ständig.
-\end{frame}
-
-\begin{frame}
-% https://vfhswt.eduloop.de/loop/Enterprise_Design_Patterns_ARC
-\end{frame}
-
 \begin{frame}{Architektur im Detail}{Domain-Specific-Language}
 	DSL etc hier her!!
 \end{frame}
@@ -151,6 +163,19 @@ Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
 \begin{frame}
 	ADL statt UML manchmal
 \end{frame}
+
+\section{Frameworks}
+
+\begin{frame}{Frameworks}
+	Es gibt frameworks, die ändern sich aber ständig.
+\end{frame}
+
+\section{Enterprise Design Patterns}
+
+\begin{frame}
+% https://vfhswt.eduloop.de/loop/Enterprise_Design_Patterns_ARC
+\end{frame}
+
 
 % https://vfhswt.eduloop.de/loop/Nichtfunktionale_Anforderungen
 
