@@ -39,7 +39,7 @@
 	\begin{center}
 		\Large{Einsendeaufgabe 2}\\[0.5em]
 		\large{Sommersemester 2021}\\[0.25em]
-		\large{Abgabetermin XX.05.2021}
+		\large{Abgabetermin 23.05.2021}
 	\end{center}
 
 	\vfill
@@ -207,8 +207,9 @@ Der Vorgang einen Umsatz zu empfangen, liegt im BestCase in $\Omega(1)$ (falls d
 Maximum ist). Im WorstCase muss der neue Wert eingefügt und der alte Wert entfernt werden. Ein $insert()$
 in eine Prioritätswarteschlange kostet $log_2k$ und ein $removeMax()$ kostet $2log_2k$. Somit ist der 
 Gesamtaufwand im WorstCase ca. $3log_2k$ und liegt daher in $O(log_2k)$. Der AverageCase dürfte in der Praxis
-weit unter $log_2k$ liegen, da bei unendlich vielen Zahlen die Wahrscheinlichkeit zunehmend abnimmt, dass
-eine Zahl erfasst wird, die kleiner als die bisherigen Zahlen ist.
+weit unter $log_2k$ liegen (natürlich total davon abhängig davon wie viele Zahlen aus welchem Zahlenbereich),
+da bei unendlich vielen Zahlen die Wahrscheinlichkeit zunehmend abnimmt, dass eine Zahl erfasst wird, die
+kleiner als die höchste der bisherigen Zahlen ist.
 
 Die Ausgabe der $k$ kleinsten Zahlen bei einer Anfrage zu tätigen, muss die $k$ Zahlen lange Prioritätswarteschlange
 kopiert werden - dies liegt in $\Theta(k)$.
