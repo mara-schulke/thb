@@ -1,0 +1,31 @@
+@startuml
+start
+partition Vorbereitung {
+	:Karten austeilen;
+}
+while (Gibt es ein weiteres Ticket?) is (ja)
+	:Ticket öffnen;
+	:Ticket vorlesen;
+	if (Kann das Ticket geschätzt werden?) then (ja)
+		if (Gibt es Fragen?) then (ja)
+			:Fragen klären;
+		else (nein)
+		endif
+		partition Schätzen {
+			:Jedes Teammitglied legt seine Schätzung verdeckt auf den Tisch;
+			:Die Karten werden aufgedeckt;
+			if (Gibt es Unterschiede?) then (ja)
+				:Unterschiede diskutieren;
+				:Team einigt sich auf eine Schätzung;
+			else (nein)
+			endif
+		}
+		:Schätzung an das Ticket schreiben;
+	else (nein)
+	endif
+endwhile (nein)
+partition Nachbereitung {
+	:Karten einsammeln;
+}
+stop
+@enduml
