@@ -1,5 +1,4 @@
 @startuml
-
 class X11Connection {}
 
 WindowManager ---- X11Connection
