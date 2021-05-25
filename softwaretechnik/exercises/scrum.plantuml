@@ -1,42 +1,47 @@
 @startuml
 start
-split
+fork
 	while (Projekt aktiv?) is (ja)
 		partition Anforderungserhebung {
 			:Anforderungen in das __Product Backlog__ aufnehmen;
 		}
 	endwhile (nein)
-	stop
-split again
+fork again
+	:Warte auf Anforderungserhebung;
 	:Sprint Planung (liefert __Sprint Backlog__);
 
 	repeat
 		partition Sprint {
 			while (Sind noch Tage übrig?) is (ja)
 				partition Arbeitstag {
-					:Arbeit;
-					:Daily;
-					note right
-						- Was habe ich gestern getan?
-						- Was behindert meine Arbeit?
-						- Was will ich heute tun?
-						- Können wir Aufgaben nachziehen?
-						- Definition of Done beachten
-					endnote
-					:Arbeit;
+					fork
+						:Arbeit;
+						:Daily;
+						note right
+							- Was habe ich gestern getan?
+							- Was behindert meine Arbeit?
+							- Was will ich heute tun?
+							- Können wir Aufgaben nachziehen?
+							- Definition of Done beachten
+						endnote
+						:Arbeit;
+					fork again
+						:Board aktualisieren;
+					end merge
 				}
 			endwhile (nein)
-			:__nutzbares (Zwischen-)Ergebnis__;
-			:Review;
-			note right
-				- Was haben wir geschafft?
-			endnote
-			:Retro;
-			note right
-				- Wie haben wir gearbeitet?
-				- Was können wir verbessern? (Glad, Sad, Mad)
-			endnote
 		}
+			:__nutzbares (Zwischen-)Ergebnis__ wird geliefert;
+		:Sprint Review;
+		note right
+		- Was haben wir geschafft?
+		endnote
+		:Sprint Retrospektive;
+		note right
+			- Wie haben wir gearbeitet?
+		- Was können wir verbessern? (Glad, Sad, Mad)
+			endnote
 	repeat while (Weiterer Sprint notwendig?) is (ja) not (nein)
-	stop
+end merge
+stop
 @enduml
