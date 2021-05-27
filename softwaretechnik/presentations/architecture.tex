@@ -32,53 +32,57 @@
 \begin{frame}{Was ist Architektur?}
 	Architektur ist die ...
 	\begin{itemize}
-		\item{strukturierte Aufteilung von Software in Teilprobleme / Domänen}
-		\item{Anwendung von Prinzipien wie Patterns, Kaspelung und
+		\item{strukturierte Aufteilung von Software in Teilprobleme}
+		\item{systematische Anwendung von Prinzipien wie Patterns, Kapselung und
 			Abstraktion}
-		\item{
-			Dienste Aufteilen => Kleinere Services die einzelne Aufgaben
-			erledigen und bspw. über eine fest definierte REST / GraphQL API
-			reden}
+		\item{Definition der Kommunikation und Verteilung der
+			Systemkomponenten}
 	\end{itemize}
 \end{frame}
 
 \section{Wieso braucht man Architektur?}
 
-\begin{frame}{Einleitung}{Wieso braucht man Architektur?}
-
+\begin{frame}{Wieso braucht man Architektur?}
 	\begin{itemize}
-		\item Vermeidung des "Big Ball of Mud".
-		\item Unstrukturierte Anhäufung von Code wird unübersichtlich.
-		\item Bei steigender Komplexität hilft Strukturierung.
-		\item Strukturierter Code ist leichter erweiterbar und wartbar.
-		\item Hilft die Software in Teilsysteme zu zerlegen die einzeln bearbeitet werden können.
-		\item Korrektheit und Qualität lässt sich leichter sicherstellen.
+		\item{Vermeidung des "Big Ball of Mud".}
+		\item{Unstrukturierte Anhäufung von Code wird unübersichtlich.}
+		\item{Bei steigender Komplexität hilft gute Strukturierung eine
+			Übersicht zu behalten.}
+		\item{Strukturierter Code ist leichter erweiterbar und wartbar.}
+		\item{Hilft die Software in Teilsysteme zu zerlegen die unabhängig
+			voneinander bearbeitet werden können.}
+		\item{Korrektheit und Qualität lässt sich leichter sicherstellen.}
 	\end{itemize}
 \end{frame}
 
 \section{Ziele der Architektur}
 
 \begin{frame}{Ziele der Architektur}
-	Wartbarkeit, erweiterbarkeit
+	\begin{itemize}
+		\item{Wartbarkeit, Erweiterbarkeit erhöhen}
+		\item{Kohäsion erhöhen / Kopplung minimieren}
+	\end{itemize}
+\end{frame}
 
-	kOHÄSION / Kopplung
+\begin{frame}{Ziele der Architektur}
+	Grundsätzlich ist eine schwache / lose Kopplung erstrebenswert.
+	Es gibt mehrere Möglichkeiten dies zu erreichen, unter anderem:
 
-	Grundsätzlich ist eine schwache / lose Kopplung erstrebenswert. Es gibt mehrere Möglichkeiten dies zu erreichen, unter anderem:
-
-	der Einsatz von Dependency Injection Frameworks
-
-	der Einsatz von Design Patterns wie Factories
-	die Kommunikation über ein Protokoll, z. B. durch Middleware / Messaging.
+	\begin{itemize}
+		\item{Einsatz von Dependency Injection Frameworks}
+		\item{Einsatz von Design Patterns (wie z. B. Factories)}
+		\item{Kommunkation über Protokolle (oder z. B. Middleware oder
+			Messaging)}
+	\end{itemize}
 \end{frame}
 
 \section{Architekturebenen}
 
 \begin{frame}{Architekturebenen}
-
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Architektur Ebenen? Vert vs Horiz
 
 	Bild einfügen!!!
-
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{frame}
 
@@ -104,54 +108,42 @@
 		\item Datenorientierter Fluss (z. B. Batch Processing)
 		\item Datenzentriert (z. B. Repositories oder Blackboards)
 		\item Virtuelle Maschine (z. B. DSL oder Regelbasierte Sytsteme)
+		\item Dezentrale Netze (z. B. P2P)
 	\end{itemize}
 
 	% Technologiearchitektur
 
 	% Containerarchitektur? Komponenten Wrappen und fachfreie Logik (sicherheit, auth, log / monitoring, etc.) in container auslagern
-
-	% Middleware architekturen (Im web beliebt)
-
-	% P2P, Dezentralearchitektur
 \end{frame}
 
 \section{Prinzipien der Architektur}
 
 \begin{frame}{Prinzipien der Architektur}
+	% Die bisherigen Auflistungen von Werkzeugen und Stilmitteln, die dem Architekten zur Verfügung stehen, werden von verschiedenen Autoren wie beispielsweise von VOGEL ET AL. variiert, zusammengefasst und erweitert.
 
-Die bisherigen Auflistungen von Werkzeugen und Stilmitteln, die dem Architekten zur Verfügung stehen, werden von verschiedenen Autoren wie beispielsweise von VOGEL ET AL. variiert, zusammengefasst und erweitert.
+	% Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
 
-Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
-
-    Inkrementalität
-    - durch Prototyping und schrittweises Wachstum
-    Lose Kopplung
-    - durch Gesetz von Demeter und Vermeidung von Zyklen
-    Entwurf für Veränderung
-    - Test was passiert, wenn Komponenten sich ändern oder wegfallen
-    Hohe Kohäsion
-    - gute fachliche Gruppierungen überleben auch Technologieshifts (z. B. wie vor langer Zeit von Corba nach JavaEE)
-    Rückverfolgbarkeit
-    - Änderungen, Fehler (Exceptions) und Datenflüsse transparent machen
-    Abstraktion
-    - Interfaces als explizite Schnittstellen, Subclassing, Polymorphie
-    Information Hiding
-    - Fassaden, Black Box Prinzip, Schichtenbildung
-    Separation of Concerns
-    - Analyse der Zuständigkeiten
-    Modularität
-    - Anwendung der Sprachmittel für Gruppierung
-    Selbstdokumentation
-    - Namensgebung, interne und externe Dokumentation
+	\begin{itemize}
+		\item{Inkrementalität} % durch Prototyping und schrittweises Wachstum.}
+		\item{Lose Kopplung} % durch Gesetz von Demeter und Vermeidung von Zyklen}
+		\item{Hohe Kohäsion} % gute fachliche Gruppierungen überleben auch Technologieshifts (z. B. wie vor langer Zeit von Corba nach JavaEE)}
+		\item{Entwurf für Veränderung} % Test was passiert, wenn Komponenten sich ändern oder wegfallen}
+		\item{Rückverfolgbarkeit} % Änderungen, Fehler (Exceptions) und Datenflüsse transparent machen}
+		\item{Abstraktion} % Interfaces als explizite Schnittstellen, Subclassing, Polymorphie}
+		\item{Information Hiding} % Fassaden, Black Box Prinzip, Schichtenbildung}
+		\item{Separation of Concerns} % Analyse der Zuständigkeiten}
+		\item{Modularität} % Anwendung der Sprachmittel für Gruppierung}
+		\item{Selbstdokumentation} % Namensgebung, interne und externe Dokumentation}
+	\end{itemize}
 \end{frame}
 
 \section{Architekturen im Detail}
 
 \begin{frame}
-		Middleware im Detail
+	Middleware im Detail
 
-		P2P (dezentrale Architektur) Im Detail
-		    Sie organisieren sich selbst.
+	P2P (dezentrale Architektur) Im Detail
+	Sie organisieren sich selbst.
 
     Sie handeln mit ihren Ressourcen autonom.
 
@@ -176,20 +168,10 @@ Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
 	Es gibt frameworks, die ändern sich aber ständig.
 \end{frame}
 
-\section{Enterprise Design Patterns}
-
-\begin{frame}
 % https://vfhswt.eduloop.de/loop/Enterprise_Design_Patterns_ARC
-\end{frame}
-
-
 % https://vfhswt.eduloop.de/loop/Nichtfunktionale_Anforderungen
-
-
 % https://vfhswt.eduloop.de/loop/Was_machen_gute_Architekt/innen%3F
-
-
 % https://vfhswt.eduloop.de/loop/Architektur_Ebenen_ARC
-%	https://vfhswt.eduloop.de/loop/Packages_und_Namensgebung_ARC
+% https://vfhswt.eduloop.de/loop/Packages_und_Namensgebung_ARC
 \end{document}
 
