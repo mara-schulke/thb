@@ -48,7 +48,7 @@
 		\item{Unstrukturierte Anhäufung von Code wird unübersichtlich.}
 		\item{Bei steigender Komplexität hilft gute Strukturierung eine
 			Übersicht zu behalten.}
-		\item{Strukturierter Code ist leichter erweiterbar und wartbar.}
+		\item{Strukturierter Code ist leichter erweiterbar und wartbarer.}
 		\item{Hilft die Software in Teilsysteme zu zerlegen die unabhängig
 			voneinander bearbeitet werden können.}
 		\item{Korrektheit und Qualität lässt sich leichter sicherstellen.}
@@ -59,8 +59,12 @@
 
 \begin{frame}{Ziele der Architektur}
 	\begin{itemize}
+		\item{Identifikation von potenziellen Risiken}
 		\item{Wartbarkeit, Erweiterbarkeit erhöhen}
 		\item{Kohäsion erhöhen / Kopplung minimieren}
+		\item{Identifikation von Möglichkeiten zur Wiederverwendung von
+			Softwarekomponenten}
+		\item{...}
 	\end{itemize}
 \end{frame}
 
@@ -79,11 +83,14 @@
 \section{Architekturebenen}
 
 \begin{frame}{Architekturebenen}
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Architektur Ebenen? Vert vs Horiz
-
-	Bild einfügen!!!
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{itemize}
+		\item{Ziel (Gesamtziel der Anwendung)}
+		\item{Firma (Firmenspezifische Ziele)}
+		\item{Anwendung / System (Systeme innerhalb einer Firma)}
+		\item{Softwareschicht (Architektur der Teilsoftware z. B. MVC ..)}
+		\item{Package / Komponentendiagramme (detailierte Ausarbeitung)}
+		\item{Klassen (Implementierungsschicht)}
+	\end{itemize}
 \end{frame}
 
 \section{Standardisierung}
@@ -101,28 +108,20 @@
 
 \section{Architekturstile}
 
-\begin{frame}{Architekturstile}{Grobe Stilübersicht}
+\begin{frame}{Architekturstile}
 	\begin{itemize}
 		\item Kommunizierende Prozesse (z. B. Middleware oder Bussysteme)
 		\item Call and Return (z. B. Prozedurale Programmierung)
-		\item Datenorientierter Fluss (z. B. Batch Processing)
+		\item Datenorientierter Fluss (z. B. Batch Processing / Streams)
 		\item Datenzentriert (z. B. Repositories oder Blackboards)
 		\item Virtuelle Maschine (z. B. DSL oder Regelbasierte Sytsteme)
 		\item Dezentrale Netze (z. B. P2P)
 	\end{itemize}
-
-	% Technologiearchitektur
-
-	% Containerarchitektur? Komponenten Wrappen und fachfreie Logik (sicherheit, auth, log / monitoring, etc.) in container auslagern
 \end{frame}
 
 \section{Prinzipien der Architektur}
 
 \begin{frame}{Prinzipien der Architektur}
-	% Die bisherigen Auflistungen von Werkzeugen und Stilmitteln, die dem Architekten zur Verfügung stehen, werden von verschiedenen Autoren wie beispielsweise von VOGEL ET AL. variiert, zusammengefasst und erweitert.
-
-	% Beispielhaft sind hier 10 wichtige Prinzipien aufgeführt.
-
 	\begin{itemize}
 		\item{Inkrementalität} % durch Prototyping und schrittweises Wachstum.}
 		\item{Lose Kopplung} % durch Gesetz von Demeter und Vermeidung von Zyklen}
@@ -137,35 +136,23 @@
 	\end{itemize}
 \end{frame}
 
-\section{Architekturen im Detail}
-
-\begin{frame}
-	Middleware im Detail
-
-	P2P (dezentrale Architektur) Im Detail
-	Sie organisieren sich selbst.
-
-    Sie handeln mit ihren Ressourcen autonom.
-
-    Dienste und Ressourcen können wandern.
-
-    Peers können anbieten und nutzen.
-
-    Verhalten, Zustand oder Durchsatz kann nicht vorhergesagt werden und erinnert eher an einen Schwarm.
-\end{frame}
-
-\begin{frame}{Architektur im Detail}{Domain-Specific-Language}
-	DSL etc hier her!!
-\end{frame}
-
-\begin{frame}
-	ADL statt UML manchmal
-\end{frame}
-
 \section{Frameworks}
 
 \begin{frame}{Frameworks}
-	Es gibt frameworks, die ändern sich aber ständig.
+	Frameworks liefern generische projektübergreifende Lösungen für wiederkehrende Teilprobleme.
+
+	\vspace{0.5em}
+
+	Bekannte Frameworks:
+
+	\begin{itemize}
+		\item JavaEE
+		\item Spring
+		\item Django
+		\item Rails
+		\item .NET
+		\item ...
+	\end{itemize}
 \end{frame}
 
 % https://vfhswt.eduloop.de/loop/Enterprise_Design_Patterns_ARC
@@ -173,5 +160,22 @@
 % https://vfhswt.eduloop.de/loop/Was_machen_gute_Architekt/innen%3F
 % https://vfhswt.eduloop.de/loop/Architektur_Ebenen_ARC
 % https://vfhswt.eduloop.de/loop/Packages_und_Namensgebung_ARC
+
+\section{Zusammenfassung}
+
+\begin{frame}{Zusammenfassung}
+	Gute Architektur hilft Software..
+	\begin{itemize}
+		\item zu vereinheitlichen / zu standardisieren (u. a. Code, Tools..)
+		\item testbarer zu machen und die qualität sicherzustellen
+		\item erweiterbar und wartbar zu halten
+		\item übersichtlich zu halten
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Zusammenfassung}
+	Danke fürs zuhören! \textbf{Gibt es Fragen?}
+\end{frame}
+
 \end{document}
 
