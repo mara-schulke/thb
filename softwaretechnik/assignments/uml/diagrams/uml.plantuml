@@ -1,110 +1,6 @@
 @startuml
 class X11Connection {}
 
-WindowManager ---- X11Connection
-WindowManager ---- X11Error
-WindowManager ---- WindowRepository
-
-class WindowManager {
-	- name: String,
-	+ getName(): String
-	+ start(X11Connection connection): void throws X11Error
-}
-
-WindowManager o--- Layout
-
-WindowManager *--- Workspace
-WindowManager o--- EventHandler
-
-WindowManager ---- KeyEventPoller
-WindowManager ---- MouseEventPoller
-
-
-EventPoller <|-- KeyEventPoller
-EventPoller <|-- MouseEventPoller
-
-interface EventPoller {
-	+ pollEvents(): Event
-}
-
-class KeyEventPoller
-
-class MouseEventPoller
-
-
-Event <|-- KeyEvent
-Event <|-- MouseEvent
-
-interface Event
-
-class KeyEvent {
-	- pressed: char[]
-	+ getPressed(): char[]
-}
-
-class MouseEvent {
-	- isLeftDown: bool
-	- isRightDown: bool
-	- isMiddleDown: bool
-	- x: float
-	- y: float
-
-	+ getIsLeftDown(): bool
-	+ getIsRightDown(): bool
-	+ getIsMiddleDown(): bool
-	+ getX(): float
-	+ getY(): float
-}
-
-class Workspace {
-	- windowIds: int[]
-	- name: String
-	+ getName(): String
-	+ getWindows(): Window[]
-}
-
-Workspace ---- Layout
-Workspace *--- Window
-
-interface Layout {
-	+ getName(): String
-	+ arrange(Window[] windows): void
-}
-
-EventHandler ---- Event
-
-class EventHandler<E: implements Event> {
-
-	+ handle(E event): void
-}
-
-
-
-
-
-class        Decoration
-
-class Position {
-	- x: float
-	- y: float
-	+ getX(): float
-	+ getY(): float
-	+ setX(float x): void
-	+ setY(float y): void
-}
-
-Window ---- Position
-
-class Window {
-	- className: String
-	- name: String
-	+ getClassName(): String
-	+ getName(): String
-	+ getPosX(): 
-}
-
-Window ---- Decoration
-
 X11Query ---- Window
 
 enum X11Query {
@@ -116,14 +12,97 @@ enum X11Query {
 	{method} + matches(Window window): bool
 }
 
+
+WindowManager ---- X11Connection
+WindowManager ---- X11Error
+WindowManager ---- WindowRepository
+WindowManager o--- Layout
+WindowManager *--- Workspace
+WindowManager o--- EventHandler
+WindowManager ---- KeyEventPoller
+WindowManager ---- MouseEventPoller
+
+class WindowManager {
+	- name: String
+	+ start(X11Connection connection): void throws X11Error
+}
+
+EventPoller <|-- KeyEventPoller
+EventPoller <|-- MouseEventPoller
+EventPoller o--- Event
+EventPoller ---- X11Connection
+EventPoller ---- X11Error
+
+interface EventPoller {
+	+ pollEvents(): Event
+}
+
+class KeyEventPoller
+class MouseEventPoller
+
+Event <|-- KeyEvent
+Event <|-- MouseEvent
+
+interface Event
+
+class KeyEvent {
+	- char: char
+}
+
+class MouseEvent {
+	- isLeftDown: bool
+	- isRightDown: bool
+	- isMiddleDown: bool
+	- x: float
+	- y: float
+}
+
+Workspace ---- Layout
+Workspace *--- Window
+
+class Workspace {
+	- name: String
+}
+
+Layout o--- Window
+
+interface Layout {
+	+ getName(): String
+	+ arrange(Window[] windows): void
+}
+
+EventHandler ---- Event
+
+class EventHandler<E: implements Event> {
+	+ handle(E event): void
+}
+
+class Decoration
+
+class Position {
+	- x: float
+	- y: float
+}
+
+Window ---- Position
+Window ---- Decoration
+
+class Window {
+	- className: String
+	- name: String
+	+ close(): void
+}
+
+
 WindowRepository ---- X11Connection
 WindowRepository *--- Window
 WindowRepository ---- X11Query
+WindowRepository ---- X11Error
 
 class WindowRepository {
 	+ getAllWindows(): Window[] throws X11Error
-	+ getWindowByQuery(Query query): Windows[] throws X11Error
 	+ getWindowByQuery(Query query): Window throws X11Error
+	+ getWindowsByQuery(Query query): Windows[] throws X11Error
 }
 
 
