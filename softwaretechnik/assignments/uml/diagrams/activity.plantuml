@@ -1,0 +1,64 @@
+@startuml
+
+start
+
+partition Vorbereitung {
+	:Verbindung zu X11 herstellen;
+
+	if (Verbindung erfolgreich hergestellt?) then (nein)
+		end
+	else (ja)
+	endif
+
+	:Rufe Fenster ab;
+
+	if (Fenster erfolgreich abgefragt?) then (nein)
+		end
+	else (ja)
+	endif
+
+	:Befülle WindowRepository mit den Fenstern;
+
+	:Initialisiere Workspaces;
+
+	if (Sind Regeln zum managen der Fenster definiert?) then (ja)
+		:Führe Regeln aus;
+	else (nein)
+	endif
+
+	:Initialisiere Layouts;
+	:Rendere das Layout für Workspace 1;
+}
+
+partition EventLoop {
+	while (Verbindung zu X11 vorhanden?) is (ja)
+		:Warte auf Event;
+
+		switch (Event Type)
+		case (Window Map / Unmap Event)
+			:Aktualisiere Window Repository;
+
+			if (Sind Regeln zum managen der Fenster definiert?) then (ja)
+				:Führe Regeln aus;
+			else (nein)
+			endif
+
+			:Rendere das Layout des aktiven Workspaces;
+		case (Key / Mouse Event)
+			if (Schließt dieses Event diesen Prozess?) then (ja)
+				stop
+			else (nein)
+			endif
+
+			if (Gibt es einen EventHandler für dieses Event?) then (ja)
+				:Führe den definierten EventHandler aus;
+				:Rendere das Layout des aktiven Workspaces;
+			else (nein)
+			endif
+		endswitch
+	endwhile (nein)
+
+	end
+}
+
+@endumll
