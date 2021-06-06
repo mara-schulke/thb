@@ -1,9 +1,8 @@
 @startuml
-
 start
 
 partition Vorbereitung {
-	:Verbindung zu X11 herstellen;
+	:Verbindung zum Backend herstellen;
 
 	if (Verbindung erfolgreich hergestellt?) then (nein)
 		end
@@ -17,8 +16,6 @@ partition Vorbereitung {
 	else (ja)
 	endif
 
-	:Befülle WindowRepository mit den Fenstern;
-
 	:Initialisiere Workspaces;
 
 	if (Sind Regeln zum managen der Fenster definiert?) then (ja)
@@ -31,12 +28,12 @@ partition Vorbereitung {
 }
 
 partition EventLoop {
-	while (Verbindung zu X11 vorhanden?) is (ja)
+	while (Verbindung zum Backend vorhanden?) is (ja)
 		:Warte auf Event;
 
 		switch (Event Type)
 		case (Window Map / Unmap Event)
-			:Aktualisiere Window Repository;
+			:Aktualisiere Window Stack des jeweiligen Workspaces;
 
 			if (Sind Regeln zum managen der Fenster definiert?) then (ja)
 				:Führe Regeln aus;
@@ -60,5 +57,4 @@ partition EventLoop {
 
 	end
 }
-
 @endumll
