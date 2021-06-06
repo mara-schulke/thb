@@ -1,8 +1,11 @@
+TODO
+
 bin
 .DS_Store
 .classpath
 .settings
 .project
+.vim
 
 # LaTeX
 *.aux
@@ -12,5 +15,6 @@ bin
 *.log
 *.toc
 *.out
+*.snm
 *.synctex.gz
 
