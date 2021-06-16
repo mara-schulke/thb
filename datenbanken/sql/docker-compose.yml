@@ -1,13 +1,17 @@
 version: '3'
+
 services:
   postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: secure
-    ports:
-      - 127.0.0.1:6543:5432
-
-  worlddb:
-    image: ghusta/postgres-world-db:2.3
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - 127.0.0.1:5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+      - ./data:/data
+
+volumes:
+  pgdata:
+    driver: local
