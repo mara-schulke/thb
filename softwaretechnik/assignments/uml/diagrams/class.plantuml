@@ -1,6 +1,6 @@
 @startuml
-WindowManager *--- Configuration
-WindowManager ---- Backend
+WindowManager "1" ---- "1" Backend
+WindowManager "1" *--- "1" Configuration
 
 class WindowManager {
 	- name: String
@@ -9,78 +9,107 @@ class WindowManager {
 	+ execute(Command command): void
 }
 
+Configuration "1" *--- "1..10" Workspace
+Configuration "1" o--- "1..*" Layout
+
 class Configuration {
 	- name: String
 }
 
-Configuration *--- EventHandler
-EventHandler ---- Event
-
-EventHandler ---- Command
-
-interface EventHandler {
-	+ handle(Event ev): Command
-}
-
-class KeyHandler implements EventHandler
-class ClickHandler implements EventHandler
-class DragHandler implements EventHandler
-
-Configuration *--- Workspace
-
-Workspace ---- Layout
-Workspace ---- WindowStack
+Workspace "1" ---- "1..*" Layout
+Workspace "1" ---- "1" WindowStack
 
 class Workspace {
 	- name: String
 }
 
-Configuration o--- Layout
-
 abstract class Layout {
 	+ render(WindowStack winStack)
 }
 
-Command ---- Backend
+together {
+	EventHandler ---- Event
+	EventHandler "1..*" ---* "1" Configuration
+	EventHandler "1" ---- "1" Command
 
-abstract class Command
+	interface EventHandler {
+		+ handle(Event ev): Command
+	}
 
-note right of Backend : Flowable kommt aus ReactiveX
+	note "Annotations zum\nfiltern der Events" as N1
 
-Backend ---- Query
-Backend ---- Event
-Backend ---- Window
+	onKey   ---- EventHandler
+	onDrag  ---- EventHandler
+	onClick ---- EventHandler
 
-class Backend {
+	annotation onKey {
+		- combination: char[]
+	}
+
+	annotation onClick {
+		- mouseButton: char
+	}
+
+	annotation onDrag {
+		- modKey: char
+		- mouseButton: char
+	}
+}
+
+note right of Backend : Flowable kommt aus ReactiveX\nMögliche Implementierung könnte bspw. X11 sein
+
+abstract class Backend {
 	+ connect(): void
 	+ disconnect(): void
 	+ getEventStream(): Flowable<Event>
 }
 
+Backend ---- Query
+Backend "1" ---- "0..*" Event
+Backend "1" ---- "0..*" Window
+
 class Window {
 	- className: String
+	- command: String
 	- name: String
+	- zIndex: int
+	+ close(): void
+	+ focus(): void
 }
 
-WindowStack *--- Window
+Command "1..*" ---- "1" Backend
+
+abstract class Command {
+	- name: String
+	+ execute(): void
+}
+
+WindowStack "1" *--- "1" Window
 
 class WindowStack {
+	- id: String
 	+ moveUp(Window window): void
 	+ moveDown(Window window): void
 	+ add(Window window): void
 	+ delete(Window window): void
 }
 
-interface Event
-class KeyEvent implements Event
-class MouseEvent implements Event
+enum Event {
+	MAP(String windowId)
+	UNMAP(String windowId)
+	..
+	KEYDOWN(char[] keys)
+	MOUSEDOWN(char[] buttons)
+	--
+	{method} + forwardToWindow(): void
+}
 
 enum Query {
 	ClassName(String)
 	Name(String)
 	Position(Float, Float)
 	ProcessCommand(String)
-
+	--
 	{method} + matches(Window window): bool
 }
 @enduml

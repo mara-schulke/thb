@@ -51,6 +51,7 @@ partition EventLoop {
 				:Führe den definierten EventHandler aus;
 				:Rendere das Layout des aktiven Workspaces;
 			else (nein)
+				:Leite das Event an das aktive Fenster weiter;
 			endif
 		endswitch
 	endwhile (nein)
