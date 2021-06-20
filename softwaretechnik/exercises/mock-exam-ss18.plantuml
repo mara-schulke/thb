@@ -1,0 +1,40 @@
+@startuml
+class Reisemappe
+
+Reisemappe "1" *--- "1..*" Reisedokument
+Reisemappe "1" o--- "1..*" Fahrplanauszug
+Reisemappe "1" o--- "*" Infomaterial
+
+abstract class Reisedokument
+
+abstract class Ticket extends Reisedokument
+
+class BusTicket extends Ticket
+class BahnTicket extends Ticket
+class FlugTicket extends Ticket
+
+abstract class Voucher extends Reisedokument
+
+class HotelVoucher extends Voucher
+class MietwagenVoucher extends Voucher
+
+class Platzkarte extends Reisedokument
+
+Platzkarte "1..5" ---- "1" BahnTicket
+
+class Fahrplanauszug
+
+Fahrplanauszug "*" ---- "0..1" Ticket
+
+class Infomaterial
+
+Voucher "1" o--- "1..*" Buchung
+BusTicket "1" o--- "1..*" Buchung
+FlugTicket "1" o--- "1..*" Buchung
+
+class Buchung {
+	+ nr: int
+	+ kundenName: String
+	+ reiseZeitpunkt: Date
+}
+@enduml
