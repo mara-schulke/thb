@@ -123,7 +123,7 @@ HAVING count(song.songid) >= 10;
 -- 16.    Listen Sie den Namen und das Veröffentlichungsdatum aller Alben auf, die von Interpreten des 
 --        'alternative metal'-Genres und nach 2008 veröffentlicht wurden.
 
-SELECT title FROM album
+SELECT title, publishingyear FROM album
 JOIN artist ON album.artistid = artist.artistid
 JOIN genre ON artist.genreid = genre.genreid
 WHERE genre.name = 'alternative metal' AND album.publishingyear > 2008;
@@ -150,9 +150,8 @@ INSERT INTO song (title, length, explicit) VALUES ('Last Christmas', 267, false)
 -- 20.    Wie lauten die Namen der Genres, denen kein Künstler in unserer Datenbank zugeordnet ist?
 
 SELECT genre.name FROM genre
-LEFT OUTER JOIN artist ON genre.genreid = artist.genreid
-GROUP BY genre.genreid
-HAVING count(artistid) = 0;
+LEFT JOIN artist ON genre.genreid = artist.genreid
+WHERE artist.artistid IS NULL;
 
 -- 21.    Geben Sie die Anzahl der Songs von Künstlern an, die nicht aus den 'USA' kommen.
 
@@ -204,7 +203,7 @@ JOIN genre super ON genre.supergenreid = super.genreid;
 
 -- Vorausgesetzt, sie zählen hip hop artists nicht zu den rappern
 
-SELECT title, artist.name FROM song
+SELECT song.* FROM song
 JOIN song_artist ON song.songid = song_artist.songid
 JOIN artist ON song_artist.artistid = artist.artistid
 WHERE artist.genreid IN (
