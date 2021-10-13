@@ -1,0 +1,32 @@
+- Was ist ein Algorithmus?
+- Lineare / Binäre Suche
+- Verifikation (Invarianten / Hoare)
+- O/Omega/Theta
+- Ordnen von O(n**2) c O(n**3) etc
+- Gaußsche Summenformel
+- Laufzeit von Algorithmen
+- Laufzeit hochrechnen (1, 2) (2, x) bei n**2
+- Insertion / Selection Sort
+- Rekursionsgleichung / geschlossene Formeln
+- Induktionsbeweis
+- Sortier & Suchalgorithmen (und wieso hat Alg. X welche Laufzeit?)
+- Inplace / Stable / Instable
+- Top Down / Bottom Up
+- Quicksort & Quicksort Partitionierung
+- Quicksort Pivot Positionen
+- Double Linked List
+- Stack / Queue / FIFO / LIFO
+- Traversierung (In Order / Pre Order / Post Order / Level Order)
+- Binäre Suchbäume / B-Trees / Laufzeit von Bäumen
+- Heaps (Min / Max) - Heaps in Arrays speichern
+- Heap Mutation
+- Laufzeit Heaps
+- Hashing (Lineares Sondieren vs Chaining)
+- Hash Tables / Hash-Funktionen
+- Graphen (gerichtet / ungerichtet)
+- Tiefen / Breitensuche (inkl. Laufzeit)
+- Dijkstra / bipartit
+- Adjazenz Listen / Arrays
+- Topologische Sortierung
+- Negative Kantengewichte / Kürzeste & Längste Pfade
+
