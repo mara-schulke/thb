@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{lipsum}
+\usepackage{xcolor}
 
 \hypersetup{colorlinks=true, allcolors=black}
 
@@ -40,9 +41,59 @@
 \tableofcontents
 
 \section{Einleitung / Motivation}
-\IEEEPARstart{D}{\MakeLowercase{as}} wird die Einleitung.
+\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
+in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
+digitale Meeting-Systeme immer relevanter und müssen immer mehr Nutzer in
+Echtzeit mit einander verbinden um einen reibungslosen Arbeitsalltag zu
+gewährleisten. Dies impliziert natürlich auch dass eine \textcolor{red}{quelle
+suchen ab wann gute Qualität} Verbindungsqualität gegeben sein muss, damit die
+Systeme nutzbar bleiben.
+
+Aber wie können wir skalierbare Meeting-Systeme realisieren ohne große
+Datenmengen über einen Streaming-Server zu schicken der diese an alle anderen
+broadcasted? Die Entwicklung der letzten Jahre deuten immer mehr darauf hin,
+dass \textit{Peer-To-Peer} basierte Lösungensansätze aufgrund der besseren
+Performance und Skalierbarkeit, in der Regel die bessere Wahl darstellen
+\textcolor{red}{quelle suchen}. Natürlich spielen zur Auswahl der Architektur
+noch weitere Parameter eine wichtige Rolle (z. B. die maximale Bandbreite und
+Rechenleistung der Endgeräte), aber mit immer großer werdenden
+Heimnetz-Leitungen und zunehmender Rechenleistung der Endgeräte stellt dies
+meistens kein Problem mehr da. \textcolor{red}{quelle suchen}.
+
+Die Problematik der Echtzeit-Kommunikation im Web beschäftigt auch
+das \textit{W3C} seit 2011 im Zuge der Standardisierung des seit diesem Jahr
+zum Web-Standard erklärten Protokoll \textit{WebRTC}. \textcolor{red}{quelle
+suchen}.
+
+Es ist also (immer noch) eine sehr aktuelle Thematik in der Informatik
+Echtzeit- oder \textcolor{blue}{Nahe-Zu-Echtzeit-Kommunikation} zuverlässig zu
+bewältigen. Die Aufgabe dieser Arbeit soll sein, einen Überblick über den
+Stand der Architekturmuster, Protokolle und möglicher Problematiken bei der
+Implementierung von eigenen Echtzeit-Video-Streaming-Diensten geben,
+\textcolor{orange}{diese anhand eines Experiments durchsprechen und auswerten
+usw.}
 
 \section{Historie der Echzeit-Übertragung}
+
+\subsection{1996: RTP (RFC 18XX)}
+\subsection{2003: RTP (RFC 35XX)}
+\subsection{2005: RTMP von Adobe}
+\subsection{20XX:\ SRTP (RFC XXXX)}
+\subsection{2010: WebRTC (RFC XXXX)}
+
+Hat mit 1996 RTP und dann 2005 mit RTMP angefangen, wann kam SRTP?\ JSEP
+Global IP Solutions \& Google WebRTC kam 2010, Microsoft wollte CU-RTC
+
+> Datenströme sind verpflichtend zu verschlüsseln. Dazu werden Verbindungen über DTLS verschlüsselt und Audio- und Videokommunikation zusätzlich durch SRTP geschützt.[16]
+
+
+Die ersten \textit{Requests for Comments} oder auch \textit{RFC} zu
+den grundlegenden Protokollen \textit{RTP} und
+\textit{\textcolor{blue}{Protokoll X}}, auf denen die heutigen Protokolle
+weitestgehend aufbauen, wurden bereits in den späten 1990er Jahren
+veröffentlicht und seit dem immer weiterentwickelt. \textcolor{red}{quelle
+anhängen RFC35XX}.
+
 \lipsum[1-3][3-30]
 
 
@@ -83,6 +134,8 @@ Das ist eine referenzierte aussage\cite{WebRTC}
 \section{Nächste Schritte}
 
 \lipsum
+
+\large{IPV6 only => NAT holepunching entfällt}
 
 \section{Abbildungsverzeichnis}
 abc
