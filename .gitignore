@@ -14,6 +14,8 @@ bin
 *.fls
 *.log
 *.toc
+*.bbl
+*.blg
 *.out
 *.snm
 *.synctex.gz
