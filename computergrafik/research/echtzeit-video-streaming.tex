@@ -40,6 +40,11 @@
 
 \tableofcontents
 
+\newpage
+
+\par
+abnv
+
 \section{Einleitung / Motivation}
 \IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
 in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
@@ -49,6 +54,7 @@ gewährleisten. Dies impliziert natürlich auch dass eine \textcolor{red}{quelle
 suchen ab wann gute Qualität} Verbindungsqualität gegeben sein muss, damit die
 Systeme nutzbar bleiben.
 
+\textcolor{red}{\& sicherheitsaspekt}
 Aber wie können wir skalierbare Meeting-Systeme realisieren ohne große
 Datenmengen über einen Streaming-Server zu schicken der diese an alle anderen
 broadcasted? Die Entwicklung der letzten Jahre deuten immer mehr darauf hin,
@@ -75,8 +81,38 @@ usw.}
 
 \section{Historie der Echzeit-Übertragung}
 
-\subsection{1996: RTP (RFC 18XX)}
-\subsection{2003: RTP (RFC 35XX)}
+Um zu verstehen wie sich die Protokolle hin zum heutigen Stand entwickelt
+haben, ist es besonders interessant nachzuvollziehen wie die ersten Schritte
+IEFT oder auch \textit{Internet Engineering Task Force} bezüglich der
+Echtzeit-Kommunikation aussahen, welche Probleme erkannt und behoben wurden und
+welche Protokolle heute der Standard sind.
+
+\subsection{1996: RTP – RFC 1889}
+
+Am weitesten reicht das \textit{Real-Time Transport Protocol} oder auch
+\textit{RTP} zurück. Es wurde erstmals 1996 von der IEFT standardisiert und
+stellt seit dem einen Grundbaustein der datenformataganostischen
+Echtzeit-Übertragung da. Es kann für diverse
+Echtzeit-Übertragungs-Problematiken dienlich sein, da jegliche Binärdaten
+verschickt werden können; Somit gibt es keinen ``Lock-In'' auf bestimmte Audio-
+oder Video-Codecs. \textcolor{orange}{aussage prüfen und quelle}.
+
+Das Protokoll siedelt sich im TCP/IP-Stack über \textit{UDP} an
+\textcolor{red}{cite rfc1889 introduction}.
+In der ersten Version gab es einige Probleme bezüglich \textcolor{red}{Probleme
+suchen}.
+
+Das 
+%RFC 1889 – RTP: A Transport Protocol for Real-Time Applications [1996, veraltet]
+%RFC 3550 – RTP: A Transport Protocol for Real-Time Applications [2003, aktuell]
+\subsection{2003: RTP [RFC 3550]}
+
+In der 2003 veröffentlichten Version des Protokolls wurden einige Änderungen eingearbeit:
+Im wesentlichen ``RTCP Packet Send and Receive Rules'' ``Layered Encodings'' ``Congestion Control''
+
+``Security Considerations''
+``IANA Considerations''
+
 \subsection{2005: RTMP von Adobe}
 \subsection{20XX:\ SRTP (RFC XXXX)}
 \subsection{2010: WebRTC (RFC XXXX)}
@@ -112,6 +148,16 @@ Das ist eine referenzierte aussage\cite{WebRTC}
 \subsection{WebRTC}
 \lipsum[1-4][1-10]
 \subsection{RTP}
+
+RTP fügt wichtige Informationen zu UDP datagrammen hinzu: Im wesentlichen eine
+Sequenznummer um die Sende-Reihenfolge zu codieren und einen Payload-Type, der
+den Codec des Segments angibt. Somit kann auch bei racenden Datagrammen die
+Ursprüngliche Reihenfolge rekonstruiert werden und es können bei verlorenen
+Segmenten interpolationsalgorithmen verwendet werden. \textcolor{red}{quelle /
+beispiele suchen}. Der Payload-Type ist essenziell um ohne Session-Aushandlung
+zu kommunizieren wie der Empfänger die daten zu decodieren hat um eine
+Sinnvolle nachricht zu erhalten.
+
 \lipsum[1-3][3-30]
 \subsection{RTCP}
 \lipsum[1-4][1-10]
