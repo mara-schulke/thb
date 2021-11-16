@@ -1,9 +1,0 @@
-WebRTC: Implementierung eines livestreams
-Fraktale Geometrie / Anwendungen von fraktaler geometrie
-Implementierung eines canvas in rust
-Kompressionsalgorithmen in der CG, video & image algorithms
-Mögliche HW-Beschleunigung für Kompressionsalgorithmen
-Wie funktioniert lossless compression?
-Imageformats: Creating a new optimized image format
-Grafikformate
-Vectorizing a photo in realtime
