@@ -22,8 +22,7 @@
 
 
 \begin{document}
-
-\markboth{Hausarbeit Computergrafik – Maximilian Schulke}{}
+\begin{onecolumn}
 \IEEEspecialpapernotice{
 	betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
 	Wintersemester 2021\\
@@ -39,9 +38,11 @@
 \end{abstract}
 
 \tableofcontents
+\end{onecolumn}
 
-\newpage
+\begin{twocolumn}
 
+\markboth{Hausarbeit Computergrafik – Maximilian Schulke}{}
 \section{Einleitung / Motivation}
 \IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
 in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
@@ -277,8 +278,7 @@ empfangenen Contents eintreten würde.
 % https://datatracker.ietf.org/doc/html/rfc4566#section-3.1
 \subsection{SID}
 % https://datatracker.ietf.org/doc/html/rfc3261
-\subsection{STUN}
-\subsection{TURN}
+% \subsection{STUN}
 \subsection{WebRTC}
 
 \section{Implementierung eines Live-Streams}
@@ -348,5 +348,16 @@ def
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
+\end{twocolumn}
+
+\newpage
+
+\begin{onecolumn}
+\begin{appendix}
+
+
+
+\end{appendix}
+\end{onecolumn}
 
 \end{document}
