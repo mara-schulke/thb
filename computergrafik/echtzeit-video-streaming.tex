@@ -309,30 +309,204 @@ Answer) und tauschen ihre ICE-Candidates aus.
 
 Die Architektur ist sehr simpel. Sie besteht lediglich aus 3 Kernelementen:
 
-\begin{enumerate}
-	\item Embedded-Gerät mit einer Kamera, zur Erfassung der Daten und zum
-		Streaming
-	\item Signaling-Server, zur Aushandlung
-	\item User Interface, zum Empfangen des Streams
-\end{enumerate}
+\subsubsection{Kamera-Hardware}
 
-Die Hardware wird ein simpler Raspberry PI V4 mit 8GB RAM sein. Dieser kann
-durch diverse Drittanbieter mit einem kostengünstigen Kamera-Modul erweitert
-werden.
+Die Hauptanforderung an die Hardware auf der die Kamera-Software läuft ist eine
+Linux-Installation (mit den entsprechenden installierten Paketen für die
+Abhangigkeiten) und eine angeschlossene Kamera die von Linux erkannt wird.
 
-Auf der Hardware wird eine Raspberry PI OS Installation laufen auf der ein
-Programm läuft das sich um den Stream kümmert.
+Für dieses Experiment wurde ein Einplatinencomputer der Marke Raspberry PI in
+der 4. Version mit 8GB RAM – erweitert durch ein Drittanbieter-Kamera-Modul –
+verwendet. Dieser ist allerdings absolut austauschbar, da jeder Rechner der
+die o.g. Hauptanforderung erfüllt eine geeignete Umgebung darstellt – so kann
+die Kamera-Software auch auf einem Laptop ausgeführt werden, falls keine
+Hardware verfügbar ist. Dies wurde zur veranschaulichung mit einem ThinkPad
+T490 und einer aktuellen NixOS Installation getestet.
 
-Der Signaling-Server wird defacto ein Secure-WebSocket-Server sein, der zwei
-WebSocket-Verbindungen miteinander verknüpft. So können sich zwei Clients durch
-ein Shared-Secret (die Room-Id welche eine 256bit entropie ist) über diesen in
-kontakt treten.
+Auf der Einplatinencomputer ist das mitgelieferte Betriebssystem ``Raspberry PI
+OS'' und die entsprechenden Software-Abhängigkeiten installiert. (Siehe GitHub
+für Dependencies.)
 
-Das Interface wird lediglich dank der fixen 
+\subsubsection{Signaling-Server}
+
+Der Signaling-Server ist ein Secure-WebSocket-Server, der zwei
+WebSocket-Verbindungen miteinander verknüpft. Er verwaltet sogenannte Räume.
+Ein Raum besteht aus 0 bis 2 Clients und dient dazu diese miteinander zu
+verbinden. Auf dem Server kann es mehrere Räume gleichzeitig geben – dadurch
+könnte dieser Signaling-Server theoretisch auch noch für weitere
+WebRTC-Anwendungen verwendet werden. Ein Raum hat eine ID, diese ist eine
+256-Bit-Entropie. Clients werden durch eine 128-Bit-Entropie identifiziert.
+
+So können sich zwei Clients durch ein Out-Of-Band kommuniziertes Secret (die
+Raum-ID) über diesen in Kontakt treten. Diese könnte beispielsweise, würde es
+sich bei der entwickelten Kamera um ein echtes Produkt handeln, bei der
+Herstellung generiert werden, ausgedruckt und neben die Kamera in die
+Verpackung gelegt werden.
+
+\subsubsection{Interface}
+
+Das Interface verbindet sich mit dem Signaling Server und nimmt eine Raum-ID
+entgegen. Mit dieser Raum-ID wird dann auf dem Signaling Server entweder ein
+neuer Raum erstellt, falls noch keiner mit der ID existiert, oder es wird dem
+bestehenden Raum beigetreten. Nach dem ein weiterer User beigetreten ist, fängt
+der in \textcolor{red}{Kapitel XY} erklärte Aufbau eines WebRTC-Streams zu dem
+Nutzer an.
 
 \subsection{Signaling Server}
 
+Als erstes wurde der Signaling Server entwickelt, da dieser keine
+Abhängigkeiten an seine Clients hat. Die Kamera-Software und Interface setzen
+beide jeweils den laufenden Signaling Server vorraus um korrekt zu
+funktioneren.
 
+\subsubsection*{Asynchronität}
+
+Eine logische Anforderungen an den Server ist das gleichzeitige verarbeiten
+mehrerer Verbindungen – ansonsten könnte immer nur ein Client alleine mit dem
+Server Verbunden sein. Dies würde die Signaling-Funktionalität eines Raumes
+unbrauchbar machen.
+
+Die asynchrone Programmierung ist ein Konzept zur Lösung dieser Problemklasse.
+Da langlebige Verbindungen in der Regel einen großteil der Zeit ungenutzt sind,
+ist es naheliegend Verbindungen ohne neue Ereignisse keine CPU-Zeit zu geben
+um andere Verbindungen in der Zeit abzuarbeiten, in der auf Ereignisse gewartet
+wird.
+
+HIER ZIETIEREN WAS DAS ZEUG HÄLT / ERKLÄRGRAFIKEN NUTZEN
+
+\subsubsection{Verbindungsaufbau}
+
+Um eine Secure-WebSocket-Verbindung aufzubauen, muss zu erst eine TCP- und dann
+darüber eine TLS-Verbindung zu dem Client aufgebaut werden. Über diese wird
+dann zu erst in HTTP kommuniziert (siehe WebSocket verbindungsaufbau Quelle
+suchen) und nach einer erfolgreichen Nachricht des Servers mit dem Status-Code
+101 (Switching Protocols) wird die über den gleichen Transport-Weg (TLS)
+nach dem WebSocket-Protokoll kommuniziert.
+
+Grafik einfügen.
+
+\subsubsection{Spezifikation des Signaling-Protokolls}
+
+Das Signaling-Protokoll ist in 2 Nachrichten-Typen unterteilt:
+Server-Nachrichten und Peer-Nachrichten. Clients dürfen nur Peer-Nachrichten
+senden, ansonsten wird die Verbindung aufgrund eines Protokoll-Verstoßes
+geschlossen. Der Server verschickt nur Server-Nachrichten.
+
+\vspace{0.5em}
+
+\textbf{Server-Nachrichten}
+
+\begin{itemize}
+	\item Hello \{Client-ID\}
+	\item Joined
+	\item Error
+	\item Room/Join \{Client-ID\}
+	\item Room/Leave \{Client-ID\}
+	\item Room/Signal \{Signal\}
+\end{itemize}
+
+\vspace{0.5em}
+
+\textbf{Peer-Nachrichten}
+
+\begin{itemize}
+	\item JoinOrCreate \{Raum-ID\}
+	\item Signal \{Signal\}
+\end{itemize}
+
+\vspace{0.5em}
+
+Nach einer erfolgreich aufgebauten Verbindung mit dem Server schickt dieser ein
+\textit{Hello} mit der zugewiesenen Client-ID.\ Darauf hin muss der Client ein
+\textit{JoinOrCreate} senden um einem Raum beizutreten. Bevor der Client die
+Nachricht \textit{Joined} vom Server erhält, darf dieser keine Signale
+verschicken.
+
+Diagramme einfügen!
+
+Eine \textit{Room/Join} Nachricht wird an ggf.\ andere Clients im Raum
+verschickt, sobald ein Client diesen betritt. Diese Nachricht kann auf dem
+Client als anlass genutzt werden eine SDP-Offer zu erstellen, da nun sicher
+ist, das ein anderer Client im Raum ist. Wenn beide Clients sich an dieses
+Schema halten, schickt immer der Client, der sich zu erst Verbunden hat die
+Einladung und der andere die Answer.
+
+Analog wird eine \textit{Room/Leave} Nachricht verschickt wenn ein Client einen
+Raum verlässt.
+
+Die \textit{Room/Signal} Nachricht wird an den Empfänger eines Signals
+geschickt, nachdem der Sender des Signals eine \textit{Signal} Nachricht an den
+Server geschickt hat.
+
+\subsubsection{Raum-Verwaltung}
+
+Die Raum-Verwaltung fällt unter anderem in die Kategorie der
+Synchronisationsprobleme. Es gibt unter Umständen $n$ Client-Verbindungen, die
+den Status von einem Raum erfragen wollen, und ggf.\ einen Anlegen möchten. Dies
+soll für alle Verbindungen öffentlich geschehen, Clients dürfen sich aber dabei
+nicht gegenseitig überschreiben.
+
+% Mutual exclusion -> gegenseitiger ausschluss -> nur einer darf
+
+Um zwei asynchron laufende Programmteile zum sequenziellen Zugriff auf
+gemeinsamen Speicher zu zwingen, gibt es Möglichkeit einen Semaphor bzw. Mutex
+zu verwenden. Dieser blockiert den Teil des Programms, der gerade auf den
+gemeinsamen Speicher zugreifen möchte solange, bis ein ggf.\ anderer Zugriff
+beendet ist. Um Deadlocks bzw. Inperformante Code-Abschnitte zu vermeiden, ist
+es ratsam einen Mutex nicht über länger andauernde Operationen hinweg zu
+locken, da sonst für diese Zeit alle anderen Teile des Programms, die gerade
+auf den Speicher zugreifen möchten blockiert sind.
+
+Als konkrete Lösung für das bestehende Problem bietet sich eine HashMap, deren
+zugriff von einem Mutex kontrolliert wird, an. Jede Client-Verbindung, die
+aktuelle Raum-Informationen braucht (was hauptsächlich bei dem erstellen /
+betreten von Räumen der Fall ist), muss nun vorher erst den mutex locken. 
+
+\subsubsection{Kommunikation zwischen mehreren Client-Verbindungen}
+
+Bis zu diesem Punkt ist der Aufbau der Verbindung und das zu implementierende
+Protokoll klar, allerdings fehlt noch das Verknüpfen von Client-Verbindungen um
+Signale weiterzuleiten.
+
+Da bereits Räume verwaltet werden, liegt es nahe dort einen Kommunikationskanal
+einzubetten. Eine Implementierung für diesen Kommunikationskanal stellen z.B.
+sogenannte Channels dar. Diese erlauben Inter-Thread- (und im asynchronen
+Kontext: Inter-Task-) Kommunikation über ein einfaches
+Sender-Empfänger-Prinzip. Ein Channel ist unterteilt in eben diese beiden
+Teile: Der Sender darf Nachrichten schreiben, der Empfänger darf sie aus dem
+Channel lesen.
+
+In diesem Fall ist allerdings zusätzlich noch bidirektionale Kommunikation
+gefragt, da beide Clients Signals des jeweils anderen erhalten sollen. Dafür
+bieten sich sogenannte Broadcast-Channel an. Sie sind dafür ausgelegt, dass von
+mehreren Stellen in diese geschrieben und gelesen wird. Sie funktioneren analog
+zu dem Broadcast aus der Netzwerktechnik.
+
+Diagramm einfügen..
+
+%      C
+%    s r r
+%  s   r   r
+% o    o     o
+
+%      C
+%    r s r
+%  r   s   r
+% o    o     o
+
+%      C
+%    r r s
+%  r   r   s
+% o    o     o
+
+
+Somit kriegt jeder Client bei betreten eines Raumes Zugriff auf einen Sender
+und einen Empfänger dieses Broadcast-Channels. In diesen schreibt er bei erhalt
+einer Peer-Nachricht vom Typ \textit{Signal} das Signal. Eine Client-Verbindung
+die gerade keine CPU-Zeit erhält, da ansonsten keine Ereignisse aufgetreten
+sind, wird wieder aktiv sobald eine neue Nachricht über den Channel da ist.
+Diese kann dann als Server-Nachricht vom Typ \textit{Room/Signal} mit dem
+Signal aus dem Channel an den Empfänger gesendet werden.
 
 \section{Benchmarks}
 
