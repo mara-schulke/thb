@@ -287,20 +287,21 @@ In diesem Kapitel wird ein experimentelles Kamera-System entwickelt, das die
 oben erläuterten Protokolle / Technologien verwendet.
 
 \subsection{Ziel}
-Ziel dieses Experiments ist es ein MVP zu entwickeln und mögliche Probleme,
-benötigten Zeitaufwand usw.\ zu ermitteln. Desweiteren ist ein ``Performance''
-Vergleich mit anderen Live-Stream systemen interessant. Es gilt also die frage
-zu klären, wie viel arbeit benötigt ein grundsätzlich funktionierendes
-Software-Produkt das auf Echtzeit-Übertragung beruht.
+Ziel dieses Experiments ist es eine möglichst einfach ein funktionierendes
+System zu entwickeln und mögliche Probleme, benötigten Zeitaufwand usw.\ zu
+ermitteln.  Desweiteren ist ein ``Performance'' Vergleich mit anderen
+Live-Stream systemen interessant. Es gilt also die frage zu klären, wie viel
+arbeit benötigt ein grundsätzlich funktionierendes Software-Produkt das auf
+Echtzeit-Übertragung beruht.
 
-\subsection{Inhalt des MVP}
+\subsection{Umfang}
 
 Das zu implementierende Kamera-System wird lediglich eine einzige Kernfunktion
 aufweisen: Sobald die Kamera an ist, streamt sie via WebRTC, mit ausreichend
 FPS (mindestens 15 im durchschnitt) in ausreichender Qualität (720 x\ 480),
 ihre Aufnahmen an ein User Interface. Dieses wird im browser laufen, muss aber
 ausreichend Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
-usw.). Das User Interface und die Kamera starten die Aushandlung des
+usw.). Das Interface und die Kamera starten die Aushandlung des
 WebRTC-Streams über den Signaling Server. D.h.\ sie versenden SDP (Offer /
 Answer) und tauschen ihre ICE-Candidates aus.
 
