@@ -281,7 +281,7 @@ empfangenen Contents eintreten würde.
 % \subsection{STUN}
 \subsection{WebRTC}
 
-\section{Implementierung eines Live-Streams}
+\section{Implementierung eines Kamera-Live-Streams}
 
 In diesem Kapitel wird ein experimentelles Kamera-System entwickelt, das die
 oben erläuterten Protokolle / Technologien verwendet.
@@ -329,7 +329,7 @@ für Dependencies.)
 
 \subsubsection{Signaling-Server}
 
-Der Signaling-Server ist ein Secure-WebSocket-Server, der zwei
+Der Signaling-Server ist ein WebSocket-Secure-Server, der zwei
 WebSocket-Verbindungen miteinander verknüpft. Er verwaltet sogenannte Räume.
 Ein Raum besteht aus 0 bis 2 Clients und dient dazu diese miteinander zu
 verbinden. Auf dem Server kann es mehrere Räume gleichzeitig geben – dadurch
@@ -376,7 +376,7 @@ HIER ZIETIEREN WAS DAS ZEUG HÄLT / ERKLÄRGRAFIKEN NUTZEN
 
 \subsubsection{Verbindungsaufbau}
 
-Um eine Secure-WebSocket-Verbindung aufzubauen, muss zu erst eine TCP- und dann
+Um eine WebSocket-Secure-Verbindung aufzubauen, muss zu erst eine TCP- und dann
 darüber eine TLS-Verbindung zu dem Client aufgebaut werden. Über diese wird
 dann zu erst in HTTP kommuniziert (siehe WebSocket verbindungsaufbau Quelle
 suchen) und nach einer erfolgreichen Nachricht des Servers mit dem Status-Code
@@ -391,6 +391,9 @@ Das Signaling-Protokoll ist in 2 Nachrichten-Typen unterteilt:
 Server-Nachrichten und Peer-Nachrichten. Clients dürfen nur Peer-Nachrichten
 senden, ansonsten wird die Verbindung aufgrund eines Protokoll-Verstoßes
 geschlossen. Der Server verschickt nur Server-Nachrichten.
+
+Alle Protokoll-Nachrichten werden in JSON kodiert und dann über den
+WebSocket-Nachrichten-Typ Binär an den Empfänger geschickt werden.
 
 \vspace{0.5em}
 
@@ -508,9 +511,64 @@ sind, wird wieder aktiv sobald eine neue Nachricht über den Channel da ist.
 Diese kann dann als Server-Nachricht vom Typ \textit{Room/Signal} mit dem
 Signal aus dem Channel an den Empfänger gesendet werden.
 
+\subsection{Interface}
+
+Um den Signaling-Server für ein erstes nutzbares Zwischenergebnis zu verwenden,
+wurde eine einfache browserbasierte Benutzer-Oberfläche implementiert, die
+analog zu sehr bekannten Videokonferenz-Systemen wie z.B. Zoom oder Google Meet
+funktioniert. Bei diesem Experiment wurde der Fokus primär auf die
+Bildübertragung gelegt – eine Audioübertragung könnte aber ohne großen Aufwand
+implementiert werden.
+
+Ein Benutzer muss über dieses Interface einem beliebigen Raum auf dem
+Signaling-Server beitreten können. Sobald ein weiterer Benutzer beitritt soll
+der erste eine Nachricht erhalten, dass Jemand seinem Raum beigetreten ist.
+Letztendlich soll die Aushandlung der Video-Übertragung zwischen den beiden
+Benutzern ohne weitere Interaktion des Benutzers stattfinden.
+
+\subsubsection{WebSocket-Verbindung}
+
+Als Vorkehrungen für die singalisierungs Kommunikation mit dem Signaling-Server
+muss eine WebSocket-Secure Verbindung mit dem Server aufgebaut werden. Dies
+gelingt ebenfalls über eine Web-API:\
+https://developer.mozilla.org/de/docs/Web/API/WebSocket
+
+Nun meldet sich der Server nach dem Verbindungsaufbau als erstes mit der
+\textit{Hello}-Nachricht und weist uns eine ID zu. Nach dieser ersten Nachricht
+können wir die eigentliche Anwendung starten.
+
+\subsubsection{Erstellen / Beitritt eines Raumes}
+
+Um festzustellen mit wem sich der Benutzer verbinden möchte, muss dieser
+eine Raum-Id angeben. Diese ist als 64 Zeichen langen Hex-String einzugeben.
+
+Nach erfolgreicher Eingabe einer Raum-Id wird diese mit der Nachricht
+\textit{JoinOrCreate} an den Server geschickt, dieser verarbeitet die Anfrage
+und schickt dem Benutzer eine \textit{Joined}-Nachricht. Ab diesem Zeitpunkt
+wird eine \textit{RTCPeerConnection} erstellt, da ggf.\ bereits ein anderer
+Nutzer im Raum war, der dem neu dazugekommenen eine SDP-Offer schicken wird.
+Um diese Zeitnah zu verarbeiten, findet die Initialisierung vor der ersten
+Signalisierungs-Nachricht statt.
+
+% https://webrtc.org/getting-started/media-devices
+
+\subsubsection{Verbindungsaufbau}
+
+Moderne Browser wie Firefox, Chrome, Safari etc.\ stellen eine Implementierung
+des WebRTC-Stacks bereit, die durch eine übersichtliche API leicht zu
+integrieren ist. % Siehe https://caniuse.com/?search=webrtc
+
+\subsubsection{Verbindungsabbau}
+
+
 \section{Benchmarks}
 
+- CPU Load
+- Netzwerkauslastung
+
 \section{Auswertung}
+
+- Raspberry Pi Kamera langsam..\ unerwünschte Qualität (evtl 32 bit?)
 
 \section{Nächste Schritte}
 
