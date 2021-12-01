@@ -1,50 +1,42 @@
-\documentclass[journal]{IEEEtran}
+\documentclass{article}
 
-\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=3cm]{geometry}
+\usepackage[a4paper]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
-\usepackage{lipsum}
 \usepackage{xcolor}
 
 \hypersetup{colorlinks=true, allcolors=black}
 
 \title{Ansätze zum Echtzeit-Video-Streaming im Web}
 \author{
-	\IEEEauthorblockN{Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}}\\
-	\IEEEauthorblockA{
-		Technische Hochschule Brandenburg \\
-		B.Sc. Medieninformatik \\
-		Computergrafik
-	}
+	Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}\\
+	Technische Hochschule Brandenburg \\
+	B.Sc. Medieninformatik \\
+	Computergrafik
 }
 
 
 \begin{document}
-\begin{onecolumn}
-\IEEEspecialpapernotice{
-	betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
-	Wintersemester 2021\\
-	Abgabetermin \today
-}
 
 \maketitle
+betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
+Wintersemester 2021\\
+
+\newpage
+
+\tableofcontents
 
 \begin{abstract}
-	\lipsum[1-2][2-3]
-	\lipsum[1-2][2-3]
 	Das abstract schreibe ich zu letzt!
 \end{abstract}
 
-\tableofcontents
-\end{onecolumn}
-
-\begin{twocolumn}
+\newpage
 
 \markboth{Hausarbeit Computergrafik – Maximilian Schulke}{}
 \section{Einleitung / Motivation}
-\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
+% \IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
 in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
 digitale Meeting-Systeme immer relevanter und müssen immer mehr Nutzer in
 Echtzeit mit einander verbinden um einen reibungslosen Arbeitsalltag zu
@@ -309,7 +301,7 @@ Answer) und tauschen ihre ICE-Candidates aus.
 
 Die Architektur ist sehr simpel. Sie besteht lediglich aus 3 Kernelementen:
 
-\subsubsection{Kamera-Hardware}
+\subsubsection{Kamera}
 
 Die Hauptanforderung an die Hardware auf der die Kamera-Software läuft ist eine
 Linux-Installation (mit den entsprechenden installierten Paketen für die
@@ -553,12 +545,102 @@ Signalisierungs-Nachricht statt.
 % https://webrtc.org/getting-started/media-devices
 
 \subsubsection{Verbindungsaufbau}
+\label{browser-webrtc}
 
 Moderne Browser wie Firefox, Chrome, Safari etc.\ stellen eine Implementierung
 des WebRTC-Stacks bereit, die durch eine übersichtliche API leicht zu
 integrieren ist. % Siehe https://caniuse.com/?search=webrtc
 
+Um eine vollständige WebRTC-Verbindung aufzubauen ist bei beiden Nutzern eine
+RTCPeerConnection aufzubauen. Auf einer RTCPeerConnection ist eine
+Event-basierte API verfügbar. (Siehe tabelle)
+
+% table mit der API und der quelle der API:
+
+Insbesondere sind für den Verbindungsaufbau die Events onnegotiationneeded und
+onicecandidate von Interesse. Sobald eine Verbindung erstellt wurde und ein
+lokaler Stream zu dieser hinzugefügt wurde, wird das onnegotiationneeded Event
+ausgelöst. An diesem Punkt ist nun eine eigene SDP-Offer zu erstellen und über
+den singalisierungs Server an den Empfänger zu versenden. Der Empfänger
+verarbeitet diese anschließend und antwortet mit einer SDP-Answer. Nach dem
+beide Teilnehmer die SDP-Nachrichten füe ihren Kommunikationspartner und sich
+selbst gesetzt haben (siehe setRemoteDescription und setLocalDescription),
+werden vom Browser onicecandidate-Events ausgelöst um eine direkte Verbindung
+zwischen den beiden Browsern auszuhandeln.
+
+% Signalisierungsablauf zwischen Interface und Kamera visualisiert:
+
+Nach einem leeren ICE-Kandidaten ist die aushandlung abgeschlossen und der
+Stream kann nun konsumiert werden.
+
 \subsubsection{Verbindungsabbau}
+
+Nach dem der Signalisierungs-Server eine \textit{Room/Leave}-Nachricht gesendet
+hat, kann die RTCPeerConnection ohne negative Auswirkungen abgebaut werden. Im
+Interface wird die Anzeige des Video-Streams des anderen Teilnehmers
+zurückgesetzt und die RTCPeerConnection geschlossen. Somit ist das Interface
+wieder bereit einem weiteren Raum beizutreten und erneut eine WebRTC Verbindung
+herzustellen.
+
+% Screenshots des Demos Interfaces anfügen
+
+\subsection{Kamera}
+
+Zu letzt ist die Kamera zu entwickeln..
+
+\subsubsection{GStreamer}
+
+Anders als in einer Browser-Umgebung bietet Linux abgesehen von
+Hardware-Treibern keine wirklichen Abstraktionen für die Verwendung einer
+Kamera und automatischer Bildverarbeitung. Dies ist in einer nativen Umgebung
+die Aufgabe von weiteren Programmen und Bibliotheken.
+
+Hier wird das weitverbreitete Multimedia-Framework GStreamer relevant. Dieses
+abstrahiert sämtliche Zugriffe auf medienbezogene Hardware (in diesem Fall die
+Kamera), beherscht die meistgenutzten Media-Codecs für Audio und Video und kann
+über Plugins mit weiteren Funktionalitäten erweitert werden: Wie zum Beispiel
+WebRTC.\
+
+Somit muss die folgende Liste an Abhängigkeiten installiert werden, damit die
+Kamera-Software korrekt funktioniert:
+
+\begin{itemize}
+	\item libgstreamer1.0dev oder so..
+	\item Paketnamen raussuchen!!!
+\end{itemize}
+
+(Aufgelistet in Debian-Paket-Namen, da Raspberry PI Os Debian basiert ist)
+
+GStreamer ist um das Konzept von Pipelines herum aufgebaut: Es 
+
+\subsubsection{Architektur der Kamera-Software}
+
+Die Kamera-Software ist grundsätzlich in 2 Schritte unterteilt, die endlos
+wiederholt werden:
+
+\begin{enumerate}
+	\item Verbindungsaufbau zum Signalisierungsserver
+	\item Verbindungsaufbau via WebRTC
+\end{enumerate}
+
+Im Regelfall dauert der 1. Schritt einige Millisekunden. Nach dem die
+Verbindung zum Signalisierungsserver korrekt aufgebaut wurde (und die Kamera
+dem festgelegten Raum beitreten konnte) wird eine GStreamer-Pipeline
+initialisiert und auf den Beitritt eines Benutzers in den Raum erwartet. Nach
+dem die \textit{Room/Join}-Nachricht eingetroffen wird die Pipeline auf Playing
+gesetzt.
+
+GStreamer unterstützt nach erfolgreicher Installation oben genannter Plugins
+eine kompatible API zu der der Browser. Somit läuft der gesamte
+WebRTC-Spezifische Verbindungsaufbau nach der exakt gleichen Logik ab wie unter
+\nameref{browser-webrtc} erläutert.
+
+
+\subsubsection{}
+
+\subsubsection{Installation des Betriebssystems}
+
+\subsubsection{Automatischer Start der Software}
 
 
 \section{Benchmarks}
@@ -580,16 +662,13 @@ def
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
-\end{twocolumn}
 
 \newpage
 
-\begin{onecolumn}
 \begin{appendix}
 
-
+foo
 
 \end{appendix}
-\end{onecolumn}
 
 \end{document}
