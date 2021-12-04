@@ -1,42 +1,57 @@
-\documentclass{article}
+\documentclass{IEEEtran}
 
-\usepackage[a4paper]{geometry}
+\usepackage[a4paper, top=3cm, left=2cm, right=2cm, bottom=2cm]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{xcolor}
+
+\graphicspath{ {./images/} }
 
 \hypersetup{colorlinks=true, allcolors=black}
 
 \title{Ansätze zum Echtzeit-Video-Streaming im Web}
+
 \author{
-	Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}\\
-	Technische Hochschule Brandenburg \\
-	B.Sc. Medieninformatik \\
-	Computergrafik
+	\IEEEauthorblockN{Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}}\\
+	\IEEEauthorblockA{
+		Technische Hochschule Brandenburg \\
+		B.Sc. Medieninformatik \\
+		Computergrafik
+	}
 }
 
 
 \begin{document}
+\begin{onecolumn}
+
+\IEEEspecialpapernotice{
+	betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
+	Wintersemester 2021\\
+	Abgabetermin \today
+}
 
 \maketitle
-betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
-Wintersemester 2021\\
-
-\newpage
-
-\tableofcontents
 
 \begin{abstract}
 	Das abstract schreibe ich zu letzt!
 \end{abstract}
 
-\newpage
+\tableofcontents
 
+\listoffigures
+\listoftables
+
+\end{onecolumn}
+
+\begin{twocolumn}
 \markboth{Hausarbeit Computergrafik – Maximilian Schulke}{}
+
 \section{Einleitung / Motivation}
-% \IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
+
+\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
 in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
 digitale Meeting-Systeme immer relevanter und müssen immer mehr Nutzer in
 Echtzeit mit einander verbinden um einen reibungslosen Arbeitsalltag zu
@@ -291,7 +306,7 @@ Echtzeit-Übertragung beruht.
 Das zu implementierende Kamera-System wird lediglich eine einzige Kernfunktion
 aufweisen: Sobald die Kamera an ist, streamt sie via WebRTC, mit ausreichend
 FPS (mindestens 15 im durchschnitt) in ausreichender Qualität (720 x\ 480),
-ihre Aufnahmen an ein User Interface. Dieses wird im browser laufen, muss aber
+ihre Aufnahmen an ein User Interface. Dieses wird im Browser laufen, muss aber
 ausreichend Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
 usw.). Das Interface und die Kamera starten die Aushandlung des
 WebRTC-Streams über den Signaling Server. D.h.\ sie versenden SDP (Offer /
@@ -299,25 +314,33 @@ Answer) und tauschen ihre ICE-Candidates aus.
 
 \subsection{Architektur}
 
-Die Architektur ist sehr simpel. Sie besteht lediglich aus 3 Kernelementen:
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-signaling}
+	\centering
+	\caption{Signaling zwischen der Kamera und dem Interface (Angelehnt an IEEE
+	PAPER!!!!!!!!!!!)}
+\end{figure}
+
+Die angedachte Architektur wurde möglichst einfach gehalten. Sie besteht
+lediglich aus 3 Elementen:
 
 \subsubsection{Kamera}
+
+Für dieses Experiment wurde ein Einplatinencomputer der Marke Raspberry PI in
+der 4. Version mit 8GB RAM – erweitert durch ein Drittanbieter-Kamera-Modul –
+verwendet. Dieser ist allerdings absolut austauschbar, da jeder Rechner der
+die u.g. Hauptanforderung erfüllt eine geeignete Umgebung darstellt – so kann
+die Kamera-Software auch auf einem Laptop ausgeführt werden, falls keine
+Hardware verfügbar ist. Dies wurde zur veranschaulichung mit einem ThinkPad
+T490 und einer aktuellen NixOS Installation getestet.
 
 Die Hauptanforderung an die Hardware auf der die Kamera-Software läuft ist eine
 Linux-Installation (mit den entsprechenden installierten Paketen für die
 Abhangigkeiten) und eine angeschlossene Kamera die von Linux erkannt wird.
 
-Für dieses Experiment wurde ein Einplatinencomputer der Marke Raspberry PI in
-der 4. Version mit 8GB RAM – erweitert durch ein Drittanbieter-Kamera-Modul –
-verwendet. Dieser ist allerdings absolut austauschbar, da jeder Rechner der
-die o.g. Hauptanforderung erfüllt eine geeignete Umgebung darstellt – so kann
-die Kamera-Software auch auf einem Laptop ausgeführt werden, falls keine
-Hardware verfügbar ist. Dies wurde zur veranschaulichung mit einem ThinkPad
-T490 und einer aktuellen NixOS Installation getestet.
-
 Auf der Einplatinencomputer ist das mitgelieferte Betriebssystem ``Raspberry PI
-OS'' und die entsprechenden Software-Abhängigkeiten installiert. (Siehe GitHub
-für Dependencies.)
+OS'' und die entsprechenden Software-Abhängigkeiten installiert. 
+\textcolor{red}{Siehe GitHub für Dependencies.}
 
 \subsubsection{Signaling-Server}
 
@@ -366,7 +389,20 @@ wird.
 
 HIER ZIETIEREN WAS DAS ZEUG HÄLT / ERKLÄRGRAFIKEN NUTZEN
 
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-asynchronität}
+	\centering
+	\caption{Asynchrone Abarbeitung einer IO intensiven Aufgabe}
+\end{figure}
+
 \subsubsection{Verbindungsaufbau}
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-signaling-server-tls}
+	\centering
+	\caption{Signaling-Server mit mehreren TLS Verbindungen}
+\end{figure}
+
 
 Um eine WebSocket-Secure-Verbindung aufzubauen, muss zu erst eine TCP- und dann
 darüber eine TLS-Verbindung zu dem Client aufgebaut werden. Über diese wird
@@ -375,7 +411,7 @@ suchen) und nach einer erfolgreichen Nachricht des Servers mit dem Status-Code
 101 (Switching Protocols) wird die über den gleichen Transport-Weg (TLS)
 nach dem WebSocket-Protokoll kommuniziert.
 
-Grafik einfügen.
+\textcolor{red}{Grafik einfügen}
 
 \subsubsection{Spezifikation des Signaling-Protokolls}
 
@@ -417,7 +453,7 @@ Nach einer erfolgreich aufgebauten Verbindung mit dem Server schickt dieser ein
 Nachricht \textit{Joined} vom Server erhält, darf dieser keine Signale
 verschicken.
 
-Diagramme einfügen!
+\textcolor{red}{Diagramme einfügen!}
 
 Eine \textit{Room/Join} Nachricht wird an ggf.\ andere Clients im Raum
 verschickt, sobald ein Client diesen betritt. Diese Nachricht kann auf dem
@@ -494,6 +530,11 @@ Diagramm einfügen..
 %  r   r   s
 % o    o     o
 
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-broadcast}
+	\centering
+	\caption{Broadcast-Channel Konzept}
+\end{figure}
 
 Somit kriegt jeder Client bei betreten eines Raumes Zugriff auf einen Sender
 und einen Empfänger dieses Broadcast-Channels. In diesen schreibt er bei erhalt
@@ -502,6 +543,12 @@ die gerade keine CPU-Zeit erhält, da ansonsten keine Ereignisse aufgetreten
 sind, wird wieder aktiv sobald eine neue Nachricht über den Channel da ist.
 Diese kann dann als Server-Nachricht vom Typ \textit{Room/Signal} mit dem
 Signal aus dem Channel an den Empfänger gesendet werden.
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-websocket-verknüpfung}
+	\centering
+	\caption{Kommunikation von Nutzern über einen Broadcast-Channel}
+\end{figure}
 
 \subsection{Interface}
 
@@ -544,8 +591,7 @@ Signalisierungs-Nachricht statt.
 
 % https://webrtc.org/getting-started/media-devices
 
-\subsubsection{Verbindungsaufbau}
-\label{browser-webrtc}
+\subsubsection{Verbindungsaufbau}\label{browser-webrtc}
 
 Moderne Browser wie Firefox, Chrome, Safari etc.\ stellen eine Implementierung
 des WebRTC-Stacks bereit, die durch eine übersichtliche API leicht zu
@@ -569,6 +615,13 @@ werden vom Browser onicecandidate-Events ausgelöst um eine direkte Verbindung
 zwischen den beiden Browsern auszuhandeln.
 
 % Signalisierungsablauf zwischen Interface und Kamera visualisiert:
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{cited-webrtc-connection-establishment}
+	\centering
+	\caption{WebRTC-Verbindungsaufbau (Siehe QUELLE)}
+\end{figure}
+
 
 Nach einem leeren ICE-Kandidaten ist die aushandlung abgeschlossen und der
 Stream kann nun konsumiert werden.
