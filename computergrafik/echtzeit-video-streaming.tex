@@ -643,16 +643,53 @@ Zu letzt ist die Kamera zu entwickeln..
 
 \subsubsection{GStreamer}
 
-Anders als in einer Browser-Umgebung bietet Linux abgesehen von
-Hardware-Treibern keine wirklichen Abstraktionen für die Verwendung einer
-Kamera und automatischer Bildverarbeitung. Dies ist in einer nativen Umgebung
-die Aufgabe von weiteren Programmen und Bibliotheken.
+Anders als in einer Browser-Umgebung bietet Linux abgesehen von der
+bereitstellung von Hardware-Treibern keine guten Abstraktionen für die
+Verwendung einer Kamera und automatischer Bildverarbeitung. Dies ist in einer
+nativen Umgebung die Aufgabe von weiteren Programmen und Bibliotheken.
 
 Hier wird das weitverbreitete Multimedia-Framework GStreamer relevant. Dieses
 abstrahiert sämtliche Zugriffe auf medienbezogene Hardware (in diesem Fall die
 Kamera), beherscht die meistgenutzten Media-Codecs für Audio und Video und kann
-über Plugins mit weiteren Funktionalitäten erweitert werden: Wie zum Beispiel
-WebRTC.\
+über Plugins mit weiteren Funktionalitäten erweitert werden.
+
+GStreamer ist dafür ausgelegt das erstellen von Audio und/oder Video basierten
+Anwendung zu erleichtern. Es unterstützt weiterhin, durch die
+Pipeline-Architektur, jegliche Art von Datenströmen.
+
+% Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
+% Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{gstreamer-overview.png}
+	\centering
+	\caption{GStreamer Architektur QUELLE von GSTREAMER DOCS}
+\end{figure}
+
+Zu den Kern-Features von GStreamer gehören eine API für diverse
+Multimedia-Anwendungen, eine Pipeline- und Plugin-Architektur, Mechanismen für
+die Aushandlung von Datenformaten zwischen Pipeline-Elementen, Synchronisation
+von Datenströmen. (Siehe Abbildung X und QUELLE!!)
+
+Das Framework baut auf einem ausgereiften Plugin-System mit über 250 Plugins
+auf, welches den Codec-Support erweitert und weitere Komponenten zur Erstellung
+von komplexeren Pipelines bereitstellt. (Siehe QUELLE)
+
+Diese Plugins können in die folgenden Kategorien unterteilt werden:
+
+\begin{itemize}
+	\item Protokolle
+	\item Datenquellen
+	\item Formate
+	\item Codecs
+	\item Filter \& Effekte
+	\item Ausgabe
+\end{itemize}
+
+% Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
+
+Für dieses Experiment ist das GStreamer-Plugin für WebRTC besonders von
+bedeutung.
 
 Somit muss die folgende Liste an Abhängigkeiten installiert werden, damit die
 Kamera-Software korrekt funktioniert:
@@ -664,16 +701,14 @@ Kamera-Software korrekt funktioniert:
 
 (Aufgelistet in Debian-Paket-Namen, da Raspberry PI Os Debian basiert ist)
 
-GStreamer ist um das Konzept von Pipelines herum aufgebaut: Es 
-
 \subsubsection{Architektur der Kamera-Software}
 
-Die Kamera-Software ist grundsätzlich in 2 Schritte unterteilt, die endlos
-wiederholt werden:
+Die Kamera-Software ist grundsätzlich in 2 Zustände unterteilt, die sich endlos
+abwechseln:
 
 \begin{enumerate}
 	\item Verbindungsaufbau zum Signalisierungsserver
-	\item Verbindungsaufbau via WebRTC
+	\item Streaming via WebRTC
 \end{enumerate}
 
 Im Regelfall dauert der 1. Schritt einige Millisekunden. Nach dem die
@@ -685,16 +720,14 @@ gesetzt.
 
 GStreamer unterstützt nach erfolgreicher Installation oben genannter Plugins
 eine kompatible API zu der der Browser. Somit läuft der gesamte
-WebRTC-Spezifische Verbindungsaufbau nach der exakt gleichen Logik ab wie unter
-\nameref{browser-webrtc} erläutert.
+WebRTC-Spezifische Verbindungsaufbau nach der exakt gleichen Logik ab wie
+unter\ \ref{browser-webrtc} erläutert.
 
+\subsubsection{Vorbereitung der Laufzeitumgebung}
 
-\subsubsection{}
+Die Installation des Betriebssystems für die Kamera-Hardware 
 
-\subsubsection{Installation des Betriebssystems}
-
-\subsubsection{Automatischer Start der Software}
-
+\subsubsection{Automatischer Start der Kamera-Software}
 
 \section{Benchmarks}
 
