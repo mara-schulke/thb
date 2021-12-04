@@ -736,25 +736,70 @@ Die Installation des Betriebssystems für die Kamera-Hardware
 
 \section{Auswertung}
 
-- Raspberry Pi Kamera langsam..\ unerwünschte Qualität (evtl 32 bit?)
+Der Signaling-Server hatte den größten Implementierungsaufwand der 3
+Komponenten, hat sich dafür aber als sehr stabil und vielseitig einsetzbar
+erwiesen. Hinsichtlich der Performance ist die Implementierung ebenfalls ein
+Erfolg. Auf einem System mit einem Intel i7-8565U-Chip übersteigt der Server
+mit 10 Benutzern nicht ansatzweise 1\% der CPU-Kapazität. Falls nicht eine
+große Anzahl an Nutzern gleichzeitig Signale über diesen Server schickt,
+pendelt sich dieser aufgrund seiner asynchronen Architektur im Ruhemodus bei
+einer CPU-Last von 0.0\% ein, da er nur aktiv wird, wenn auch Nachrichten
+eintreffen.
+
+Die Benutzeroberfläche ist rein funktional geblieben und bietet kein gutes
+Nutzererlebnis. Abgesehen von der schlechten Nutzbarkeit, ist die erwartete
+Funktionalität vollständig und mit angemessenem Aufwand implementierbar
+gewesen. Die Browser-APIs bieten eine exzellente Grundlage um reale
+Anwendungen in kurzer Zeit mit einer Live-Stream-Funktionalität zu entwickeln.
+Desweiteren funtkioniert auch die Videoübertragung vom Browser über eine
+WebRTC-Verbindung sehr gut, die Bildübertragungsraten waren i.d.R. über den
+angestrebten 15 Bildern pro Sekunde.
+
+Die Implementierung einer Kamera-Software ist im Vergleich zu den beiden
+anderen Komponenten verhältnismäßig aufwändig gewesen. GStreamer bringt
+ebenfalls vergleichbare WebRTC-Abstraktionen mit sich, wie moderne Browser,
+allerdings ist GStreamer erheblich instabiler und unzuverlässiger was den
+Stream-Aufbau angeht als die Browser. Auch die Bildübertragungsrate ist leider
+erst bei sehr niedriger Qualität (160px$\times$90px) nah an dem angestrebten
+Wert. Sobald die Qualität diese überschritt, nimmt die Bildübertragungsrate
+drastisch ab und somit wird der Stream ab einer gewissen Bildqualität
+unbrauchbar. Dies könnte ggf.\ auf das 32-Bit-Betriebssystem der Hardware
+zurückzuführen zu sein.
+
 
 \section{Nächste Schritte}
 
-\large{IPV6 only => NAT holepunching entfällt}
+Die nächsten Schritte um dieses Experiment weiterzuführen wären definitiv die
+Fehlersuche an der Kamera-Software um die Übertragungsqualität zu steigern.
 
-\section{Abbildungsverzeichnis}
-abc
-def
+Außerdem sollte die Kamera-Software nicht erneut dem Raum auf dem
+Signaling-Server beitreten sobald der Stream abbricht, dies zu beheben könnte
+eine (auch wenn nur geringe) Netzwerkentlastung bringen und würde zusätzlich
+den Signaling-Server schonen.
 
-\bibliographystyle{IEEEtran}
-\bibliography{IEEEabrv,references}
+Auch die Sicherheit von Räumen könnte durch ausgreiftere
+Authentifizierungsverfahren drastisch erhöht werden.
 
-\newpage
+Als letzte Verbesserung wäre eine Implementierung von Audio-Übertragung von der
+Kamera zu der Benutzeroberfläche interessant um auch diesen Aspekt der
+Echtzeitübertragung im Web auszustesten.
 
+% Mögliche Optimierungen:
+% - Verbesserung der Video-Qualität: Evtl kein 32bit os
+% - Nicht ständig signalisieren, einmal joinen als kamera
+% - Kamera interface verbessern
+% \large{IPV6 only => NAT holepunching entfällt}
+
+%\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,references}
+
+\end{twocolumn}
+
+\begin{onecolumn}
 \begin{appendix}
 
-foo
+
 
 \end{appendix}
-
+\end{onecolumn}
 \end{document}
