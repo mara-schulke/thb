@@ -1,56 +1,78 @@
-\documentclass{IEEEtran}
+\documentclass{article}
 
-\usepackage[a4paper, top=3cm, left=2cm, right=2cm, bottom=2cm]{geometry}
+\usepackage[a4paper]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{float}
+
+\lstset{
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\scriptsize\ttfamily},
+    numbers=none,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4
+}
 
 \graphicspath{ {./images/} }
 
 \hypersetup{colorlinks=true, allcolors=black}
 
+\newcommand{\figuresource}[1]{
+	\begin{center}Quelle: #1\end{center}
+}
+
 \title{Ansätze zum Echtzeit-Video-Streaming im Web}
 
 \author{
-	\IEEEauthorblockN{Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}}\\
-	\IEEEauthorblockA{
+	%\IEEEauthorblockN{Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}}\\
+	%\IEEEauthorblockA{
 		Technische Hochschule Brandenburg \\
 		B.Sc. Medieninformatik \\
 		Computergrafik
-	}
+	%}
 }
 
 \begin{document}
+
 \begin{onecolumn}
+	\begin{titlepage}
+		\pagenumbering{gobble}
 
-\IEEEspecialpapernotice{
-	betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
-	Wintersemester 2021\\
-	Abgabetermin \today
-}
+	%	\IEEEspecialpapernotice{
+			betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
+			Wintersemester 2021\\
+			Abgabetermin \today
+	%	}
 
-\maketitle
+		\maketitle
 
-\begin{abstract}
-	Das abstract schreibe ich zu letzt!
-\end{abstract}
+		\begin{abstract}
+			Das abstract schreibe ich zu letzt!
+		\end{abstract}
 
-\tableofcontents
+		\tableofcontents
 
-\listoffigures
-\listoftables
-
+		\listoffigures
+		\listoftables
+	\end{titlepage}
 \end{onecolumn}
 
-\begin{twocolumn}
+\pagenumbering{arabic}
+\begin{onecolumn}
 \markboth{Hausarbeit Computergrafik – Maximilian Schulke}{}
 
 \section{Einleitung / Motivation}
 
-\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden dezentralisierung und
+%\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden dezentralisierung und
 der damit einhergehenden Vernetzung der Arbeitswelt in den letzten
 Jahren~\cite{CoronaHomeOffice} werden auch digitale Meeting-Systeme immer
 relevanter und müssen immer mehr Nutzer in Echtzeit mit einander verbinden um
@@ -101,7 +123,7 @@ der IEFT oder auch \textit{Internet Engineering Task Force} bezüglich der
 Echtzeit-Kommunikation aussahen, welche Probleme erkannt und behoben wurden und
 welche Protokolle heute der Standard sind.
 
-\subsection{1996: RTP \& RTCP – RFC 1889}
+\subsection{1996: RTP \& RTCP}
 
 Am weitesten reicht das \textit{Real-Time Transport Protocol} oder auch
 \textit{RTP} zurück. Es wurde erstmals 1996 von der IEFT standardisiert und
@@ -149,25 +171,27 @@ definiert, eine beliebte Wahl für ein Protokoll zur Session-Aushandlung ist
 allerdings das \textit{Session Initiation Protokoll} oder kurz
 \textit{SIP}.~\cite{RFC3550, RFC3261}
 
-\subsection{2004:\ SRTP (RFC 3711)}
+\subsection{2004:\ SRTP}
 
 Im März 2004 wurden \textit{SRTP} und \textit{SRTCP} vorgestellt – die
 verschlüsselten Version von \textit{RTP} bzw. \textit{RTCP}. Diese bauen
 weitestgehend auf dem \textit{Advanced Encryption Standard} (kurz.
-\textit{AES}) auf \textcolor{red}{(siehe RFC3711 Seite 19).}. Der RFC
-beschäftigt sich weitestgehend mit den kryptografischen Aspekten des
-Protokolls.
+\textit{AES}) auf.~\cite{RFC3711} Der RFC beschäftigt sich weitestgehend mit
+den kryptografischen Aspekten des Protokolls und ist in dieser Hinsicht für
+dies vorliegende Arbeit nur bedingt interessant. Dennoch bildet
+\textit{SRTP} eine wichtige Grundlage für sichere Echtzeitübertragung und
+wird im WebRTC-Standard verwendet.
 
 Eine weitverbreitete und offene Implementierung für \textit{SRTP / SRTCP}
 wird von der US-Amerikanischen Telekomunikations-Gesellschaft Cisco
 bereitgestellt. Diese hat den Namen \textit{libsrtp} und ist öffentlich auf der
-Entwickler-Plattform GitHub einsehbar (siehe
+Entwickler-Plattform GitHub öffentlich einsehbar (siehe
 \href{https://github.com/cisco/libsrtp}{github.com/cisco/libsrtp}).
 
 % Anwendung in VoIP\!
 % https://de.wikipedia.org/wiki/ZRTP
 
-\subsection{2005: RTMP von Adobe}
+\subsection{2005: RTMP}
 
 % https://www.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf
 \textit{RTMP} ist ein von der Firma \textit{Adobe Systems Incorporated}
@@ -188,7 +212,13 @@ Echtzeit-Übertragungs-Kontext.
 Desweiteren gibt es noch Protokollvarianten die HTTP bzw. HTTPS als zugrundeliegendes
 Protokoll verwenden.\textcolor{red}{Siehe XYZ Quelle suchen}
 
-\subsection{2010: WebRTC (RFC 8825)}
+\subsection{2006: DTLS}
+
+Das \textit{Datagram-Transport-Layer-Security} Protokoll bietet starke
+Sicherheitsgarantien (equivalent zu \textit{TLS}) für Datagram basierte
+Protokolle wie z. B. \textit{UDP}.~\cite{RFC4347}
+
+\subsection{2010: WebRTC}
 
 \textit{WebRTC} ist eine Peer-To-Peer-Technologie die über mehrere Protokolle
 und Audio- und Video-Codecs performante und generische
@@ -196,12 +226,9 @@ Echtzeit-Kommunikations-Kanäle zwischen Nutzern (oder auch \textit{Peers})
 realisiert. Sie 
 
 WebRTC stellt eine direkte Verbindung zwischen zwei Endgeräten her und
-verwendet einen mix aus RTP, RTCP, SDP, (ICE Candidates) und einem signaling
-server. Es unterstützt beliebte video codecs wie V8 / V9 und ist in der zukunft 
-auf AV1 angelegt. Der standard audio codec ist opus.
-
-Durch die direkte verbindung wird eine sogennante sub second latency erreicht.
-Dies beschreibt im grunde \textcolor{red}{XYZ}.
+verwendet einen mix aus SRTP, DTLS, SDP, (ICE Candidates) und einem
+Signaling-Channel. Es unterstützt beliebte video codecs wie V8 / V9 und ist in
+der zukunft auf AV1 angelegt. Der standard audio codec ist opus.
 
 % Hat mit 1996 RTP und dann 2005 mit RTMP angefangen, wann kam SRTP?\ JSEP Global IP Solutions \& Google WebRTC kam 2010, Microsoft wollte CU-RTC
 
@@ -289,17 +316,16 @@ empfangenen Contents eintreten würde.
 \subsection{Relay}
 % https://webrtc.org/getting-started/turn-server
 
-\section{Protokolle}
-\subsection{RTP}
-
-\subsection{RTCP}
-\subsection{RTSP}
-\subsection{SDP}
+% \section{Protokolle}
+% \subsection{RTP}
+% \subsection{RTCP}
+% \subsection{RTSP}
+% \subsection{SDP}
 % https://datatracker.ietf.org/doc/html/rfc4566#section-3.1
-\subsection{SID}
+% \subsection{SID}
 % https://datatracker.ietf.org/doc/html/rfc3261
 % \subsection{STUN}
-\subsection{WebRTC}
+% \subsection{WebRTC}
 
 \section{Implementierung eines Kamera-Live-Streams}
 
@@ -316,22 +342,23 @@ Echtzeit-Übertragung beruht.
 
 \subsection{Umfang}
 
-Das zu implementierende Kamera-System wird lediglich eine einzige Kernfunktion
-aufweisen: Sobald die Kamera an ist, streamt sie via WebRTC, mit ausreichend
-FPS (mindestens 15 im durchschnitt) in ausreichender Qualität (720 x\ 480),
-ihre Aufnahmen an ein User Interface. Dieses wird im Browser laufen, muss aber
-ausreichend Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
+Das zu implementierende Kamera-System wird lediglich eine einzige
+Kernfunktion aufweisen: Sobald die Kamera an ist, streamt sie via
+WebRTC, mit ausreichend FPS (mindestens 15 im durchschnitt) in
+ausreichender Qualität (720$\times$480), ihre Aufnahmen an ein User
+Interface. Dieses wird im Browser laufen, muss aber ausreichend
+Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
 usw.). Das Interface und die Kamera starten die Aushandlung des
-WebRTC-Streams über den Signaling Server. D.h.\ sie versenden SDP (Offer /
-Answer) und tauschen ihre ICE-Candidates aus.
+WebRTC-Streams über den Signaling Server. D.h.\ sie versenden SDP
+(Offer / Answer) und tauschen ihre ICE-Candidates aus.
 
 \subsection{Architektur}
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{diagram-signaling}
 	\centering
-	\caption{Signaling zwischen der Kamera und dem Interface (Angelehnt an IEEE
-	PAPER!!!!!!!!!!!)}
+	\caption{Signaling zwischen der Kamera und dem Interface.}
+	\figuresource{Schulke 2021, nach~\cite{WebRTC}}
 \end{figure}
 
 Die angedachte Architektur wurde möglichst einfach gehalten. Sie besteht
@@ -406,16 +433,10 @@ HIER ZIETIEREN WAS DAS ZEUG HÄLT / ERKLÄRGRAFIKEN NUTZEN
 	\includegraphics[width=0.5\textwidth]{diagram-asynchronität}
 	\centering
 	\caption{Asynchrone Abarbeitung einer IO intensiven Aufgabe}
+	\figuresource{Schulke 2021}
 \end{figure}
 
 \subsubsection{Verbindungsaufbau}
-
-\begin{figure}[ht]
-	\includegraphics[width=0.5\textwidth]{diagram-signaling-server-tls}
-	\centering
-	\caption{Signaling-Server mit mehreren TLS Verbindungen}
-\end{figure}
-
 
 Um eine WebSocket-Secure-Verbindung aufzubauen, muss zu erst eine TCP- und dann
 darüber eine TLS-Verbindung zu dem Client aufgebaut werden. Über diese wird
@@ -466,7 +487,12 @@ Nach einer erfolgreich aufgebauten Verbindung mit dem Server schickt dieser ein
 Nachricht \textit{Joined} vom Server erhält, darf dieser keine Signale
 verschicken.
 
-\textcolor{red}{Diagramme einfügen!}
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{signaling-protocol}
+	\centering
+	\caption{Anwendungsbeispiel des Singaling-Protokolls}
+	\figuresource{Schulke 2021}
+\end{figure}
 
 Eine \textit{Room/Join} Nachricht wird an ggf.\ andere Clients im Raum
 verschickt, sobald ein Client diesen betritt. Diese Nachricht kann auf dem
@@ -526,27 +552,13 @@ bieten sich sogenannte Broadcast-Channel an. Sie sind dafür ausgelegt, dass von
 mehreren Stellen in diese geschrieben und gelesen wird. Sie funktioneren analog
 zu dem Broadcast aus der Netzwerktechnik.
 
-Diagramm einfügen..
-
-%      C
-%    s r r
-%  s   r   r
-% o    o     o
-
-%      C
-%    r s r
-%  r   s   r
-% o    o     o
-
-%      C
-%    r r s
-%  r   r   s
-% o    o     o
+\textcolor{orange}{Diagramm einfügen..}
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{diagram-broadcast}
 	\centering
 	\caption{Broadcast-Channel Konzept}
+	\figuresource{Schulke 2021}
 \end{figure}
 
 Somit kriegt jeder Client bei betreten eines Raumes Zugriff auf einen Sender
@@ -561,6 +573,7 @@ Signal aus dem Channel an den Empfänger gesendet werden.
 	\includegraphics[width=0.5\textwidth]{diagram-websocket-verknüpfung}
 	\centering
 	\caption{Kommunikation von Nutzern über einen Broadcast-Channel}
+	\figuresource{Schulke 2021}
 \end{figure}
 
 \subsection{Interface}
@@ -607,8 +620,15 @@ Signalisierungs-Nachricht statt.
 \subsubsection{Verbindungsaufbau}\label{browser-webrtc}
 
 Moderne Browser wie Firefox, Chrome, Safari etc.\ stellen eine Implementierung
-des WebRTC-Stacks bereit, die durch eine übersichtliche API leicht zu
-integrieren ist. % Siehe https://caniuse.com/?search=webrtc
+des WebRTC-Standards bereit (siehe Abb.~\ref{fig:webrtc-support}), die
+durch eine übersichtliche API leicht zu integrieren ist. % Siehe https://caniuse.com/?search=webrtc
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{webrtc-support}
+	\centering
+	\caption[WebRTC Support-Matrix~\cite{WebRTCSupport}]{WebRTC Support-Matrix}\label{fig:webrtc-support}
+	\figuresource{\cite{WebRTCSupport}}
+\end{figure}
 
 Um eine vollständige WebRTC-Verbindung aufzubauen ist bei beiden Nutzern eine
 RTCPeerConnection aufzubauen. Auf einer RTCPeerConnection ist eine
@@ -632,9 +652,9 @@ zwischen den beiden Browsern auszuhandeln.
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{cited-webrtc-connection-establishment}
 	\centering
-	\caption{WebRTC-Verbindungsaufbau (Siehe QUELLE)}
+	\caption[WebRTC-Verbindungsaufbau~\cite{WebRTC}]{WebRTC-Verbindungsaufbau}
+	\figuresource{\cite{WebRTC}}
 \end{figure}
-
 
 Nach einem leeren ICE-Kandidaten ist die aushandlung abgeschlossen und der
 Stream kann nun konsumiert werden.
@@ -676,17 +696,19 @@ Pipeline-Architektur, jegliche Art von Datenströmen.
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{gstreamer-overview.png}
 	\centering
-	\caption{GStreamer Architektur QUELLE von GSTREAMER DOCS}
+	\caption[GStreamer Architektur~\cite{GStreamerManualIntro}]{GStreamer Architektur}\label{fig:gstreamer-arch}
+	\figuresource{\cite{GStreamerManualIntro}}
 \end{figure}
 
 Zu den Kern-Features von GStreamer gehören eine API für diverse
 Multimedia-Anwendungen, eine Pipeline- und Plugin-Architektur, Mechanismen für
 die Aushandlung von Datenformaten zwischen Pipeline-Elementen, Synchronisation
-von Datenströmen. (Siehe Abbildung X und QUELLE!!)
+von Datenströmen. (siehe Abb.~\ref{fig:gstreamer-arch}
+und~\cite{GStreamerManualIntro})
 
 Das Framework baut auf einem ausgereiften Plugin-System mit über 250 Plugins
 auf, welches den Codec-Support erweitert und weitere Komponenten zur Erstellung
-von komplexeren Pipelines bereitstellt. (Siehe QUELLE)
+von komplexeren Pipelines bereitstellt.
 
 Diese Plugins können in die folgenden Kategorien unterteilt werden:
 
@@ -699,6 +721,8 @@ Diese Plugins können in die folgenden Kategorien unterteilt werden:
 	\item Ausgabe
 \end{itemize}
 
+Siehe~\cite{GStreamerManualIntro}.
+
 % Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
 
 Für dieses Experiment ist das GStreamer-Plugin für WebRTC besonders von
@@ -708,11 +732,16 @@ Somit muss die folgende Liste an Abhängigkeiten installiert werden, damit die
 Kamera-Software korrekt funktioniert:
 
 \begin{itemize}
-	\item libgstreamer1.0dev oder so..
-	\item Paketnamen raussuchen!!!
+	\item libgstreamer-gl1.0-0
+	\item libgstreamer-opencv1.0-0
+	\item libgstreamer-plugins-bad1.0-0
+	\item libgstreamer-plugins-bad1.0-dev
+	\item libgstreamer-plugins-base1.0-0
+	\item libgstreamer-plugins-base1.0-dev
+	\item libgstreamer1.0-0
+	\item libgstreamer1.0-dev
+	\item libgstrtspserver-1.0-0
 \end{itemize}
-
-(Aufgelistet in Debian-Paket-Namen, da Raspberry PI Os Debian basiert ist)
 
 \subsubsection{Architektur der Kamera-Software}
 
@@ -723,6 +752,13 @@ abwechseln:
 	\item Verbindungsaufbau zum Signalisierungsserver
 	\item Streaming via WebRTC
 \end{enumerate}
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{diagram-states}
+	\centering
+	\caption{Zustandsdiagramm der Kamera-Software}
+	\figuresource{Schulke 2021}
+\end{figure}
 
 Im Regelfall dauert der 1. Schritt einige Millisekunden. Nach dem die
 Verbindung zum Signalisierungsserver korrekt aufgebaut wurde (und die Kamera
@@ -808,13 +844,63 @@ Echtzeitübertragung im Web auszustesten.
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv, references}
 
-\end{twocolumn}
+\end{onecolumn}
 
 \begin{onecolumn}
 \begin{appendix}
 
+\section*{Anhang}
 
+\begin{scriptsize}
+	\begin{flushleft}
+		\texttt{\textbf{signaling/main.rs}}
+		\lstinputlisting{implementation/signaling/src/main.rs}
+		\texttt{\textbf{signaling/lib.rs}}
+		\lstinputlisting{implementation/signaling/src/lib.rs}
+		\texttt{\textbf{signaling/tls.rs}}
+		\lstinputlisting{implementation/signaling/src/tls.rs}
+		\texttt{\textbf{signaling/rooms.rs}}
+		\lstinputlisting{implementation/signaling/src/rooms.rs}
+		\texttt{\textbf{signaling/state.rs}}
+		\lstinputlisting{implementation/signaling/src/state.rs}
+		\texttt{\textbf{signaling/signals.rs}}
+		\lstinputlisting{implementation/signaling/src/signals.rs}
+		\texttt{\textbf{camera/main.rs}}
+		\lstinputlisting{implementation/camera/src/main.rs}
+		\texttt{\textbf{camera/webrtc.rs}}
+		\lstinputlisting{implementation/camera/src/webrtc.rs}
+		\texttt{\textbf{camera/signaling.rs}}
+		\lstinputlisting{implementation/camera/src/signaling.rs}
+
+		\texttt{\textbf{interface/index.html}}
+		\lstinputlisting{implementation/interface/index.html}
+	\end{flushleft}
+\end{scriptsize}
+
+\begin{figure*}[p]
+	\includegraphics[width=\textwidth]{photo-board}
+	\centering
+	\caption{Rapsberry PI 4}
+\end{figure*}
+
+\begin{figure*}[p]
+	\includegraphics[width=\textwidth]{photo-cam}
+	\centering
+	\caption{Camera Modul}
+\end{figure*}
+
+\begin{figure*}[p]
+	\includegraphics[width=\textwidth]{photo-installed}
+	\centering
+	\caption{Installierte Kamera}
+\end{figure*}
 
 \end{appendix}
 \end{onecolumn}
+
+% TODO: Jede Abbildung erwähnen
+% TODO: Jede Section auf Rechtschreibung prüfen
+% TODO: Zitate checken!
+% TODO: Fehlende Tabellen einbauen
+
 \end{document}
