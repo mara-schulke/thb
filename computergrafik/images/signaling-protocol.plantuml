@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+participant "Peer A" as A
+entity "Signaling-Server" as S
+participant "Peer B" as B
+
+
+A <- S: Hello <Peer A ID>
+A -> S: JoinOrCreate <Raum ID>
+A <- S: Joined
+
+S -> B: Hello <Peer B ID>
+S <- B: JoinOrCreate <Raum ID>
+S -> B: Joined
+A <- S: Room/Join <Peer B ID>
+
+A -> S: Signal <SDP Offer>
+S -> B: Signal <SDP Offer>
+
+S <- B: Signal <SDP Answer>
+A <- S: Signal <SDP Answer>
+
+...ICE Candidate Signaling...
+
+A -> S: Signal <ICE>
+S -> B: Signal <ICE>
+A -> S: Signal <ICE>
+S -> B: Signal <ICE>
+S <- B: Signal <ICE>
+A <- S: Signal <ICE>
+
+...Streaming...
+
+...Peer B bricht die Verbindung ab...
+
+A <- S: Room/Leave <Peer B ID>
+
+@enduml
