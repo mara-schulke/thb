@@ -23,7 +23,6 @@
 	}
 }
 
-
 \begin{document}
 \begin{onecolumn}
 
@@ -51,38 +50,48 @@
 
 \section{Einleitung / Motivation}
 
-\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden Vernetzung der Arbeitswelt
-in den letzten Jahren \textcolor{red}{quelle suchen corona zoom} werden auch
-digitale Meeting-Systeme immer relevanter und müssen immer mehr Nutzer in
-Echtzeit mit einander verbinden um einen reibungslosen Arbeitsalltag zu
-gewährleisten. Dies impliziert natürlich auch dass eine \textcolor{red}{quelle
-suchen ab wann gute Qualität} Verbindungsqualität gegeben sein muss, damit die
-Systeme nutzbar bleiben.
+\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden dezentralisierung und
+der damit einhergehenden Vernetzung der Arbeitswelt in den letzten
+Jahren~\cite{CoronaHomeOffice} werden auch digitale Meeting-Systeme immer
+relevanter und müssen immer mehr Nutzer in Echtzeit mit einander verbinden um
+einen reibungslosen Arbeitsalltag zu gewährleisten. Zu begin der
+Corona-Pandemie stieg der Netzwerktraffic für VoIP und Videokonferenzen im März
+2020 um 210\%-285\%~\cite{NetzwerkStatistik}.
 
-\textcolor{red}{\& sicherheitsaspekt}
-Aber wie können wir skalierbare Meeting-Systeme realisieren ohne große
-Datenmengen über einen Streaming-Server zu schicken der diese an alle anderen
-broadcasted? Die Entwicklung der letzten Jahre deuten immer mehr darauf hin,
-dass \textit{Peer-To-Peer} basierte Lösungensansätze aufgrund der besseren
-Performance und Skalierbarkeit, in der Regel die bessere Wahl darstellen
-\textcolor{red}{quelle suchen}. Natürlich spielen zur Auswahl der Architektur
-noch weitere Parameter eine wichtige Rolle (z. B. die maximale Bandbreite und
-Rechenleistung der Endgeräte), aber mit immer großer werdenden
-Heimnetz-Leitungen und zunehmender Rechenleistung der Endgeräte stellt dies
-meistens kein Problem mehr da. \textcolor{red}{quelle suchen}.
+Damit die Konferenzsysteme ihren Einsatzzweck erfüllen können, ist es
+erforderlich, dass eine ausreichend gute \textit{Quality of Service (QoS)}
+gegeben ist.
+
+Aber wie können skalierbare Meeting-Systeme realisiert werden ohne große
+Datenmengen über einen zentralisierten Streaming-Server zu schicken der diese
+an alle Teilnehmer broadcasted? Die Entwicklung der letzten Jahre deuten immer
+mehr darauf hin, dass \textit{Peer-To-Peer} basierte Lösungensansätze aufgrund
+der besseren Performance und Skalierbarkeit, in der Regel die bessere Wahl
+darstellen~\cite{PeerToPeerVersusCentralized}. \textit{Peer-To-Peer} halten
+unvorhersehbare Anstiege in der Nutzung~\cite{NetzwerkStatistik} deutlich
+besser aus, da die Echtzeit-Datenverarbeitung nicht bei dem
+Konferenzsystem-Anbieter stattfindet, sondern bei den Teilnehmern.
+
+Natürlich spielen zur Auswahl der Architektur noch weitere Parameter eine
+wichtige Rolle (z. B. die maximale Bandbreite und Rechenleistung der
+Endgeräte), aber mit immer größer werdenden Heimnetz-Leitungen und zunehmender
+Rechenleistung der Endgeräte stellt dies mittlerweile für einfache
+Videokonferenzen kein Problem mehr da.~\cite{VideokonferenzNetzwerklast}
 
 Die Problematik der Echtzeit-Kommunikation im Web beschäftigt auch
 das \textit{W3C} seit 2011 im Zuge der Standardisierung des seit diesem Jahr
-zum Web-Standard erklärten Protokoll \textit{WebRTC}. \textcolor{red}{quelle
-suchen}.
+zum Web-Standard erklärten Protokoll \textit{WebRTC}.~\cite{WebRTCStandardW3C}
 
 Es ist also (immer noch) eine sehr aktuelle Thematik in der Informatik
-Echtzeit- oder \textcolor{blue}{Nahe-Zu-Echtzeit-Kommunikation} zuverlässig zu
-bewältigen. Die Aufgabe dieser Arbeit soll sein, einen Überblick über den
-Stand der Architekturmuster, Protokolle und möglicher Problematiken bei der
-Implementierung von eigenen Echtzeit-Video-Streaming-Diensten geben,
-\textcolor{orange}{diese anhand eines Experiments durchsprechen und auswerten
-usw.}
+Echtzeit- oder Nahe-Zu-Echtzeit-Kommunikation zuverlässig zu bewältigen. Die
+
+Aufgabe dieser Arbeit soll sein, einen Überblick über den Stand der
+Architekturmuster, Protokolle und möglicher Problematiken bei der
+Implementierung von eigenen Echtzeit-Video-Streaming-Diensten geben. Dafür
+wird im Rahmen eines Experiments ein Kamera-System implementiert. Die
+Herangehensweise und Ansätze für die Implementierung werden erläutert und 
+anschließend wird das Ergebnis hinsichtlich der \textit{Quality of Service}
+im Zusammenhang mit dem Arbeitsaufwand ausgewertet.
 
 \section{Historie der Echzeit-Übertragung}
 
@@ -790,8 +799,10 @@ Echtzeitübertragung im Web auszustesten.
 % - Kamera interface verbessern
 % \large{IPV6 only => NAT holepunching entfällt}
 
-%\bibliographystyle{IEEEtran}
-%\bibliography{IEEEabrv,references}
+\nocite{*}
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv, references}
 
 \end{twocolumn}
 
