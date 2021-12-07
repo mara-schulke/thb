@@ -194,37 +194,53 @@ Eine weitverbreitete und offene Implementierung für \textit{SRTP / SRTCP}
 wird von der US-Amerikanischen Telekomunikations-Gesellschaft Cisco
 bereitgestellt. Diese hat den Namen \textit{libsrtp} und ist öffentlich auf der
 Entwickler-Plattform GitHub öffentlich einsehbar (siehe
-\href{https://github.com/cisco/libsrtp}{github.com/cisco/libsrtp}).
+\url{https://github.com/cisco/libsrtp}).
 
 % Anwendung in VoIP\!
 % https://de.wikipedia.org/wiki/ZRTP
 
 \subsection{2005: RTMP}
 
-% https://www.adobe.com/content/dam/acom/en/devnet/rtmp/pdf/rtmp_specification_1.0.pdf
 \textit{RTMP} ist ein von der Firma \textit{Adobe Systems Incorporated}
 spezifiziertes Protokoll zur Echtzeit-Übertragung von Multimedia-Streams.
-\textit{RTMP} wurde laut Spezifikation\textcolor{red}{siehe RTMP spec 1.0},
-entwickelt um über dem Transport-Protokoll \textit{TCP} verwendet zu werden.
+\textit{RTMP} wurde laut Spezifikation~\cite{RTMPSpec} entwickelt um
+über dem Transport-Protokoll \textit{TCP} verwendet zu werden.
 
 Das Protokoll wurde dazu entwickelt um im Kontext eines Flash-Players verwendet
-zu werden. Dies führt dazu, dass es heutzutage nurnoch bedingt Anwendung
-findet, da mittlerweile viele Browser ihren Flash-Player-Support eingestellt
-haben (\textcolor{red}{siehe Chrome und Firefox}) % https://support.mozilla.org/en-US/kb/end-support-adobe-flash
+zu werden. Dies führt dazu, dass es heutzutage nurnoch bedingt in Browsern
+Anwendung findet, da mittlerweile viele Browser ihren Flash-Player-Support
+eingestellt haben.~\cite{RTMPFlashSupport}
 
 Außerdem spricht die hohe Latenz von bis zu 30 Sekunden, die durch die
-Verwendung von \textit{TCP} zustandekommt (\textcolor{red}{siehe
-restram.io/streaming-protocls}), gegen den Einsatz von \textit{RTMP} in einem
-Echtzeit-Übertragungs-Kontext.
+Verwendung von \textit{TCP} zustandekommt~\cite{StreamingProtokolle} gegen den
+Einsatz von \textit{RTMP} in einem Echtzeit-Übertragungs-Kontext.
 
-Desweiteren gibt es noch Protokollvarianten die HTTP bzw. HTTPS als zugrundeliegendes
-Protokoll verwenden.\textcolor{red}{Siehe XYZ Quelle suchen}
+Desweiteren gibt nach~\cite{RTMP} noch weitere Protokollvarianten:
+
+\begin{itemize}
+	\item \textit{RTMPT} (Tunneled) verwendet \textit{HTTP} bzw. \textit{HTTPS}
+		als Transport-Protokoll.
+	\item \textit{RTMPE} (Encrypted)
+	\item \textit{RTMPTE} (Tunneled und Encrypted)
+	\item \textit{RTMPS} verwendet \textit{SSL}
+	\item \textit{RTMFP} verwendet \textit{UDP} als Transport-Protokoll
+		anstelle von \textit{TCP}
+\end{itemize}
+
+Auch wenn \textit{RTMP} aufgrund der hohen Latenz für Videokonferenzen
+ungeeignet ist, findet es heutzutage immernoch Anwendungen in
+unidirektionalen Datenübertragungen an eine große Anzahl von Teilnehmern, da es
+sich gut skalieren lässt.~\cite{RTMP}
 
 \subsection{2006: DTLS}
 
-Das \textit{Datagram-Transport-Layer-Security} Protokoll bietet starke
+Das \textit{Datagram-Transport-Layer-Security}-Protokoll bietet starke
 Sicherheitsgarantien (equivalent zu \textit{TLS}) für Datagram basierte
 Protokolle wie z. B. \textit{UDP}.~\cite{RFC4347}
+
+Es bildet heutzutage die Grundlage für sichere, verbindungslose Kommunikation.
+QUelle suchen.
+
 
 \subsection{2010: WebRTC}
 
