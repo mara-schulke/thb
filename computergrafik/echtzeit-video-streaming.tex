@@ -393,8 +393,8 @@ Nutzeranzahl ab, da jeder Datenstrom vom Server verarbeitet wird.
 
 \section{Implementierung eines Kamera-Live-Streams}
 
-In diesem Kapitel wird ein experimentelles Kamera-System entwickelt, das die
-oben erläuterten Protokolle / Technologien verwendet.
+\textcolor{red}{In diesem Kapitel wird ein experimentelles Kamera-System
+entwickelt, das die oben erläuterten Protokolle / Technologien verwendet.}
 
 \subsection{Ziel}
 Ziel dieses Experiments ist es eine möglichst einfach ein funktionierendes
@@ -736,7 +736,7 @@ herzustellen.
 
 \subsection{Kamera}
 
-Zu letzt ist die Kamera zu entwickeln..
+\textcolor{red}{Zu letzt ist die Kamera zu entwickeln..}
 
 \subsubsection{GStreamer}
 
@@ -785,7 +785,7 @@ Diese Plugins können in die folgenden Kategorien unterteilt werden:
 	\item Ausgabe
 \end{itemize}
 
-Siehe~\cite{GStreamerManualIntro}.
+Siehe~\cite{GStreamerManualIntro}
 
 % Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
 
@@ -799,11 +799,8 @@ Kamera-Software korrekt funktioniert:
 	\item libgstreamer-gl1.0-0
 	\item libgstreamer-opencv1.0-0
 	\item libgstreamer-plugins-bad1.0-0
-	\item libgstreamer-plugins-bad1.0-dev
 	\item libgstreamer-plugins-base1.0-0
-	\item libgstreamer-plugins-base1.0-dev
 	\item libgstreamer1.0-0
-	\item libgstreamer1.0-dev
 	\item libgstrtspserver-1.0-0
 \end{itemize}
 
@@ -846,6 +843,7 @@ Die Installation des Betriebssystems für die Kamera-Hardware
 
 - CPU Load
 - Netzwerkauslastung
+- Zeitaufwand für Impl
 
 \section{Auswertung}
 
@@ -855,8 +853,8 @@ erwiesen. Hinsichtlich der Performance ist die Implementierung ebenfalls ein
 Erfolg. Auf einem System mit einem Intel i7-8565U-Chip übersteigt der Server
 mit 10 Benutzern nicht ansatzweise 1\% der CPU-Kapazität. Falls nicht eine
 große Anzahl an Nutzern gleichzeitig Signale über diesen Server schickt,
-pendelt sich dieser aufgrund seiner asynchronen Architektur im Ruhemodus bei
-einer CPU-Last von 0.0\% ein, da er nur aktiv wird, wenn auch Nachrichten
+pendelt sich dieser aufgrund seiner asynchronen Architektur bei einer
+CPU-Last von 0.0\% ein, da er nur aktiv wird, wenn auch Nachrichten
 eintreffen.
 
 Die Benutzeroberfläche ist rein funktional geblieben und bietet kein gutes
@@ -865,8 +863,8 @@ Funktionalität vollständig und mit angemessenem Aufwand implementierbar
 gewesen. Die Browser-APIs bieten eine exzellente Grundlage um reale
 Anwendungen in kurzer Zeit mit einer Live-Stream-Funktionalität zu entwickeln.
 Desweiteren funtkioniert auch die Videoübertragung vom Browser über eine
-WebRTC-Verbindung sehr gut, die Bildübertragungsraten waren i.d.R. über den
-angestrebten 15 Bildern pro Sekunde.
+WebRTC-Verbindung sehr gut, die Bildübertragungsraten waren in der
+Regel über den angestrebten 15 Bildern pro Sekunde.
 
 Die Implementierung einer Kamera-Software ist im Vergleich zu den beiden
 anderen Komponenten verhältnismäßig aufwändig gewesen. GStreamer bringt
@@ -882,8 +880,9 @@ zurückzuführen zu sein.
 
 \section{Nächste Schritte}
 
-Die nächsten Schritte um dieses Experiment weiterzuführen wären definitiv die
-Fehlersuche an der Kamera-Software um die Übertragungsqualität zu steigern.
+Einer der nächsten Schritte um dieses Experiment weiterzuführen wäre
+definitiv die Fehlersuche an der Kamera-Software um die
+Übertragungsqualität zu steigern.
 
 Außerdem sollte die Kamera-Software nicht erneut dem Raum auf dem
 Signaling-Server beitreten sobald der Stream abbricht, dies zu beheben könnte
@@ -896,6 +895,7 @@ Authentifizierungsverfahren drastisch erhöht werden.
 Als letzte Verbesserung wäre eine Implementierung von Audio-Übertragung von der
 Kamera zu der Benutzeroberfläche interessant um auch diesen Aspekt der
 Echtzeitübertragung im Web auszustesten.
+
 
 % Mögliche Optimierungen:
 % - Verbesserung der Video-Qualität: Evtl kein 32bit os
@@ -918,43 +918,42 @@ Echtzeitübertragung im Web auszustesten.
 \begin{scriptsize}
 	\begin{flushleft}
 		\texttt{\textbf{signaling/main.rs}}
-		\lstinputlisting{implementation/signaling/src/main.rs}
+		%\lstinputlisting{implementation/signaling/src/main.rs}
 		\texttt{\textbf{signaling/lib.rs}}
-		\lstinputlisting{implementation/signaling/src/lib.rs}
+		%\lstinputlisting{implementation/signaling/src/lib.rs}
 		\texttt{\textbf{signaling/tls.rs}}
-		\lstinputlisting{implementation/signaling/src/tls.rs}
+		%\lstinputlisting{implementation/signaling/src/tls.rs}
 		\texttt{\textbf{signaling/rooms.rs}}
-		\lstinputlisting{implementation/signaling/src/rooms.rs}
+		%\lstinputlisting{implementation/signaling/src/rooms.rs}
 		\texttt{\textbf{signaling/state.rs}}
-		\lstinputlisting{implementation/signaling/src/state.rs}
+		%\lstinputlisting{implementation/signaling/src/state.rs}
 		\texttt{\textbf{signaling/signals.rs}}
-		\lstinputlisting{implementation/signaling/src/signals.rs}
+		%\lstinputlisting{implementation/signaling/src/signals.rs}
 		\texttt{\textbf{camera/main.rs}}
-		\lstinputlisting{implementation/camera/src/main.rs}
+		%\lstinputlisting{implementation/camera/src/main.rs}
 		\texttt{\textbf{camera/webrtc.rs}}
-		\lstinputlisting{implementation/camera/src/webrtc.rs}
+		%\lstinputlisting{implementation/camera/src/webrtc.rs}
 		\texttt{\textbf{camera/signaling.rs}}
-		\lstinputlisting{implementation/camera/src/signaling.rs}
-
+		%\lstinputlisting{implementation/camera/src/signaling.rs}
 		\texttt{\textbf{interface/index.html}}
-		\lstinputlisting{implementation/interface/index.html}
+		%\lstinputlisting{implementation/interface/index.html}
 	\end{flushleft}
 \end{scriptsize}
 
 \begin{figure*}[p]
-	\includegraphics[width=\textwidth]{photo-board}
+	%\includegraphics[width=0.5\textwidth]{photo-board}
 	\centering
 	\caption{Rapsberry PI 4}
 \end{figure*}
 
 \begin{figure*}[p]
-	\includegraphics[width=\textwidth]{photo-cam}
+	%\includegraphics[width=0.5\textwidth]{photo-cam}
 	\centering
 	\caption{Camera Modul}
 \end{figure*}
 
 \begin{figure*}[p]
-	\includegraphics[width=\textwidth]{photo-installed}
+	%\includegraphics[width=0.5\textwidth]{photo-installed}
 	\centering
 	\caption{Installierte Kamera}
 \end{figure*}
@@ -966,5 +965,6 @@ Echtzeitübertragung im Web auszustesten.
 % TODO: Jede Section auf Rechtschreibung prüfen
 % TODO: Zitate checken!
 % TODO: Fehlende Tabellen einbauen
+% TODO: Centricular zitieren
 
 \end{document}
