@@ -309,6 +309,8 @@ candidates vorschlagen um die Übertragung an neue gegebenheiten im internet
 Holepunching beschreibt den prozess lokale firewalls und nats zu durchbrechen
 um eine direkte verbindung zwischen zwei endgeräten herzustellen.
 
+\textcolor{red}{mehr schreiben}
+
 % https://datatracker.ietf.org/doc/html/rfc8834#section-10
 % https://de.wikipedia.org/wiki/Multicast
 % peer to peer wäre möglich mit ip multicast mit vielen usern ohne pakete zu
@@ -316,14 +318,14 @@ um eine direkte verbindung zwischen zwei endgeräten herzustellen.
 
 \subsubsection{IP-Multicast}
 
-Je mehr Nutzer / Endgeräte an einer peer-to-peer-übertragung teilnehmen, desto
+Je mehr Nutzer / Endgeräte an einer Peer-To-Peer-Übertragung teilnehmen, desto
 größer wird die Belastung der Bandbreite bei den einzelnen Teilnehmern. Jedes
-Paket muss nicht einmal, sondern n-mal verschickt werden (wobei n die anzahl
-der teilnehmer ist). Dies kann bei labilen oder einfach schwachen Netzwerken
-entweder zur verminderung der übertragungsqualität führen, oder in besonders
-schlimmen fällen sogar das restliche netzwerk eines einzelnen Teilnehmers
-negativ beeinflussen, da dieser die meiste Bandbreite für die wiederholte
-übertragung gleicher pakete verwendet.
+Paket muss nicht einmal, sondern $N$-mal verschickt werden (wobei $N$ die
+Anzahl der Teilnehmer ist). Dies kann bei labilen oder einfach schwachen
+Netzwerken entweder zur Verminderung der Übertragungsqualität führen, oder in
+besonders schlimmen Fällen sogar das restliche Netzwerk eines einzelnen
+Teilnehmers negativ beeinflussen, da dieser die meiste Bandbreite für die
+wiederholte Übertragung gleicher pakete verwendet.
 
 Eine theoretische Lösung für dieses Problem, ist die Verwendung von
 IP-Multicast-Adressen. Diese erlauben es einem Gerät ein IP-Paket einmalig zu
@@ -332,12 +334,50 @@ lassen. (Siehe grafik)
 
 Vergleichs grafik einfügen..
 
-Dieser ansatz hat klare vorteile: Das gesamte - lokale \& globale – netzwerk
+Dieser Ansatz hat klare Vorteile: Das gesamte - lokale \& globale – Netzwerk
 wird geschont. So würde die Anzahl möglicher Teilnehmer deutlich steigen, da
 ein Netzwerk-Bottleneck erst bei einem zu großen Download-Volumen des
 empfangenen Contents eintreten würde.
 
+Leider ist dies aus verschiedenen Gründen bisher nur in der Theorie möglich.
+Der Hauptgrund ist die mangelnde Unterstützung für Multicast-Pakete bei einem
+großteil der Router (Statistik suchen / Quelle suchen). Desweiteren würden
+Heimnetzwerke somit in Backbonenetzwerken deutlich mehr Netzwerklast auslösen
+können als bei typischen Heimnetz-Tarifen (Statistik suchen, Stand 2021 bis
+1gbit) zulässig wäre.
+
 \subsection{Relay}
+
+Die zentralisierte Architektur ist eine der besten Alternativen zum
+Peer-To-Peer-Ansatz. Sie wird bei diversen Streaming-Plattformen erfolgreich
+bei einer großen Anzahl von Nutzern betrieben. \textcolor{red}{Siehe twitch,
+youtube live etc}. Der wohl grundlegenste Unterschied liegt darin, dass
+zwischen den Teilnehmern eine zentralisierte Instanz geschaltet ist, die den
+Stream vervielfacht um so die Netzwerkauslastung bei einzelnen Teilnehmern zu
+minimieren. (Siehe Abbildung X!!!)
+
+% grafik einfügen
+
+Diese Architektur lässt im Gegensatz zu Peer-To-Peer-Architekturen deutlich
+mehr Teilnehmer zu, da nur der Relay-Server die Last skalieren muss und nicht
+ein Teilnehmer. Wenn ein Live-Stream auf einer Streaming-Plattform
+beispielsweise einige Hundert Zuschauer hat und dies via Peer-To-Peer laufen
+würde, wäre dies bereits eine Größe bei der typische Endgeräte und
+Heimnetzwerke definitiv überlastet wären (\textcolor{red}{siehe xyz}). Folglich
+finden zentralisierte Architekturen auch bei Mobilgeräte anwendung, da
+Mobilgeräte oft (abgesehen von einer stärker limiterten Bandbreite) lediglich
+über ein fixes Datenvolumen verfügen. (\textcolor{red}{siehe xyz})
+
+Zu den Vorteilen zählt die einfache Skalierbarkeit, die (weitestgehende)
+Unabhängigkeit von Teilnehmer Netzwerken und die Kontrolle über den verteilten
+Datenstrom.
+
+Die Nachteile hingegen zeichnen sich für die Teilnehmer in einer erhöhten
+Latenz ab, was ein Relay für Live-Videokonferenzen in der Regel uninteressanter
+macht. Desweiteren fallen Hosting-Kosten in direkter Abhängig von der
+Nutzeranzahl ab, da jeder Datenstrom vom Server verarbeitet wird.
+
+
 % https://webrtc.org/getting-started/turn-server
 
 % \section{Protokolle}
