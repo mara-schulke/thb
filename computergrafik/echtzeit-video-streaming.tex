@@ -30,15 +30,16 @@
 	\begin{center}Quelle: #1\end{center}
 }
 
-\title{Ansätze zum Echtzeit-Video-Streaming im Web}
+\title{Möglichkeiten zum Echtzeit-Video-Streaming im Web}
 
 \author{
-	%\IEEEauthorblockN{Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}}\\
-	%\IEEEauthorblockA{
-		Technische Hochschule Brandenburg \\
-		B.Sc. Medieninformatik \\
-		Computergrafik
-	%}
+	\vspace{0.5em}
+	Maximilian Schulke \textit{(Matrikel-Nr. 20215853)}\\
+	\small{Technische Hochschule Brandenburg}\\
+	\small{B.Sc. Medieninformatik}\\
+	\small{Computergrafik}\\
+	\small{Wintersemester 2021}\\
+	\small{betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg}\\
 }
 
 \begin{document}
@@ -47,11 +48,6 @@
 	\begin{titlepage}
 		\pagenumbering{gobble}
 
-	%	\IEEEspecialpapernotice{
-			betreut durch Prof.\ Dr.\ rer.\ nat.\ Reiner Creutzburg\\
-			Wintersemester 2021\\
-			Abgabetermin \today
-	%	}
 
 		\maketitle
 
@@ -80,13 +76,13 @@
 
 \section{Einleitung / Motivation}
 
-%\IEEEPARstart{M}{\MakeLowercase{it}} der zunehmenden dezentralisierung und
-der damit einhergehenden Vernetzung der Arbeitswelt in den letzten
-Jahren~\cite{CoronaHomeOffice} werden auch digitale Meeting-Systeme immer
-relevanter und müssen immer mehr Nutzer in Echtzeit mit einander verbinden um
-einen reibungslosen Arbeitsalltag zu gewährleisten. Zu begin der
-Corona-Pandemie stieg der Netzwerktraffic für VoIP und Videokonferenzen im März
-2020 um 210\%-285\%~\cite{NetzwerkStatistik}.
+Mit der zunehmenden dezentralisierung und der damit einhergehenden Vernetzung
+der Arbeitswelt in den letzten Jahren~\cite{CoronaHomeOffice} werden auch
+digitale Meeting-Systeme immer relevanter und müssen immer mehr Nutzer in
+Echtzeit mit einander verbinden um einen reibungslosen Arbeitsalltag zu
+gewährleisten. Zu begin der Corona-Pandemie stieg der Netzwerktraffic für
+\textit{Voice over IP} (kurz \textit{VoIP}) und Videokonferenzen im März 2020
+um 210\%-285\%~\cite{NetzwerkStatistik}.
 
 Damit die Konferenzsysteme ihren Einsatzzweck erfüllen können, ist es
 erforderlich, dass eine ausreichend gute \textit{Quality of Service (QoS)}
@@ -94,13 +90,13 @@ gegeben ist.
 
 Aber wie können skalierbare Meeting-Systeme realisiert werden ohne große
 Datenmengen über einen zentralisierten Streaming-Server zu schicken der diese
-an alle Teilnehmer broadcasted? Die Entwicklung der letzten Jahre deuten immer
-mehr darauf hin, dass \textit{Peer-To-Peer} basierte Lösungensansätze aufgrund
-der besseren Performance und Skalierbarkeit, in der Regel die bessere Wahl
-darstellen~\cite{PeerToPeerVersusCentralized}. \textit{Peer-To-Peer} halten
-unvorhersehbare Anstiege in der Nutzung~\cite{NetzwerkStatistik} deutlich
-besser aus, da die Echtzeit-Datenverarbeitung nicht bei dem
-Konferenzsystem-Anbieter stattfindet, sondern bei den Teilnehmern.
+an alle Teilnehmer weiterleitet? Die Entwicklungen der letzten Jahre deuten
+immer mehr darauf hin, dass \textit{Peer-To-Peer} basierte Lösungensansätze
+aufgrund der besseren Performance und Skalierbarkeit, in der Regel die bessere
+Wahl darstellen~\cite{PeerToPeerVersusCentralized}.
+\textit{Peer-To-Peer}-Architekturen halten einen unvorhersehbaren Anstieg in
+der Nutzung deutlich besser aus, da die Echtzeit-Datenverarbeitung nicht bei
+dem Konferenzsystem-Anbieter stattfindet, sondern bei den Teilnehmern.
 
 Natürlich spielen zur Auswahl der Architektur noch weitere Parameter eine
 wichtige Rolle (z. B. die maximale Bandbreite und Rechenleistung der
@@ -112,16 +108,16 @@ Die Problematik der Echtzeit-Kommunikation im Web beschäftigt auch
 das \textit{W3C} seit 2011 im Zuge der Standardisierung des seit diesem Jahr
 zum Web-Standard erklärten Protokoll \textit{WebRTC}.~\cite{WebRTCStandardW3C}
 
-Es ist also (immer noch) eine sehr aktuelle Thematik in der Informatik
-Echtzeit- oder Nahe-Zu-Echtzeit-Kommunikation zuverlässig zu bewältigen. Die
+Es ist also immer noch eine sehr aktuelle Thematik in der Informatik
+Echtzeit- oder Nahe-Zu-Echtzeit-Kommunikation zuverlässig zu bewältigen.
 
-Aufgabe dieser Arbeit soll sein, einen Überblick über den Stand der
+Die Aufgabe dieser Arbeit soll sein, einen Überblick über den Stand der
 Architekturmuster, Protokolle und möglicher Problematiken bei der
-Implementierung von eigenen Echtzeit-Video-Streaming-Diensten geben. Dafür
-wird im Rahmen eines Experiments ein Kamera-System implementiert. Die
-Herangehensweise und Ansätze für die Implementierung werden erläutert und 
-anschließend wird das Ergebnis hinsichtlich der \textit{Quality of Service}
-im Zusammenhang mit dem Arbeitsaufwand ausgewertet.
+Implementierung von eigenen Echtzeit-Video-Streaming-Diensten geben. Dafür wird
+im Rahmen eines Experiments ein Kamera-System implementiert. Die
+Herangehensweise und Ansätze für die Implementierung werden erläutert und
+anschließend wird das Ergebnis hinsichtlich der \textit{QoS} im Zusammenhang
+mit dem Arbeitsaufwand ausgewertet.
 
 \section{Historie der Echzeit-Übertragung}
 
@@ -162,15 +158,8 @@ Interpolationsalgorithmen verwendet werden. Der Payload-Type ist essenziell um
 ohne Session-Aushandlung zu kommunizieren wie der Empfänger die Daten zu
 decodieren hat, um eine sinnvolle Nachricht zu erhalten.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TODO
-In der ersten Version aus 1996 gab es einige Probleme bezüglich
-\textcolor{orange}{Probleme suchen}. Diese wurden 2003 in dem RFC3550
-überarbeitet - somit wurde der RFC1889 durch die neuere Version 3550 obsolet.
-In der aktuelleren Version wurden einige Änderungen eingearbeit: Im
-wesentlichen ``RTCP Packet Send and Receive Rules'' ``Layered Encodings''
-``Congestion Control'' ``Security Considerations'' ``IANA Considerations''
-\textcolor{orange}{Dummer text}.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TODO
+Die ersten Version aus 1996 wurde 2003 durch die überarbeitet Version,
+spezifiziert in dem RFC3550, abgelöst.~\cite{RFC3550}
 
 Eine wichtige Voraussetzung zur Verwendung von \textit{RTP} ist ein externer
 \textit{Signaling-Server}, den alle Beteiligten zur Session-Aushandlung
@@ -236,10 +225,8 @@ sich gut skalieren lässt.~\cite{RTMP}
 
 Das \textit{Datagram-Transport-Layer-Security}-Protokoll bietet starke
 Sicherheitsgarantien (equivalent zu \textit{TLS}) für Datagram basierte
-Protokolle wie z. B. \textit{UDP}.~\cite{RFC4347}
-
-Es bildet heutzutage die Grundlage für sichere, verbindungslose Kommunikation.
-QUelle suchen.
+Protokolle wie z. B. \textit{UDP}.~\cite{RFC4347} Es bildet heutzutage die
+Grundlage für sichere, verbindungslose Kommunikation.
 
 
 \subsection{2010: WebRTC}
@@ -247,27 +234,37 @@ QUelle suchen.
 \textit{WebRTC} ist eine Peer-To-Peer-Technologie die über mehrere Protokolle
 und Audio- und Video-Codecs performante und generische
 Echtzeit-Kommunikations-Kanäle zwischen Nutzern (oder auch \textit{Peers})
-realisiert. Sie 
+realisiert. Dafür stellt eine \textit{WebRTC}-Implementierung durch einen
+komplexen Signaling-Ablauf eine direkte Verbindung zu anderen Endgeräten
+her.~\cite{MDNSignaling}
 
-WebRTC stellt eine direkte Verbindung zwischen zwei Endgeräten her und
-verwendet einen mix aus SRTP, DTLS, SDP, (ICE Candidates) und einem
-Signaling-Channel. Es unterstützt beliebte video codecs wie V8 / V9 und ist in
-der zukunft auf AV1 angelegt. Der standard audio codec ist opus.
+\subsubsection{Signaling}
 
-% Hat mit 1996 RTP und dann 2005 mit RTMP angefangen, wann kam SRTP?\ JSEP Global IP Solutions \& Google WebRTC kam 2010, Microsoft wollte CU-RTC
+Während der Signaling-Phase generiert zunächst einer der Teilnehmer eine
+\textit{SDP-Offer}. Diese wird über einen, nicht näher im Standard
+beschreibenen, Signaling-Channel an den anderen Teilnehmer gesendet.
+Dieser verarbeitet die \textit{SDP-Offer} und generiert eine
+\textit{SDP-Answer} und sendet diese über den gleichen Signaling-Channel an den
+Absender zurück.
 
-% > Datenströme sind verpflichtend zu verschlüsseln. Dazu werden Verbindungen über DTLS verschlüsselt und Audio- und Videokommunikation zusätzlich durch SRTP geschützt.[16]
-% https://datatracker.ietf.org/doc/html/rfc8834#section-4.1
+Nach erfolgreichem austauschen der \textit{SDP}-Nachrichten,
+verwendet generiert jeder Teilnehmer mithilfe des \textit{Interactive
+Connectivity Establishment}-Frameworks \textit{ICE}-Candidates und versendet
+sie über den Signaling-Channel. Diese werden verwendet um einen eindeutigen
+Weg durch das Internet zum anderen Teilnehmer zu finden. Dieser Vorgang ist
+notwendig, da durch die Einführung \textit{Network-Address-Translation}, in den
+meisten Netzwerken Endgeräte keine globale eindeutige IPv4-Adresse
+haben.~\cite{MDNSessionLifetime}
 
-% https://www.w3.org/2021/01/pressrelease-webrtc-rec.html.en
+\subsubsection{Übertragung}
 
+Sobald die Signaling-Phase erfolgreich beendet wurde und beide Teilnehmer sich
+im Internet gefunden haben, wird eine direkte \textit{SRTP}-Verbindung
+hergestellt.~\cite{RFC8834} Diese wird über \textit{DTLS}
+verschlüsselt.~\cite{RFC8827}
 
-Die ersten \textit{Requests for Comments} oder auch \textit{RFC} zu
-den grundlegenden Protokollen \textit{RTP} und
-\textit{\textcolor{blue}{Protokoll X}}, auf denen die heutigen Protokolle
-weitestgehend aufbauen, wurden bereits in den späten 1990er Jahren
-veröffentlicht und seit dem immer weiterentwickelt. \textcolor{red}{quelle
-anhängen RFC35XX}.
+Anschließend können die zu übertragenden Daten in den entsprechenden Codecs
+über diese Verbindung versendet werden.
 
 \section{Architekturmuster}
 
@@ -285,38 +282,23 @@ Weg, den die Pakete zurücklegen müssen bis sie bei dem Empfänger ankommen.
 Deutlich komplizierter wird allerdings die aushandlung bzw.\ initialisierung
 einer Verbindung zwischen zwei peers, da diese sich nicht wie bei der typischen
 client-server-architektur eine fixe adresse zur verbindung haben. Dieses
-problem wird typischerweise über einen signaling server gelöst.
+problem wird typischerweise über einen Signaling-Server gelöst.
 
-\subsubsection{Signaling Server}
-Ein signaling server ist allen peers bekannt und dient als
-kommunikationsplattform, damit sich die beiden (sich gegenseitig initial
-unbekannten) peers gegenseitig vorstellen können.
+\subsubsection{Signaling-Server}
+Ein Signaling-Server ist allen Teilnehmern bekannt und dient als
+Kommunikationsplattform. Somit können sich zwei, sich initial unbekannte
+Teilnehmer, gegenseitig vorstellen.
 
-Signaling server sind interessanterweise keine feste anforderung für peer to
-peer muster. Wenn alle peers immer statische addressen hätten, könnten sie auch
-offline ihre ips / ice candidates / sdp offers etc.\ austauschen und so eine
-session aufbauen. Wichtig ist leidlgich eine initiale out of band
-kommunikation.
+Signaling-Server sind interessanterweise keine feste Anforderung für
+Peer-To-Peer-Architekturen. Wenn alle Teilnehmer statische Addressen hätten,
+könnten sie auch Out-Of-Band ihre IP-Adressen und ggf.\ weitere Details zum
+Verbindungsaufbau austauschen, um eine Verbindung aufzubauen.
 
-Der signaling server kann außerdem noch nach verbindungsaufbau dazu verwendet
-werden um die bestehende verbindung zu optimieren. Peers können neue ICE
-candidates vorschlagen um die Übertragung an neue gegebenheiten im internet
-(z.B. ausfall eines routers) anzupassen. (siehe mdn)
+Der Signaling-Server kann weiterhin noch nach Verbindungsaufbau dazu verwendet
+werden um die bestehende Verbindung zu optimieren. Peers können neue
+ICE-Candidates vorschlagen um die Übertragung an neue Gegebenheiten anzupassen.
 
-% https://datatracker.ietf.org/wg/wish/about/
-
-\subsubsection{Holepunching}
-Holepunching beschreibt den prozess lokale firewalls und nats zu durchbrechen
-um eine direkte verbindung zwischen zwei endgeräten herzustellen.
-
-\textcolor{red}{mehr schreiben}
-
-% https://datatracker.ietf.org/doc/html/rfc8834#section-10
-% https://de.wikipedia.org/wiki/Multicast
-% peer to peer wäre möglich mit ip multicast mit vielen usern ohne pakete zu
-% duplizieren
-
-\subsubsection{IP-Multicast}
+\subsubsection{Theoretische Optimierung durch IP-Multicast}
 
 Je mehr Nutzer / Endgeräte an einer Peer-To-Peer-Übertragung teilnehmen, desto
 größer wird die Belastung der Bandbreite bei den einzelnen Teilnehmern. Jedes
@@ -325,12 +307,12 @@ Anzahl der Teilnehmer ist). Dies kann bei labilen oder einfach schwachen
 Netzwerken entweder zur Verminderung der Übertragungsqualität führen, oder in
 besonders schlimmen Fällen sogar das restliche Netzwerk eines einzelnen
 Teilnehmers negativ beeinflussen, da dieser die meiste Bandbreite für die
-wiederholte Übertragung gleicher pakete verwendet.
+wiederholte Übertragung gleicher Pakete verwendet.
 
 Eine theoretische Lösung für dieses Problem, ist die Verwendung von
 IP-Multicast-Adressen. Diese erlauben es einem Gerät ein IP-Paket einmalig zu
 übertragen, und dieses von Multicast-Routern im internet multiplizieren zu
-lassen. (Siehe grafik)
+lassen. \textcolor{red}{(Siehe grafik)}
 
 Vergleichs grafik einfügen..
 
@@ -341,10 +323,10 @@ empfangenen Contents eintreten würde.
 
 Leider ist dies aus verschiedenen Gründen bisher nur in der Theorie möglich.
 Der Hauptgrund ist die mangelnde Unterstützung für Multicast-Pakete bei einem
-großteil der Router (Statistik suchen / Quelle suchen). Desweiteren würden
-Heimnetzwerke somit in Backbonenetzwerken deutlich mehr Netzwerklast auslösen
-können als bei typischen Heimnetz-Tarifen (Statistik suchen, Stand 2021 bis
-1gbit) zulässig wäre.
+großteil der Router \textcolor{red}{(Statistik suchen / Quelle suchen)}.
+Desweiteren würden Heimnetzwerke somit in Backbonenetzwerken deutlich mehr
+Netzwerklast auslösen können als bei typischen Heimnetz-Tarifen
+\textcolor{red}{(Statistik suchen, Stand 2021 bis 1gbit)} zulässig wäre.
 
 \subsection{Relay}
 
@@ -377,20 +359,6 @@ Latenz ab, was ein Relay für Live-Videokonferenzen in der Regel uninteressanter
 macht. Desweiteren fallen Hosting-Kosten in direkter Abhängig von der
 Nutzeranzahl ab, da jeder Datenstrom vom Server verarbeitet wird.
 
-
-% https://webrtc.org/getting-started/turn-server
-
-% \section{Protokolle}
-% \subsection{RTP}
-% \subsection{RTCP}
-% \subsection{RTSP}
-% \subsection{SDP}
-% https://datatracker.ietf.org/doc/html/rfc4566#section-3.1
-% \subsection{SID}
-% https://datatracker.ietf.org/doc/html/rfc3261
-% \subsection{STUN}
-% \subsection{WebRTC}
-
 \section{Implementierung eines Kamera-Live-Streams}
 
 \textcolor{red}{In diesem Kapitel wird ein experimentelles Kamera-System
@@ -413,7 +381,7 @@ ausreichender Qualität (720$\times$480), ihre Aufnahmen an ein User
 Interface. Dieses wird im Browser laufen, muss aber ausreichend
 Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
 usw.). Das Interface und die Kamera starten die Aushandlung des
-WebRTC-Streams über den Signaling Server. D.h.\ sie versenden SDP
+WebRTC-Streams über den Signaling-Server. D.h.\ sie versenden SDP
 (Offer / Answer) und tauschen ihre ICE-Candidates aus.
 
 \subsection{Architektur}
@@ -443,20 +411,20 @@ Linux-Installation (mit den entsprechenden installierten Paketen für die
 Abhangigkeiten) und eine angeschlossene Kamera die von Linux erkannt wird.
 
 Auf der Einplatinencomputer ist das mitgelieferte Betriebssystem ``Raspberry PI
-OS'' und die entsprechenden Software-Abhängigkeiten installiert. 
-\textcolor{red}{Siehe GitHub für Dependencies.}
+OS'' und die entsprechenden Software-Abhängigkeiten (siehe~\ref{items:deps})
+installiert.
 
 \subsubsection{Signaling-Server}
 
 Der Signaling-Server ist ein WebSocket-Secure-Server, der zwei
 WebSocket-Verbindungen miteinander verknüpft. Er verwaltet sogenannte Räume.
-Ein Raum besteht aus 0 bis 2 Clients und dient dazu diese miteinander zu
+Ein Raum besteht aus 0 bis 2 Teilnehmer und dient dazu diese miteinander zu
 verbinden. Auf dem Server kann es mehrere Räume gleichzeitig geben – dadurch
 könnte dieser Signaling-Server theoretisch auch noch für weitere
 WebRTC-Anwendungen verwendet werden. Ein Raum hat eine ID, diese ist eine
-256-Bit-Entropie. Clients werden durch eine 128-Bit-Entropie identifiziert.
+256-Bit-Entropie. Teilnehmer werden durch eine 128-Bit-Entropie identifiziert.
 
-So können sich zwei Clients durch ein Out-Of-Band kommuniziertes Secret (die
+So können sich zwei Teilnehmer durch ein Out-Of-Band kommuniziertes Secret (die
 Raum-ID) über diesen in Kontakt treten. Diese könnte beispielsweise, würde es
 sich bei der entwickelten Kamera um ein echtes Produkt handeln, bei der
 Herstellung generiert werden, ausgedruckt und neben die Kamera in die
@@ -464,18 +432,18 @@ Verpackung gelegt werden.
 
 \subsubsection{Interface}
 
-Das Interface verbindet sich mit dem Signaling Server und nimmt eine Raum-ID
-entgegen. Mit dieser Raum-ID wird dann auf dem Signaling Server entweder ein
+Das Interface verbindet sich mit dem Signaling-Server und nimmt eine Raum-ID
+entgegen. Mit dieser Raum-ID wird dann auf dem Signaling-Server entweder ein
 neuer Raum erstellt, falls noch keiner mit der ID existiert, oder es wird dem
 bestehenden Raum beigetreten. Nach dem ein weiterer User beigetreten ist, fängt
-der in \textcolor{red}{Kapitel XY} erklärte Aufbau eines WebRTC-Streams zu dem
+der unter~\ref{sec:signaling-spec} erklärte Aufbau eines WebRTC-Streams zu dem
 Nutzer an.
 
-\subsection{Signaling Server}
+\subsection{Signaling-Server}
 
-Als erstes wurde der Signaling Server entwickelt, da dieser keine
-Abhängigkeiten an seine Clients hat. Die Kamera-Software und Interface setzen
-beide jeweils den laufenden Signaling Server vorraus um korrekt zu
+Als erstes wurde der Signaling-Server entwickelt, da dieser keine
+Abhängigkeiten an seine Teilnehmer hat. Die Kamera-Software und Interface setzen
+beide jeweils den laufenden Signaling-Server vorraus um korrekt zu
 funktioneren.
 
 \subsubsection*{Asynchronität}
@@ -490,8 +458,6 @@ Da langlebige Verbindungen in der Regel einen großteil der Zeit ungenutzt sind,
 ist es naheliegend Verbindungen ohne neue Ereignisse keine CPU-Zeit zu geben
 um andere Verbindungen in der Zeit abzuarbeiten, in der auf Ereignisse gewartet
 wird.
-
-HIER ZIETIEREN WAS DAS ZEUG HÄLT / ERKLÄRGRAFIKEN NUTZEN
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{diagram-asynchronität}
@@ -509,9 +475,7 @@ suchen) und nach einer erfolgreichen Nachricht des Servers mit dem Status-Code
 101 (Switching Protocols) wird die über den gleichen Transport-Weg (TLS)
 nach dem WebSocket-Protokoll kommuniziert.
 
-\textcolor{red}{Grafik einfügen}
-
-\subsubsection{Spezifikation des Signaling-Protokolls}
+\subsubsection{Spezifikation des Signaling-Protokolls}\label{sec:signaling-spec}
 
 Das Signaling-Protokoll ist in 2 Nachrichten-Typen unterteilt:
 Server-Nachrichten und Peer-Nachrichten. Clients dürfen nur Peer-Nachrichten
@@ -795,7 +759,7 @@ bedeutung.
 Somit muss die folgende Liste an Abhängigkeiten installiert werden, damit die
 Kamera-Software korrekt funktioniert:
 
-\begin{itemize}
+\begin{itemize}\label{items:deps}
 	\item libgstreamer-gl1.0-0
 	\item libgstreamer-opencv1.0-0
 	\item libgstreamer-plugins-bad1.0-0
@@ -814,13 +778,6 @@ abwechseln:
 	\item Streaming via WebRTC
 \end{enumerate}
 
-\begin{figure}[ht]
-	\includegraphics[width=0.5\textwidth]{diagram-states}
-	\centering
-	\caption{Zustandsdiagramm der Kamera-Software}
-	\figuresource{Schulke 2021}
-\end{figure}
-
 Im Regelfall dauert der 1. Schritt einige Millisekunden. Nach dem die
 Verbindung zum Signalisierungsserver korrekt aufgebaut wurde (und die Kamera
 dem festgelegten Raum beitreten konnte) wird eine GStreamer-Pipeline
@@ -832,6 +789,9 @@ GStreamer unterstützt nach erfolgreicher Installation oben genannter Plugins
 eine kompatible API zu der der Browser. Somit läuft der gesamte
 WebRTC-Spezifische Verbindungsaufbau nach der exakt gleichen Logik ab wie
 unter\ \ref{browser-webrtc} erläutert.
+
+Bei der Einbindung von \textit{GStreamer} wurde~\cite{GStreamerExamples} als
+Referenz verwendet.
 
 \subsubsection{Vorbereitung der Laufzeitumgebung}
 
