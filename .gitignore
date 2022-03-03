@@ -13,9 +13,12 @@ bin
 *.fdb_latexmk
 *.fls
 *.log
+*.lof
+*.lot
 *.toc
 *.bbl
 *.blg
+*.bcf
 *.out
 *.snm
 *.synctex.gz
