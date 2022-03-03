@@ -1,0 +1,3 @@
+[submodule "computergrafik/webrtc-cam"]
+	path = computergrafik/webrtc-cam
+	url = git@github.com:schulke-214/webrtc-cam.git

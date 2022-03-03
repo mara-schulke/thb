@@ -65,7 +65,6 @@
 		\tableofcontents
 
 		\listoffigures
-		\listoftables
 	\end{titlepage}
 \end{onecolumn}
 
@@ -228,7 +227,6 @@ Sicherheitsgarantien (equivalent zu \textit{TLS}) für Datagram basierte
 Protokolle wie z. B. \textit{UDP}.~\cite{RFC4347} Es bildet heutzutage die
 Grundlage für sichere, verbindungslose Kommunikation.
 
-
 \subsection{2010: WebRTC}
 
 \textit{WebRTC} ist eine Peer-To-Peer-Technologie die über mehrere Protokolle
@@ -281,8 +279,8 @@ Weg, den die Pakete zurücklegen müssen bis sie bei dem Empfänger ankommen.
 
 Deutlich komplizierter wird allerdings die aushandlung bzw.\ initialisierung
 einer Verbindung zwischen zwei peers, da diese sich nicht wie bei der typischen
-client-server-architektur eine fixe adresse zur verbindung haben. Dieses
-problem wird typischerweise über einen Signaling-Server gelöst.
+Client-Server-Architektur eine fixe adresse zur verbindung haben. Dieses
+Problem wird typischerweise über einen Signaling-Server gelöst.
 
 \subsubsection{Signaling-Server}
 Ein Signaling-Server ist allen Teilnehmern bekannt und dient als
@@ -311,10 +309,8 @@ wiederholte Übertragung gleicher Pakete verwendet.
 
 Eine theoretische Lösung für dieses Problem, ist die Verwendung von
 IP-Multicast-Adressen. Diese erlauben es einem Gerät ein IP-Paket einmalig zu
-übertragen, und dieses von Multicast-Routern im internet multiplizieren zu
-lassen. \textcolor{red}{(Siehe grafik)}
-
-Vergleichs grafik einfügen..
+übertragen, und dieses von Multicast-Routern im Internet multiplizieren zu
+lassen.
 
 Dieser Ansatz hat klare Vorteile: Das gesamte - lokale \& globale – Netzwerk
 wird geschont. So würde die Anzahl möglicher Teilnehmer deutlich steigen, da
@@ -322,33 +318,31 @@ ein Netzwerk-Bottleneck erst bei einem zu großen Download-Volumen des
 empfangenen Contents eintreten würde.
 
 Leider ist dies aus verschiedenen Gründen bisher nur in der Theorie möglich.
-Der Hauptgrund ist die mangelnde Unterstützung für Multicast-Pakete bei einem
-großteil der Router \textcolor{red}{(Statistik suchen / Quelle suchen)}.
-Desweiteren würden Heimnetzwerke somit in Backbonenetzwerken deutlich mehr
-Netzwerklast auslösen können als bei typischen Heimnetz-Tarifen
-\textcolor{red}{(Statistik suchen, Stand 2021 bis 1gbit)} zulässig wäre.
+Der Hauptgrund ist die mangelnde Unterstützung für IPv4-Multicast-Pakete bei
+einem Großteil der Router. Desweiteren würden Heimnetzwerke somit in
+Backbonenetzwerken deutlich mehr Netzwerklast auslösen können als vorgesehen
+ist.
 
 \subsection{Relay}
 
 Die zentralisierte Architektur ist eine der besten Alternativen zum
 Peer-To-Peer-Ansatz. Sie wird bei diversen Streaming-Plattformen erfolgreich
-bei einer großen Anzahl von Nutzern betrieben. \textcolor{red}{Siehe twitch,
-youtube live etc}. Der wohl grundlegenste Unterschied liegt darin, dass
-zwischen den Teilnehmern eine zentralisierte Instanz geschaltet ist, die den
-Stream vervielfacht um so die Netzwerkauslastung bei einzelnen Teilnehmern zu
-minimieren. (Siehe Abbildung X!!!)
-
-% grafik einfügen
+bei einer großen Anzahl von Nutzern betrieben.~\cite{YoutubeRTMP, TwitchRTMP}
+Der wohl grundlegenste Unterschied liegt darin, dass zwischen den Teilnehmern
+eine zentralisierte Instanz geschaltet ist, die den Stream vervielfacht um so
+die Netzwerkauslastung bei einzelnen Teilnehmern zu minimieren.
 
 Diese Architektur lässt im Gegensatz zu Peer-To-Peer-Architekturen deutlich
 mehr Teilnehmer zu, da nur der Relay-Server die Last skalieren muss und nicht
 ein Teilnehmer. Wenn ein Live-Stream auf einer Streaming-Plattform
 beispielsweise einige Hundert Zuschauer hat und dies via Peer-To-Peer laufen
 würde, wäre dies bereits eine Größe bei der typische Endgeräte und
-Heimnetzwerke definitiv überlastet wären (\textcolor{red}{siehe xyz}). Folglich
-finden zentralisierte Architekturen auch bei Mobilgeräte anwendung, da
-Mobilgeräte oft (abgesehen von einer stärker limiterten Bandbreite) lediglich
-über ein fixes Datenvolumen verfügen. (\textcolor{red}{siehe xyz})
+Heimnetzwerke definitiv überlastet wären.
+
+Folglich finden zentralisierte Architekturen auch bei Mobilgeräte
+anwendung~\cite{YoutubeRTMP, TwitchRTMP}, da Mobilgeräte oft (abgesehen von
+einer stärker limiterten Bandbreite) lediglich über ein fixes Datenvolumen
+verfügen.
 
 Zu den Vorteilen zählt die einfache Skalierbarkeit, die (weitestgehende)
 Unabhängigkeit von Teilnehmer Netzwerken und die Kontrolle über den verteilten
@@ -361,40 +355,44 @@ Nutzeranzahl ab, da jeder Datenstrom vom Server verarbeitet wird.
 
 \section{Implementierung eines Kamera-Live-Streams}
 
-\textcolor{red}{In diesem Kapitel wird ein experimentelles Kamera-System
-entwickelt, das die oben erläuterten Protokolle / Technologien verwendet.}
+In diesem Kapitel wird ein experimentelles Kamera-System entwickelt. Dieses
+baut auf einem WebSocket-Secure basierten Signaling-Protokoll, \textit{WebRTC}
+und \textit{GStreamer} auf.
 
 \subsection{Ziel}
+
 Ziel dieses Experiments ist es eine möglichst einfach ein funktionierendes
-System zu entwickeln und mögliche Probleme, benötigten Zeitaufwand usw.\ zu
-ermitteln.  Desweiteren ist ein ``Performance'' Vergleich mit anderen
-Live-Stream systemen interessant. Es gilt also die frage zu klären, wie viel
-arbeit benötigt ein grundsätzlich funktionierendes Software-Produkt das auf
-Echtzeit-Übertragung beruht.
+Kamera-System zu entwickeln und mögliche Probleme, benötigten Zeitaufwand etc.\
+zu ermitteln. Zukünftig könnte noch ein Performance-Vergleich mit anderen
+Echtzeit-Systemen interessant sein.
+
+Es gilt also die Frage zu klären, wie viel Arbeit ein simples, aber
+funktionierendes Software-Produkt das auf Echtzeit-Übertragung beruht benötigt
+und wie gut die Übertragungsqualität anschließend ist.
 
 \subsection{Umfang}
 
 Das zu implementierende Kamera-System wird lediglich eine einzige
 Kernfunktion aufweisen: Sobald die Kamera an ist, streamt sie via
 WebRTC, mit ausreichend FPS (mindestens 15 im durchschnitt) in
-ausreichender Qualität (720$\times$480), ihre Aufnahmen an ein User
-Interface. Dieses wird im Browser laufen, muss aber ausreichend
+ausreichender Qualität (720$\times$480), ihre Aufnahmen an eine
+Benutzeroberfläche. Diese wird im Browser laufen, muss aber ausreichend
 Alternativen für andere Plattformen aufweisen (Nativ, Smartphone
-usw.). Das Interface und die Kamera starten die Aushandlung des
-WebRTC-Streams über den Signaling-Server. D.h.\ sie versenden SDP
-(Offer / Answer) und tauschen ihre ICE-Candidates aus.
+usw.). Die Benutzeroberfläche und die Kamera starten die Aushandlung des
+WebRTC-Streams über den Signaling-Server. D.h.\ sie versenden
+\textit{SDP}-Nachrichten und tauschen ihre \textit{ICE}-Candidates aus
+(siehe~\figurename~\ref{fig:signaling}).
 
 \subsection{Architektur}
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{diagram-signaling}
 	\centering
-	\caption{Signaling zwischen der Kamera und dem Interface.}
+	\caption{Signaling zwischen der Kamera und der Benutzeroberfläche.}\label{fig:signaling}
 	\figuresource{Schulke 2021, nach~\cite{WebRTC}}
 \end{figure}
 
-Die angedachte Architektur wurde möglichst einfach gehalten. Sie besteht
-lediglich aus 3 Elementen:
+Die geplante Architektur ist besteht lediglich aus 3 Elementen:
 
 \subsubsection{Kamera}
 
@@ -430,27 +428,27 @@ sich bei der entwickelten Kamera um ein echtes Produkt handeln, bei der
 Herstellung generiert werden, ausgedruckt und neben die Kamera in die
 Verpackung gelegt werden.
 
-\subsubsection{Interface}
+\subsubsection{Benutzeroberfläche}
 
-Das Interface verbindet sich mit dem Signaling-Server und nimmt eine Raum-ID
-entgegen. Mit dieser Raum-ID wird dann auf dem Signaling-Server entweder ein
-neuer Raum erstellt, falls noch keiner mit der ID existiert, oder es wird dem
-bestehenden Raum beigetreten. Nach dem ein weiterer User beigetreten ist, fängt
-der unter~\ref{sec:signaling-spec} erklärte Aufbau eines WebRTC-Streams zu dem
-Nutzer an.
+Die Benutzeroberfläche verbindet sich mit dem Signaling-Server und nimmt eine
+Raum-ID entgegen. Mit dieser Raum-ID wird dann auf dem Signaling-Server
+entweder ein neuer Raum erstellt, falls noch keiner mit der ID existiert, oder
+es wird dem bestehenden Raum beigetreten. Nach dem ein weiterer Teilnehmer
+beigetreten ist, fängt der unter~\ref{sec:signaling-spec} erklärte Aufbau eines
+WebRTC-Streams zu dem Nutzer an.
 
 \subsection{Signaling-Server}
 
 Als erstes wurde der Signaling-Server entwickelt, da dieser keine
-Abhängigkeiten an seine Teilnehmer hat. Die Kamera-Software und Interface setzen
-beide jeweils den laufenden Signaling-Server vorraus um korrekt zu
-funktioneren.
+Abhängigkeiten an seine Teilnehmer hat. Die Kamera-Software und
+Benutzeroberfläche setzen beide jeweils den laufenden Signaling-Server vorraus
+um korrekt zu funktioneren.
 
 \subsubsection*{Asynchronität}
 
 Eine logische Anforderungen an den Server ist das gleichzeitige verarbeiten
-mehrerer Verbindungen – ansonsten könnte immer nur ein Client alleine mit dem
-Server Verbunden sein. Dies würde die Signaling-Funktionalität eines Raumes
+mehrerer Verbindungen – ansonsten könnte immer nur ein Teilnehmer alleine mit
+dem Server Verbunden sein. Dies würde die Signaling-Funktionalität eines Raumes
 unbrauchbar machen.
 
 Die asynchrone Programmierung ist ein Konzept zur Lösung dieser Problemklasse.
@@ -459,26 +457,18 @@ ist es naheliegend Verbindungen ohne neue Ereignisse keine CPU-Zeit zu geben
 um andere Verbindungen in der Zeit abzuarbeiten, in der auf Ereignisse gewartet
 wird.
 
-\begin{figure}[ht]
-	\includegraphics[width=0.5\textwidth]{diagram-asynchronität}
-	\centering
-	\caption{Asynchrone Abarbeitung einer IO intensiven Aufgabe}
-	\figuresource{Schulke 2021}
-\end{figure}
-
 \subsubsection{Verbindungsaufbau}
 
 Um eine WebSocket-Secure-Verbindung aufzubauen, muss zu erst eine TCP- und dann
-darüber eine TLS-Verbindung zu dem Client aufgebaut werden. Über diese wird
-dann zu erst in HTTP kommuniziert (siehe WebSocket verbindungsaufbau Quelle
-suchen) und nach einer erfolgreichen Nachricht des Servers mit dem Status-Code
-101 (Switching Protocols) wird die über den gleichen Transport-Weg (TLS)
-nach dem WebSocket-Protokoll kommuniziert.
+darüber eine TLS-Verbindung zu dem Teilnehmer aufgebaut werden. Über diese wird
+dann zu erst in HTTP kommuniziert und nach einer erfolgreichen Nachricht des
+Servers mit dem Status-Code 101 (Switching Protocols) wird die über den
+gleichen Transport-Weg (TLS) nach dem WebSocket-Protokoll kommuniziert.
 
 \subsubsection{Spezifikation des Signaling-Protokolls}\label{sec:signaling-spec}
 
 Das Signaling-Protokoll ist in 2 Nachrichten-Typen unterteilt:
-Server-Nachrichten und Peer-Nachrichten. Clients dürfen nur Peer-Nachrichten
+Server-Nachrichten und Peer-Nachrichten. Teilnehmer dürfen nur Peer-Nachrichten
 senden, ansonsten wird die Verbindung aufgrund eines Protokoll-Verstoßes
 geschlossen. Der Server verschickt nur Server-Nachrichten.
 
@@ -490,11 +480,11 @@ WebSocket-Nachrichten-Typ Binär an den Empfänger geschickt werden.
 \textbf{Server-Nachrichten}
 
 \begin{itemize}
-	\item Hello \{Client-ID\}
+	\item Hello \{Teilnehmer-ID\}
 	\item Joined
 	\item Error
-	\item Room/Join \{Client-ID\}
-	\item Room/Leave \{Client-ID\}
+	\item Room/Join \{Teilnehmer-ID\}
+	\item Room/Leave \{Teilnehmer-ID\}
 	\item Room/Signal \{Signal\}
 \end{itemize}
 
@@ -510,41 +500,42 @@ WebSocket-Nachrichten-Typ Binär an den Empfänger geschickt werden.
 \vspace{0.5em}
 
 Nach einer erfolgreich aufgebauten Verbindung mit dem Server schickt dieser ein
-\textit{Hello} mit der zugewiesenen Client-ID.\ Darauf hin muss der Client ein
-\textit{JoinOrCreate} senden um einem Raum beizutreten. Bevor der Client die
-Nachricht \textit{Joined} vom Server erhält, darf dieser keine Signale
-verschicken.
+\textit{Hello} mit der zugewiesenen Teilnehmer-ID.\ Darauf hin muss der
+Teilnehmer ein \textit{JoinOrCreate} senden um einem Raum beizutreten. Bevor
+der Teilnehmer die Nachricht \textit{Joined} vom Server erhält, darf dieser keine
+Signale verschicken.
 
-\begin{figure}[ht]
-	\includegraphics[width=0.5\textwidth]{signaling-protocol}
-	\centering
-	\caption{Anwendungsbeispiel des Singaling-Protokolls}
-	\figuresource{Schulke 2021}
-\end{figure}
-
-Eine \textit{Room/Join} Nachricht wird an ggf.\ andere Clients im Raum
-verschickt, sobald ein Client diesen betritt. Diese Nachricht kann auf dem
-Client als anlass genutzt werden eine SDP-Offer zu erstellen, da nun sicher
-ist, das ein anderer Client im Raum ist. Wenn beide Clients sich an dieses
-Schema halten, schickt immer der Client, der sich zu erst Verbunden hat die
+Eine \textit{Room/Join} Nachricht wird an ggf.\ andere Teilnehmer im Raum
+verschickt, sobald ein Teilnehmer diesen betritt. Diese Nachricht kann auf dem
+Teilnehmer als Anlass genutzt werden eine SDP-Offer zu erstellen, da nun sicher
+ist, das ein anderer Teilnehmer im Raum ist. Wenn beide Teilnehmer sich an dieses
+Schema halten, schickt immer der Teilnehmer, der sich zu erst Verbunden hat die
 Einladung und der andere die Answer.
 
-Analog wird eine \textit{Room/Leave} Nachricht verschickt wenn ein Client einen
-Raum verlässt.
+Analog wird eine \textit{Room/Leave} Nachricht verschickt wenn ein Teilnehmer
+einen Raum verlässt.
 
 Die \textit{Room/Signal} Nachricht wird an den Empfänger eines Signals
 geschickt, nachdem der Sender des Signals eine \textit{Signal} Nachricht an den
 Server geschickt hat.
 
+Siehe \figurename~\ref{fig:signaling-protocol-flow} für einen kompletten
+WebRTC-Verbindungsaufbau.
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{signaling-protocol}
+	\centering
+	\caption{Anwendungsbeispiel des Singaling-Protokolls}\label{fig:signaling-protocol-flow}
+	\figuresource{Schulke 2021}
+\end{figure}
+
 \subsubsection{Raum-Verwaltung}
 
 Die Raum-Verwaltung fällt unter anderem in die Kategorie der
-Synchronisationsprobleme. Es gibt unter Umständen $n$ Client-Verbindungen, die
-den Status von einem Raum erfragen wollen, und ggf.\ einen Anlegen möchten. Dies
-soll für alle Verbindungen öffentlich geschehen, Clients dürfen sich aber dabei
-nicht gegenseitig überschreiben.
-
-% Mutual exclusion -> gegenseitiger ausschluss -> nur einer darf
+Synchronisationsprobleme. Es gibt unter Umständen $n$ Teilnehmer-Verbindungen,
+die den Status von einem Raum erfragen wollen, und ggf.\ einen Anlegen möchten.
+Dies soll für alle Verbindungen öffentlich geschehen, Teilnehmer dürfen sich
+aber dabei nicht gegenseitig überschreiben.
 
 Um zwei asynchron laufende Programmteile zum sequenziellen Zugriff auf
 gemeinsamen Speicher zu zwingen, gibt es Möglichkeit einen Semaphor bzw. Mutex
@@ -556,15 +547,15 @@ locken, da sonst für diese Zeit alle anderen Teile des Programms, die gerade
 auf den Speicher zugreifen möchten blockiert sind.
 
 Als konkrete Lösung für das bestehende Problem bietet sich eine HashMap, deren
-zugriff von einem Mutex kontrolliert wird, an. Jede Client-Verbindung, die
+zugriff von einem Mutex kontrolliert wird, an. Jede Teilnehmer-Verbindung, die
 aktuelle Raum-Informationen braucht (was hauptsächlich bei dem erstellen /
 betreten von Räumen der Fall ist), muss nun vorher erst den mutex locken. 
 
-\subsubsection{Kommunikation zwischen mehreren Client-Verbindungen}
+\subsubsection{Kommunikation zwischen mehreren Teilnehmer-Verbindungen}
 
 Bis zu diesem Punkt ist der Aufbau der Verbindung und das zu implementierende
-Protokoll klar, allerdings fehlt noch das Verknüpfen von Client-Verbindungen um
-Signale weiterzuleiten.
+Protokoll klar, allerdings fehlt noch das Verknüpfen von
+Teilnehmer-Verbindungen um Signale weiterzuleiten.
 
 Da bereits Räume verwaltet werden, liegt es nahe dort einen Kommunikationskanal
 einzubetten. Eine Implementierung für diesen Kommunikationskanal stellen z.B.
@@ -575,45 +566,45 @@ Teile: Der Sender darf Nachrichten schreiben, der Empfänger darf sie aus dem
 Channel lesen.
 
 In diesem Fall ist allerdings zusätzlich noch bidirektionale Kommunikation
-gefragt, da beide Clients Signals des jeweils anderen erhalten sollen. Dafür
-bieten sich sogenannte Broadcast-Channel an. Sie sind dafür ausgelegt, dass von
-mehreren Stellen in diese geschrieben und gelesen wird. Sie funktioneren analog
-zu dem Broadcast aus der Netzwerktechnik.
-
-\textcolor{orange}{Diagramm einfügen..}
+gefragt, da beide Teilnehmer die Signale des jeweils anderen erhalten sollen.
+Dafür bieten sich sogenannte Broadcast-Channel an. Sie sind dafür ausgelegt,
+dass von mehreren Stellen in diese geschrieben und gelesen wird. Sie
+funktioneren analog zu dem Broadcast aus der Netzwerktechnik (siehe
+\figurename~\ref{fig:broadcast}).
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{diagram-broadcast}
 	\centering
-	\caption{Broadcast-Channel Konzept}
+	\caption{Broadcast-Channel Konzept}\label{fig:broadcast-channel}
 	\figuresource{Schulke 2021}
 \end{figure}
 
-Somit kriegt jeder Client bei betreten eines Raumes Zugriff auf einen Sender
-und einen Empfänger dieses Broadcast-Channels. In diesen schreibt er bei erhalt
-einer Peer-Nachricht vom Typ \textit{Signal} das Signal. Eine Client-Verbindung
-die gerade keine CPU-Zeit erhält, da ansonsten keine Ereignisse aufgetreten
-sind, wird wieder aktiv sobald eine neue Nachricht über den Channel da ist.
-Diese kann dann als Server-Nachricht vom Typ \textit{Room/Signal} mit dem
-Signal aus dem Channel an den Empfänger gesendet werden.
+Somit kriegt jeder Teilnehmer bei betreten eines Raumes Zugriff auf einen
+Sender und einen Empfänger dieses Broadcast-Channels. In diesen schreibt er bei
+erhalt einer Peer-Nachricht vom Typ \textit{Signal} das Signal (siehe
+\figurename~\ref{fig:broadcast-usage}). Eine Teilnehmer-Verbindung die gerade
+keine CPU-Zeit erhält, da ansonsten keine Ereignisse aufgetreten sind, wird
+wieder aktiv sobald eine neue Nachricht über den Channel da ist.  Diese kann
+dann als Server-Nachricht vom Typ \textit{Room/Signal} mit dem Signal aus dem
+Channel an den Empfänger gesendet werden.
 
-\begin{figure}[ht]
+\begin{figure}[ht!]
 	\includegraphics[width=0.5\textwidth]{diagram-websocket-verknüpfung}
 	\centering
-	\caption{Kommunikation von Nutzern über einen Broadcast-Channel}
+	\caption{Kommunikation von Nutzern über einen Broadcast-Channel}\label{fig:broadcast-usage}
 	\figuresource{Schulke 2021}
 \end{figure}
 
-\subsection{Interface}
+\subsection{Benutzeroberfläche}
 
 Um den Signaling-Server für ein erstes nutzbares Zwischenergebnis zu verwenden,
-wurde eine einfache browserbasierte Benutzer-Oberfläche implementiert, die
+wurde eine einfache browserbasierte Benutzeroberfläche implementiert, die
 analog zu sehr bekannten Videokonferenz-Systemen wie z.B. Zoom oder Google Meet
 funktioniert. Bei diesem Experiment wurde der Fokus primär auf die
 Bildübertragung gelegt – eine Audioübertragung könnte aber ohne großen Aufwand
 implementiert werden.
 
-Ein Benutzer muss über dieses Interface einem beliebigen Raum auf dem
+Ein Benutzer muss über diese Benutzeroberfläche einem beliebigen Raum auf dem
 Signaling-Server beitreten können. Sobald ein weiterer Benutzer beitritt soll
 der erste eine Nachricht erhalten, dass Jemand seinem Raum beigetreten ist.
 Letztendlich soll die Aushandlung der Video-Übertragung zwischen den beiden
@@ -623,8 +614,7 @@ Benutzern ohne weitere Interaktion des Benutzers stattfinden.
 
 Als Vorkehrungen für die singalisierungs Kommunikation mit dem Signaling-Server
 muss eine WebSocket-Secure Verbindung mit dem Server aufgebaut werden. Dies
-gelingt ebenfalls über eine Web-API:\
-https://developer.mozilla.org/de/docs/Web/API/WebSocket
+gelingt ebenfalls über eine Web-API.\
 
 Nun meldet sich der Server nach dem Verbindungsaufbau als erstes mit der
 \textit{Hello}-Nachricht und weist uns eine ID zu. Nach dieser ersten Nachricht
@@ -643,13 +633,11 @@ Nutzer im Raum war, der dem neu dazugekommenen eine SDP-Offer schicken wird.
 Um diese Zeitnah zu verarbeiten, findet die Initialisierung vor der ersten
 Signalisierungs-Nachricht statt.
 
-% https://webrtc.org/getting-started/media-devices
-
 \subsubsection{Verbindungsaufbau}\label{browser-webrtc}
 
 Moderne Browser wie Firefox, Chrome, Safari etc.\ stellen eine Implementierung
-des WebRTC-Standards bereit (siehe Abb.~\ref{fig:webrtc-support}), die
-durch eine übersichtliche API leicht zu integrieren ist. % Siehe https://caniuse.com/?search=webrtc
+des WebRTC-Standards bereit (siehe \figurename~\ref{fig:webrtc-support}), die
+durch eine übersichtliche API leicht zu integrieren ist.
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{webrtc-support}
@@ -675,7 +663,7 @@ selbst gesetzt haben (siehe setRemoteDescription und setLocalDescription),
 werden vom Browser onicecandidate-Events ausgelöst um eine direkte Verbindung
 zwischen den beiden Browsern auszuhandeln.
 
-% Signalisierungsablauf zwischen Interface und Kamera visualisiert:
+% Signalisierungsablauf zwischen Benutzeroberflächen und Kamera visualisiert:
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{cited-webrtc-connection-establishment}
@@ -690,17 +678,15 @@ Stream kann nun konsumiert werden.
 \subsubsection{Verbindungsabbau}
 
 Nach dem der Signalisierungs-Server eine \textit{Room/Leave}-Nachricht gesendet
-hat, kann die RTCPeerConnection ohne negative Auswirkungen abgebaut werden. Im
-Interface wird die Anzeige des Video-Streams des anderen Teilnehmers
-zurückgesetzt und die RTCPeerConnection geschlossen. Somit ist das Interface
-wieder bereit einem weiteren Raum beizutreten und erneut eine WebRTC Verbindung
-herzustellen.
+hat, kann die RTCPeerConnection ohne negative Auswirkungen abgebaut werden. In
+der Benutzeroberfläche wird die Anzeige des Video-Streams des anderen
+Teilnehmers zurückgesetzt und die RTCPeerConnection geschlossen. Somit ist die
+Benutzeroberfläche wieder bereit einem weiteren Raum beizutreten und erneut
+eine WebRTC Verbindung herzustellen.
 
-% Screenshots des Demos Interfaces anfügen
+% Screenshots der Demo Benutzeroberfläche anfügen
 
 \subsection{Kamera}
-
-\textcolor{red}{Zu letzt ist die Kamera zu entwickeln..}
 
 \subsubsection{GStreamer}
 
@@ -712,7 +698,8 @@ nativen Umgebung die Aufgabe von weiteren Programmen und Bibliotheken.
 Hier wird das weitverbreitete Multimedia-Framework GStreamer relevant. Dieses
 abstrahiert sämtliche Zugriffe auf medienbezogene Hardware (in diesem Fall die
 Kamera), beherscht die meistgenutzten Media-Codecs für Audio und Video und kann
-über Plugins mit weiteren Funktionalitäten erweitert werden.
+über Plugins mit weiteren Funktionalitäten erweitert werden (siehe
+\figurename~\ref{fig:gstreamer-arch}).
 
 GStreamer ist dafür ausgelegt das erstellen von Audio und/oder Video basierten
 Anwendung zu erleichtern. Es unterstützt weiterhin, durch die
@@ -731,8 +718,7 @@ Pipeline-Architektur, jegliche Art von Datenströmen.
 Zu den Kern-Features von GStreamer gehören eine API für diverse
 Multimedia-Anwendungen, eine Pipeline- und Plugin-Architektur, Mechanismen für
 die Aushandlung von Datenformaten zwischen Pipeline-Elementen, Synchronisation
-von Datenströmen. (siehe Abb.~\ref{fig:gstreamer-arch}
-und~\cite{GStreamerManualIntro})
+von Datenströmen. (siehe \figurename~\ref{fig:gstreamer-arch},~\cite{GStreamerManualIntro})
 
 Das Framework baut auf einem ausgereiften Plugin-System mit über 250 Plugins
 auf, welches den Codec-Support erweitert und weitere Komponenten zur Erstellung
@@ -749,9 +735,7 @@ Diese Plugins können in die folgenden Kategorien unterteilt werden:
 	\item Ausgabe
 \end{itemize}
 
-Siehe~\cite{GStreamerManualIntro}
-
-% Siehe https://gstreamer.freedesktop.org/documentation/application-development/introduction/gstreamer.html?
+Siehe~\cite{GStreamerManualIntro}\\
 
 Für dieses Experiment ist das GStreamer-Plugin für WebRTC besonders von
 bedeutung.
@@ -795,15 +779,29 @@ Referenz verwendet.
 
 \subsubsection{Vorbereitung der Laufzeitumgebung}
 
-Die Installation des Betriebssystems für die Kamera-Hardware 
+Sobald die Kamera-Software auf einem herkömlichen Desktop-System lauffähig ist,
+gilt es die Laufzeitumgebung auf der Kamera-Hardware vorzubereiten.
+
+Hierfür muss zunächst das Betriebssystem der Hardware, Raspberry PI OS,
+installiert werden. Anschließend sind die unter~\ref{items:deps} aufgezählten
+Software-Abhängigkeiten zu installieren. Sobald diese vorhanden sind, kann die
+Kamera-Software auf anderen Desktop-Systemen für die entsprechende
+System-Architektur (\textit{armv7-unknown-linux-gnueabihf}) kompiliert werden
+und anschließend auf den Einplatinencomputer übertragen werden.
 
 \subsubsection{Automatischer Start der Kamera-Software}
 
-\section{Benchmarks}
+Da die Kamera-Hardware nicht permanent Stromzufuhr haben wird, ist es hilfreich
+einen Betriebssystem-Service für anzulegen, der für die automatische Ausführung
+der Software verantwortlich ist. Somit muss nicht bei jedem Neustart händisch
+die Software ausgeführt werden.
 
-- CPU Load
-- Netzwerkauslastung
-- Zeitaufwand für Impl
+Unter Raspberry PI OS übernimmt diese aufgabe der Init-Service Systemd.
+
+% \section{Benchmarks}
+% - CPU Load
+% - Netzwerkauslastung
+% - Zeitaufwand für Impl
 
 \section{Auswertung}
 
@@ -811,10 +809,10 @@ Der Signaling-Server hatte den größten Implementierungsaufwand der 3
 Komponenten, hat sich dafür aber als sehr stabil und vielseitig einsetzbar
 erwiesen. Hinsichtlich der Performance ist die Implementierung ebenfalls ein
 Erfolg. Auf einem System mit einem Intel i7-8565U-Chip übersteigt der Server
-mit 10 Benutzern nicht ansatzweise 1\% der CPU-Kapazität. Falls nicht eine
-große Anzahl an Nutzern gleichzeitig Signale über diesen Server schickt,
+mit 50 Benutzern nicht annähernd 1\% der CPU-Kapazität. Falls nicht eine
+große Anzahl an Nutzern gleichzeitig viele Signale über diesen Server schickt,
 pendelt sich dieser aufgrund seiner asynchronen Architektur bei einer
-CPU-Last von 0.0\% ein, da er nur aktiv wird, wenn auch Nachrichten
+CPU-Last von 0.0\% ein, da dieser nur aktiv wird, wenn auch Nachrichten
 eintreffen.
 
 Die Benutzeroberfläche ist rein funktional geblieben und bietet kein gutes
@@ -837,12 +835,10 @@ drastisch ab und somit wird der Stream ab einer gewissen Bildqualität
 unbrauchbar. Dies könnte ggf.\ auf das 32-Bit-Betriebssystem der Hardware
 zurückzuführen zu sein.
 
-
 \section{Nächste Schritte}
 
-Einer der nächsten Schritte um dieses Experiment weiterzuführen wäre
-definitiv die Fehlersuche an der Kamera-Software um die
-Übertragungsqualität zu steigern.
+Einer der nächsten Schritte um dieses Experiment weiterzuführen wäre definitiv
+die Fehlersuche an der Kamera-Software um die Übertragungsqualität zu steigern.
 
 Außerdem sollte die Kamera-Software nicht erneut dem Raum auf dem
 Signaling-Server beitreten sobald der Stream abbricht, dies zu beheben könnte
@@ -855,7 +851,6 @@ Authentifizierungsverfahren drastisch erhöht werden.
 Als letzte Verbesserung wäre eine Implementierung von Audio-Übertragung von der
 Kamera zu der Benutzeroberfläche interessant um auch diesen Aspekt der
 Echtzeitübertragung im Web auszustesten.
-
 
 % Mögliche Optimierungen:
 % - Verbesserung der Video-Qualität: Evtl kein 32bit os
