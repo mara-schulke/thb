@@ -1,0 +1,194 @@
+\documentclass{article}
+
+\usepackage[style=apa]{biblatex}
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{doc}
+
+\hypersetup{colorlinks=true, allcolors=black}
+
+\newcommand{\titlecontent}{Drahtlose Low Power Kommunikationsprotokolle und ihre Sicherheit}
+
+\title{\titlecontent}
+\author{Friedemann Richard Pruß, Maximilian Schulke}
+
+\bibliography{references}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		Technische Hochschule Brandenburg \\
+		Online Studiengang Medieninformatik \\
+		Fachbereich Informatik und Medien \\
+		Einführung in die wissenschaftliche Projekarbeit\\
+		Prof.\ Dr.\ rer.\ nat.\ Martin Christof Kindsmüller
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\large{Konzept:}\\
+		\Huge{
+			Drahtlose Low Power Kommunikationsprotokolle\\
+			und ihre Sicherheit
+		}\\[0.5em]
+		\large{Wintersemester 2021}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Friedemann Richard Pruß (Matrikel-Nr. 20215742)\\
+		Maximilian Schulke (Matrikel-Nr. 20215853)
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\tableofcontents
+
+\section{Thematische Fokussierung}
+
+In einer vernetzten Welt mit unzähligen IoT-Geräten wird sichere Kommunikation
+mit sogenannten Low-Power-Protokollen immer wichtiger. Smart-Devices wie zum
+Beispiel Sicherheitskameras, Smart-Lampen oder allgemeiner – jegliche
+Embedded-Hardware, lässt sich mittlerweile so gut wie überall wiederfinden.
+
+Diese Geräte zeichnen sich dadurch aus, dass sie oft stark begrenzte Ressourcen
+haben. In der Regel ist ein niedriger Stromverbrauch gewünscht, da viele Geräte
+mit Akku- oder Batterie betrieben werden. Bei diesen ist folglich die
+Rechenleistung eingeschränkt, da mit einer leistungsstarken CPU die
+Batterielaufzeit enorm verkürzt würde.
+
+Da Kommunikation dennoch meist eine elementare Aufgabe dieser Geräte ist, gibt
+es zahlreiche Entwicklungen, um die Problematik energieeffizient zu lösen.
+Low-Power-Protokolle benötigen weniger Strom als vergleichbare Protokolle aus
+dem Desktop-Umfeld. Weiterhin ist die Vertraulichkeit \& Sicherheit der
+kommunizierten Daten unabdinglich, da gerade im Smart-Home-Bereich ein Angriff
+fatale Folgen haben könnte.
+
+Die entstehende Arbeit soll in dem oben genannten Kontext das Thema der
+sicheren Kommunikation genauer beleuchten. Dazu werden zwei der am weitesten
+verbreiteten Protokolle, namentlich Thread und Bluetooth-Low-Energy (kurz
+\textit{BLE}) hinsichtlich ihrer Sicherheit verglichen. Insbesondere ist die
+Frage interessant, ob das jüngere Thread-Protokoll die bekannten
+sicherheitsrelevanten Problematiken von Bluetooth-Low-Energy behebt.
+
+\section{Motivation \& Abgrenzung}
+
+Auch nach ausführlicher Recherche ließ sich, trotz der bereits großen und immer
+weiter zunehmenden Bekanntheit der beiden Protokolle, keine Publikation finden,
+in der ein detaillierter Sicherheitsvergleich stattgefunden hat. In der Regel
+wurde eines der beiden Protokolle alleinstehend betrachtet
+\parencite{ThreadInteroperabilityIEEE, BluetoothMeshIntroBLTW:online}, oder es
+fand ein allgemeiner konzeptioneller Vergleich statt – zum Beispiel
+hinsichtlich Architektur, Protkoll-Aufbau, Funktionsumfang etc.
+\parencite{ThreadMeshVsOtherWirelessIEEE, ComparativeAnalysisIEEE,
+ThreadVsBluetoothEnterpriseIotInsights:online}. Desweiteren sind die
+Protokollspezifikationen für beide Protokolle öffentlich einsehbar
+\parencite{ThreadSpec:online, BluetoothSpec:online}.
+
+\textit{Antonioli, Tippenhauer und Rasmussen} haben im Jahr 2020 bereits eine
+sehr detaillierte Arbeit über die Sicherheitsprobleme und Angriffsmöglichkeiten
+auf Bluetooth-Low-Energy veröffentlicht.
+\parencite{BluetoothLowEnergyAttackOxford}
+
+In verschiedensten Arbeiten werden diverse Anwendungsszenarien erläutert und
+die Vorteile der jeweiligen Architektur für die betrachtete Problemstellung
+herausgestellt. \parencite{ThreadApplicationIEEE,
+ThreadApplicationSmartBuildingsIEEE}
+
+Die geplante Arbeit grenzt sich durch die Fokussierung auf den
+Sicherheitsaspekt von den oben genannten Arbeiten ab. Im besten Fall soll diese
+eine konkrete Empfehlung für oder gegen die Benutzung eines der Protokolle
+geben – eventuell auch einen Ausblick über eine mögliche zukünftige
+Entwicklung. Dafür werden mögliche Sicherheitslücken und -mechanismen von
+Thread und Bluetooth-Low-Energy untersucht. Insbesondere werden sich diese
+Untersuchungen auf mögliche Angriffe und die Mechanismen der Protokolle, um
+sich vor eben diesen zu schützen, beziehen.
+\parencite{BluetoothPracticalAttacksICACCS, ThreadSecurityCSIAC:online} Zu
+typischen Angriffen zählen beispielsweise Man-In-The-Middle-Attacken.
+\parencite{GeneralManInTheMiddle}
+
+Andere Arbeiten stellen Eigenschaften und Problematiken, teils durch größer
+angelegte Feldversuche, heraus. Anhand dieser experimentellen Untersuchungen
+kann man Chancen und Risiken der verglichenen Protokolle gegeneinander abwägen.
+Daraus soll die angestrebte Empfehlung abgeleitet werden.
+
+\section{Recherchebericht}
+
+Um einen Einstieg in das Thema zu finden, wurde graue und nicht-zitierfähige
+Literatur gesichtet, wie zum Beispiel Blogposts, Videos und Wikipedia-Artikel.
+Dadurch konnte ein grober Überblick über die zu bearbeitende Thematik –
+\textit{Sicherheit im Smart-Home} – gewonnen werden.
+
+Es wurde deutlich, dass momentan ein Umbruch der Kommunikationsprotokolle im
+IoT-Bereich stattfindet. Da dies große Relevanz für die Zukunft der Branche
+hat, lag es nahe, das Thema Sicherheit mit den am weitest verbreiteten
+Kommunikationsprotokollen zu verbinden. Dies führte letztendlich zu dem Thema
+der Arbeit: \textit{\titlecontent}.
+
+% Mindmap + Notizen oder so.
+
+% Thread vs Bluetooth -> wieso? Thread sehr neu, Bluetooth sehr bekannt und
+% arbeit zu bluetooth.
+
+Nachdem die Themenfindung abgeschlossen war, begann die fokussierte Recherche
+bei den großen wissenschaftlichen Datenbanken. Dabei zeigten sich die
+Datenbanken der IEEE, ACM und die Gesellschaft für Informatik besonders
+ergiebig für das gewählte Thema.  Zuerst wurden die Publikationen nach
+Schlagwörtern, Titeln und Aktualität vorgefiltert. Nachdem eine grobe
+Vorauswahl bestand, hat sich das Überfliegen des Abstracts und der
+Zusammenfassung als effiziente Möglichkeit zur Überprüfung der Relevanz einer
+Arbeit erwiesen. 
+
+Dadurch fanden sich besonders interessante und relevante Quellen wie zum
+Beispiel \textcite{BluetoothLowEnergyAttackOxford} oder
+\textcite{ThreadMeshVsOtherWirelessIEEE}. Diese und weitere sehr
+vielversprechende Arbeiten boten einen guten Anhaltspunkt um über deren
+Literaturliste weitere themennahe Publikationen zu finden. Nach der ersten
+Kollektion von Quellen, war es ein sinnvoller Schritt diese nach Kategorie (zum
+Beispiel \textit{Bluetooth}, \textit{Thread} und \textit{Vergleiche}) und
+Relevanz zu sortieren. Priorisiert wurde nach Aktualität, thematischer Nähe und
+wissenschaftlicher Wertigkeit.
+
+Jede relevante Publikation wurde in \BibTeX\ erfasst. Nachdem eine erste Liste
+vorhanden war, lag es nahe, diese erneut auf Vollständigkeit und Verfügbarkeit –
+insbesondere bei online Quellen – zu überprüfen. Dieses Vorgehen wurde so lange
+wiederholt, bis sich für den Umfang der zu erstellenden Arbeit genügend
+hochwertige Quellen ergeben haben.
+
+%Bei der suche nach bestimmten werden ähnliche vorgeschlagen. Nach relevanz und
+%zitathäufgigkeit filtern. 
+
+\newpage
+
+\section{Zeitplan}
+
+\begin{enumerate}
+	\item[KW43]    – Recherche \& mediale vorbereitung Präsentation
+	\item[KW44]    – Recherche \& Präsentation
+	\item[KW45-48] – Inhaltliche Ausarbeitung
+	\item[KW49]    – Schreiben des Extended Abstract
+	\item[KW50-02] – Entwicklung des wissenschaftlichen Posters
+\end{enumerate}
+
+\section{Vorläufige Literaturliste}
+\printbibliography[heading=none]
+\nocite{*}
+
+%Infos                         | Quelle
+%Bluetooth ist unsicher weil.. | Quelle X
+
+%Argumentation
+%- Sicherheitslücke X gefunden in Jahr Y von Z
+%- Thread bietet neuerung für Angriff 
+
+\end{document}

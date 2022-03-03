@@ -1,0 +1,103 @@
+\documentclass{article}
+
+\usepackage[style=apa]{biblatex}
+\usepackage[a4paper, left=1.5cm, right=1.5cm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{doc}
+
+\hypersetup{colorlinks=true, allcolors=black}
+
+\bibliography{references}
+\pagestyle{empty}
+
+\begin{document}
+
+Sichere Kommunikation ist eine Grundvoraussetzung im Smart Home. Mesh Netzwerke
+bieten viele Vorteile, wie eine hohe Ausfallsicherheit und leichte
+Erweiterbarkeit. Bluetooth Mesh und Thread sind zwei sehr unterschiedliche Low
+Power Mesh-Protokolle mit hoher Relevanz für die IoT-Industrie
+\parencite{ThreadMeshVsOtherWirelessIEEE, HardwareSecurity, BLEMeshEmbeddedComputingCom}.
+
+Im Gegensatz zu Thread baut Bluetooth Mesh auf dem weit verbreiteten Protokolle
+Bluetooth Low Energy auf. Thread verwendet, ähnlich wie sein Vorgänger Zigbee
+IP, IEEE 802.15.4 für die drahtlose Datenübertragung \parencite{ThreadSpec, BluetoothSpec}.
+Diese Arbeit grenzt sich von vorangegangenen Arbeiten durch den
+sicherheitsbezogenen Vergleich der beiden Protokolle ab. Wir präsentieren die
+Ergebnisse unserer Literaturanalyse von Sicherheitsuntersuchungen und
+Spezifikationen.
+
+\textbf{On-Mesh Commissioning:} Der Commissioner kann dem Joiner festgelegte
+Credentials bereitstellen um dem Netzwerk beizutreten. Er kann diese
+Credentials auf die vom Hersteller vergebene EUI64 beschränken
+\parencite{ThreadSpec}.
+
+\textbf{External Commissioning:} Der authentifizierte Commissioner stellt die
+Identität des Joiners sicher. Anschließend weist er den Border-Router an, dem
+Joiner alle Informationen zum Beitritt des Netzwerks bereitzustellen
+\parencite{ThreadSpec}.
+
+Thread ist ein offenes Protokoll, da es im Vergleich zu Bluetooth Mesh, kaum
+einen Einfluss auf die Anwendungsebene des Netzwerks hat.
+
+Im Jahr 2020 wurde eine Sicherheitsanalyse von Thread anhand der 10
+relevantesten Sicherheitsbedenken der OWASP für IoT-Netzwerke durchgeführt
+\parencite{ThreadSecurityCSIAC}. Diese Analyse zeigt, dass Thread den Fokus
+primär auf die Verschlüsselung und die Sicherung der Übertragung legt, aber
+Risiken durch die fehlende Spezifikation der Anwendungsebene entstehen
+könnten. Hersteller müssen selbst für die Sicherheit auf der Anwendungsebene
+sorgen. Das macht es möglich, bereits gut erforschte
+Verschlüsselungsprotokolle, wie z. B. DTLS, zu verwenden und diese im
+Bedarfsfall auszu-tauschen. Diese Freiheit birgt aber auch Risiken, da sich der
+Nutzer auf die Sicher-heitsmaßnahmen des Hersteller verlassen muss.
+
+
+Dinu und Kizhvatov (\citeyear{ThreadEMAttack}) haben herausgefunden, dass durch
+eine Verkettung von Schwachstellen und einer differenziellen
+elektromagnetischen Analyse Rückschlüsse auf den Datenverkehr bei Thread zu
+ziehen ist, und Netzwerkschlüssel abgegriffen werden können. Dies lohnt sich
+allerdings aufgrund des hohen Aufwands i.d.R. bei Smart-Home-Netzwerken nicht,
+sondern stellt eher eine Gefahr für kommerzielle Anwendungen dar
+\parencite{ThreadEMAttack}.
+
+
+In den letzten Jahren wurden mehrere, teils kritische, Sicherheitslücken in der
+Bluetooth Spezifikation entdeckt \parencite{BluetoothIssues}.
+Diese beeinträchtigen zum Großteil die Sicherheit von Direktverbindungen - also
+Bluetooth BR/EDR und Bluetooth Low Energy (BLE). Zu den schwerwiegendsten
+Schwachstellen in der Bluetooth Core Spezifikation zählen die sogenannten
+“Bluetooth Impersonation Attacks”. Diese macht es möglich, dass sich ein
+Angreifer als bereits authentifiziertes Gerät ausgibt und somit die komplette
+Authentifizierung bei einem Verbindungsaufbau umgehen kann. Dies ermöglicht
+Man-In-The-Middle-Attacken \parencite{BluetoothLowEnergyAttackOxford}, durch
+die Daten ausgelesen, Daten manipuliert oder gefälschte Nachrichten in Umlauf
+gebracht werden können.
+
+Bluetooth Mesh verwendet als Übertragungsprotokoll BLE und verwendet, anders
+als beim BLE-Pairing, elliptische 256-Bit-Kurven und
+Out-of-Band-Authentifizierung um das Hinzufügen von Netzwerkknoten abzusichern
+\parencite{BluetoothSpec}.
+Allerdings wurden diesbezüglich im Jahr 2020 die Sicherheitswarnungen
+CVE-2020-26556, CVE–2020-26557, CVE-2020-26559, CVE-2020-26560 veröffentlicht
+\parencite{BluetoothIssues}.
+
+Die aktuell bekannten Sicherheitslücken von Bluetooth Mesh betreffen das
+Hinzufügen von neuen Netzwerkknoten \parencite{BluetoothIssues} und vermindern
+somit die Integrität des Netzwerks. Bislang wurden bei Thread, trotz
+ausgiebiger Untersuchungen \parencite{ThreadSecurityCSIAC, ThreadSecurityEmbeddedCom},
+noch keine vergleichbaren Schwachstellen gefunden. Auf der anderen Seite tritt
+Thread die Verantwortung zu Absicherung der Anwendungsschicht an den Hersteller
+ab, ist somit zwar flexibler, könnte aber mögliche Sicherheitslücken durch
+nicht abgesicherte Geräte öffnen. Eine eindeutige Empfehlung für oder gegen
+eines der beiden Protokolle nur auf Basis der Sicherheit kann nicht klar
+gegeben werden, da beide Protokolle unterschiedliche Vorteile und
+Sicherheitsrisiken mit sich bringen. Eine Entscheidung muss vom
+Implementierung-Kontext abhängig gemacht werden.
+
+\printbibliography[heading=none]
+
+\end{document}
