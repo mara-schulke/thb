@@ -1,0 +1,74 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 1}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 1}
+\stepcounter{section}
+
+\subsection{Induktionsbeweis}
+
+\begin{align*}
+	Induktionsvoraussetzung & = \sum_{i=1}^{n}3^{i - 1} = \frac{3^n-1}{2}       \\
+	Induktionsbehauptung    & = \sum_{i=1}^{n+1}3^{i - 1} = \frac{3^{n+1}-1}{2} \\
+	Induktionsanfang        & = \sum_{i=1}^{1}3^0 = \frac{3^1 - 1}{2} = 1       \\
+	Induktionsschritt       & = \sum_{i=1}^{n+1}3^{i - 1}                       \\
+							& = \sum_{i=1}^{n}3^{i - 1} + 3^n                   \\
+							& = \frac{3^n - 1}{2} + \frac{2 * 3^n}{2}           \\
+							& = \frac{3 * 3^n - 1}{2}                           \\
+							& = \frac{3^{n + 1} - 1}{2}                         \\
+\end{align*}
+
+\subsection{Euklidischer Algorithmus}
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			a   & b   & r\\
+			\hline
+			374 & 284 & 90\\
+			284 & 90  & 14\\
+			90  & 14  & 6\\
+			14  & 6   & \textbf{2}\\
+			6   & \textbf{2} & 0\\
+		\end{tabular}
+		\vspace{1em}\\
+		gcd(374, 284) = 2
+	\end{center}
+\end{table}
+
+\end{document}

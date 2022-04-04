@@ -1,0 +1,81 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\renewcommand\thesubsubsection{\textnormal{(\alph{subsubsection})}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 2}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 2}
+\stepcounter{section}
+\stepcounter{section}
+
+\subsection{OTP-Verschlüsselung}
+
+\subsubsection{}
+
+\begin{align*}
+	  M & = 1101 1110 1010 1101 1011 1110 1110 1111_2\\
+	  K & = 1100 1010 1111 1110 1011 1010 1011 1110_2\\
+	  C & = M_2 \oplus K_2\\
+		& = 1101 1110 1010 1101 1011 1110 1110 1111_2\\
+		& \oplus 1100 1010 1111 1110 1011 1010 1011 1110_2\\
+		& = 0001 0100 0101 0011 0000 0100 0101 0001_2\\
+		& = 145300451_{16}
+\end{align*}
+
+\subsubsection{}
+
+\begin{align*}
+	C & = 3522988314_{10}\\
+	  & = 1101 0001 1111 1100 1000 1001 0001 1010_2\\
+	K & = 11223344_{16}\\
+	  & = 0001 0001 0010 0010 0011 0011 0100 0100_2\\
+	M & = C_2 \oplus K_2\\
+	  & = 1101 0001 1111 1100 1000 1001 0001 1010_2\\
+	  & \oplus 0001 0001 0010 0010 0011 0011 0100 0100_2\\
+	  & = 1100 0000 1101 1110 1011 1010 0101 1110_2\\
+	  & = C0DEBA5E_{16}
+\end{align*}
+
+\subsection{Square-and-Multiply}
+
+\begin{align*}
+	y = 1000 0000 1_2
+\end{align*}
+
+
+\end{document}
