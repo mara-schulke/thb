@@ -1,0 +1,107 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{listings}
+\usepackage{color}
+
+\renewcommand\thesubsubsection{\textnormal{(\alph{subsubsection})}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 3}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 3}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+
+\subsection{Hauptsatz der elementaren Zahlentheorie}
+
+\subsubsection{}
+
+Es existiert eine bijektive Abbildung $\nu: \mathbb{N} \setminus \{0,1\} \mapsto (p_0,..,p_n)$
+bei der gilt $p_i \in P, n \in \mathbb{N} \setminus \{0,1\}$ und $\prod_{i=0}^{n} p_i = n$.
+Daraus folgt, dass $\mathbb{N}$ sich in Abhängigkeit der abzählbar unendlichen
+Menge $T$ aller möglichen Tupel $(p_n)$ definieren lässt:
+$\mathbb{N} = \{ x | \prod_{i=0}^{n} p_i = n, (p_0,..,p_n) \in T \} \cup \{0,1\}$
+
+\subsubsection{}
+
+Würde nun die 1 zu den Primzahlen zählen wäre $\nu$ nicht mehr bijektiv und die
+Menge $T$ wäre nicht mehr abzählbar unendlich.
+
+\subsection{Primzahlen}
+
+\begin{align*}
+	M = 20215853\\
+	X = 20215853
+\end{align*}
+
+\subsubsection{Fermat}
+
+\begin{align*}
+	a^{X-1} \mod X = 2^{20215852} \mod 20215853 = 14439959 \Rightarrow x \notin P
+\end{align*}
+
+\subsubsection{Miller-Rabin}
+
+\begin{align*}
+	20215852 / 2 & = 10107926\\
+	10107926 / 2 & = 5053963 \Rightarrow k = 2,\,m = 5053963\\
+\end{align*}
+\begin{align*}
+	3^{5053963} \mod X & = 15376602\\
+	3^{10107926} \mod X & = 19030657\\
+	3^{20215852} \mod X & = 2888708 \Rightarrow x \notin P
+\end{align*}
+
+\subsection{Anzahl von Primzahlen}
+
+\begin{align*}
+	A & = \frac{10^{101}}{\ln(10^{101})} - \frac{10^{100}}{\ln(10^{100})}\\
+	  & = \frac{10^{101}}{101*\ln(10)} - \frac{10^{100}}{100*\ln(10)}\\
+	  & = \frac{100*10^{101}}{101*100*2.3} - \frac{101*10^{100}}{101*100*2.3}\\
+	  & = \frac{1000*10^{100} - 101*10^{100}}{101*100*2.3}\\
+	  & = \frac{899*10^{100}}{101*100*2.3}\\
+	  & = \frac{899*10^{97}}{23.23}\\
+	  & = 3.87*10^{98}
+\end{align*}
+
+
+\begin{align*}
+	W & = {(\frac{10^{101} - 10^{100}}{2})}^{-1} * 3.87*10^{98}\\
+	  & = \frac{3.87*10^{98}}{4.5*10^{100}}\\
+	  & = 0.0086
+\end{align*}
+
+\end{document}
