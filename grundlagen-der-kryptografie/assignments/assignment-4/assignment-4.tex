@@ -1,0 +1,86 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{listings}
+\usepackage{color}
+
+\renewcommand\thesubsubsection{\textnormal{(\alph{subsubsection})}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 4}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 4}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+
+\subsection{Stochastische Unabhängigkeit}
+
+\begin{align*}
+	\Pr(\bar{A} \cap B) & = \Pr(B \setminus A)\\
+						& = \Pr(B) - \Pr(B \cap A)\\
+						& = \Pr(B) - \Pr(A) * \Pr(B)\\
+						& = \frac{|B|}{|\Omega|} - \frac{|A| * |B|}{|\Omega|^2}\\
+						& = \frac{|B| * |\Omega|}{|\Omega|^2} - \frac{|A| * |B|}{|\Omega|^2}\\
+						& = \frac{|B| * (|\Omega| - |A|)}{|\Omega|^2}\\
+						& = \frac{|B| * |\bar{A}|}{|\Omega|^2}\\
+						& = \frac{|B|}{|\Omega|} * \frac{|\bar{A}|}{|\Omega|}\\
+						& = \Pr(B) * \Pr(\bar{A})
+\end{align*}
+
+\subsection{Kombinatorik}
+
+Anzahl aller möglichen Aufteilungen in Teams mit 5 Mitgliedern:
+
+\begin{align*}
+	{10 \choose 5} & = \frac{10!}{5! * 5!}\\
+				   & = \frac{10 * 9 * 8 * 7 * 6}{5 * 4 * 3 * 2 * 1}\\
+				   & = \frac{2 * 9 * 8 * 7 * 6}{4 * 3 * 2 * 1}\\
+				   & = \frac{2 * 9 * 2 * 7 * 6}{3 * 2 * 1}\\
+				   & = \frac{2 * 3 * 2 * 7 * 6}{2 * 1}\\
+				   & = 3 * 2 * 7 * 6\\
+				   & = 7 * 6^2\\
+				   & = 252\\
+\end{align*}
+
+Da die Reihenfolge nicht gefragt ist, sondern nur die möglichen Aufteilung sind
+$(\{1,2,3,4,5\}, \{6,7,8,9,10\})$ und $(\{6,7,8,9,10\}, \{1,2,3,4,5\})$
+in diesem Kontext äquivalent. Demnach:
+
+\begin{align*}
+	\frac{{10 \choose 5}}{2} = \frac{252}{2} = 126
+\end{align*}
+
+\end{document}
