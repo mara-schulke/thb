@@ -1,8 +1,23 @@
 \documentclass{beamer}
 
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{graphicx}
+
+\usecolortheme{seagull}
+\usefonttheme{serif}
+
+
 \title{Open-Source-Lizenzen}
 \subtitle{Einordnung und Abgrenzung}
+\author{Mara Schulke}
 
+\AtBeginSection[]{
+	\begin{frame}{Inhalt}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
 
 % https://choosealicense.com/licenses/
 % https://www.gnu.org/licenses/license-list.de.html#GPLCompatibleLicenses
@@ -14,13 +29,12 @@
 
 \maketitle
 
-\begin{frame}
-	\Large{<Aufhänger>}
+\section{X}
+\begin{frame}{Wieso sollte ich Lizenzen beachten?}
 \end{frame}
 
-\begin{frame}
-	\Large{FOSS:\ Free and Open Source Software}
-
+\section{FOSS:\ Free and Open Source Software}
+\begin{frame}{FOSS:\ Free and Open Source Software}
 	\begin{itemize}
 		\item Umfasst jegliche quelloffene Software
 		\item Nutzer kann Quellcode lesen, ändern und selber redistributieren
@@ -31,18 +45,16 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Lizenztypen:}
-
+\section{Lizenztypen}
+\begin{frame}{Lizenztypen}
 	\begin{itemize}
 		\item Permissive
 		\item Copyleft
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Lizenztypen:\ Permissive Lizenzen}
-
+\subsection{Permissive Lizenzen}
+\begin{frame}{Lizenztypen:\ Permissive Lizenzen}
 	\begin{itemize}
 		\item haben einen freien und erlaubenden Charakter
 		\item lassen Redistributionen unter anderen Lizenzen zu
@@ -52,9 +64,17 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Lizenztypen:\ Copyleft Lizenzen}
+\begin{frame}{Lizenztypen:\ Beispiele für Permissive Lizenzen}
+	\begin{itemize}
+		\item BSD-2-Clause License
+		\item BSD-2-Clause License
+		\item MIT License
+		\item Apache 2.0 License
+	\end{itemize}
+\end{frame}
 
+\subsection{Copyleft Lizenzen}
+\begin{frame}{Lizenztypen:\ Copyleft Lizenzen}
 	\begin{itemize}
 		\item bekannt für sog.\ virale Lizensierung,
 			verbieten Redistributionen unter anderen Lizenzen
@@ -64,46 +84,79 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Einordnung von Lizenzen}
+\begin{frame}{Lizenztypen:\ Beispiele für Copyleft Lizenzen}
+	Schwaches Copyleft
+	\vspace{0.5em}
+	\begin{itemize}
+		\item GNU Lesser General Public License
+		\item Mozilla Public License
+		\item Eclipse Public License
+	\end{itemize}
+	\vspace{1em}
 
-	// grafik einfügen
+	Starkes Copyleft
+	\vspace{0.5em}
+	\begin{itemize}
+		\item GNU General Public License
+		\item GNU Affero General Public License
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Lizenzen im Detail}
+\section{Einordnung von Lizenzen}
+\begin{frame}{Einordnung von Lizenzen}
+	// spektrum einfügen
 \end{frame}
 
-\begin{frame}
-	\Large{GNU General Public License v2}
+\section{Lizenzen im Detail}
+\subsection{GNU General Public License v2}
+\begin{frame}{GNU General Public License v2}
+	\begin{itemize}
+		\item Copyleft
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{GNU General Public License v3}
+\subsection{GNU General Public License v3}
+\begin{frame}{GNU General Public License v3}
+	Strenges Copyleft,
+	\begin{itemize}
+		% Beide verlangen unter sich selbst redistributiert zu werden
+		\item Inkopatibel zur GPLv2
+	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\Large{Apache License v2.0}
+\subsection{Apache License v2.0}
+\begin{frame}{Apache License v2.0}
 \end{frame}
 
-\begin{frame}
-	\Large{Mozilla Public License}
+\subsection{Mozilla Public License}
+\begin{frame}{Mozilla Public License}
 \end{frame}
 
-\begin{frame}
-	\Large{MIT License}
+\subsection{MIT License}
+\begin{frame}{MIT License}
 \end{frame}
 
-\begin{frame}
-	\Large{BSD License}
+\subsection{BSD License}
+\begin{frame}{BSD License}
 \end{frame}
 
-\begin{frame}
-	\Large{Unlizensierte Software}
+\section{Unlizensierte Software}
+\begin{frame}{Unlizensierte Software}
 \end{frame}
 
-\begin{frame}
-	\Large{Rechtsfolgen von Lizenzverstößen}
+\section{Rechtsfolgen von Lizenzverstößen}
+\begin{frame}{Rechtsfolgen von Lizenzverstößen}
+\end{frame}
+
+\section{Fragen}
+\begin{frame}{Fragen}
+	\begin{itemize}
+		\item Welche Faktoren müssen bei der Lizenzwahl beachtet werden?
+			% Finde ich es okay wenn jemand mit meiner Arbeit Geld verdient?
+			% Soll diese Arbeit immer Open Source bleiben?
+			% Habe ich eine Marke die ich Schützen will?
+		\item Wodurch zeichnet sich der Copyleft-Effekt aus? % Virale Lizensierung
+	\end{itemize}
 \end{frame}
 
 %# Definition Open Source
