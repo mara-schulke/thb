@@ -1,0 +1,78 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{listings}
+\usepackage{color}
+
+\renewcommand\thesubsubsection{\textnormal{(\alph{subsubsection})}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 5}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 5}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+
+\subsection{Rechnen mit Restklassen}
+
+\begin{align*}
+	4^6 + 464 -24 * 36 \equiv -1 * -1 * -1 + 5 -7 * 2 \equiv -10 \equiv 7 \mod 17
+\end{align*}
+
+\subsection{Äquivalenzrelationen}
+
+\begin{align*}
+	& R = \{\,(a,b)R(c,d)\,|\,a + d = b + c,\, (a,b) \in \mathbb{N}^2,\, (c,d) \in \mathbb{N}^2\,\}\\
+	& \textit{reflexiv}: a + b = b + a\\
+	& \textit{symmetrisch}: a + d = b + c \Rightarrow c + b = d + a\\
+	& \textit{transitiv}: a + d = b + c = a - b = c - d \land c - d = e - f \Rightarrow a - b = e - f\\
+\end{align*}
+
+\subsection{Subtraktion von Restklassen}
+
+\begin{align*}
+	\textnormal{Wenn}\,     & a \equiv b \mod n,\,c \equiv d \mod n\\
+	\textnormal{dann gilt}\,& a \equiv b + xn\,\textnormal{und}\,c = d + yn & x,y \in \mathbb{Z}
+\end{align*}
+
+\begin{align*}
+				 & a - c \equiv b - d           & \mod n\\
+	\Rightarrow\,& b + xn - d + yn \equiv b - d & \mod n\\
+	\Rightarrow\,& b - d \equiv b - d           & \mod n\\
+\end{align*}
+
+\end{document}
