@@ -3,12 +3,9 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{graphicx}
 
 \usecolortheme{seagull}
 \usefonttheme{serif}
-
-\graphicspath{ {./images/} }
 
 \title{Open-Source-Lizenzen}
 \subtitle{Einordnung und Abgrenzung}
@@ -19,7 +16,6 @@
 		\tableofcontents[currentsection]
 	\end{frame}
 }
-
 
 \begin{document}
 
@@ -32,14 +28,7 @@
 \section{Wieso sind Lizenzen wichtig?}
 \begin{frame}{Wieso sind Lizenzen wichtig?}
 	\begin{itemize}
-		% Würde die Firma Adobe, Photoshop abhängig von einer unter der
-		% GPL v2 lizensierten Bibliothek, veröffentlichen müsste der Source
-		% Code für Photoshop den Nutzern zugänglich gemacht werden. Und den
-		% Nutzern müssten alle Rechte die aus der GPLv2 entstehen zugestanden
-		% werden.
-		\item beispielhaftes Ausmaß von Lizenzverletzungen:\\
-			Adobe Photoshop und GPL v2 Abhängigkeiten
-		\vspace{2em}
+		\item Lizenzverstöße sind i.d.R. Urheberrechtsverletzungen nach dem Urheberrechtsgesetz
 		\item ethische Grundsätze und soziale Verträge
 		\item dienen der Unterstützung von Open Source Projekten und
 			Entwicklern
@@ -50,13 +39,11 @@
 \begin{frame}{Rechtliche Betrachtung von Open-Source-Lizenzen}
 	\begin{itemize}
 		\item Open-Source-Lizenzen sind Lizenzverträge
-		\item regeln rechtliche Aspekte wie:
+		\item treten Verwertungsrechte ab:
 			\begin{itemize}
-				\item Nutzungsrechte
-				\item Distributionsrechte
-				\item Erlaubnis zur Modifikation
-				\item Voraussetzungen zur Distribution der modifizierten
-					Version
+				\item Nutzungsrechte (UhrG §31)
+				\item Distributionsrechte (UhrG §17 / §19a)
+				\item Erlaubnis zur Modifikation (UhrG §23)
 			\end{itemize}
 		\item enthalten bestimmte Bedingungen unter denen die Rechte ausgeübt
 			werden dürfen
@@ -81,16 +68,15 @@
 		\item lassen Redistributionen unter anderen Lizenzen zu
 		\item bestehen oft primär aus einem Haftungsausschluss, ohne
 			nennenswerte weitere Vorgaben
-		\item stellen den technischen Fortschritt über politische Debatten
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Lizenztypen:\ Beispiele für Permissive Lizenzen}
 	\begin{itemize}
-		\item BSD-2-Clause License
-		\item BSD-3-Clause License
 		\item MIT License
 		\item Apache License 2.0
+		\item BSD-2-Clause License
+		\item BSD-3-Clause License
 	\end{itemize}
 \end{frame}
 
@@ -109,9 +95,9 @@
 	Schwaches Copyleft
 	\vspace{0.5em}
 	\begin{itemize}
-		\item GNU Lesser General Public License
 		\item Mozilla Public License
 		\item Eclipse Public License
+		\item GNU Lesser General Public License
 	\end{itemize}
 	\vspace{1em}
 
@@ -131,47 +117,152 @@
 \section{Die wichtigsten Lizenzen im Detail}
 \subsection{MIT License}
 \begin{frame}{MIT License}
+	Erlaubt:
 	\begin{itemize}
-		\item die Lizenz muss bei Redistribution mit ausgeliefert werden
-		\item enthält einen Haftungsausschluss
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
 	\end{itemize}
 \end{frame}
 
 \subsection{Apache License 2.0}
 \begin{frame}{Apache License 2.0}
+	Erlaubt:
+	\begin{itemize}
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+		\item Patent Nutzung
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+		\item Änderungen müssen kenntlich gemacht werden
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
+		\item Verwendung der Marke
+	\end{itemize}
 \end{frame}
 
 \subsection{Mozilla Public License}
 \begin{frame}{Mozilla Public License}
+	Erlaubt:
+	\begin{itemize}
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+		\item Patent Nutzung
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+		\item Quellcode muss bei Distribution veröffentlicht werden
+		\item Änderungen von bestehenden Dateien müssen unter der gleichen
+			Lizenz veröffentlicht werden
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
+		\item Verwendung der Marke
+	\end{itemize}
 \end{frame}
 
-\subsection{GNU General Public License v2}
-\begin{frame}{GNU General Public License v2}
-	% I give you my source code, you give me your changes back.
-
+\subsection{GNU Lesser General Public License v3}
+\begin{frame}{GNU Lesser General Public License v3}
+	Erlaubt:
 	\begin{itemize}
-		\item die Lizenz muss bei Redistribution mit ausgeliefert werden
-		\item alle signifikanten Änderungen müssen gekennzeichnet werden
-		\item die Redistribution muss unter der gleichen Lizenz erfolgen
-		\item sobald Binärdateien basierend auf einem Projekt unter GPLv2
-			ausgeliefert werden muss der Quellcode verfügbar gemacht werden
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+		\item Patent Nutzung
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+		\item Quellcode muss bei Distribution veröffentlicht werden
+		\item Änderungen müssen kenntlich gemacht werden
+		\item Abstammende Arbeiten müssen unter der gleichen
+			Lizenz veröffentlicht werden, außer sie verwenden die ursprüngliche
+			Arbeit nur als Bibliothek
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
 	\end{itemize}
 \end{frame}
 
 \subsection{GNU General Public License v3}
 \begin{frame}{GNU General Public License v3}
+	Erlaubt:
 	\begin{itemize}
-		% Beide verlangen unter sich selbst redistributiert zu werden
-		\item Inkompatibel zur GPLv2
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+		\item Patent Nutzung
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+		\item Quellcode muss bei Distribution veröffentlicht werden
+		\item Änderungen müssen kenntlich gemacht werden
+		\item Abstammende Arbeiten müssen unter der gleichen
+			Lizenz veröffentlicht werden
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
 	\end{itemize}
 \end{frame}
 
 \subsection{GNU Affero General Public License v3}
 \begin{frame}{GNU Affero General Public License v3}
+	Erlaubt:
 	\begin{itemize}
-		\item ist eine Erweiterung der GPLv3
-		\item betrachtet speziell Netzwerkinteraktion mit Software auch als
-			Auslöser für den Copyleft Effekt
+		\item Kommerzielle Nutzung
+		\item (Re-) Distribution
+		\item Modifikation
+		\item Patent Nutzung
+	\end{itemize}
+
+	Bedingungen:
+	\begin{itemize}
+		\item Lizenz und Copyright-Vermerk müssen mit ausgeliefert werden
+		\item Quellcode muss bei Distribution veröffentlicht werden
+		\item Änderungen müssen kenntlich gemacht werden
+		\item Abstammende Arbeiten müssen unter der gleichen
+			Lizenz veröffentlicht werden
+		\item Netzwerk-Interaktion mit der Arbeit zählt als Distribution
+	\end{itemize}
+
+	Schließt aus:
+	\begin{itemize}
+		\item Haftung
+		\item Gewährleistung
 	\end{itemize}
 \end{frame}
 
@@ -182,90 +273,61 @@
 	\end{itemize}
 \end{frame}
 
-\section{Daten zur Lizenznutzung auf GitHub}
-\begin{frame}{Daten zur Lizenznutzung auf GitHub: Verteilung}
-	\begin{figure}[ht]
-		\includegraphics[width=0.75\textwidth]{lizenzverteilung}
-		\centering
-		\caption{Lizenzverteilung auf GitHub (2018-2020)}
-		Quelle: Solutionshub 2020
-	\end{figure}
-\end{frame}
-
-\begin{frame}{Daten zur Lizenznutzung auf GitHub: Trends}
-	\begin{figure}[ht]
-		\includegraphics[width=0.75\textwidth]{trend}
-		\centering
-		\caption{Trends der Lizenznutzung (2018-2020)}
-		Quelle: Solutionshub 2020
-	\end{figure}
-\end{frame}
-
 \section{Rechtsfolgen von Lizenzverstößen}
-\begin{frame}{Rechtsfolgen von Lizenzverstößen}
+\begin{frame}{Rechtsfolgen von Lizenzverstößen: Rechte des Urhebers}
+	Urheber kann folgende Ansprüche geltend machen:
+	\begin{itemize}
+		\item Anspruch auf Unterlassung
+		\item Anspruch auf Beseitigung
+		\item Anspruch auf Schadensersatz 
+		\item Anspruch auf Vernichtung, Rückruf und Überlassung
+		\item Anspruch auf Auskunft
+		\item Anspruch auf Vorlage und Besichtigung
+	\end{itemize}
 \end{frame}
 
-\section{Fragen}
-\begin{frame}{Fragen}
+\begin{frame}{Rechtsfolgen von Lizenzverstößen: Potentielle Kosten}
+	Potentielle Kosten:
+	\begin{itemize}
+		\item Abmahnungsgebühr
+		\item Schadensersatz
+		\item Anwaltskosten
+		\item Gebühren für Gutachter
+	\end{itemize}
+\end{frame}
+
+\section{Verständnisfragen}
+\begin{frame}{Verständnisfragen}
 	\begin{itemize}
 		\item Welche Faktoren müssen bei der Lizenzwahl beachtet werden?
-			% Finde ich es okay wenn jemand mit meiner Arbeit Geld verdient?
-			% Soll diese Arbeit immer Open Source bleiben?
-			% Habe ich eine Marke die ich Schützen will?
-		\item Wodurch zeichnet sich der Copyleft-Effekt aus? % Virale Lizensierung
+		\item Wodurch zeichnet sich der Copyleft-Effekt aus?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Antworten auf die Verständnisfragen}
+	\begin{itemize}
+		\item Frage 1: 
+			\begin{itemize}
+				\item Soll meine Arbeit immer Open Source / Frei bleiben?
+				\item Habe ich eine Marke die ich Schützen will?
+			\end{itemize}
+		\item Frage 2: 
+			\begin{itemize}
+				\item Durch die virale Lizensierung, sobald eine Copyleft
+					eingeführt wurde müssen alle abstammenden Arbeiten auch
+					unter dieser lizensiert werden.
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 
 \section{Quellen}
 \begin{frame}{Quellen}
 % https://solutionshub.epam.com/blog/post/examining-open-source-license-usage
-
-
-
 % https://choosealicense.com/licenses/
 % https://www.gnu.org/licenses/license-list.de.html#GPLCompatibleLicenses
 % https://www.gnu.org/licenses/copyleft
 % https://www.ifross.org/?q=urteile
+% https://www.urheberrecht.de/urheberrechtsverletzung/
 \end{frame}
-
-%# Definition Open Source
-
-%# Gesetzes Grundlage für Lizenzen bzw. Nutzungsrechte
-
-%https://www.gesetze-im-internet.de/urhg/__69d.html
-%https://www.gesetze-im-internet.de/urhg/__16.html
-%https://de.wikipedia.org/wiki/Lizenz
-
-%> Für das bloße Ausführen eines Programms im nicht-öffentlichen Rahmen ist keine Lizenz erforderlich, da dies keinem Verbot unterliegt. Eine urheberrechtliche Lizenz, also eine urheberrechtliche Nutzungs-/Verwertungserlaubnis, ist bei urheberrechtlich geschützten Computerprogrammen nur erforderlich, wenn eine urheberrechtlich relevante Nutzungs-/Verwertungshandlung erfolgt, die nicht bereits durch die in § 69d Abs. 1 UrhG verankerte gesetzliche Lizenz erfasst ist. Vor allem aus dem Lager der großen Softwarehersteller wird dies regelmäßig negiert bzw. in Abrede gestellt und hierzu auch gerne versucht, bereits den Lauf eines Computerprogramms als urheberrechtliche Verwertungshandlung erscheinen zu lassen. Ignoriert wird hierbei aber, dass nicht jeder technische Kopiervorgang, wie er definitiv beim Lauf eines Computerprogramms innerhalb eines Computers vieltausendfach erfolgt, auch eine urheberrechtliche Vervielfältigung i. S. d. § 16 UrhG darstellt. Dies schon grundsätzlich deswegen nicht, weil ein rein computerinterner Kopiervorgang nicht zu einem weiteren (zusätzlichen) Werkexemplar führt, das eine zusätzliche Werknutzung ermöglichen würde – wie es etwa beim Herstellen einer Kopie der Programm-CD/DVD oder bei dem Installieren der Software auf einem anderen/weiteren Computer der Fall ist –, sondern nichts daran ändert, dass der Computer von außen betrachtet nur ein einziges Vervielfältigungsexemplar der darauf installierten Software darstellt.[15] Daraus folgt aber auch, dass etwa der Lauf einer von einem zentralen Server oder einem WAN (ASP) bezogenen/gestarteten Software insofern anders bewertet werden muss, als die jeweils vervielfältigten Programmteile Werkcharakter besitzen.
-%> Ein weiterer Fall ist der, dass ein Werk nicht urheberrechtlich geschützt ist. In diesem Fall ist für keinerlei Nutzungsart eine Lizenz vonnöten. Ein Werk ist dann urheberrechtlich nicht geschützt („gemeinfrei“, „in der Public Domain“), wenn es nicht schutzfähig oder seine Schutzdauer abgelaufen ist. In einigen Rechtssystemen können Urheber auch per Willenserklärung den urheberrechtlichen Schutz aufheben. Nach deutschem Recht ist dies zwar nicht möglich; eine derartige Willenserklärung wird aber in der Rechtsprechung als entsprechend weitreichende Lizenzierung interpretiert.
-
-%Copy-Left Effekt:
-
-%Copyleft ist eine allgemeine Methode, ein Programm (oder ein anderes Werk) frei
-%(im Sinne von Freiheit, nicht „Nullpreis“) zu machen und zu verlangen, dass
-%alle modifizierten und erweiterten Programmversionen ebenfalls frei sind.
-
-%Diese Bestimmung gilt nicht für die Weiterverarbeitung von Software die der
-%Nutzer privat oder intern nutzt. Der Grad des Einflusses von Copyleft variiert
-%je nach Lizenz.
-
-%https://www.gnu.org/licenses/copyleft.de.html
-
-%Open Source Lizenzen:
-
-%- Strenge Copy Left:
-  %- GNU GPLv2
-  %- GNU GPLv3
-%- Non Copy Left:
-  %- Apache License v2.0
-  %- MIT-Lizenz
-  %- BSD-Lizenz
-%- Eingeschränktes Copyleft
-  %- GNU LGPL
-  %- Mozilla Public License
-  %- Eclipse Public License
-%- Nicht Lizensierte Software
-
-%Urteile und Rechtsfolgen bei Lizenzverletzung
 
 \end{document}
