@@ -1,0 +1,89 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{listings}
+\usepackage{color}
+
+\renewcommand\thesubsubsection{\textnormal{(\alph{subsubsection})}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg\\
+		Online Studiengang IT Sicherheit\\
+		Fachbereich Informatik und Medien\\
+		Algorithmen und Datenstrukturen\\
+		Prof.\ Dr.\ rer.\ nat.\ Ulrich Baum
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe 6}\\[0.5em]
+		\large{Sommersemester 2022}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\newpage
+
+\section*{Einsendeaufgabe 6}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+
+\subsection{Zyklische Gruppen}
+
+\subsubsection{}
+
+\begin{gather*}
+	O = \{1, 2, 3, 4, 6, 12\}\\
+	\vspace{0.5em}\\
+	\forall o \in O: o\, |\, 12
+\end{gather*}
+
+\subsubsection{}
+
+\begin{align*}
+	a^4 \neq a^6 \neq 1 \Rightarrow a\, \textnormal{ist ein Generator für}\, Z_{13}^*,\, \textnormal{da gilt}:
+\end{align*}
+\begin{align*}
+	\forall o_n \in O: \exists n \in Z_{13}^* \land \textnormal{|<}n\textnormal{>|} = o_n: \forall o_m \in \{ o_m \in O: o_n \,|\, o_m \}: n^{o_m}\, = 1
+\end{align*}
+
+Anders ausgedrückt gilt für alle Elemente der Ordnung $n$ (also $a^n = 1$) dass
+bei einem Vielfachen der Ordnung $nk$ mit $k \in \mathbb{N}: a^{nk} = 1$. Somit
+lässt sich aus dem Fakt das $a^{nk} = 1$ ist nicht ableiten ob $a$ die Ordnung
+$n$ oder $nk$ (mit $k \neq 1$) hat.
+
+Ist allerdings $a^{nk} \neq 1$ schließt man somit alle Teiler von $nk$ aus.
+Also konkreter: Gilt $a^4 \neq 1$ kann $a$ nicht die Ordnung 1, 2 oder 4
+haben. Wenn nun zusätzlich $a^6 \neq 1$ gilt kann $a$ auch nicht die Ordnung 1,
+2, 3 oder 6 haben. Da jedes Element eine Ordnung haben muss bleibt nun nurnoch
+die Ordnung 12 über und wir sind sicher dass $a$ ein Generator für $Z_{13}^*$
+ist.
+
+
+\subsubsection{}
+
+\begin{align*}
+	g = xy
+\end{align*}
+
+\end{document}
