@@ -36,17 +36,58 @@
 \end{abstract}
 
 \section{Einleitung}
-\IEEEPARstart{T}{\MakeLowercase{est}}
+\IEEEPARstart{A}{\MakeLowercase{uthentifizierung}} ist eines der größten
+Probleme die durch verteilte Systeme entstehen und auf die es viele mögliche
+Antworten gibt. 
 
 \section{Der FIDO2 Standard}
 
-FIDO steht für \textit{F}ast \textit{ID}entity \textit{O}nline und ist ein von
-der FIDO Alliance entwickleter offener Standard für Hardware-Token gestützte
-Authentifizierung. (\textcolor{red}{quote})
+FIDO2 steht für \textit{F}ast \textit{ID}entity \textit{O}nline 2 und ist ein von
+der FIDO Alliance entwickleter, offener und lizenzfreier Standard für
+Hardware-Token gestützte Authentifizierung. (\textcolor{red}{quote})
 
 
-\subsection{Welches Problem löst FIDO2?}
-\subsection{Übersicht von FIDO2 kompatiblen Authenticatorn}
+
+
+
+\subsection{Welche Probleme löst FIDO2?}
+
+Die Notwendigkeit für einen solchen Standard hat sich in den letzten Jahren
+immer stärker gezeigt, da die klassische Knowledge-Based-Authentication
+(\textcolor{red}{KBA})
+durch zunehmende Rechenleistung und effizientere Angriffe immer unsicherer und
+unhandlicher für Nutzer wird. Die minimale Passwortlängen steigen
+dementsprechend an und führen zur Wiederverwendung von gleichen Login-Daten für
+mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sog.
+Passwort-Managern um lange und zufällige Passwörter für verschiedenste
+Online-Dienste zu verwenden ohne, dass sich Nutzer diese merken müssen. Solche
+Passwort-Manager sind zwar eine Lösung für die sichere Aufbewahrung von langen
+Passwörtern, können aber nicht die durch \textcolor{red}{KBA} eröffneten
+Angriffsvektoren wie z.B. Man-In-The-Middle-Attacken. So bald ein Angreifer
+in den Besitz des geheimen Wissens (in diesem Fall das Passwort) gelangt kann
+dieser uneingeschränkt und unbegegrenzt oft auf das Zielsystem zugreifen, bis
+der Nutzer seine Daten ändert (vorausgesetzt, der Angreifer hat dies noch nicht
+getan).
+
+Durch den Wechsel von \textcolor{red}{KBA} auf Zero-Knowledge-Proof basierte
+Authentifizierungsmethoden lassen sich ganze Angriffsvektoren ausschließen, da
+ein kompromitierter Server oder eine kompromitierte Verbindung niemals das
+geheime Wissen des Nutzers einem Angreifer zugänglich machen. Das heißt, dass
+sich ein Angreifer im Falle einer kompromitierten Verbindung maximal in die
+Sitzung des Nutzers einschleichen könnte, allerdings bei der nächsten
+Authentifizierung nicht erneut die Identität des Nutzers beweisen könnte und
+somit den Zugriff verlieren würde.
+
+Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
+auf einem Trusted-Plattform-Modul \textcolor{red}{TPM} oder einem externen
+Hardware-Token gespeichert wird und der Beweis der Identität durch die Signatur
+einer vom Authentifizierungs-Server ausgestellten Challange erfolgt die das TPM
+oder der Hardware-Token intern durchführen und dem Nutzer nur die Signatur
+zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem nur eine
+temporäre Schwachstelle dar.
+
+
+\subsection{Übersicht von FIDO2 kompatibler Hardware}
 
 \section{Relevante Protokolle: CTAP \& WebAuthn}
 \subsection{CTAP}
