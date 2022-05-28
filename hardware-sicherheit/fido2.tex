@@ -37,8 +37,11 @@
 
 \section{Einleitung}
 \IEEEPARstart{A}{\MakeLowercase{uthentifizierung}} ist eines der größten
-Probleme die durch verteilte Systeme entstehen und auf die es viele mögliche
-Antworten gibt. 
+Probleme die durch verteilte Systeme entstehen. Es gibt zahlreiche
+Möglichkeiten die Identität einer Gegenseite sicherzustellen allerdings weisen
+viele von ihnen Schwachstellen hinsichtlich Man-In-The-Middle-Attacken und
+basieren auf der Annahme, dass das System des Nutzers nicht kompromitiert
+wurde. \textcolor{red}{tbd}
 
 \section{Der FIDO2 Standard}
 
@@ -46,9 +49,22 @@ FIDO2 steht für \textit{F}ast \textit{ID}entity \textit{O}nline 2 und ist ein v
 der FIDO Alliance entwickleter, offener und lizenzfreier Standard für
 Hardware-Token gestützte Authentifizierung. (\textcolor{red}{quote})
 
+Ein Hardware-Token (kann auch in Form eines Trusted-Plattform-Moduls oder als
+Teil des Betriebssystems implementiert sein) ist ein physischer Speicher für
+die FIDO Schlüsselpaare eines Nutzers. Kernmerkmale die FIDO2 von
+herkömmlicher asymmetrischer Kryptografie unterscheiden sind beispielsweise die
+Isolation der privaten Schlüssel auf dem Hardware-Token, die Notwendigkeit
+einer Nutzerinteraktion zum Verwenden eines privaten Schlüssels und die
+Generierung von einem Schlüsselpaar pro Online-Dienst.
 
-
-
+Durch all diese Eigenschaften werden Schlsselverluste unwahrscheinlicher und
+weniger Sicherheitskritisch, da selbst bei einem hypothetischen
+Schlüsselverlustes der Schaden immer auf einen Online-Dienst begrenzt ist.
+Die größte Schwachstelle ist allerdings der physische Diebstahl des
+Hardware-Tokens, da dessen Besitz ausreicht für Impersonation-Attacken. Eine
+Absicherung dagegen kann eine biometrische Authentifizierung erfolgen bevor ein
+privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.
+\textcolor{red}{tbd}
 
 \subsection{Welche Probleme löst FIDO2?}
 
@@ -81,32 +97,165 @@ somit den Zugriff verlieren würde.
 Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
 auf einem Trusted-Plattform-Modul \textcolor{red}{TPM} oder einem externen
 Hardware-Token gespeichert wird und der Beweis der Identität durch die Signatur
-einer vom Authentifizierungs-Server ausgestellten Challange erfolgt die das TPM
-oder der Hardware-Token intern durchführen und dem Nutzer nur die Signatur
-zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem nur eine
-temporäre Schwachstelle dar.
+einer vom Authentifizierungs-Server ausgestellten Challange erfolgt die das
+\textcolor{red}{TPM} oder der Hardware-Token intern durchführen und dem Nutzer
+nur die Signatur zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem
+nur eine temporäre Schwachstelle dar.
 
 
-\subsection{Übersicht von FIDO2 kompatibler Hardware}
+\subsection{Übersicht von FIDO2 kompatibler Hardware? Sinnvoll?}
 
 \section{Relevante Protokolle: CTAP \& WebAuthn}
 \subsection{CTAP}
-Client To Authenticator Protocol
 
-\subsection{WebAuthntication}
+Das Client-To-Authenticator-Protocol kurz \textcolor{red}{CTAP} ist Teil
+des FIDO2 Standards und beschreibt den Ablauf der Kommunikation zwischen einem
+Nutzersystem und dem Hardware-Token beziehungsweise dem Authenticator.
+
+Neben einer Spezifikation für den Transportlayer / die Nachrichtenstruktur
+besteht das Protokoll primär aus der sogenannten ``Authenticator API'' - diese
+beschreibt Operationen die ein Nutzersystem auf einem Authenticator ausführen kann.
+
+Spezifiziert sind die folgenden 6 Operationen:
+
+\begin{enumerate}
+	\item \textit{authenticatorMakeCredential}
+	\item \textit{authenticatorGetAssertion}
+	\item \textit{authenticatorGetNextAssertion}
+	\item \textit{authenticatorGetInfo}
+	\item \textit{authenticatorGetClientPIN}
+	\item \textit{authenticatorReset}
+\end{enumerate}
+
+
+\subsection{WebAuthn}
 
 
 \section{Implementierung des Authetifizierungs-Servers}
 
-\lipsum
-
 \section{Technische Dokumentation}
 
-\lipsum
+Der Server öffnet den TCP Port 8080 und erwartet eine externe TLS
+Terminierung. Tokens können dem Server über den \texttt{Authorization} Header
+mitgegeben werden und der \texttt{Content-Type} aller Anfragen und Antworten
+ist ausschließlich \texttt{application/json}.
+
+\subsection{/auth/signup - Nutzer erstellen}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] -
+	\item[Eingabe:] Credentials \{ email, password \}
+	\item[Ausgabe:] UserDetails \{ token, verified, keys \}
+	\item[Beschreibung:] Erstellt einen unverifizierten Nutzer ohne FIDO2 Keys.
+		Gibt einen Verifizierungscode in den Server-Logs aus (könnte in einem
+		echten Szenario per E-Mail verschickt werden).
+\end{itemize}
+
+\subsection{/auth/verify - Nutzer verifizieren}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] Notwendig
+	\item[Eingabe:] Verification \{ code \}
+	\item[Ausgabe:] -
+	\item[Beschreibung:] Verifiziert einen Nutzer falls der Code mit dem bei
+		der Registrierung generierten Code übereinstimmt.
+\end{itemize}
+
+
+\subsection{/auth/login - Nutzer anmelden}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] -
+	\item[Eingabe:] Credentials \{ email, password \}
+	\item[Ausgabe:] UserDetails \{ token, verified, keys \} | \textcolor{red}{webauthn challange}
+	\item[Beschreibung:] Gibt dem Nutzer entweder seine UserDetails zurück oder
+		stellt eine WebAuthn Authetifizierungs-Challange die der Nutzer
+		signiert bei dem Endpunkt \textit{/auth/fido2/login} enreichen muss
+		falls ein FIDO2 Schlüssel hinterlegt wurde.
+\end{itemize}
+
+\subsection{/auth/fido2/login - Nutzer mit WebAuthn anmelden}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] -
+	\item[Eingabe:] \textcolor{red}{challange}
+	\item[Ausgabe:] UserDetails \{ token, verified, keys \}
+	\item[Beschreibung:] Validiert die WebAuthn Challange des Nutzers mit den
+		hinterlegten FIDO2 Schlüsseln und gibt bei erfolgreicher Validierung
+		dem Nutzer seine UserDetails zurück.
+\end{itemize}
+
+\subsection{/auth/fido2/challenges - WebAuthn Registrierungs Challange}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] Notwendig
+	\item[Eingabe:] -
+	\item[Ausgabe:] \textcolor{red}{ccr}
+	\item[Beschreibung:] Startet einen Registrierungsprozess für einen FIDO2
+		Schlüssel. Setzt Serverseitig den ``Key-Registration-State'' eines
+		Nutzers und gibt eine Registrierungs-Challange zurück.
+\end{itemize}
+
+\subsection{/auth/fido2/keys - WebAuthn Registrierung abschließen}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] POST
+	\item[Token:] Notwendig
+	\item[Eingabe:] \textcolor{red}{PublicKeyCredential}
+	\item[Ausgabe:] Key \{ id \}
+	\item[Beschreibung:] Nimmt die CTAP Ausgabe der
+		``authenticatorMakeCredential'' Operation an und ordnet diesen
+		Schlüssel dem Nutzer zu.
+\end{itemize}
+
+\subsection{/auth/fido2/keys/:id - WebAuthn Schlüssel entfernen}
+
+\begin{itemize}
+	\setlength{\leftskip}{1.5cm}
+	\setlength{\itemsep}{0pt}
+	\item[Methode:] DELETE
+	\item[Token:] Notwendig
+	\item[Eingabe:] \textit{/:id}
+	\item[Ausgabe:] -
+	\item[Beschreibung:] Entfernt einen FIDO2 Schlüssel anhand seiner ID.\@
+\end{itemize}
+
+
+    %app.at("/auth/login").post(auth::login);
+    %app.at("/auth/signup").post(auth::signup);
+    %app.at("/auth/verify")
+        %.with(middleware::authenticated)
+        %.post(auth::verify);
+
+    %app.at("/auth/fido2/login").post(auth::fido2::login);
+    %app.at("/auth/fido2/challenges")
+        %.with(middleware::authenticated)
+        %.post(auth::fido2::create_challenge);
+    %app.at("/auth/fido2/keys")
+        %.with(middleware::authenticated)
+        %.post(auth::fido2::store_key);
+    %app.at("/auth/fido2/keys/:id")
+        %.with(middleware::authenticated)
+        %.delete(auth::fido2::remove_key);
 
 \section{Auswertung}
-
-\lipsum
 
 \section{Abbildungsverzeichnis}
 
