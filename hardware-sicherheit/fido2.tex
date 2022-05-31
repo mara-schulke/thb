@@ -32,7 +32,6 @@
 \maketitle
 
 \begin{abstract}
-	\lipsum[3]
 \end{abstract}
 
 \section{Einleitung}
@@ -103,9 +102,39 @@ nur die Signatur zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem
 nur eine temporäre Schwachstelle dar.
 
 
-\subsection{Übersicht von FIDO2 kompatibler Hardware? Sinnvoll?}
-
 \section{Relevante Protokolle: CTAP \& WebAuthn}
+
+Der FIDO2 Standard umfasst hauptsächlich die beiden Protokolle \textit{CTAP}
+und \textit{WebAuthn}. Diese unterteilen den gesammten
+Authentifizierungsvorgang in
+zwei Bereiche:
+
+\textit{Client zu Authenticator} also die Kommunikation zwischen dem
+Nutzersystem und dem Hardware-Token oder TPM und \textit{Client zu Server}, die
+Kommunikation zwischen dem Nutzersystem und dem Online-Dienst bei dem sich der
+Nutzer authentifizieren möchte.
+
+\textcolor{red}{grafik}
+
+\subsection{Gemeinsame Begriffsdefinitionen}
+
+\subsubsection{Relying Party}
+
+Ein Online-Dienst der den FIDO2 Standard zur Nutzerauthentifizierung verwendet.
+
+\subsubsection{Authenticator}
+
+Ein externer Hardware-Token oder ein Teil des Betriebssystems (z.B. über ein
+TPM implementiert) der FIDO2 Schlüsselpaare verwaltet.
+
+\subsubsection{Credential}
+
+Ein FIDO2 Schlüssel
+
+\subsubsection{CBOR}
+
+Concise Binary Object Representation, ein Binär-Format zur Darstellung von JSON Objekten.
+
 \subsection{CTAP}
 
 Das Client-To-Authenticator-Protocol kurz \textcolor{red}{CTAP} ist Teil
@@ -119,14 +148,20 @@ beschreibt Operationen die ein Nutzersystem auf einem Authenticator ausführen k
 Spezifiziert sind die folgenden 6 Operationen:
 
 \begin{enumerate}
-	\item \textit{authenticatorMakeCredential}
-	\item \textit{authenticatorGetAssertion}
-	\item \textit{authenticatorGetNextAssertion}
-	\item \textit{authenticatorGetInfo}
-	\item \textit{authenticatorGetClientPIN}
-	\item \textit{authenticatorReset}
+	\item \textit{authenticatorMakeCredential} - Schlüsselpaar für eine
+		``Relying Party'' erstellen
+	\item \textit{authenticatorGetAssertion} - Signatur einer Challange
+	\item \textit{authenticatorGetNextAssertion} - Nächste Signatur der
+		Challange erhalten bei mehreren Schlüsselpaaren
+	\item \textit{authenticatorGetInfo} - Informationen über die Fähigkeiten
+		des Authenticators
+	\item \textit{authenticatorClientPIN} - Setzt den Authenticator-PIN
+	\item \textit{authenticatorReset} - Zurücksetzen auf Werkseinstellungen
 \end{enumerate}
 
+Die im Standard beschriebenen Transportlayer umfassen USB, NFC oder Bluetooth
+Low Energy. Für jeden dieser Transportlayer gibt es eigene Mechanismen zum
+sicheren Verbindungsaufbau und zur Nachrichtenstruktur.
 
 \subsection{WebAuthn}
 
