@@ -73,7 +73,7 @@ immer stärker gezeigt, da die klassische Knowledge-Based-Authentication
 durch zunehmende Rechenleistung und effizientere Angriffe immer unsicherer und
 unhandlicher für Nutzer wird. Die minimale Passwortlängen steigen
 dementsprechend an und führen zur Wiederverwendung von gleichen Login-Daten für
-mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sog.
+mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sogenannten
 Passwort-Managern um lange und zufällige Passwörter für verschiedenste
 Online-Dienste zu verwenden ohne, dass sich Nutzer diese merken müssen. Solche
 Passwort-Manager sind zwar eine Lösung für die sichere Aufbewahrung von langen
@@ -159,14 +159,121 @@ Spezifiziert sind die folgenden 6 Operationen:
 	\item \textit{authenticatorReset} - Zurücksetzen auf Werkseinstellungen
 \end{enumerate}
 
+\textcolor{red}{CTAP Spec references}
+
 Die im Standard beschriebenen Transportlayer umfassen USB, NFC oder Bluetooth
 Low Energy. Für jeden dieser Transportlayer gibt es eigene Mechanismen zum
 sicheren Verbindungsaufbau und zur Nachrichtenstruktur.
+\textcolor{red}{CTAP Spec references}
+
+Die JSON Objekte werden innerhalb von \textit{CTAP} mittels dem Datenformat
+\textit{CBOR} dargestellt um eine effizientere Codierung zu erhalten und
+dennoch die kompatiblität mit dem weitverbreiteten Standard für
+Datenserialisierung zu garantieren.
+\textcolor{red}{CBOR references}
 
 \subsection{WebAuthn}
 
+Ein Server der das WebAuthn Protokoll implementiert enthält im wesentlichen
+zwei grundlegende Operationen die jeweils aus mehreren Schritten bestehen.
+Diese sind die Registrierung von Sicherheitsschlüsseln (Credentials) und deren
+zuordnung zu einem Nutzeraccount im System der Relying Party und die
+Austellung beziehungsweise Validierung von WebAuthn Challanges die bei
+erfolgreicher Validierung einem Nutzer zugriff auf das System der Relying Party
+gibt.
+
+Ein wichtiger Punkt im Zusammenspiel der Spezifikationen und folgich der
+Implementierungen der beiden Protokolle \textit{CTAP} und \textit{WebAuthn} ist
+die kompatiblität der Datenttypen. So lässt sich die spezifizierte Ausgabe
+einer WebAuthn Registrierungs Challange ohne veränderung mit der
+``authenticatorMakeCredential'' Operation an den Authenticator weitergeben.
+
+Dies hat zur Folge dass die Client-Implementierung selbst keine
+protokollrelevanten kryptografischen Berechnungen durchführen muss und effektiv
+der Server der Relying Party mit dem Authenticator des Nutzers kommuniziert.
+Die Client-Implementierung leitet lediglich jeweils die Ausgaben weiter.
+
+\textcolor{red}{weubauthn spec references}
+
+\subsubsection{Registrierung}
+
+Um die Registrierung eines neuen Schlüssels durchzuführen muss die Relying
+Party auf dem Server \texttt{PublicKeyCredentialCreationOptions} für den Nutzer
+generieren und an den Client zurücksenden. Diese enthalten Informationen wie
+zum Beispiel erlaubte kryptografische Algorithmen, Informationen über den
+Nutzer und die Relying Party, ausgeschlossene Authenticator etc.
+
+Diese Parameter nimmt der Client entgegen und gibt diese dann anschließend an
+die \textit{CTAP}-Operation ``authenticatorMakeCredential'' weiter. Der
+Authenticator überprüft anschließend ob er ein Schlüsselpaar erstellen kann
+dass den Anforderungen des Servers entspricht und gibt entweder einen Fehler
+oder den öffentlichen Schlüssel an den Client zurück. Dieser wird nun vom
+Client an den Server weitergeben und die Registrierung wurde erfolgreich
+abgeschlossen.
+
+\textcolor{red}{weubauthn spec references}
+
+\subsubsection{Authentifizierung}
+
+Für die Authentifizierung eines Nutzers mittels WebAuthn muss zu erst die
+Relying Party eine Challange für den Client generieren. Diese muss zufällig und
+nur einmal gültig sein um Replay-Attacken zu verhindern. Nach dem der Client
+seine Challange erhalten hat kann er diese über die CTAP-Operation
+``authenticatorGetAssertion'' signieren lassen und die signierte Challange
+wieder an den Server zurückgeben. Anschließend überprüft dieser ob einer der
+für den Nutzer hinterlegten Schlüssel verwendet wurde um die Challange zu
+signieren. War dies der Fall gilt die Identität des Nutzers als verifiziert und
+der Server kann dem Nutzer Zugriff auf geschützte Ressourcen geben.
+
+\textcolor{red}{weubauthn spec references}
+
+\vspace{0.25em}
+\rule{0.45\textwidth}{0.4pt}
+\vspace{0.5em}
+
+Je nach Kommunikationsprotokoll zwischen dem Client und dem Server muss sich
+der Server den Status der Registrierung bzw. Authentifizierung über einzelne
+Nachrichten hinweg merken. So sind (auf Nachrichtenebene) verbindungslose
+Protokolle wie bspw. HTTPS davon betroffen. Eine bidirektionaler Transport
+würde dieses Problem umgehen, da sich der Server nur den Status für die Dauer
+der Verbindung merken müsste.
 
 \section{Implementierung des Authetifizierungs-Servers}
+
+\subsection{Zielsetzung}
+
+Der Umfang der Proof-of-Concept Implementierung ist es eine funktionale,
+flüchtige User-Verwaltung die optional FIDO2 Schlüssel als zweiten
+Login-Faktor unterstützt. Als API wird ein HTTP Server geöffnet.
+
+\subsection{Authentifizierungsmechanismus}
+
+Nutzer ohne FIDO2 Schlüssel können sich bei dem Server mittels der Kombination
+aus E-Mail und ihrem Passwort authentifizieren und erhalten sofort einen Token
+zurück.
+
+Die Nutzer die einen FIDO2 Schlüssel registriert haben erhalten nach
+initialer Angabe ihrer E-Mail und ihres Passworts eine Aufforderung ihren FIDO2
+Schlüssel zu verwenden um letztendlich auch einen Token zu erhalten.
+
+Der Token ist ein JSON-Web-Token der eine User-Id enthält und ein Ablaufdatum.
+Alle Tokens werden mit dem symmetrischen Algorithmus HMAC (Hash-based Message
+Authentication Code) signiert.
+
+Alle geschützten beziehungsweise nutzerbezogenen Ressourcen die dieser Server
+vorhält dürfen nur durch die Mitgabe eines Tokens abgerufen werden. Dieser muss
+mit dem \texttt{Authorization}-Header gesetzt werden werden.
+
+\subsection{Speicherung der Nutzer-Passwörter}
+
+Da bekanntermaßen in Klartext gespeicherte Passwörter eine verherende
+Sicherheitslücke darstellen speichert der Server nur den Bcrypt-Hash der
+Passwörter die durch einen sogenannten Salt randomisiert werden.
+
+Sowohl der Schlüssel zur signierung von Tokens als auch der Salt für Bcrypt
+müssen in einem realen Anwendungsszenario geheim gehalten werden.
+
+
 
 \section{Technische Dokumentation}
 
@@ -271,24 +378,6 @@ ist ausschließlich \texttt{application/json}.
 	\item[Ausgabe:] -
 	\item[Beschreibung:] Entfernt einen FIDO2 Schlüssel anhand seiner ID.\@
 \end{itemize}
-
-
-    %app.at("/auth/login").post(auth::login);
-    %app.at("/auth/signup").post(auth::signup);
-    %app.at("/auth/verify")
-        %.with(middleware::authenticated)
-        %.post(auth::verify);
-
-    %app.at("/auth/fido2/login").post(auth::fido2::login);
-    %app.at("/auth/fido2/challenges")
-        %.with(middleware::authenticated)
-        %.post(auth::fido2::create_challenge);
-    %app.at("/auth/fido2/keys")
-        %.with(middleware::authenticated)
-        %.post(auth::fido2::store_key);
-    %app.at("/auth/fido2/keys/:id")
-        %.with(middleware::authenticated)
-        %.delete(auth::fido2::remove_key);
 
 \section{Auswertung}
 
