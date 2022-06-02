@@ -243,7 +243,7 @@ der Verbindung merken müsste.
 \subsection{Zielsetzung}
 
 Der Umfang der Proof-of-Concept Implementierung ist es eine funktionale,
-flüchtige User-Verwaltung die optional FIDO2 Schlüssel als zweiten
+flüchtige Nutzer-Verwaltung die optional FIDO2 Schlüssel als zweiten
 Login-Faktor unterstützt. Als API wird ein HTTP Server geöffnet.
 
 \subsection{Authentifizierungsmechanismus}
@@ -256,9 +256,9 @@ Die Nutzer die einen FIDO2 Schlüssel registriert haben erhalten nach
 initialer Angabe ihrer E-Mail und ihres Passworts eine Aufforderung ihren FIDO2
 Schlüssel zu verwenden um letztendlich auch einen Token zu erhalten.
 
-Der Token ist ein JSON-Web-Token der eine User-Id enthält und ein Ablaufdatum.
-Alle Tokens werden mit dem symmetrischen Algorithmus HMAC (Hash-based Message
-Authentication Code) signiert.
+Der Token ist ein JSON-Web-Token der eine Nutzer-Id enthält und ein
+Ablaufdatum. Alle Tokens werden mit dem symmetrischen Algorithmus HMAC
+(Hash-based Message Authentication Code) signiert.
 
 Alle geschützten beziehungsweise nutzerbezogenen Ressourcen die dieser Server
 vorhält dürfen nur durch die Mitgabe eines Tokens abgerufen werden. Dieser muss
@@ -273,7 +273,35 @@ Passwörter die durch einen sogenannten Salt randomisiert werden.
 Sowohl der Schlüssel zur signierung von Tokens als auch der Salt für Bcrypt
 müssen in einem realen Anwendungsszenario geheim gehalten werden.
 
+\subsection{Datenstrukturen zur flüchtigen Verwaltung von Nutzern}
 
+Ein Nutzer erhält bei der Registrierung eine eindeutige Id, einen
+Verifizierungscode (der in einem realen Anwendungsszenario ggf. per E-Mail
+versendet werden könnte) und eine leere Liste an FIDO2 Schlüsseln.
+
+Die Nutzer werden in einer HashMap im RAM vorgehalten, eine Datenbankanbindung
+des Servers zur Nutzerverwaltung wären bei einem Produktivsystem unabdingbar.
+
+Um die konsistzenz der Nutzerverwaltung innerhalb des RAM sicherzustellen
+befindet sich die Nutzer-HashMap in einem Mutex um gleichzeitige ggf.
+inkonsistente Schreibvorgänge zu unterbinden.
+
+Bei jeder eingehenden Anfrage wird die Datenstrukturen zur Nutzerverwaltung der
+Anfrage zugewiesen, diese hat nun die Garantie dass sie die einzige Anfrage ist
+die in diesem Moment schreiben kann. Sollten mehrere Anfragen gleichzeitig
+eingehen muss eine warten bis die andere abgearbeitet wurde. Dies ist zwar
+absolut inperformant bei großen Anfragemengen aber bei einem
+Proof-of-Concept-Server mit sehr wenigen Nutzern vertretbar.
+
+\subsection{Implementierung von WebAuthn}
+
+Da die Erstellung von den durch WebAuthn definierten Datenstrukturen und die
+kryptografischen Algorithmen nicht trivial zu implementieren sind gibt es für
+gängige Sprachen die eine Anwendung im Web-Kontext finden Bibliotheken die das
+WebAuthn-Protokoll abstrahiert bereitstellen.
+
+Für Rust ist ``webauthn-rs'' eine der umfangreicheren WebAuthn-Bibliotheken 
+\textcolor{red}{https://github.com/kanidm/webauthn-rs}
 
 \section{Technische Dokumentation}
 
