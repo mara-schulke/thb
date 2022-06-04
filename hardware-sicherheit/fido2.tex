@@ -5,8 +5,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{lipsum}
 \usepackage{xcolor}
+
+\graphicspath{ {./images/} }
 
 \hypersetup{colorlinks=true, allcolors=black}
 
@@ -115,7 +118,12 @@ Nutzersystem und dem Hardware-Token oder TPM und \textit{Client zu Server}, die
 Kommunikation zwischen dem Nutzersystem und dem Online-Dienst bei dem sich der
 Nutzer authentifizieren möchte.
 
-\textcolor{red}{grafik}
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{ctap-webauthn-registration.png}
+	\centering
+	\caption{Unterteilung des Kommunikationsablaufs in CTAP und WebAuthn am
+	beispiel einer Schlüssel-Registrierung}\label{fig:ctap-webauthn}
+\end{figure}
 
 \subsection{Gemeinsame Begriffsdefinitionen}
 
@@ -302,10 +310,96 @@ kryptografischen Algorithmen nicht trivial zu implementieren sind gibt es für
 gängige Sprachen die eine Anwendung im Web-Kontext finden Bibliotheken die das
 WebAuthn-Protokoll abstrahiert bereitstellen.
 
-Für Rust ist ``webauthn-rs'' eine der umfangreicheren WebAuthn-Bibliotheken 
-\textcolor{red}{https://github.com/kanidm/webauthn-rs}
+Für Rust ist eine umfangreicherere dieser Bibliotheken ``webauthn-rs'',
+verfügbar auf GitHub unter der Mozilla-Public-License-2.0:
 
-\section{Technische Dokumentation}
+\url{https://github.com/kanidm/webauthn-rs}
+
+Die Bibliothek lässt sich durch Informationen über den Server konfigurieren:
+Es wird eine Relying Party Id und eine registrierbare Domain erwartet um die
+Identität des Servers für die Schlüsselerstellung wiederverwenden zu können.
+
+Nach erfolgreicher Initialisierung gibt es im wesentlichen 4 relevante
+Funktionen mit denen sich der WebAuthn-Flow komplett implementieren lässt:
+
+\subsubsection{start\_securitykey\_registration}
+Gibt die Public-Key-Credential-Creation-Options und einen
+Schlüssel-Registrierungsstatus für den momentanen Nutzer zurück. Dieser muss
+persistiert werden.
+
+\subsubsection{finish\_securitykey\_registration}
+Nimmt einen Schlüssel-Registrierungsstatus und den generierten Schlüssel und
+validiert die Gültigkeit des generierten Schlüssels.
+
+\subsubsection{start\_securitykey\_authentication}
+Gibt eine Challenge und einen Schlüssel-Authetifizierungsstatus für den
+momentanen Nutzer zurück. Dieser muss muss persistiert werden.
+
+\subsubsection{finish\_securitykey\_authentication}
+Nimmt eine Schlüssel-Authetifizierungsstatus und eine signierte Challenge und
+validiert diese gegeninander.
+
+Somit sind Serverseitig alle Voraussetzungen geschaffen um eine API
+bereitzustellen die WebAuthn unterstützt. Detailierte Informationen zu den
+bereitgestellten Endpunkten finden sich unter Abschnitt~\ref{docs}.
+
+\section{Implementierung der Nutzer-Oberfläche}
+
+\subsection{Zielsetzung}
+
+Ziel der Client-Implementierung ist es beispielhaftes Nutzer-Oberfläche zu
+schaffen das die unter Abschnitt~\ref{docs} beschriebene API verwendet um ein
+Nutzer-Login mit FIDO2 zu ermöglichen.
+
+\subsection{Konzept der Oberfläche}
+
+Die Oberfläche ist eine sehr kleine JavaScript Anwendung für die API.\ Folglich
+orientieren sich die Aktionen die der Nutzer in diesem ausführen kann direkt an
+dieser. In der Abbildung~\ref{fig:ui-flow} sind der Ablauf aller möglichen
+Nutzeraktionen und die dazugehörigen API Endpunkte abgebildet.
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{ui-flow.png}
+	\centering
+	\caption{Abfolge möglicher Nutzer-Aktionen}\label{fig:ui-flow}
+\end{figure}
+
+\subsection{Anwendungs Architektur}
+
+Da der Umfang der Nutzer-Aktionen sich stark in Grenzen hält gibt es keinen
+Grund eines der komplexeren Frameworks einzusetzen die typischerweise für
+Web-Oberflächen eingesetzt werden. Die einzige externe Bibliothek ist eine
+moderene und stabilere Base64 Implementierung als die Browser-Native
+Alternative.
+
+Das Grundkonzept zum rendering der Oberfläche ist einen Anwendungszustand durch
+eine pure (also Seiten-Effekt freie) Funktion in HTML zu übersetzen.
+Nutzeraktionen können diesen Zustand durch Interaktion verändern und lösen
+somit einen neuen Render-Vorgang aus. Diese bzw. ähnliche Architekturen findet
+sich in Frameworks wie React oder Elm wieder.
+
+\textcolor{red}{refs}
+
+Der Zustand speichert den Token, Verifizierungsstatus, Ladezustand der
+Anwendung und die Liste aller registrierten Schlüssel.
+
+\subsection{Interaktionen}
+
+Die definierten möglichen Interaktionen die der Nutzer tätigen kann sind:
+
+\begin{enumerate}
+	\item signup
+	\item verify
+	\item login
+	\item logout
+	\item addKey
+	\item removeKey
+\end{enumerate}
+
+Diese werden durch die entsprechenden Bedienfelder der Oberfläche ausgelöst.
+
+
+\section{Technische Dokumentation}\label{docs}
 
 Der Server öffnet den TCP Port 8080 und erwartet eine externe TLS
 Terminierung. Tokens können dem Server über den \texttt{Authorization} Header
@@ -348,9 +442,9 @@ ist ausschließlich \texttt{application/json}.
 	\item[Methode:] POST
 	\item[Token:] -
 	\item[Eingabe:] Credentials \{ email, password \}
-	\item[Ausgabe:] UserDetails \{ token, verified, keys \} | \textcolor{red}{webauthn challange}
+	\item[Ausgabe:] UserDetails \{ token, verified, keys \} | \textcolor{red}{webauthn challenge}
 	\item[Beschreibung:] Gibt dem Nutzer entweder seine UserDetails zurück oder
-		stellt eine WebAuthn Authetifizierungs-Challange die der Nutzer
+		stellt eine WebAuthn Authetifizierungs-Challenge die der Nutzer
 		signiert bei dem Endpunkt \textit{/auth/fido2/login} enreichen muss
 		falls ein FIDO2 Schlüssel hinterlegt wurde.
 \end{itemize}
@@ -362,14 +456,14 @@ ist ausschließlich \texttt{application/json}.
 	\setlength{\itemsep}{0pt}
 	\item[Methode:] POST
 	\item[Token:] -
-	\item[Eingabe:] \textcolor{red}{challange}
+	\item[Eingabe:] \textcolor{red}{challenge}
 	\item[Ausgabe:] UserDetails \{ token, verified, keys \}
-	\item[Beschreibung:] Validiert die WebAuthn Challange des Nutzers mit den
+	\item[Beschreibung:] Validiert die WebAuthn Challenge des Nutzers mit den
 		hinterlegten FIDO2 Schlüsseln und gibt bei erfolgreicher Validierung
 		dem Nutzer seine UserDetails zurück.
 \end{itemize}
 
-\subsection{/auth/fido2/challenges - WebAuthn Registrierungs Challange}
+\subsection{/auth/fido2/challenges - WebAuthn Registrierungs Challenge}
 
 \begin{itemize}
 	\setlength{\leftskip}{1.5cm}
@@ -380,7 +474,7 @@ ist ausschließlich \texttt{application/json}.
 	\item[Ausgabe:] \textcolor{red}{ccr}
 	\item[Beschreibung:] Startet einen Registrierungsprozess für einen FIDO2
 		Schlüssel. Setzt Serverseitig den ``Key-Registration-State'' eines
-		Nutzers und gibt eine Registrierungs-Challange zurück.
+		Nutzers und gibt eine Registrierungs-Challenge zurück.
 \end{itemize}
 
 \subsection{/auth/fido2/keys - WebAuthn Registrierung abschließen}
@@ -411,9 +505,29 @@ ist ausschließlich \texttt{application/json}.
 
 \section{Auswertung}
 
-\section{Abbildungsverzeichnis}
+\subsection{Nutzerbarkeit}
+
+Nutzbarkeit abgesehen von der Verifizierungsmethode, die aus dem Terminal
+abgelesen werden muss ist gut.
+
+\subsection{Risiken}
+
+- Fehlender Zwang FIDO2 zu verwenden
+
+\subsection{Verbesserungsvorschläge}
+
+- FIDO2 Key als hauptfaktor, backup codes und long lived access
+
+\listoffigures
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
+
+\section*{Anhang}
+
+\subsection*{Quellcode der Implementierung}
+
+\url{https://github.com/mara214/fido2-auth}
+
 
 \end{document}
