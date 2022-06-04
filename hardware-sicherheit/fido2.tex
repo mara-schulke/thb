@@ -207,7 +207,7 @@ Die Client-Implementierung leitet lediglich jeweils die Ausgaben weiter.
 \subsubsection{Registrierung}
 
 Um die Registrierung eines neuen Schlüssels durchzuführen muss die Relying
-Party auf dem Server \texttt{PublicKeyCredentialCreationOptions} für den Nutzer
+Party auf dem Server \texttt{CredentialCreationOptions} für den Nutzer
 generieren und an den Client zurücksenden. Diese enthalten Informationen wie
 zum Beispiel erlaubte kryptografische Algorithmen, Informationen über den
 Nutzer und die Relying Party, ausgeschlossene Authenticator etc.
@@ -323,9 +323,8 @@ Nach erfolgreicher Initialisierung gibt es im wesentlichen 4 relevante
 Funktionen mit denen sich der WebAuthn-Flow komplett implementieren lässt:
 
 \subsubsection{start\_securitykey\_registration}
-Gibt die Public-Key-Credential-Creation-Options und einen
-Schlüssel-Registrierungsstatus für den momentanen Nutzer zurück. Dieser muss
-persistiert werden.
+Gibt die Credential-Creation-Options und einen Schlüssel-Registrierungsstatus
+für den momentanen Nutzer zurück. Dieser muss persistiert werden.
 
 \subsubsection{finish\_securitykey\_registration}
 Nimmt einen Schlüssel-Registrierungsstatus und den generierten Schlüssel und
@@ -461,7 +460,7 @@ ist ausschließlich \texttt{application/json}.
 	\item[Methode:] POST
 	\item[Token:] -
 	\item[Eingabe:] Credentials \{ email, password \}
-	\item[Ausgabe:] UserDetails \{ token, verified, keys \} | \textcolor{red}{webauthn challenge}
+	\item[Ausgabe:] UserDetails \{ token, verified, keys \} | CredentialRequestOptions 
 	\item[Beschreibung:] Gibt dem Nutzer entweder seine UserDetails zurück oder
 		stellt eine WebAuthn Authetifizierungs-Challenge die der Nutzer
 		signiert bei dem Endpunkt \textit{/auth/fido2/login} enreichen muss
@@ -475,7 +474,7 @@ ist ausschließlich \texttt{application/json}.
 	\setlength{\itemsep}{0pt}
 	\item[Methode:] POST
 	\item[Token:] -
-	\item[Eingabe:] \textcolor{red}{challenge}
+	\item[Eingabe:] PublicKeyCredential
 	\item[Ausgabe:] UserDetails \{ token, verified, keys \}
 	\item[Beschreibung:] Validiert die WebAuthn Challenge des Nutzers mit den
 		hinterlegten FIDO2 Schlüsseln und gibt bei erfolgreicher Validierung
@@ -490,10 +489,11 @@ ist ausschließlich \texttt{application/json}.
 	\item[Methode:] POST
 	\item[Token:] Notwendig
 	\item[Eingabe:] -
-	\item[Ausgabe:] \textcolor{red}{ccr}
+	\item[Ausgabe:] CredentialCreationOptions 
 	\item[Beschreibung:] Startet einen Registrierungsprozess für einen FIDO2
 		Schlüssel. Setzt Serverseitig den ``Key-Registration-State'' eines
-		Nutzers und gibt eine Registrierungs-Challenge zurück.
+		Nutzers und gibt die Registrierungs-Optionen inklusive einer
+		Registrierungs-Challenge zurück.
 \end{itemize}
 
 \subsection{/auth/fido2/keys - WebAuthn Registrierung abschließen}
@@ -503,7 +503,7 @@ ist ausschließlich \texttt{application/json}.
 	\setlength{\itemsep}{0pt}
 	\item[Methode:] POST
 	\item[Token:] Notwendig
-	\item[Eingabe:] \textcolor{red}{PublicKeyCredential}
+	\item[Eingabe:] RegisterPublicKeyCredential 
 	\item[Ausgabe:] Key \{ id \}
 	\item[Beschreibung:] Nimmt die CTAP Ausgabe der
 		``authenticatorMakeCredential'' Operation an und ordnet diesen
@@ -540,7 +540,7 @@ Fachexpertise verbessern.
 
 Die Nutzerauthentifizierung an sich verläuft zuverlässig, schnell und
 reibungslos. Neben der allgemeinen Dateneingabe (E-Mail und Passwort) besteht
-die signierung der Challenge lediglich aus einem Tippen auf den Authenticator.
+die Signierung der Challenge lediglich aus einem Tippen auf den Authenticator.
 Dies allein bietet ein deutlich verbessertes Erlebnis im vergleich zu
 SMS-Tokens oder One-Time-Passwords als zweiten Faktor (vorrausgesetzt der
 Authenticator befindet sich in der Nähe des Systems oder ist sogar bereits
