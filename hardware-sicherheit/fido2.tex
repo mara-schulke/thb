@@ -38,10 +38,11 @@
 	Durch die Implementierung von FIDO2 können bestehende Systeme hinsichtlich
 	ihrer Nutzbarkeit und Sicherheit stark verbessert werden und neue Systeme
 	grundlegend neue Authentifizierungskonzepte implementieren. Die steigende
-	Relevanz zeigt sich durch die Unterstützung großer Firmen.
-	\textcolor{red}{ref} Durch die Verwendung von ausgereiften Abstraktionen
-	über die Protokolle \textit{CTAP} und \textit{WebAuthn} sind schnelle und
-	zuverlässige Implementierungen des Standards leicht realisierbar.
+	Relevanz zeigt sich durch die Unterstützung großer
+	Firmen.~\cite{fidomembers} Durch die Verwendung von ausgereiften
+	Abstraktionen über die Protokolle \textit{CTAP} und \textit{WebAuthn} sind
+	schnelle und zuverlässige Implementierungen des Standards leicht
+	realisierbar.
 \end{abstract}
 
 \section{Einleitung}
@@ -53,8 +54,8 @@ basieren auf der Annahme, dass das System des Nutzers nicht kompromitiert
 wurde. Als eine mögliche Lösung für viele dieser Probleme hat sich FIDO
 innerhalb der letzten Jahre zu einem beliebten Standard entwickelt der von
 vielen großen Anbietern wie Facebook, Amazon, Apple, Google, Mozilla,
-Microsoft etc.\ bereits untersützt beziehungsweise implementiert wird.
-\textcolor{red}{refs}
+Microsoft etc.\ bereits untersützt beziehungsweise implementiert
+wird.~\cite{fidomembers}
 
 \section{Der FIDO2 Standard}
 
@@ -68,12 +69,12 @@ für die FIDO Schlüsselpaare eines Nutzers. Kernmerkmale die FIDO2 von
 herkömmlicher asymmetrischer Kryptografie unterscheiden sind beispielsweise die
 Isolation der privaten Schlüssel auf dem Hardware-Token, die Notwendigkeit
 einer Nutzerinteraktion zum Verwenden eines privaten Schlüssels und die
-Generierung von einem Schlüsselpaar pro Online-Dienst.
+Generierung von einem Schlüsselpaar pro Online-Dienst.~\cite{ctapspec}
 
 Durch all diese Eigenschaften werden Schlüsselverluste unwahrscheinlicher und
 weniger Sicherheitskritisch, da selbst bei einem hypothetischen
-Schlüsselverlustes der Schaden immer auf einen Online-Dienst begrenzt ist.
-Die größte Schwachstelle ist allerdings der physische Diebstahl des
+Schlüsselverlustes der Schaden immer auf einen Online-Dienst begrenzt ist. Die
+größte Schwachstelle ist allerdings der physische Diebstahl des
 Hardware-Tokens, da dessen Besitz ausreicht für Impersonation-Attacken. Als
 Absicherung dagegen kann eine biometrische Authentifizierung erfolgen bevor ein
 privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.\
@@ -89,12 +90,12 @@ mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sogenannten
 Passwort-Managern um lange und zufällige Passwörter für verschiedenste
 Online-Dienste zu verwenden ohne, dass sich Nutzer diese merken müssen. Solche
 Passwort-Manager sind zwar eine Lösung für die sichere Aufbewahrung von langen
-Passwörtern, können aber nicht die durch KBA eröffneten Angriffsvektoren wie
-z.B. Man-In-The-Middle-Attacken. So bald ein Angreifer in den Besitz des
-geheimen Wissens (in diesem Fall das Passwort) gelangt kann dieser
-uneingeschränkt und unbegegrenzt oft auf das Zielsystem zugreifen, bis der
-Nutzer seine Daten ändert (vorausgesetzt, der Angreifer hat dies noch nicht
-getan).
+Passwörtern, können aber nicht die grundsätzlich durch
+Passwort-Authentifizierung eröffneten Angriffsvektoren wie z.B.
+Man-In-The-Middle-Attacken. So bald ein Angreifer in den Besitz des geheimen
+Wissens (in diesem Fall das Passwort) gelangt kann dieser uneingeschränkt und
+unbegegrenzt oft auf das Zielsystem zugreifen, bis der Nutzer seine Daten
+ändert (vorausgesetzt, der Angreifer hat dies noch nicht getan).
 
 Durch den Wechsel von Passwort-Authentifizierung auf Zero-Knowledge-Proof
 basierte Authentifizierungsmethoden (in diesem Fall
@@ -107,13 +108,11 @@ Authentifizierung nicht erneut die Identität des Nutzers beweisen könnte und
 somit den Zugriff verlieren würde.
 
 Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
-auf einem Trusted-Plattform-Modul oder einem externen Hardware-Token
-gespeichert wird und der Beweis der Identität durch die Signatur einer vom
-Authentifizierungs-Server ausgestellten Challenge erfolgt die das TPM oder der
-Hardware-Token intern durchführen und dem Nutzer nur die Signatur zurückgeben.
-So stellt selbst ein kompromitiertes Nutzersystem nur eine temporäre
-Schwachstelle dar.
-
+auf einem externen Hardware-Token oder TPM gespeichert werden und der Beweis
+der Identität durch die Signatur einer vom Authentifizierungs-Server
+ausgestellten Challenge erfolgt die das TPM oder der Hardware-Token intern
+durchführen und dem Nutzer nur die Signatur zurückgeben. So stellt selbst ein
+kompromitiertes Nutzersystem nur eine temporäre Schwachstelle dar.
 
 \section{Relevante Protokolle: CTAP \& WebAuthn}
 
@@ -124,7 +123,7 @@ Authentifizierungsvorgang in zwei Bereiche:
 \textit{Client zu Authenticator} also die Kommunikation zwischen dem
 Nutzersystem und dem Hardware-Token und \textit{Client zu Server}, die
 Kommunikation zwischen dem Nutzersystem und dem Online-Dienst bei dem sich der
-Nutzer authentifizieren möchte.
+Nutzer authentifizieren möchte.~\cite{ctapspec, webauthnspec}
 
 \begin{figure}[ht]
 	\includegraphics[width=0.5\textwidth]{ctap-webauthn-registration.png}
@@ -150,17 +149,19 @@ Ein FIDO2 Schlüssel
 
 \subsubsection{CBOR}
 
-Concise Binary Object Representation, ein Binär-Format zur Darstellung von JSON Objekten.
+Concise Binary Object Representation, ein Binär-Format zur Darstellung von JSON
+Objekten
 
 \subsection{CTAP}
 
-Das Client-To-Authenticator-Protocol kurz \textcolor{red}{CTAP} ist Teil
-des FIDO2 Standards und beschreibt den Ablauf der Kommunikation zwischen einem
-Nutzersystem und dem Hardware-Token beziehungsweise dem Authenticator.
+Das Client-To-Authenticator-Protocol kurz CTAP ist Teil des FIDO2 Standards und
+beschreibt den Ablauf der Kommunikation zwischen einem Nutzersystem und dem
+Hardware-Token beziehungsweise dem Authenticator.
 
 Neben einer Spezifikation für den Transportlayer / die Nachrichtenstruktur
 besteht das Protokoll primär aus der sogenannten ``Authenticator API'' - diese
-beschreibt Operationen die ein Nutzersystem auf einem Authenticator ausführen kann.
+beschreibt Operationen die ein Nutzersystem auf einem Authenticator ausführen
+kann.~\cite{ctapspec}
 
 Spezifiziert sind die folgenden 6 Operationen:
 
@@ -176,18 +177,17 @@ Spezifiziert sind die folgenden 6 Operationen:
 	\item \textit{authenticatorReset} - Zurücksetzen auf Werkseinstellungen
 \end{enumerate}
 
-\textcolor{red}{CTAP Spec references}
+Siehe~\cite{ctapspec} Abschnitt 5.
 
 Die im Standard beschriebenen Transportlayer umfassen USB, NFC oder Bluetooth
 Low Energy. Für jeden dieser Transportlayer gibt es eigene Mechanismen zum
-sicheren Verbindungsaufbau und zur Nachrichtenstruktur.
-\textcolor{red}{CTAP Spec references}
+sicheren Verbindungsaufbau und zur Nachrichtenstruktur.~\cite{ctapspec}
+
 
 Die JSON Objekte werden innerhalb von \textit{CTAP} mittels dem Datenformat
 \textit{CBOR} dargestellt um eine effizientere Codierung zu erhalten und
 dennoch die kompatiblität mit dem weitverbreiteten Standard für
-Datenserialisierung zu garantieren.
-\textcolor{red}{CBOR references}
+Datenserialisierung zu garantieren.~\cite{cborspec}
 
 \subsection{WebAuthn}
 
@@ -203,14 +203,14 @@ Ein wichtiger Punkt im Zusammenspiel der Spezifikationen und folgich der
 Implementierungen der beiden Protokolle \textit{CTAP} und \textit{WebAuthn} ist
 die kompatiblität der Datenttypen. So lässt sich die spezifizierte Ausgabe
 einer WebAuthn Registrierungs Challenge ohne veränderung mit der
-``authenticatorMakeCredential'' Operation an den Authenticator weitergeben.
+``authenticatorMakeCredential'' Operation an den Authenticator
+weitergeben.~\cite{ctapspec, webauthnspec}
 
 Dies hat zur Folge dass die Client-Implementierung selbst keine
 protokollrelevanten kryptografischen Berechnungen durchführen muss und effektiv
 der Server der Relying Party mit dem Authenticator des Nutzers kommuniziert.
-Die Client-Implementierung leitet lediglich jeweils die Ausgaben weiter.
-
-\textcolor{red}{weubauthn spec references}
+Die Client-Implementierung leitet lediglich jeweils die Ausgaben
+weiter.~\cite{webauthnspec}
 
 \subsubsection{Registrierung}
 
@@ -218,7 +218,8 @@ Um die Registrierung eines neuen Schlüssels durchzuführen muss die Relying
 Party auf dem Server \texttt{CredentialCreationOptions} für den Nutzer
 generieren und an den Client zurücksenden. Diese enthalten Informationen wie
 zum Beispiel erlaubte kryptografische Algorithmen, Informationen über den
-Nutzer und die Relying Party, ausgeschlossene Authenticator etc.
+Nutzer und die Relying Party, ausgeschlossene Authenticator
+etc.~\cite{webauthnspec}
 
 Diese Parameter nimmt der Client entgegen und gibt diese dann anschließend an
 die \textit{CTAP}-Operation ``authenticatorMakeCredential'' weiter. Der
@@ -226,9 +227,7 @@ Authenticator überprüft anschließend ob er ein Schlüsselpaar erstellen kann
 dass den Anforderungen des Servers entspricht und gibt entweder einen Fehler
 oder den öffentlichen Schlüssel an den Client zurück. Dieser wird nun vom
 Client an den Server weitergeben und die Registrierung wurde erfolgreich
-abgeschlossen.
-
-\textcolor{red}{weubauthn spec references}
+abgeschlossen.~\cite{ctapspec, webauthnspec}
 
 \subsubsection{Authentifizierung}
 
@@ -236,13 +235,12 @@ Für die Authentifizierung eines Nutzers mittels WebAuthn muss zu erst die
 Relying Party eine Challenge für den Client generieren. Diese muss zufällig und
 nur einmal gültig sein um Replay-Attacken zu verhindern. Nach dem der Client
 seine Challenge erhalten hat kann er diese über die CTAP-Operation
-``authenticatorGetAssertion'' signieren lassen und die signierte Challenge
-wieder an den Server zurückgeben. Anschließend überprüft dieser ob einer der
-für den Nutzer hinterlegten Schlüssel verwendet wurde um die Challenge zu
-signieren. War dies der Fall gilt die Identität des Nutzers als verifiziert und
-der Server kann dem Nutzer Zugriff auf geschützte Ressourcen geben.
-
-\textcolor{red}{weubauthn spec references}
+``authenticatorGetAssertion'' signieren lassen~\cite{ctapspec} und die
+signierte Challenge wieder an den Server zurückgeben. Anschließend überprüft
+dieser ob einer der für den Nutzer hinterlegten Schlüssel verwendet wurde um
+die Challenge zu signieren.~\cite{webauthnspec} War dies der Fall gilt die
+Identität des Nutzers als verifiziert und der Server kann dem Nutzer Zugriff
+auf geschützte Ressourcen geben.
 
 \vspace{0.25em}
 \rule{0.45\textwidth}{0.4pt}
@@ -385,7 +383,7 @@ Nutzeraktionen können diesen Zustand durch Interaktion verändern und lösen
 somit einen neuen Render-Vorgang aus. Diese bzw. ähnliche Architekturen findet
 sich in Frameworks wie React oder Elm wieder.
 
-\textcolor{red}{refs}
+\textcolor{red}{res react elm}
 
 Der Zustand speichert den Token, Verifizierungsstatus, Ladezustand der
 Anwendung und die Liste aller registrierten Schlüssel.
@@ -591,6 +589,8 @@ Proof-of-Concept-Implementierung noch außer Acht gelassen, ließen sich
 allerdings leicht mit geringem zusätzlichen Aufwand hinzufügen.
 
 \listoffigures
+
+\nocite{*}
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
