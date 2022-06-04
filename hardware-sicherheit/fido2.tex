@@ -56,13 +56,14 @@ Isolation der privaten Schlüssel auf dem Hardware-Token, die Notwendigkeit
 einer Nutzerinteraktion zum Verwenden eines privaten Schlüssels und die
 Generierung von einem Schlüsselpaar pro Online-Dienst.
 
-Durch all diese Eigenschaften werden Schlsselverluste unwahrscheinlicher und
+Durch all diese Eigenschaften werden Schlüsselverluste unwahrscheinlicher und
 weniger Sicherheitskritisch, da selbst bei einem hypothetischen
 Schlüsselverlustes der Schaden immer auf einen Online-Dienst begrenzt ist.
 Die größte Schwachstelle ist allerdings der physische Diebstahl des
-Hardware-Tokens, da dessen Besitz ausreicht für Impersonation-Attacken. Eine
+Hardware-Tokens, da dessen Besitz ausreicht für Impersonation-Attacken. Als
 Absicherung dagegen kann eine biometrische Authentifizierung erfolgen bevor ein
-privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.
+privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.\
+
 \textcolor{red}{tbd}
 
 \subsection{Welche Probleme löst FIDO2?}
@@ -96,7 +97,7 @@ somit den Zugriff verlieren würde.
 Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
 auf einem Trusted-Plattform-Modul \textcolor{red}{TPM} oder einem externen
 Hardware-Token gespeichert wird und der Beweis der Identität durch die Signatur
-einer vom Authentifizierungs-Server ausgestellten Challange erfolgt die das
+einer vom Authentifizierungs-Server ausgestellten Challenge erfolgt die das
 \textcolor{red}{TPM} oder der Hardware-Token intern durchführen und dem Nutzer
 nur die Signatur zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem
 nur eine temporäre Schwachstelle dar.
@@ -150,9 +151,9 @@ Spezifiziert sind die folgenden 6 Operationen:
 \begin{enumerate}
 	\item \textit{authenticatorMakeCredential} - Schlüsselpaar für eine
 		``Relying Party'' erstellen
-	\item \textit{authenticatorGetAssertion} - Signatur einer Challange
+	\item \textit{authenticatorGetAssertion} - Signatur einer Challenge
 	\item \textit{authenticatorGetNextAssertion} - Nächste Signatur der
-		Challange erhalten bei mehreren Schlüsselpaaren
+		Challenge erhalten bei mehreren Schlüsselpaaren
 	\item \textit{authenticatorGetInfo} - Informationen über die Fähigkeiten
 		des Authenticators
 	\item \textit{authenticatorClientPIN} - Setzt den Authenticator-PIN
@@ -178,14 +179,14 @@ Ein Server der das WebAuthn Protokoll implementiert enthält im wesentlichen
 zwei grundlegende Operationen die jeweils aus mehreren Schritten bestehen.
 Diese sind die Registrierung von Sicherheitsschlüsseln (Credentials) und deren
 zuordnung zu einem Nutzeraccount im System der Relying Party und die
-Austellung beziehungsweise Validierung von WebAuthn Challanges die bei
+Austellung beziehungsweise Validierung von WebAuthn Challenges die bei
 erfolgreicher Validierung einem Nutzer zugriff auf das System der Relying Party
 gibt.
 
 Ein wichtiger Punkt im Zusammenspiel der Spezifikationen und folgich der
 Implementierungen der beiden Protokolle \textit{CTAP} und \textit{WebAuthn} ist
 die kompatiblität der Datenttypen. So lässt sich die spezifizierte Ausgabe
-einer WebAuthn Registrierungs Challange ohne veränderung mit der
+einer WebAuthn Registrierungs Challenge ohne veränderung mit der
 ``authenticatorMakeCredential'' Operation an den Authenticator weitergeben.
 
 Dies hat zur Folge dass die Client-Implementierung selbst keine
@@ -216,12 +217,12 @@ abgeschlossen.
 \subsubsection{Authentifizierung}
 
 Für die Authentifizierung eines Nutzers mittels WebAuthn muss zu erst die
-Relying Party eine Challange für den Client generieren. Diese muss zufällig und
+Relying Party eine Challenge für den Client generieren. Diese muss zufällig und
 nur einmal gültig sein um Replay-Attacken zu verhindern. Nach dem der Client
-seine Challange erhalten hat kann er diese über die CTAP-Operation
-``authenticatorGetAssertion'' signieren lassen und die signierte Challange
+seine Challenge erhalten hat kann er diese über die CTAP-Operation
+``authenticatorGetAssertion'' signieren lassen und die signierte Challenge
 wieder an den Server zurückgeben. Anschließend überprüft dieser ob einer der
-für den Nutzer hinterlegten Schlüssel verwendet wurde um die Challange zu
+für den Nutzer hinterlegten Schlüssel verwendet wurde um die Challenge zu
 signieren. War dies der Fall gilt die Identität des Nutzers als verifiziert und
 der Server kann dem Nutzer Zugriff auf geschützte Ressourcen geben.
 
@@ -242,9 +243,10 @@ der Verbindung merken müsste.
 
 \subsection{Zielsetzung}
 
-Der Umfang der Proof-of-Concept Implementierung ist es eine funktionale,
+Ziel der Proof-of-Concept Implementierung ist es eine funktionale,
 flüchtige Nutzer-Verwaltung die optional FIDO2 Schlüssel als zweiten
-Login-Faktor unterstützt. Als API wird ein HTTP Server geöffnet.
+Login-Faktor unterstützt. Diese soll eine API anbieten auf der eine
+Client-Implementierung aufsetzen kann.
 
 \subsection{Authentifizierungsmechanismus}
 
@@ -276,7 +278,7 @@ müssen in einem realen Anwendungsszenario geheim gehalten werden.
 \subsection{Datenstrukturen zur flüchtigen Verwaltung von Nutzern}
 
 Ein Nutzer erhält bei der Registrierung eine eindeutige Id, einen
-Verifizierungscode (der in einem realen Anwendungsszenario ggf. per E-Mail
+Verifizierungscode (der in einem realen Anwendungsszenario ggf.\ per E-Mail
 versendet werden könnte) und eine leere Liste an FIDO2 Schlüsseln.
 
 Die Nutzer werden in einer HashMap im RAM vorgehalten, eine Datenbankanbindung
