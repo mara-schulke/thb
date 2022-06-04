@@ -398,6 +398,25 @@ Die definierten möglichen Interaktionen die der Nutzer tätigen kann sind:
 
 Diese werden durch die entsprechenden Bedienfelder der Oberfläche ausgelöst.
 
+\subsection{Implementierung von CTAP}
+
+Da die Nutzer-Oberfläche in JavaScript geschrieben ist und dazu gedacht ist in
+einem Browser-Kontext ausgeführt zu werden kann die Browser-Implementierung für
+CTAP verwendet werden was die komplexität der Anwendung drastisch veringert, da
+diese Implementierung sehr stark abstrahiert ist.
+
+Im wesentlichen werden nur zwei der bereitgestellten Funktionen in der gesamten
+Nutzer-Oberfläche verwendet:
+
+\begin{enumerate}
+	\item navigator.credential.create (führt die Operation
+		``authenticatorMakeCredential'' aus)
+	\item navigator.credential.get (führt die Operation
+		``authenticatorGetAssertion'' aus)
+\end{enumerate}
+
+Da die Parameter dieser Funktionen von dem Server bereitgestellt werden ist die
+Implementierung der Kommunikation mit dem Authenticator also sehr trivial.
 
 \section{Technische Dokumentation}\label{docs}
 
@@ -505,18 +524,63 @@ ist ausschließlich \texttt{application/json}.
 
 \section{Auswertung}
 
-\subsection{Nutzerbarkeit}
+\subsection{Nutzbarkeit}
 
-Nutzbarkeit abgesehen von der Verifizierungsmethode, die aus dem Terminal
-abgelesen werden muss ist gut.
+Das System ist unter Einschränkungen voll funktional und bietet eine
+verhältnismäßig gute Nutzbarkeit. Durch die Verwendung eines flüchtigen
+Speichermediums (RAM) für die Nutzerverwaltung sind nach jedem Neustart alle
+Anwendungsdaten zurückgesetzt. Dies ist für Test-Zwecke absolut in Ordnung, und
+ließe sich für eine reale Anwendung leicht durch die Implementierung einer
+Datenbankanbindung beheben.
+
+Die Nutzer-Oberfläche ist sehr schlicht, lässt aber den Nutzer übersichtlich
+alle definierten Interaktionen ausführen. Auch hier ließe sich die
+ausgestaltung der Oberfläche für eine reale Anwedung mit der entsprechenden
+Fachexpertise verbessern.
+
+Die Nutzerauthentifizierung an sich verläuft zuverlässig, schnell und
+reibungslos. Neben der allgemeinen Dateneingabe (E-Mail und Passwort) besteht
+die signierung der Challenge lediglich aus einem Tippen auf den Authenticator.
+Dies allein bietet ein deutlich verbessertes Erlebnis im vergleich zu
+SMS-Tokens oder One-Time-Passwords als zweiten Faktor (vorrausgesetzt der
+Authenticator befindet sich in der Nähe des Systems oder ist sogar bereits
+angeschlossen).
 
 \subsection{Risiken}
 
-- Fehlender Zwang FIDO2 zu verwenden
+Die Hauptrisiken des momentanen Systems ist die fehlende Passwortvalidierung
+und der fehlende Zwang einen FIDO Schlüssel bei der Registrierung zu
+hinterlegen. So ist es momentan möglich einen Nutzer mit einem schwachen
+Passwort anzulegen und keinen Schlüssel zu registrieren. Dies ließe sich
+gegebenenfalls auch durch Anpassung des Authentifizierungs bzw.
+Registrierungsprozesses beheben.
 
-\subsection{Verbesserungsvorschläge}
+Unter der Annahme dass eine Schlüssel-Registrierung verpflichtend sei wäre ein
+Angriff auf einen Nutzeraccount nurnoch durch physikalische Entwendung des
+Hardware Tokens möglich und dementsprechend unwahrscheinlich. Somit kann unter
+dieser Annahme das System als sicher angesehen werden.
 
-- FIDO2 Key als hauptfaktor, backup codes und long lived access
+\subsection{Mögliche Verbesserungen}
+
+Als abschließende Verbesserung wäre ein Umstellen auf
+Single-Faktor-Authentifizierung mit dem Hardware-Token hinsichtlich des
+Nutzererlebnises empfehlenswert (Sicherheitsimplikationen außer Acht gelassen). 
+
+Eine alternative Möglichkeit könnten weiterhin zwei Faktoren sein, allerdings
+unter der Bedingung, dass das Passwort lediglich zur einrichtung neuer Systeme
+abgefragt wird und sonst ein Single-Faktor-Login mit dem Hardware-Token möglich
+ist.
+
+Desweiteren ist es bei Hardware Tokens - deren physikalischer Verlust nicht
+gänzlich auszuschließen ist - ratsam einen Backup Token zu besitzen und diesen
+bei jedem Online-Dienst als Backup Token zu hinterlegen um einen
+Schlüsselverlust abfangen zu können. Eine bekannte Alternative zu einem zweiten
+Hardware Token wären auch sogenannte Backup Codes, die bei Schlüsselverlust
+einmaligen Zugriff gewähren.
+
+All diese ausgereiften Konzepte werden in der momentanen
+Proof-of-Concept-Implementierung noch außer Acht gelassen, ließen sich
+allerdings leicht mit geringem zusätzlichen Aufwand hinzufügen.
 
 \listoffigures
 
@@ -528,6 +592,10 @@ abgelesen werden muss ist gut.
 \subsection*{Quellcode der Implementierung}
 
 \url{https://github.com/mara214/fido2-auth}
+
+\subsection*{Zur Entwicklung verwendeter Authenticator}
+
+\url{https://store.google.com/de/product/titan_security_key}
 
 
 \end{document}
