@@ -13,7 +13,7 @@
 
 \hypersetup{colorlinks=true, allcolors=black}
 
-\title{Implementierung eines Atuhentifizierungs-Servers mit FIDO2 Support}
+\title{Proof-of-Concept-Implementierung einer Anwendung mit FIDO2 Support}
 \author{
 	\IEEEauthorblockN{Mara Schulke \textit{(Matrikel-Nr. 20215853)}}\\
 	\IEEEauthorblockA{
@@ -37,11 +37,11 @@
 \begin{abstract}
 	Durch die Implementierung von FIDO2 können bestehende Systeme hinsichtlich
 	ihrer Nutzbarkeit und Sicherheit stark verbessert werden und neue Systeme
-	ganz neue Authentifizierungskonzepte implementieren. Die steigende Relevanz
-	zeigt sich durch die Unterstützung großer Firmen. \textcolor{red}{ref}
-	Durch die Verwendung von ausgereiften Abstraktionen über die Protokolle
-	\textit{CTAP} und \textit{WebAuthn} sind schnelle und zuverlässige
-	Implementierungen des Standards leicht realisierbar.
+	grundlegend neue Authentifizierungskonzepte implementieren. Die steigende
+	Relevanz zeigt sich durch die Unterstützung großer Firmen.
+	\textcolor{red}{ref} Durch die Verwendung von ausgereiften Abstraktionen
+	über die Protokolle \textit{CTAP} und \textit{WebAuthn} sind schnelle und
+	zuverlässige Implementierungen des Standards leicht realisierbar.
 \end{abstract}
 
 \section{Einleitung}
@@ -77,13 +77,10 @@ Hardware-Tokens, da dessen Besitz ausreicht für Impersonation-Attacken. Als
 Absicherung dagegen kann eine biometrische Authentifizierung erfolgen bevor ein
 privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.\
 
-\textcolor{red}{tbd}
-
 \subsection{Welche Probleme löst FIDO2?}
 
 Die Notwendigkeit für einen solchen Standard hat sich in den letzten Jahren
-immer stärker gezeigt, da die klassische Knowledge-Based-Authentication
-(\textcolor{red}{KBA})
+immer stärker gezeigt, da die klassische Knowledge-Based-Authentication (KBA)
 durch zunehmende Rechenleistung und effizientere Angriffe immer unsicherer und
 unhandlicher für Nutzer wird. Die minimale Passwortlängen steigen
 dementsprechend an und führen zur Wiederverwendung von gleichen Login-Daten für
@@ -91,14 +88,14 @@ mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sogenannten
 Passwort-Managern um lange und zufällige Passwörter für verschiedenste
 Online-Dienste zu verwenden ohne, dass sich Nutzer diese merken müssen. Solche
 Passwort-Manager sind zwar eine Lösung für die sichere Aufbewahrung von langen
-Passwörtern, können aber nicht die durch \textcolor{red}{KBA} eröffneten
-Angriffsvektoren wie z.B. Man-In-The-Middle-Attacken. So bald ein Angreifer
-in den Besitz des geheimen Wissens (in diesem Fall das Passwort) gelangt kann
-dieser uneingeschränkt und unbegegrenzt oft auf das Zielsystem zugreifen, bis
-der Nutzer seine Daten ändert (vorausgesetzt, der Angreifer hat dies noch nicht
+Passwörtern, können aber nicht die durch KBA eröffneten Angriffsvektoren wie
+z.B. Man-In-The-Middle-Attacken. So bald ein Angreifer in den Besitz des
+geheimen Wissens (in diesem Fall das Passwort) gelangt kann dieser
+uneingeschränkt und unbegegrenzt oft auf das Zielsystem zugreifen, bis der
+Nutzer seine Daten ändert (vorausgesetzt, der Angreifer hat dies noch nicht
 getan).
 
-Durch den Wechsel von \textcolor{red}{KBA} auf Zero-Knowledge-Proof basierte
+Durch den Wechsel von KBA auf Zero-Knowledge-Proof basierte
 Authentifizierungsmethoden lassen sich ganze Angriffsvektoren ausschließen, da
 ein kompromitierter Server oder eine kompromitierte Verbindung niemals das
 geheime Wissen des Nutzers einem Angreifer zugänglich machen. Das heißt, dass
@@ -108,12 +105,12 @@ Authentifizierung nicht erneut die Identität des Nutzers beweisen könnte und
 somit den Zugriff verlieren würde.
 
 Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
-auf einem Trusted-Plattform-Modul \textcolor{red}{TPM} oder einem externen
-Hardware-Token gespeichert wird und der Beweis der Identität durch die Signatur
-einer vom Authentifizierungs-Server ausgestellten Challenge erfolgt die das
-\textcolor{red}{TPM} oder der Hardware-Token intern durchführen und dem Nutzer
-nur die Signatur zurückgeben. So stellt selbst ein kompromitiertes Nutzersystem
-nur eine temporäre Schwachstelle dar.
+auf einem Trusted-Plattform-Modul (TPM) oder einem externen Hardware-Token
+gespeichert wird und der Beweis der Identität durch die Signatur einer vom
+Authentifizierungs-Server ausgestellten Challenge erfolgt die das TPM oder der
+Hardware-Token intern durchführen und dem Nutzer nur die Signatur zurückgeben.
+So stellt selbst ein kompromitiertes Nutzersystem nur eine temporäre
+Schwachstelle dar.
 
 
 \section{Relevante Protokolle: CTAP \& WebAuthn}
