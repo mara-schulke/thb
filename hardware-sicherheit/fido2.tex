@@ -52,18 +52,19 @@ viele von ihnen Schwachstellen hinsichtlich Man-In-The-Middle-Attacken und
 basieren auf der Annahme, dass das System des Nutzers nicht kompromitiert
 wurde. Als eine mögliche Lösung für viele dieser Probleme hat sich FIDO
 innerhalb der letzten Jahre zu einem beliebten Standard entwickelt der von
-vielen größeren Anbietern wie Facebook, Google, Apple, Mozilla, Microsoft etc.
-bereits untersützt beziehungsweise implementiert wird. \textcolor{red}{refs}
+vielen großen Anbietern wie Facebook, Amazon, Apple, Google, Mozilla,
+Microsoft etc.\ bereits untersützt beziehungsweise implementiert wird.
+\textcolor{red}{refs}
 
 \section{Der FIDO2 Standard}
 
 FIDO2 steht für \textit{F}ast \textit{ID}entity \textit{O}nline 2 und ist ein von
 der FIDO Alliance entwickleter, offener und lizenzfreier Standard für
-Hardware-Token gestützte Authentifizierung. (\textcolor{red}{quote})
+Hardware-Token gestützte Authentifizierung.
 
-Ein Hardware-Token (kann auch in Form eines Trusted-Plattform-Moduls oder als
-Teil des Betriebssystems implementiert sein) ist ein physischer Speicher für
-die FIDO Schlüsselpaare eines Nutzers. Kernmerkmale die FIDO2 von
+Ein Hardware-Token (kann auch in Form eines Trusted-Plattform-Moduls (TPM) oder
+als Teil des Betriebssystems implementiert sein) ist ein physischer Speicher
+für die FIDO Schlüsselpaare eines Nutzers. Kernmerkmale die FIDO2 von
 herkömmlicher asymmetrischer Kryptografie unterscheiden sind beispielsweise die
 Isolation der privaten Schlüssel auf dem Hardware-Token, die Notwendigkeit
 einer Nutzerinteraktion zum Verwenden eines privaten Schlüssels und die
@@ -80,8 +81,8 @@ privater Schlüssel verwendet werden kann - wie beispielsweise bei FaceID.\
 \subsection{Welche Probleme löst FIDO2?}
 
 Die Notwendigkeit für einen solchen Standard hat sich in den letzten Jahren
-immer stärker gezeigt, da die klassische Knowledge-Based-Authentication (KBA)
-durch zunehmende Rechenleistung und effizientere Angriffe immer unsicherer und
+immer stärker gezeigt, da die klassische Passwort-Authentifizierung durch
+zunehmende Rechenleistung und effizientere Angriffe immer unsicherer und
 unhandlicher für Nutzer wird. Die minimale Passwortlängen steigen
 dementsprechend an und führen zur Wiederverwendung von gleichen Login-Daten für
 mehrere Online-Dienste. Bekannte Lösungen sind die Verwendung von sogenannten
@@ -95,9 +96,10 @@ uneingeschränkt und unbegegrenzt oft auf das Zielsystem zugreifen, bis der
 Nutzer seine Daten ändert (vorausgesetzt, der Angreifer hat dies noch nicht
 getan).
 
-Durch den Wechsel von KBA auf Zero-Knowledge-Proof basierte
-Authentifizierungsmethoden lassen sich ganze Angriffsvektoren ausschließen, da
-ein kompromitierter Server oder eine kompromitierte Verbindung niemals das
+Durch den Wechsel von Passwort-Authentifizierung auf Zero-Knowledge-Proof
+basierte Authentifizierungsmethoden (in diesem Fall
+Public-Key-Authentifizierung) lassen sich ganze Angriffsvektoren ausschließen,
+da ein kompromitierter Server oder eine kompromitierte Verbindung niemals das
 geheime Wissen des Nutzers einem Angreifer zugänglich machen. Das heißt, dass
 sich ein Angreifer im Falle einer kompromitierten Verbindung maximal in die
 Sitzung des Nutzers einschleichen könnte, allerdings bei der nächsten
@@ -105,7 +107,7 @@ Authentifizierung nicht erneut die Identität des Nutzers beweisen könnte und
 somit den Zugriff verlieren würde.
 
 Im Falle von FIDO2 kennt nichtmal der Nutzer selber seine Schlüssel da diese
-auf einem Trusted-Plattform-Modul (TPM) oder einem externen Hardware-Token
+auf einem Trusted-Plattform-Modul oder einem externen Hardware-Token
 gespeichert wird und der Beweis der Identität durch die Signatur einer vom
 Authentifizierungs-Server ausgestellten Challenge erfolgt die das TPM oder der
 Hardware-Token intern durchführen und dem Nutzer nur die Signatur zurückgeben.
@@ -117,11 +119,10 @@ Schwachstelle dar.
 
 Der FIDO2 Standard umfasst hauptsächlich die beiden Protokolle \textit{CTAP}
 und \textit{WebAuthn}. Diese unterteilen den gesammten
-Authentifizierungsvorgang in
-zwei Bereiche:
+Authentifizierungsvorgang in zwei Bereiche:
 
 \textit{Client zu Authenticator} also die Kommunikation zwischen dem
-Nutzersystem und dem Hardware-Token oder TPM und \textit{Client zu Server}, die
+Nutzersystem und dem Hardware-Token und \textit{Client zu Server}, die
 Kommunikation zwischen dem Nutzersystem und dem Online-Dienst bei dem sich der
 Nutzer authentifizieren möchte.
 
