@@ -1,4 +1,4 @@
--- Maximilian Schulke, 20215853
+-- Mara Schulke, 20215853
 
 
 -- Tragen Sie Ihren Vor- und Nachnamen und die Matrikelnummer in der 1. Zeile ein!

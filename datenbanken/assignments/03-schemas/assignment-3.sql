@@ -1,7 +1,7 @@
--- Maximilian Schulke 20215853
+-- Mara Schulke 20215853
 
-CREATE SCHEMA maximilian_schulke;
-SET SCHEMA 'maximilian_schulke';
+CREATE SCHEMA mara_schulke;
+SET SCHEMA 'mara_schulke';
 
 -- Tables
 

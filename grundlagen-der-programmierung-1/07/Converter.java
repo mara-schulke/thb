@@ -2,7 +2,7 @@
  * Ein Converter stellt methoden zur Konvertierung von 
  * String nach Int und Int nach String zu verfügung.
  * 
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  * @version 1.0.0
  */
 public class Converter {

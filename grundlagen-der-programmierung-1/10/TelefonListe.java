@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Die Klasse TelefonListe kann Telefonlisten-Einträge verwalten, speichern und laden. 
  * 
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  * @version 1.0.0
  */
 public class TelefonListe {

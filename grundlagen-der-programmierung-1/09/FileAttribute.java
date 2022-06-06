@@ -6,7 +6,7 @@ import java.util.Scanner;
  * FileAttribute ist ein Hilfsprogramm um Datei- und Ordner-Infos auszugeben.
  * Pfade können entweder über stdin oder als cli parameter übergeben werden. 
  * 
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  * @version 1.0.0
  */
 public class FileAttribute {

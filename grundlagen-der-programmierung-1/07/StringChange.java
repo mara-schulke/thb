@@ -1,7 +1,7 @@
 /**
  * StringChange experimentiert mit dem Verhalten von String und char[]
  * 
- * @author Maximilian Schulke <schulke@th-brandeburg>
+ * @author Mara Schulke <schulke@th-brandeburg>
  * @version 1.0.0
  */
 public class StringChange {

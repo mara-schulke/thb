@@ -1,7 +1,7 @@
 /**
  * HelloApp writes a string to stdout.
  * 
- * @author Maximilian Schulke schulke@th-brandenburg.de
+ * @author Mara Schulke schulke@th-brandenburg.de
  * @version 1.01
  */
 public class HelloApp {

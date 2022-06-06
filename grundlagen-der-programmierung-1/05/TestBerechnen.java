@@ -1,6 +1,6 @@
 /**
  * Testet die Klasse Berechnen
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  * @version 1.0.0
  * @see Berechnen
  */

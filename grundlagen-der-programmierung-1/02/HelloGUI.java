@@ -4,7 +4,7 @@ import javax.swing.*;
 /**
  * HelloGUI opens a window with a given title.
  * 
- * @author Maximilian Schulke schulke@th-brandenburg.de
+ * @author Mara Schulke schulke@th-brandenburg.de
  * @version 1.01
  * @see <a href="https://docs.oracle.com/javase/10/docs/api/javax/swing/JFrame.html">JFrame</a>
  */

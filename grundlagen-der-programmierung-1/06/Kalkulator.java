@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.Locale;
 
 /**
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  * @version 1.0.0
  */
 public class Kalkulator {

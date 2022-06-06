@@ -5,7 +5,7 @@ import java.util.Arrays;
  * rekursiv einen Lösungweg zu finden.
  * 
  * @version 1.0.0
- * @author Maximilian Schulke <schulke@th-brandenburg.de>
+ * @author Mara Schulke <schulke@th-brandenburg.de>
  */
 public class Labyrinth {
 	/**

@@ -605,7 +605,7 @@
 			<data key="d4">
 				<x:List>
 					<y:Label Style="{y:GraphMLReference 3}">
-						<y:Label.Text><![CDATA[Maximilian Schulke, 20215853]]></y:Label.Text>
+						<y:Label.Text><![CDATA[Mara Schulke, 20215853]]></y:Label.Text>
 						<y:Label.LayoutParameter>
 							<y:CompositeLabelModelParameter>
 								<y:CompositeLabelModelParameter.Parameter>
