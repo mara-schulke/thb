@@ -25,8 +25,8 @@
 \section{Wieso ist eine sichere Löschung so wichtig?}
 \begin{frame}{Wieso ist eine sichere Löschung so wichtig?}
 	\begin{itemize}
-		\item Data Breach
-		\item Compliance
+		\item verhinderung von Datendiebstahl
+		\item rechtliche Vorgaben
 		\item Hardware wiederverwendbar machen
 	\end{itemize}
 \end{frame}
@@ -45,14 +45,28 @@
 \section{Wie funktioniert die Rekonstruktion von Datenseichern?}
 \begin{frame}{Wie funktioniert die Rekonstruktion von Datenseichern?}
 	\begin{itemize}
-		\item 
+		\item Rekonstruktion ist möglich wenn Daten nicht physisch gelöscht
+			wurden
+			\begin{itemize}
+				\item Formatierung entfernt Daten nur oberflächlich da i.d.R.
+					nur die Zugriffstabellen angepasst werden und nicht die
+					Register geleert werden.
+			\end{itemize}
+		\item Durch durchsuchen der Register einer Festplatten mit entfernter
+			Zugriffstabelle lassen sich softwareseitig Datenrekonstruieren
+		\item Bei Beschädigten oder mittels SMR gesicherten Festplatten ist
+			eine softwareseitige Rekonstruktion oft nicht mehr möglich, hier
+			gibt es allerdings noch die Möglichkeit über physischen Zugriff auf
+			die Festplatte Informationen wiederherzustellen (bspw.\ von
+			spezialisierten Unternhemen unter Reinraum-Bedingungen)
 	\end{itemize}
 \end{frame}
 
 \section{Methoden zur sicheren Speicherlöschung}
 \begin{frame}{Methoden zur sicheren Speicherlöschung}
 	\begin{itemize}
-		\item 
+		\item Physische Zerstörung des Datenträgers
+		\item Überschreiben der Daten innherlab des Datenträgers
 	\end{itemize}
 \end{frame}
 
@@ -79,8 +93,16 @@
 	\end{itemize}
 \end{frame}
 
+\section{Shingled Magnetic Recording und der TRIM-Befehl}
+\begin{frame}{Shingled Magnetic Recording und der TRIM-Befehl}
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
 % https://www.bsi.bund.de/DE/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Daten-sichern-verschluesseln-und-loeschen/Daten-endgueltig-loeschen/daten-endgueltig-loeschen_node.html
 % https://www.experte.de/it-sicherheit/festplatte-loeschen
 % https://www.easeus.de/festplatte-wiederherstellen/formatierte-festplatte-wiederherstellen-freeware.html
+% https://de.wikipedia.org/wiki/Datenwiederherstellung
 
 \end{document}
