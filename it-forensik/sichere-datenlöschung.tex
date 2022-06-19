@@ -70,33 +70,115 @@
 	\end{itemize}
 \end{frame}
 
-\section{Methoden zur sicheren Speicherlöschung: A}
-\begin{frame}{Methoden zur sicheren Speicherlöschung: A}
+\section{Überschreiben gesicherter Bereiche}
+\begin{frame}{Überschreiben gesicherter Bereiche}
 	\begin{itemize}
-		\item 
+		\item Um vollständige Sicherheit zu gewährleisten müss sämtliche
+			Bereiche eines Datenträgers überschrieben werden
+		\item Zu typischen gesicherten Bereichen zählen die HPA (Host protected
+			area) und das DCO (device configuration overlay)
+		\item Programme zur Datenlöschung die vom Betriebssystem des Nutzers
+			ausgeführt werden haben oft keinen uneingeschränkten Zugriff da das
+			Betriebssyystem während der Löschung noch Teile des Datenträgers
+			verwendet
 	\end{itemize}
 \end{frame}
 
-\section{Typsiche Speichertypen}
-\begin{frame}{Typsiche Speichertypen}
+\section{Übersicht etablierter Standards}
+\begin{frame}{Übersicht etablierter Standards}
 	\begin{itemize}
-		\item HDD (Hard Disk Drive)
-		\item SSD (Solid State Drive)
-		\item SSHD (Solid State Hybrid Drive)
+		\item Cryptographic Erasure (Crypto Erase)
+			\begin{itemize}
+				\item Keine Runden
+				\item Löscht den kryptografischen Schlüssel mit der die zu
+					löschenden Daten hardwareseitig verschlüsselt wurden
+				\item Funktioniert nicht mit jeder Hardware
+			\end{itemize}
+		\item Peter Gutmann's Algorithm
+			\begin{itemize}
+				\item Veröffentlicht: 1996
+				\item 1 bis 35 Runden
+				\item Muster: Kombination aus allen anderen Standards
+			\end{itemize}
+		\item Bruce Scheier's Algorithm
+			\begin{itemize}
+				\item Veröffentlicht: 1996
+				\item 7 Runden
+				\item Muster: 1, 0, 5x pseudozufällige Sequenz
+			\end{itemize}
+		\item U.S. Navy Staff Office Publication NAVSO P-5239-26, 1993
+			\begin{itemize}
+				\item Veröffentlicht: 1993
+				\item 3 Runden
+				\item Muster: Zeichen, Komplement, Zufallswert
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 
-\section{Unterschiede zwischen Speichertypen}
-\begin{frame}{Unterschiede zwischen Speichertypen}
+\begin{frame}{Übersicht etablierter Standards}
 	\begin{itemize}
-		\item 
+		\item BSI-2011-VS	
+			\begin{itemize}
+				\item Veröffentlicht: 2011
+				\item 4 Runden
+				\item Verschlüsselung mit AES-128-CBC mit anschließender
+					löschung des Schlüssls
+			\end{itemize}
+		\item DoD 5220.22-M (E)
+			\begin{itemize}
+				\item Veröffentlicht: 1995
+				\item 3 Runden
+				\item Muster: 0, 1, Zufallswerte
+			\end{itemize}
+		\item DoD 5220.22-M (C)
+			\begin{itemize}
+				\item 1 Runden
+				\item Muster: aperiodische Zufallswerte
+			\end{itemize}
+		\item DoD 5220.22-M (ECE)
+			\begin{itemize}
+				\item Veröffentlicht: 2001
+				\item 7 Runde
+				\item Muster: DoD 5220.22-M (E), DoD 5220.22-M (C),
+					DoD 5220.22-M (E)
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 
-\section{Shingled Magnetic Recording und der TRIM-Befehl}
-\begin{frame}{Shingled Magnetic Recording und der TRIM-Befehl}
+\begin{frame}{Übersicht etablierter Standards}
 	\begin{itemize}
-		\item 
+		\item U.S. Air Force System Security Instruction 5020
+			\begin{itemize}
+				\item Veröffentlicht: 1993
+				\item 3 Runden
+				\item Muster: 1, 0, zufälliges Zeichen
+			\end{itemize}
+		\item HMG Infosec Standard 5, Lower Standard	
+			\begin{itemize}
+				\item 1 Runden
+				\item Muster: Zufällige Zeichenkette
+			\end{itemize}
+		\item HMG Infosec Standard 5, Higher Standard	
+			\begin{itemize}
+				\item 3 Runde
+				\item Muster: 0, 1, Zufallswert
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\section{Vorteile kryptografiebasiereter Standards}
+\begin{frame}{Vorteile kryptografiebasiereter Standards}
+	\begin{itemize}
+		\item
+	\end{itemize}
+\end{frame}
+
+% eine weitere folie und quellen!
+
+\section{Quellen}
+\begin{frame}{Quellen}
+	\begin{itemize}
+		\item
 	\end{itemize}
 \end{frame}
 
@@ -104,5 +186,7 @@
 % https://www.experte.de/it-sicherheit/festplatte-loeschen
 % https://www.easeus.de/festplatte-wiederherstellen/formatierte-festplatte-wiederherstellen-freeware.html
 % https://de.wikipedia.org/wiki/Datenwiederherstellung
+% https://www.blancco.com/resources/blog-comprehensive-list-data-wiping-erasure-standards/
+% https://www.archicrypt.de/shredder7/bsi-2011-vs.html
 
 \end{document}
