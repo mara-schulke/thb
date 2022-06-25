@@ -1,0 +1,111 @@
+\documentclass{beamer}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+
+\usecolortheme{seagull}
+\usefonttheme{serif}
+
+\title{Proof-of-Concept-Implementierung einer Anwendung mit FIDO2 Support}
+\author{Mara Schulke\\\tiny{Matrikelnr. 20215853, SS22 B.Sc. IT Security, THB}}
+
+\begin{document}
+
+\begin{frame}
+	Hardware Sicherheit
+	\vspace{1em}
+	\titlepage
+\end{frame}
+
+\begin{frame}{Übersicht}
+	\tableofcontents
+\end{frame}
+
+\section{Der FIDO2 Standard}
+\begin{frame}{Der FIDO2 Standard}
+	\begin{itemize}
+		\item Industriestandard für hardwaregestützte Authentifizierung
+		\item Setzt sich im wesentlichen aus zwei
+			Protokollen zusammen:
+			\begin{itemize}
+				\item CTAP
+				\item WebAuthn
+			\end{itemize}
+		\item Der Hardwaretoken kann innerhalb des Systems verbaut sein (z.B.
+			über ein TPM) oder ein externes Gerät sein (bspw. Yubikey oder
+			Google Titan)
+		\item Quelloffen und nicht proprietär
+			\begin{itemize}
+				\item Durch Projekte wie OpenSK lassen sich sogar eigene
+					Hardwaretokens bauen
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\section{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
+\begin{frame}{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
+	\begin{itemize}
+		\item Erhöhte Sicherheit durch separate Schlüsselpaare pro Relying Party
+		\item Verlust eines Schlüsselpaars wäre verhältnismäßig unkritisch da
+			dieses nur Zugriff auf einen Online-Dienst gibt
+		\item Schlüsselpaare werden nicht auf dem System des Nutzers gespeichert
+			\begin{itemize}
+				\item Kompromitierte Verbindungen und Nutzersysteme stellen keine schwerwiegende Gefahr dar
+				\item Verlust des Systems unkritisch
+			\end{itemize}
+		\item Physikalischer Diebstahl des Tokens notwendig um erfolgreiche
+			Impersonation-Attacken auszuführen
+	\end{itemize}
+\end{frame}
+
+\section{Ablauf einer Registrierung}
+\begin{frame}{Ablauf einer Registrierung}
+	\begin{itemize}
+		\item Client erhält vom Server Schlüsselgenerierungsparameter
+		\item Client reicht diese an den Authenticator weiter
+		\item Authenticator speichert das Schlüsselpaar für die Relying Party und gibt den Public Key an den Client
+		\item Client leitet den Public Key an den Server weiter
+		\item Server persistiert de Public Key und ordnet ihn dem Nutzer zu
+	\end{itemize}
+\end{frame}
+
+\section{Ablauf einer Authentifizierung}
+\begin{frame}{Ablauf einer Authentifizierung}
+	\begin{itemize}
+		\item Client erhält vom Server eine Challenge
+		\item Client reicht diese an den Authenticator weiter
+		\item Authenticator signiert die Challenge mit dem Private Key
+		\item Client leitet die Signatur an den Server weiter
+		\item Server überprüft mit dem Public Key ob die Signatur gültig ist
+	\end{itemize}
+\end{frame}
+
+\section{Möglichkeiten durch den Einsatz von FIDO2}
+\begin{frame}{Möglichkeiten durch den Einsatz von FIDO2}
+	\begin{itemize}
+		\item viele Angriffsvektoren lassen sich zu weiten Teilen durch den
+			Einsatz von FIDO2 ausschließen bzw.\ verharmlosen (bspw.
+			Man-In-The-Middle, Phishing etc.)
+		\item Nutzer müssen keine Passwörter mehr verwalten
+		\item Nutzer können sich einfach und sicher passwortlos Anmelden
+	\end{itemize}
+\end{frame}
+
+\section{Details zur Implementierung des PoC}
+\begin{frame}{Details zur Implementierung des PoC}
+	\begin{itemize}
+		\item Siehe Bildschirmübertragung
+	\end{itemize}
+\end{frame}
+
+\section{Anhänge / Verweise}
+\begin{frame}{Anhänge / Verweise}
+	\begin{itemize}
+		\item Quellcode: \href{https://github.com/mara214/fido2-auth}{github.com/mara214/fido2-auth}
+		\item Authenticator: \href{https://store.google.com/de/product/titan_security_key?pli=1&hl=de}{Google Titan}
+	\end{itemize}
+\end{frame}
+
+\end{document}
