@@ -14,7 +14,7 @@
 \begin{document}
 
 \begin{frame}
-	Hardware Sicherheit
+	\begin{center}Hardware Sicherheit\end{center}
 	\vspace{1em}
 	\titlepage
 \end{frame}
@@ -44,22 +44,6 @@
 	\end{itemize}
 \end{frame}
 
-\section{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
-\begin{frame}{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
-	\begin{itemize}
-		\item Erhöhte Sicherheit durch separate Schlüsselpaare pro Relying Party
-		\item Verlust eines Schlüsselpaars wäre verhältnismäßig unkritisch da
-			dieses nur Zugriff auf einen Online-Dienst gibt
-		\item Schlüsselpaare werden nicht auf dem System des Nutzers gespeichert
-			\begin{itemize}
-				\item Kompromitierte Verbindungen und Nutzersysteme stellen keine schwerwiegende Gefahr dar
-				\item Verlust des Systems unkritisch
-			\end{itemize}
-		\item Physikalischer Diebstahl des Tokens notwendig um erfolgreiche
-			Impersonation-Attacken auszuführen
-	\end{itemize}
-\end{frame}
-
 \section{Ablauf einer Registrierung}
 \begin{frame}{Ablauf einer Registrierung}
 	\begin{itemize}
@@ -81,6 +65,23 @@
 		\item Server überprüft mit dem Public Key ob die Signatur gültig ist
 	\end{itemize}
 \end{frame}
+
+\section{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
+\begin{frame}{Vorteile gegenüber einfacher asymmetrischer Kryptografie}
+	\begin{itemize}
+		\item Erhöhte Sicherheit durch separate Schlüsselpaare pro Relying Party
+		\item Verlust eines Schlüsselpaars wäre verhältnismäßig unkritisch da
+			dieses nur Zugriff auf einen Online-Dienst gibt
+		\item Schlüsselpaare werden nicht auf dem System des Nutzers gespeichert
+			\begin{itemize}
+				\item Kompromitierte Verbindungen und Nutzersysteme stellen keine schwerwiegende Gefahr dar
+				\item Verlust des Systems unkritisch
+			\end{itemize}
+		\item Physikalischer Diebstahl des Tokens notwendig um erfolgreiche
+			Impersonation-Attacken auszuführen
+	\end{itemize}
+\end{frame}
+
 
 \section{Möglichkeiten durch den Einsatz von FIDO2}
 \begin{frame}{Möglichkeiten durch den Einsatz von FIDO2}
