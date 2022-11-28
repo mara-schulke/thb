@@ -1,0 +1,4 @@
+#/usr/bin/env sh
+
+[[ ! -e mnt ]] && mkdir mnt
+gocryptfs .cryptfs mnt

@@ -1,5 +1,7 @@
 TODO
 
+/praxisprojekt/mnt/**/*
+
 bin
 .DS_Store
 .classpath
