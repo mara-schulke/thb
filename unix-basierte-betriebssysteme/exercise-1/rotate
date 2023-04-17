@@ -1,0 +1,63 @@
+#!/usr/bin/env sh
+# Mara Schulke, 20215853, 17.04.2023
+
+help() { cat << EOF
+rotate 1.0.0
+Mara Schulke <mara.schulke@th-brandenburg.de>
+A simple way of creating rotating backups
+
+Usage:
+    $0 [OPTIONS] [FILE]
+
+Arguments:
+    [FILE]
+          File to backup
+
+Options:
+    -h
+        Prints this help message
+    -b <n=5>
+        Defines the count of backups
+    -d
+        Removes all existing backups of the file
+    -l 
+        Lists all exiting backups of the file
+    -z 
+        Compresses newly created backups with gzip.
+        Incompatible with -d and -l
+EOF
+}
+
+BACKUP_COUNT=5
+COMPRESS=false
+COMMAND=backup
+
+while getopts b:dlz o; do
+    case "${o}" in
+        b)
+            BACKUP_COUNT=${OPTARG}
+            ;;
+        d)
+            COMMAND=delete
+            ;;
+        l)
+            COMMAND=list
+            ;;
+        z)
+            COMPRESS=true
+            ;;
+        *)
+            help
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ $COMPRESS = "true" ] && [ $COMMAND != "backup" ]; then
+    help
+    exit 1
+fi
+
+echo "BACKUP_COUNT = ${BACKUP_COUNT}"
+echo "COMPRESS = ${COMPRESS}"
+echo "COMMAND = ${COMMAND}"
