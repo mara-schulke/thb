@@ -32,10 +32,15 @@ BACKUP_COUNT=5
 COMPRESS=false
 COMMAND=backup
 
-while getopts b:dlz o; do
+while getopts b:dlzh o; do
     case "${o}" in
         b)
             BACKUP_COUNT=${OPTARG}
+
+            if ! echo "$BACKUPS_COUNT" | grep -Eq '^[1-9]$'; then
+                echo "Invalid argument for -b option: $BACKUP_COUNT"
+                exit 1
+            fi
             ;;
         d)
             COMMAND=delete
@@ -46,12 +51,19 @@ while getopts b:dlz o; do
         z)
             COMPRESS=true
             ;;
+        h)
+            help
+            exit 0
+            ;;
         *)
             help
+            exit 1
             ;;
     esac
 done
+
 shift $((OPTIND-1))
+FILE=$1
 
 if [ $COMPRESS = "true" ] && [ $COMMAND != "backup" ]; then
     help
@@ -61,3 +73,60 @@ fi
 echo "BACKUP_COUNT = ${BACKUP_COUNT}"
 echo "COMPRESS = ${COMPRESS}"
 echo "COMMAND = ${COMMAND}"
+
+# check if file argument is missing
+if [ -z "$FILE" ]; then
+    echo "Missing the file to backup"
+    help
+    exit 1
+fi
+
+# check if file exists and is not empty
+if [ ! -s "$FILE" ]; then
+    echo "Error: file $FILE does not exist or is empty"
+    exit 1
+fi
+
+# set default value for backups if not provided
+if [ -z "$BACKUPS" ]; then
+    BACKUPS=$DEFAULT_BACKUPS
+fi
+
+# create a backup with the current timestamp
+BACKUP="$FILE"
+
+# compress backup if specified
+if [ "$COMPRESS_BACKUP" = true ]; then
+    BACKUP="$BACKUP.gz"
+    gzip "$FILE" -c > "$BACKUP"
+else
+    cp -p "$FILE" "$BACKUP"
+fi
+
+# rotate existing backups
+for i in $(seq $(($BACKUPS - 1)) -1 1); do
+    OLD_BACKUP="$FILE.$i"
+    NEW_BACKUP="$FILE.$(($i + 1))"
+    if [ -e "$OLD_BACKUP" ]; then
+        mv "$OLD_BACKUP" "$NEW_BACKUP"
+    fi
+done
+
+# delete the oldest backup if maximum number is exceeded
+if [ -e "$FILE.$BACKUPS" ]; then
+    rm "$FILE.$BACKUPS"
+fi
+
+# delete all backups if specified
+if [ "$DELETE_BACKUPS" = true ]; then
+    rm -f "$FILE".[0-9]* "$FILE".[0-9]*.gz
+    exit 0
+fi
+
+# list backups if specified
+if [ "$LIST_BACKUPS" = true ]; then
+    ls -l "$FILE".[0-9]* "$FILE".[0-9]*.gz
+    exit 0
+fi
+
+exit 0
