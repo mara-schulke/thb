@@ -37,8 +37,8 @@ while getopts b:dlzh o; do
         b)
             BACKUP_COUNT=${OPTARG}
 
-            if ! echo "$BACKUPS_COUNT" | grep -Eq '^[1-9]$'; then
-                echo "Invalid argument for -b option: $BACKUP_COUNT"
+            if ! echo "$BACKUP_COUNT" | grep -Eq '^[1-9]$'; then
+                echo "Invalid argument for -b option: $BACKUP_COUNT" > /dev/stderr
                 exit 1
             fi
             ;;
@@ -72,17 +72,21 @@ fi
 
 backup() {
     if [ -z "$FILE" ]; then
-        echo "Missing the file argument to backup"
+        echo "Error: Missing the file argument to backup" > /dev/stderr
         help
         exit 1
     fi
 
-    if [ ! -s "$FILE" ]; then
-        echo "Error: file $FILE does not exist or is empty"
+    if [ ! -e "$FILE" ]; then
+        echo "Error: file $FILE does not exist" > /dev/stderr
         exit 1
     fi
 
-    for i in $(seq $(($BACKUP_COUNT - 1)) -1 1); do
+    if [ -z "$(cat "$FILE")" ]; then
+        exit 0
+    fi
+
+    for i in $(seq $((BACKUP_COUNT - 1)) -1 1); do
         OLD_BACKUP="$FILE.$i"
         NEW_BACKUP="$FILE.$((i + 1))"
 
@@ -108,16 +112,6 @@ backup() {
         touch -r "$FILE" "$FILE.1.gz"
     else
         cp -p "$FILE" "$FILE.1"
-    fi
-
-    LAST=$((BACKUP_COUNT + 1))
-
-    if [ -e "$FILE.$LAST" ]; then
-        rm -f "$FILE.$LAST"
-    fi
-
-    if [ -e "$FILE.$LAST.gz" ]; then
-        rm -f "$FILE.$LAST.gz"
     fi
 }
 
