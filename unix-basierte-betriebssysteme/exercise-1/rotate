@@ -70,63 +70,74 @@ if [ $COMPRESS = "true" ] && [ $COMMAND != "backup" ]; then
     exit 1
 fi
 
-echo "BACKUP_COUNT = ${BACKUP_COUNT}"
-echo "COMPRESS = ${COMPRESS}"
-echo "COMMAND = ${COMMAND}"
-
-# check if file argument is missing
-if [ -z "$FILE" ]; then
-    echo "Missing the file to backup"
-    help
-    exit 1
-fi
-
-# check if file exists and is not empty
-if [ ! -s "$FILE" ]; then
-    echo "Error: file $FILE does not exist or is empty"
-    exit 1
-fi
-
-# set default value for backups if not provided
-if [ -z "$BACKUPS" ]; then
-    BACKUPS=$DEFAULT_BACKUPS
-fi
-
-# create a backup with the current timestamp
-BACKUP="$FILE"
-
-# compress backup if specified
-if [ "$COMPRESS_BACKUP" = true ]; then
-    BACKUP="$BACKUP.gz"
-    gzip "$FILE" -c > "$BACKUP"
-else
-    cp -p "$FILE" "$BACKUP"
-fi
-
-# rotate existing backups
-for i in $(seq $(($BACKUPS - 1)) -1 1); do
-    OLD_BACKUP="$FILE.$i"
-    NEW_BACKUP="$FILE.$(($i + 1))"
-    if [ -e "$OLD_BACKUP" ]; then
-        mv "$OLD_BACKUP" "$NEW_BACKUP"
+backup() {
+    if [ -z "$FILE" ]; then
+        echo "Missing the file argument to backup"
+        help
+        exit 1
     fi
-done
 
-# delete the oldest backup if maximum number is exceeded
-if [ -e "$FILE.$BACKUPS" ]; then
-    rm "$FILE.$BACKUPS"
-fi
+    if [ ! -s "$FILE" ]; then
+        echo "Error: file $FILE does not exist or is empty"
+        exit 1
+    fi
 
-# delete all backups if specified
-if [ "$DELETE_BACKUPS" = true ]; then
+    for i in $(seq $(($BACKUP_COUNT - 1)) -1 1); do
+        OLD_BACKUP="$FILE.$i"
+        NEW_BACKUP="$FILE.$((i + 1))"
+
+        if [ -e "$OLD_BACKUP" ]; then
+            mv "$OLD_BACKUP" "$NEW_BACKUP"
+        fi
+
+        if [ -e "$OLD_BACKUP.gz" ]; then
+            mv "$OLD_BACKUP.gz" "$NEW_BACKUP.gz"
+        fi
+    done
+
+    if [ "$COMPRESS" = true ]; then
+        gzip "$FILE" -c > "$FILE.1.gz"
+        touch -r "$FILE" "$FILE.1.gz"
+    else
+        cp -p "$FILE" "$FILE.1"
+    fi
+
+    LAST=$((BACKUP_COUNT + 1))
+
+    if [ -e "$FILE.$LAST" ]; then
+        rm -f "$FILE.$LAST"
+    fi
+
+    if [ -e "$FILE.$LAST.gz" ]; then
+        rm -f "$FILE.$LAST.gz"
+    fi
+}
+
+
+delete() {
     rm -f "$FILE".[0-9]* "$FILE".[0-9]*.gz
     exit 0
-fi
+}
 
-# list backups if specified
-if [ "$LIST_BACKUPS" = true ]; then
-    ls -l "$FILE".[0-9]* "$FILE".[0-9]*.gz
+list() {
+    ls -l "$FILE".[0-9]* "$FILE".[0-9]*.gz 2>/dev/null
     exit 0
-fi
+}
+
+case "${COMMAND}" in
+    backup)
+        backup
+        ;;
+    delete)
+        delete
+        ;;
+    list)
+        list
+        ;;
+    *)
+        help
+        exit 1
+        ;;
+esac
 
 exit 0
