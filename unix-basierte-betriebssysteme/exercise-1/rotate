@@ -88,10 +88,18 @@ backup() {
 
         if [ -e "$OLD_BACKUP" ]; then
             mv "$OLD_BACKUP" "$NEW_BACKUP"
+
+            if [ -e "$NEW_BACKUP.gz" ]; then
+                rm -f "$NEW_BACKUP.gz"
+            fi
         fi
 
         if [ -e "$OLD_BACKUP.gz" ]; then
             mv "$OLD_BACKUP.gz" "$NEW_BACKUP.gz"
+
+            if [ -e "$NEW_BACKUP" ]; then
+                rm -f "$NEW_BACKUP"
+            fi
         fi
     done
 
