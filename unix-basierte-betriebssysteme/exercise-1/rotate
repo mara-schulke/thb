@@ -30,12 +30,18 @@ EOF
 
 BACKUP_COUNT=5
 COMPRESS=false
-COMMAND=backup
+COMMAND=
 
 while getopts b:dlzh o; do
     case "${o}" in
         b)
+            if [ ! -z "$COMMAND" ]; then
+                echo "Error: -b and can not be used -d and -l" > /dev/stderr
+                exit 1
+            fi
+
             BACKUP_COUNT=${OPTARG}
+            COMMAND=backup
 
             if ! echo "$BACKUP_COUNT" | grep -Eq '^[1-9]$'; then
                 echo "Invalid argument for -b option: $BACKUP_COUNT" > /dev/stderr
@@ -43,9 +49,19 @@ while getopts b:dlzh o; do
             fi
             ;;
         d)
+            if [ ! -z "$COMMAND" ]; then
+                echo "Error: -d and can not be used with -b and -l" > /dev/stderr
+                exit 1
+            fi
+
             COMMAND=delete
             ;;
         l)
+            if [ ! -z "$COMMAND" ]; then
+                echo "Error: -l and can not be used with -b and -d" > /dev/stderr
+                exit 1
+            fi
+
             COMMAND=list
             ;;
         z)
@@ -64,6 +80,7 @@ done
 
 shift $((OPTIND-1))
 FILE=$1
+COMMAND=${COMMAND:-"backup"}
 
 if [ $COMPRESS = "true" ] && [ $COMMAND != "backup" ]; then
     help
