@@ -49,6 +49,11 @@ while getopts b:dlzh o; do
             fi
             ;;
         d)
+            if [ "$COMPRESS" == "true" ]; then
+                echo "Error: -d and can not be used with -z" > /dev/stderr
+                exit 1
+            fi
+
             if [ ! -z "$COMMAND" ]; then
                 echo "Error: -d and can not be used with -b and -l" > /dev/stderr
                 exit 1
@@ -57,6 +62,11 @@ while getopts b:dlzh o; do
             COMMAND=delete
             ;;
         l)
+            if [ "$COMPRESS" == "true" ]; then
+                echo "Error: -l and can not be used with -z" > /dev/stderr
+                exit 1
+            fi
+
             if [ ! -z "$COMMAND" ]; then
                 echo "Error: -l and can not be used with -b and -d" > /dev/stderr
                 exit 1
@@ -65,6 +75,11 @@ while getopts b:dlzh o; do
             COMMAND=list
             ;;
         z)
+            if [ "$COMMAND" != "" ] || [ "$COMMAND" != "backup" ]; then
+                echo "Error: -z and can not be used with -d and -l" > /dev/stderr
+                exit 1
+            fi
+
             COMPRESS=true
             ;;
         h)
