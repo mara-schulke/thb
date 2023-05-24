@@ -22,11 +22,11 @@ int main(int argc, char **argv) {
             exit(1);
         }
 
-        sprintf(mq_path, "%s.%d", MQ_PREFIX, qid);
+        sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, qid);
         printf("using supplied queue id %d\n", qid);
     } else {
         pid_t ppid = getppid();
-        sprintf(mq_path, "%s.%d", MQ_PREFIX, ppid);
+        sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, ppid);
         printf("using parent process id %d\n", ppid);
         fflush(stdout);
     }
@@ -35,12 +35,12 @@ int main(int argc, char **argv) {
 
     mqd_t mq;
     struct mq_attr attr;
-    char buffer[MQ_MAX_MSG_SIZE + 1];
+    char buffer[SUM_MQ_MAX_MSG_SIZE + 1];
     ssize_t bytes_read;
 
     attr.mq_flags = 0;
-    attr.mq_maxmsg = 10;
-    attr.mq_msgsize = MQ_MAX_MSG_SIZE;
+    attr.mq_maxmsg = SUM_MQ_MAX_MSG_COUNT;
+    attr.mq_msgsize = SUM_MQ_MAX_MSG_SIZE;
     attr.mq_curmsgs = 0;
 
     mq = mq_open(mq_path, O_RDONLY | O_CREAT, 0644, &attr);
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     int req_c = 0;
 
     while (1) {
-        bytes_read = mq_receive(mq, buffer, MQ_MAX_MSG_SIZE, NULL);
+        bytes_read = mq_receive(mq, buffer, SUM_MQ_MAX_MSG_SIZE, NULL);
         if (bytes_read == -1) {
             perror("mq_receive");
             exit(1);
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
         buffer[bytes_read] = '\0';
         printf("(recv) <- %s\n", buffer);
 
-        if (strcmp(buffer, MSG_TYPE_DIE) == 0) {
+        if (strcmp(buffer, "DIE") == 0) {
             printf("received die message\n");
             break;
         }
