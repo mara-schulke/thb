@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "req.h"
 #include "sum.h"
 
 int main(int argc, char **argv) {
@@ -59,10 +60,20 @@ int main(int argc, char **argv) {
         }
 
         buffer[bytes_read] = '\0';
-        printf("(recv) <- %s\n", buffer);
 
-        if (strcmp(buffer, "DIE") == 0) {
-            printf("received die message\n");
+        Request req;
+
+        if (req_dec(&req, buffer)) {
+            printf("failed to parse message");
+            fflush(stdout);
+            exit(1);
+        }
+
+        switch (req.type) {
+        case SUM:
+            printf("%li + 1 = %li\n", req.payload.sumPayload.from,
+                   req.payload.sumPayload.from + 1);
+        case DIE:
             break;
         }
 
