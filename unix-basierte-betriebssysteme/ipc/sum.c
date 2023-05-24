@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "req.h"
 #include "sum.h"
 
 const char *HELP =
@@ -75,7 +76,7 @@ int main(int argc, char **argv) {
         req.payload.sumPayload.from = start;
         req.payload.sumPayload.to = end;
 
-        if (msg_enc(msg, req)) {
+        if (req_enc(msg, req)) {
             fprintf(stderr, "unable to encode request %li..%li\n", start, end);
             break;
         }
@@ -85,14 +86,14 @@ int main(int argc, char **argv) {
             exit(1);
         }
 
-        printf("(send) -> %s\n", msg);
+        /*printf("(send) -> %s\n", msg);*/
     }
 
     char msg[256];
     Request req;
     req.type = DIE;
 
-    if (msg_enc(msg, req)) {
+    if (req_enc(msg, req)) {
         fprintf(stderr, "unable to encode die request\n");
         exit(1);
     }
@@ -110,54 +111,6 @@ int main(int argc, char **argv) {
 }
 
 // ************************************************************************** //
-
-int msg_enc(char out[], const Request req) {
-    switch (req.type) {
-    case SUM:
-        sprintf(out, "SUM %li..%li", req.payload.sumPayload.from,
-                req.payload.sumPayload.to);
-        return 0;
-    case DIE:
-        strcpy(out, "DIE");
-        return 0;
-    }
-
-    return 1;
-}
-
-int msg_dec(Request out, const char msg[]) {
-    int msg_len = strlen(msg);
-
-    if (msg_len < 3) {
-        return 127;
-    }
-
-    char type[4];
-    strncpy(type, msg, 3);
-    type[3] = '\0';
-
-    if (strcmp(type, "DIE") == 0) {
-        out.type = DIE;
-        return 0;
-    }
-
-    if (strcmp(type, "SUM") != 0) {
-        return 1;
-    }
-
-    long from;
-    long to;
-
-    if (sscanf(msg, "SUM %li..%li", &from, &to) == 0) {
-        return 2;
-    }
-
-    out.type = SUM;
-    out.payload.sumPayload.from = from;
-    out.payload.sumPayload.to = to;
-
-    return 0;
-}
 
 // ************************************************************************** //
 
