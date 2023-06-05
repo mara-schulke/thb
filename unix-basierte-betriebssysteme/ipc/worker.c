@@ -73,16 +73,16 @@ int main(int argc, char **argv) {
         case SUM:
             printf("%li + 1 = %li\n", req.payload.sumPayload.from,
                    req.payload.sumPayload.from + 1);
-        case DIE:
             break;
+        case DIE:
+            printf("die");
+            mq_close(mq);
+            printf("%d: handled %d requests\n", pid, req_c);
+            return 0;
         }
 
         req_c++;
     }
-
-    mq_close(mq);
-
-    printf("%d: handled %d requests\n", pid, req_c);
 
     return 0;
 }
