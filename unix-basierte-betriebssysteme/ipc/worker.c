@@ -19,16 +19,14 @@ int main(int argc, char **argv) {
         int qid;
 
         if (sscanf(argv[2], "%d", &qid) == 0) {
-            fprintf(stderr, "Unable to parse queue id from: %s\n", argv[1]);
+            fprintf(stderr, "unable to parse queue id from: %s\n", argv[1]);
             exit(1);
         }
 
         sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, qid);
-        printf("using supplied queue id %d\n", qid);
     } else {
         pid_t ppid = getppid();
         sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, ppid);
-        printf("using parent process id %d\n", ppid);
         fflush(stdout);
     }
 
@@ -64,20 +62,19 @@ int main(int argc, char **argv) {
         Request req;
 
         if (req_dec(&req, buffer)) {
-            printf("failed to parse message");
-            fflush(stdout);
+            fprintf(stderr, "failed to parse message\n");
+            fflush(stderr);
             exit(1);
         }
 
         switch (req.type) {
         case SUM:
-            printf("%li + 1 = %li\n", req.payload.sumPayload.from,
-                   req.payload.sumPayload.from + 1);
+            /*printf("%li + 1 = %li\n", req.payload.sumPayload.from,*/
+            /*req.payload.sumPayload.from + 1);*/
             break;
         case DIE:
-            printf("die");
             mq_close(mq);
-            printf("%d: handled %d requests\n", pid, req_c);
+            printf("%d: done after %d requests\n", pid, req_c);
             return 0;
         }
 

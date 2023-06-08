@@ -46,10 +46,6 @@ void parse_args(int argc, char **argv, long *n, int *chunksize, int *workers) {
         fprintf(stderr, "Unable to parse worker count from: %s\n", argv[3]);
         exit(1);
     }
-
-    printf("Number: %li\n", *n);
-    printf("Chunksize: %d\n", *chunksize);
-    printf("Workers: %d\n", *workers);
 }
 
 int main(int argc, char **argv) {
@@ -59,7 +55,32 @@ int main(int argc, char **argv) {
 
     parse_args(argc, argv, &n, &chunksize, &workers);
 
+    if (chunksize <= 0) {
+        fprintf(stderr, "invalid chunksize supplied\n");
+        exit(1);
+    }
+
+    if (workers <= 0) {
+        fprintf(stderr, "invalid worker count supplied\n");
+        exit(1);
+    }
+
     mqd_t mq = init_mq();
+
+    FILE *worker_out[workers];
+    char worker_cmd[64];
+    snprintf(worker_cmd, sizeof(worker_cmd), "sum_worker -qid %d", getpid());
+
+    for (int i = 0; i < workers; i++) {
+        FILE *fp;
+
+        worker_out[i] = popen(worker_cmd, "r");
+
+        if (worker_out[i] == NULL) {
+            printf("failed to start worker %d\n", i);
+            exit(1);
+        }
+    }
 
     for (long i = 1; i <= n; i += chunksize) {
         long start = i;
@@ -105,6 +126,14 @@ int main(int argc, char **argv) {
         }
     }
 
+    for (int i = 0; i < workers; i++) {
+        char line[1035];
+
+        while (fgets(line, sizeof(line) - 1, worker_out[i]) != NULL) {
+            printf("%s", line);
+        }
+    }
+
     drop_mq(mq);
 
     return 0;
@@ -116,7 +145,6 @@ int main(int argc, char **argv) {
 
 void mq_get_path(char mq_path[128]) {
     sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, getpid());
-    printf("using %s\n", mq_path);
 }
 
 mqd_t init_mq() {
