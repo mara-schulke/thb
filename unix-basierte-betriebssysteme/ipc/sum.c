@@ -72,8 +72,6 @@ int main(int argc, char **argv) {
     snprintf(worker_cmd, sizeof(worker_cmd), "sum_worker -qid %d", getpid());
 
     for (int i = 0; i < workers; i++) {
-        FILE *fp;
-
         worker_out[i] = popen(worker_cmd, "r");
 
         if (worker_out[i] == NULL) {
