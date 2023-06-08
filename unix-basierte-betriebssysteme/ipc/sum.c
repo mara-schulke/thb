@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/shm.h>
+#include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -106,8 +106,6 @@ int main(int argc, char **argv) {
             perror("failed to dispatch message to queue");
             exit(1);
         }
-
-        /*printf("(send) -> %s\n", msg);*/
     }
 
     char msg[256];
@@ -138,8 +136,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-
-// ************************************************************************** //
 
 // ************************************************************************** //
 
@@ -179,27 +175,38 @@ void drop_mq(mqd_t mq) {
 }
 
 long *init_shm() {
-    int shmid;
-    long *workerResult;
+    // https://man7.org/linux/man-pages/man7/shm_overview.7.html
+    // https://man7.org/linux/man-pages/man3/shm_open.3.html
 
-    shmid = shmget(getpid(), sizeof(long), IPC_CREAT | 0666);
+    int shmfd;
+    long *worker_res;
 
-    if (shmid == -1) {
-        perror("shmget");
+    char shm_path[128];
+    mq_get_path(shm_path);
+
+    shmfd = shm_open(shm_path, O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
+
+    if (shmfd == -1) {
+        perror("shm_open");
         exit(1);
     }
 
-    workerResult = shmat(shmid, NULL, 0);
-    if (workerResult == (long *)-1) {
-        perror("shmat");
+    if (ftruncate(shmfd, sizeof(long)) == -1) {
+        perror("ftruncate");
         exit(1);
     }
 
-    *workerResult = 0;
+    worker_res = mmap(NULL, sizeof(*worker_res), PROT_READ | PROT_WRITE,
+                      MAP_SHARED, shmfd, 0);
 
-    printf("Shared Memory Wert: %li\n", *workerResult);
+    if (worker_res == MAP_FAILED) {
+        perror("mmap");
+        exit(1);
+    }
 
-    return workerResult;
+    printf("Shared Memory Wert: %li\n", *worker_res);
+
+    return worker_res;
 }
 
-void drop_shm(long *shm) { shmdt(shm); }
+/*void drop_shm(long *shm) { shmdt(shm); }*/
