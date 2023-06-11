@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
 
         switch (req.type) {
         case SUM:
-            /// Comptuing
+            /// Computing sum
 
             for (long i = req.payload.sumPayload.from;
                  i <= req.payload.sumPayload.to; i++) {
