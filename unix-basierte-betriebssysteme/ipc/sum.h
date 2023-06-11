@@ -3,13 +3,10 @@
 
 #include <mqueue.h>
 
-// Message Queue
+#define SUM_UNIQUE_PREFIX "/sum"
 
-#define SUM_MQ_PREFIX "/sum"
-#define SUM_MQ_MAX_MSG_SIZE 256
-#define SUM_MQ_MAX_MSG_COUNT 10
-
-mqd_t init_mq();
-void drop_mq(mqd_t mq);
+#define SUM_SHM_SUFFIX "shm"
+#define SUM_SEM_SUFFIX "sem"
+#define SUM_MQ_SUFFIX "mq"
 
 #endif
