@@ -30,6 +30,7 @@ void help() {
     exit(1);
 }
 
+/// Parses arguments from argv
 void parse_args(int argc, char **argv, long *n, int *chunksize, int *workers) {
     if (argc != 4) {
         help();
@@ -69,6 +70,8 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    /// IPC Initialization
+
     char mq_path[128];
     char shm_path[128];
     char sem_path[128];
@@ -83,6 +86,8 @@ int main(int argc, char **argv) {
 
     *shm = 0;
 
+    /// Worker Initialization
+
     char pid[32];
     snprintf(pid, sizeof(pid), "%d", getpid());
 
@@ -95,12 +100,14 @@ int main(int argc, char **argv) {
             perror("fork");
             exit(1);
         } else if (wpid == 0) {
-            char *argv[4] = {"sum_worker", "-id", pid, NULL};
-            execvp("sum_worker", argv);
+            char *argv[4] = {SUM_WORKER_COMMAND, "-id", pid, NULL};
+            execvp(SUM_WORKER_COMMAND, argv);
         } else {
             wpids[i] = wpid;
         }
     }
+
+    /// Sending Workloads
 
     for (long i = 1; i <= n; i += chunksize) {
         long start = i;
@@ -128,6 +135,8 @@ int main(int argc, char **argv) {
         }
     }
 
+    /// Stopping Workers
+
     char msg[256];
     Request req;
     req.type = DIE;
@@ -143,6 +152,8 @@ int main(int argc, char **argv) {
             exit(1);
         }
     }
+
+    /// Wait for workers
 
     for (int i = 0; i < workers; i++) {
         int status;
@@ -166,9 +177,13 @@ int main(int argc, char **argv) {
         }
     }
 
+    /// Print the result
+
     sem_wait(sem);
     printf("result: %li\n", *shm);
     sem_post(sem);
+
+    /// IPC Cleanup
 
     drop_mq(mq);
     drop_shm(shm);

@@ -1,7 +1,7 @@
 #ifndef SUM_H
 #define SUM_H
 
-#include <mqueue.h>
+#define SUM_WORKER_COMMAND "sum_worker"
 
 #define SUM_UNIQUE_PREFIX "/sum"
 

@@ -6,6 +6,7 @@
 
 #include "req.h"
 
+/// Encodes a long as binary string
 void bin_enc(char out[65], long n) {
     int bits = sizeof(n) * 8;
     int i;
@@ -23,8 +24,10 @@ void bin_enc(char out[65], long n) {
     out[64] = '\0';
 }
 
+/// Decodes a binary string into a long
 long bin_dec(char bin[]) { return strtoul(bin, NULL, 2); }
 
+/// Encodes a request into a string
 int req_enc(char out[], const Request req) {
     char star[65];
     char end[65];
@@ -43,6 +46,7 @@ int req_enc(char out[], const Request req) {
     return 1;
 }
 
+/// Decodes a request from a string
 int req_dec(Request *out, const char msg[]) {
     int msg_len = strlen(msg);
 

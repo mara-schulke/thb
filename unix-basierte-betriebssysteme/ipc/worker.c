@@ -12,6 +12,8 @@
 #include "sum.h"
 
 int main(int argc, char **argv) {
+    /// Parsing argv
+
     char mq_path[128];
     char shm_path[128];
     char sem_path[128];
@@ -38,19 +40,26 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    pid_t pid = getpid();
-
-    char buffer[MQ_MAX_MSG_SIZE + 1];
-    ssize_t bytes_read;
+    /// IPC Initialization
 
     mqd_t mq = create_mq(mq_path);
     long *shm = create_shm(shm_path);
     sem_t *sem = create_sem(sem_path);
 
+    /// Memory Initialization
+
     long result = 0;
     int req_c = 0;
 
+    pid_t pid = getpid();
+    char buffer[MQ_MAX_MSG_SIZE + 1];
+    ssize_t bytes_read;
+
+    /// Request Loop
+
     while (1) {
+        /// Recieving requests
+
         bytes_read = mq_receive(mq, buffer, MQ_MAX_MSG_SIZE, NULL);
         if (bytes_read == -1) {
             perror("mq_receive");
@@ -58,6 +67,8 @@ int main(int argc, char **argv) {
         }
 
         buffer[bytes_read] = '\0';
+
+        /// Decoding requests
 
         Request req;
 
@@ -67,10 +78,14 @@ int main(int argc, char **argv) {
             exit(1);
         }
 
+        /// Executing requests
+
         long local = 0;
 
         switch (req.type) {
         case SUM:
+            /// Comptuing
+
             for (long i = req.payload.sumPayload.from;
                  i <= req.payload.sumPayload.to; i++) {
                 local += i;
@@ -80,16 +95,21 @@ int main(int argc, char **argv) {
 
             break;
         case DIE:
+            /// Commiting the result
+
             sem_wait(sem);
             *shm += result;
             sem_post(sem);
+
+            /// IPC Cleanup
 
             drop_mq(mq);
             drop_shm(shm);
             drop_sem(sem);
 
-            printf("%d: done after %d requests\n", pid, req_c);
+            /// Exiting
 
+            printf("%d: done after %d requests\n", pid, req_c);
             exit(0);
         }
 

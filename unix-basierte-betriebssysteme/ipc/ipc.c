@@ -16,6 +16,7 @@ void get_resource_path(char path[128], const char prefix[], const char type[]) {
     sprintf(path, "%s.%d.%s", prefix, getpid(), type);
 }
 
+/// Creates a message queue
 mqd_t create_mq(char path[]) {
     mqd_t mq;
 
@@ -35,6 +36,7 @@ mqd_t create_mq(char path[]) {
     return mq;
 }
 
+/// Drops a message queue
 void drop_mq(mqd_t mq) {
     if (mq_close(mq) == -1) {
         perror("mq_close");
@@ -42,6 +44,7 @@ void drop_mq(mqd_t mq) {
     }
 }
 
+/// Destroys a message queue
 void destroy_mq(char path[]) {
     if (mq_unlink(path) == -1) {
         perror("mq_unlink");
@@ -49,6 +52,7 @@ void destroy_mq(char path[]) {
     }
 }
 
+/// Creates and maps a shared memory segment
 long *create_shm(char path[]) {
     int shm_fd;
     long *shm_ptr;
@@ -77,6 +81,7 @@ long *create_shm(char path[]) {
     return shm_ptr;
 }
 
+/// Drops and unmaps a shared memory segment
 void drop_shm(long *shm_ptr) {
     if (munmap(shm_ptr, SHM_SIZE) == -1) {
         perror("munmap");
@@ -84,6 +89,7 @@ void drop_shm(long *shm_ptr) {
     }
 }
 
+/// Destroys a shared memory segment
 void destroy_shm(char path[]) {
     if (shm_unlink(path) == -1) {
         perror("shm_unlink");
@@ -91,6 +97,7 @@ void destroy_shm(char path[]) {
     }
 }
 
+/// Creates a semaphore
 sem_t *create_sem(char path[]) {
     sem_t *sem = sem_open(path, O_CREAT, S_IRUSR | S_IWUSR, 1);
 
@@ -102,6 +109,7 @@ sem_t *create_sem(char path[]) {
     return sem;
 }
 
+/// Drops a semaphore
 void drop_sem(sem_t *sem) {
     if (sem_close(sem) == -1) {
         perror("sem_close");
@@ -109,6 +117,7 @@ void drop_sem(sem_t *sem) {
     }
 }
 
+/// Destroys a semaphore
 void destroy_sem(char path[]) {
     if (sem_unlink(path) == -1) {
         perror("sem_unlink");
