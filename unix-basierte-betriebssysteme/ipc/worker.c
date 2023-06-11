@@ -1,3 +1,5 @@
+// Mara Schulke, 20215853, 19.05.2023
+
 #include <mqueue.h>
 #include <semaphore.h>
 #include <stdio.h>
