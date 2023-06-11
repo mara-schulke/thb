@@ -5,8 +5,10 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
+#include "ipc.h"
 #include "req.h"
 #include "sum.h"
 
@@ -65,18 +67,36 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    mqd_t mq = init_mq();
+    char mq_path[128];
+    char shm_path[128];
+    char sem_path[128];
 
-    FILE *worker_out[workers];
-    char worker_cmd[64];
-    snprintf(worker_cmd, sizeof(worker_cmd), "sum_worker -qid %d", getpid());
+    get_resource_path(mq_path, SUM_UNIQUE_PREFIX, SUM_MQ_SUFFIX);
+    get_resource_path(shm_path, SUM_UNIQUE_PREFIX, SUM_SHM_SUFFIX);
+    get_resource_path(sem_path, SUM_UNIQUE_PREFIX, SUM_SEM_SUFFIX);
+
+    mqd_t mq = create_mq(mq_path);
+    long *shm = create_shm(shm_path);
+    sem_t *sem = create_sem(sem_path);
+
+    *shm = 0;
+
+    char pid[32];
+    snprintf(pid, sizeof(pid), "%d", getpid());
+
+    pid_t wpids[workers];
 
     for (int i = 0; i < workers; i++) {
-        worker_out[i] = popen(worker_cmd, "r");
+        pid_t wpid = fork();
 
-        if (worker_out[i] == NULL) {
-            printf("failed to start worker %d\n", i);
+        if (wpid == -1) {
+            perror("fork");
             exit(1);
+        } else if (wpid == 0) {
+            char *argv[4] = {"sum_worker", "-id", pid, NULL};
+            execvp("sum_worker", argv);
+        } else {
+            wpids[i] = wpid;
         }
     }
 
@@ -123,88 +143,38 @@ int main(int argc, char **argv) {
     }
 
     for (int i = 0; i < workers; i++) {
-        char line[1035];
+        int status;
+        pid_t result = waitpid(wpids[i], &status, 0);
 
-        while (fgets(line, sizeof(line) - 1, worker_out[i]) != NULL) {
-            printf("%s", line);
+        if (result == -1) {
+            perror("waitpid");
+            exit(1);
+        }
+
+        if (WIFSIGNALED(status)) {
+            fprintf(stderr, "worker process stopped through signal: %d\n",
+                    WTERMSIG(status));
+            exit(1);
+        }
+
+        if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+            fprintf(stderr, "worker process exited with status: %d\n",
+                    WEXITSTATUS(status));
+            exit(1);
         }
     }
 
+    sem_wait(sem);
+    printf("result: %li\n", *shm);
+    sem_post(sem);
+
     drop_mq(mq);
+    drop_shm(shm);
+    drop_sem(sem);
+
+    destroy_mq(mq_path);
+    destroy_shm(shm_path);
+    destroy_sem(sem_path);
 
     return 0;
 }
-
-// ************************************************************************** //
-
-void mq_get_path(char mq_path[128]) {
-    sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, getpid());
-}
-
-mqd_t init_mq() {
-    mqd_t mq;
-
-    char mq_path[128];
-    mq_get_path(mq_path);
-
-    struct mq_attr attr;
-    attr.mq_flags = 0;
-    attr.mq_maxmsg = SUM_MQ_MAX_MSG_COUNT;
-    attr.mq_msgsize = SUM_MQ_MAX_MSG_SIZE;
-    attr.mq_curmsgs = 0;
-
-    mq = mq_open(mq_path, O_RDWR | O_CREAT, 0644, &attr);
-
-    if (mq == (mqd_t)-1) {
-        perror("mq_open");
-        exit(1);
-    }
-
-    return mq;
-}
-
-void drop_mq(mqd_t mq) {
-    mq_close(mq);
-
-    char mq_path[128];
-    mq_get_path(mq_path);
-
-    mq_unlink(mq_path);
-}
-
-long *init_shm() {
-    // https://man7.org/linux/man-pages/man7/shm_overview.7.html
-    // https://man7.org/linux/man-pages/man3/shm_open.3.html
-
-    int shmfd;
-    long *worker_res;
-
-    char shm_path[128];
-    mq_get_path(shm_path);
-
-    shmfd = shm_open(shm_path, O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
-
-    if (shmfd == -1) {
-        perror("shm_open");
-        exit(1);
-    }
-
-    if (ftruncate(shmfd, sizeof(long)) == -1) {
-        perror("ftruncate");
-        exit(1);
-    }
-
-    worker_res = mmap(NULL, sizeof(*worker_res), PROT_READ | PROT_WRITE,
-                      MAP_SHARED, shmfd, 0);
-
-    if (worker_res == MAP_FAILED) {
-        perror("mmap");
-        exit(1);
-    }
-
-    printf("Shared Memory Wert: %li\n", *worker_res);
-
-    return worker_res;
-}
-
-/*void drop_shm(long *shm) { shmdt(shm); }*/
