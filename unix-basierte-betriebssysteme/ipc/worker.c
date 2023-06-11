@@ -48,6 +48,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    long result = 0;
     int req_c = 0;
 
     while (1) {
@@ -67,14 +68,24 @@ int main(int argc, char **argv) {
             exit(1);
         }
 
+        long local = 0;
+
         switch (req.type) {
         case SUM:
-            /*printf("%li + 1 = %li\n", req.payload.sumPayload.from,*/
-            /*req.payload.sumPayload.from + 1);*/
+            for (long i = req.payload.sumPayload.from;
+                 i < req.payload.sumPayload.to; i++) {
+                local += i;
+            }
+
+            printf("%li..%li = %li\n", req.payload.sumPayload.from,
+                   req.payload.sumPayload.to, local);
+
+            result += local;
+
             break;
         case DIE:
             mq_close(mq);
-            printf("%d: done after %d requests\n", pid, req_c);
+            printf("%d: done after %d requests: %li\n", pid, req_c, result);
             return 0;
         }
 
