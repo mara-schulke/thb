@@ -1,58 +1,55 @@
 #include <mqueue.h>
+#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
+#include "ipc.h"
 #include "req.h"
 #include "sum.h"
 
 int main(int argc, char **argv) {
     char mq_path[128];
+    char shm_path[128];
+    char sem_path[128];
 
-    if (argc > 1 && strcmp(argv[1], "-qid") == 0) {
+    if (argc > 1 && strcmp(argv[1], "-id") == 0) {
         if (argc != 3) {
-            fprintf(stderr, "no queue id supplied\n");
+            fprintf(stderr, "no id supplied\n");
             exit(1);
         }
 
-        int qid;
+        int id;
 
-        if (sscanf(argv[2], "%d", &qid) == 0) {
-            fprintf(stderr, "unable to parse queue id from: %s\n", argv[1]);
+        if (sscanf(argv[2], "%d", &id) == 0) {
+            fprintf(stderr, "unable to parse id from: %s\n", argv[1]);
             exit(1);
         }
 
-        sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, qid);
+        sprintf(mq_path, "%s.%d.%s", SUM_UNIQUE_PREFIX, id, SUM_MQ_SUFFIX);
+        sprintf(shm_path, "%s.%d.%s", SUM_UNIQUE_PREFIX, id, SUM_SHM_SUFFIX);
+        sprintf(sem_path, "%s.%d.%s", SUM_UNIQUE_PREFIX, id, SUM_SEM_SUFFIX);
     } else {
-        pid_t ppid = getppid();
-        sprintf(mq_path, "%s.%d", SUM_MQ_PREFIX, ppid);
-        fflush(stdout);
+        fprintf(stderr, "no id supplied\n");
+        fflush(stderr);
+        exit(1);
     }
 
     pid_t pid = getpid();
 
-    mqd_t mq;
-    struct mq_attr attr;
-    char buffer[SUM_MQ_MAX_MSG_SIZE + 1];
+    char buffer[MQ_MAX_MSG_SIZE + 1];
     ssize_t bytes_read;
 
-    attr.mq_flags = 0;
-    attr.mq_maxmsg = SUM_MQ_MAX_MSG_COUNT;
-    attr.mq_msgsize = SUM_MQ_MAX_MSG_SIZE;
-    attr.mq_curmsgs = 0;
-
-    mq = mq_open(mq_path, O_RDONLY | O_CREAT, 0644, &attr);
-    if (mq == (mqd_t)-1) {
-        perror("mq_open");
-        exit(1);
-    }
+    mqd_t mq = create_mq(mq_path);
+    long *shm = create_shm(shm_path);
+    sem_t *sem = create_sem(sem_path);
 
     long result = 0;
     int req_c = 0;
 
     while (1) {
-        bytes_read = mq_receive(mq, buffer, SUM_MQ_MAX_MSG_SIZE, NULL);
+        bytes_read = mq_receive(mq, buffer, MQ_MAX_MSG_SIZE, NULL);
         if (bytes_read == -1) {
             perror("mq_receive");
             exit(1);
@@ -73,20 +70,25 @@ int main(int argc, char **argv) {
         switch (req.type) {
         case SUM:
             for (long i = req.payload.sumPayload.from;
-                 i < req.payload.sumPayload.to; i++) {
+                 i <= req.payload.sumPayload.to; i++) {
                 local += i;
             }
-
-            printf("%li..%li = %li\n", req.payload.sumPayload.from,
-                   req.payload.sumPayload.to, local);
 
             result += local;
 
             break;
         case DIE:
-            mq_close(mq);
-            printf("%d: done after %d requests: %li\n", pid, req_c, result);
-            return 0;
+            sem_wait(sem);
+            *shm += result;
+            sem_post(sem);
+
+            drop_mq(mq);
+            drop_shm(shm);
+            drop_sem(sem);
+
+            printf("%d: done after %d requests\n", pid, req_c);
+
+            exit(0);
         }
 
         req_c++;
