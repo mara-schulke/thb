@@ -76,8 +76,6 @@ long *create_shm(char path[]) {
         exit(1);
     }
 
-    *shm_ptr = 0;
-
     return shm_ptr;
 }
 
