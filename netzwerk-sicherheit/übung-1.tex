@@ -92,14 +92,25 @@ Passwort.
 
 \subsubsection*{Antwort}
 
-Nach dem wir die Datei analysiert und den Telnet-Loginvorgang 
+Nach dem wir die Datei analysiert und den Telnet-Login-Vorgang bei dem Paket 
+\textcolor{red}{XY} lokalisiert haben, konnten wir den Start des Passwords in Text-Form 
+bei dem Paket \textcolor{red}{YZ} entdeckend. (Siehe Abb. 1).
 
-%
-%\begin{figure}[H]
-%	\includegraphics[width=0.75\textwidth]{images/01-telnet-start.png}
-%	\centering
-%	\caption{Telnet Datei}
-%\end{figure}
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/01}
+	\centering
+	\caption{Telnet Datei: Start des Logins}
+\end{figure}
+
+Nun enthielt jedes weitere Paket ein Zeichen des Passworts, bis die End-Sequenz
+in dem Paket \textcolor{red}{YY} gesendet wurde. Zusammengesetzt ergibt dies das 
+Passwort \texttt{sshnutzen}. (Siehe Abb. 2).
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/02}
+	\centering
+	\caption{Telnet Datei: Login Sequenz Dauer}
+\end{figure}
 
 \newpage
 
@@ -114,6 +125,46 @@ Versuchen Sie dabei u.a. herauszufinden, welche Dienste auf dem Zielserver insta
 sind und welches Betriebssystem verwendet wird.
 
 \subsubsection*{Antwort}
+
+Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgeführt. 
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/03}
+	\centering
+	\caption{nmap: Scan-Techniken}
+\end{figure}
+
+\subsubsection*{Port Scan}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/04}
+	\centering
+	\caption{nmap: Port Scan}
+\end{figure}
+
+\subsubsection*{TCP Scan}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/05}
+	\centering
+	\caption{nmap: TCP Scan}
+\end{figure}
+
+\subsubsection*{OS Scan}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/06}
+	\centering
+	\caption{nmap: OS Scan}
+\end{figure}
+
+\subsubsection*{UDP Scan}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/07}
+	\centering
+	\caption{nmap: UDP Scan}
+\end{figure}
 
 \newpage
 
@@ -133,8 +184,49 @@ Mac- und Linux-Nutzer verwenden für die Aufgabe ebenfalls \texttt{macchanger} o
 Hinweis: Bei der ersten Methode heißt der Eintrag in den erweiterten Einstellungen nicht
 "Network Address", sondern "Locally Administered Address".
 
-
 \subsubsection*{Antwort}
+
+Um die MAC-Adresse unter Kali-Linux zu ändern genügte eine einfache Kombination aus dem 
+Programm \texttt{macchanger} und \texttt{ifconfig}. Zu erst, um eine erfolgreiche Änderung 
+bzw. ein erfolgreiches Spoofing feststellen zu können, haben wir den Netzwerk-Verkehr zum 
+Web-Server der vorherigen Aufgaben wiederverwendet. (Siehe Abb. X)
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/08}
+	\centering
+	\caption{macspoofing: Ursprünglicher Netzwerk-Verkehr}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/09}
+	\centering
+	\caption{macspoofing: Ursprüngliche Source und Destination}
+\end{figure}
+
+In den beiden Screenshots ist zu erkennen, dass die momentane MAC-Adresse 
+\texttt{XX:XX:XX} entspricht.
+
+Nun muss zu erst das \texttt{eth0} Interface mittels \texttt{ifconfig} deaktiviert werden. 
+Anschließend kann die MAC-Adresse mittels \texttt{macchanger} geändert werden. In diesem 
+Beispiel haben wir lediglich die XYZ-Nummer von XYZ zu XYZ geändert und die Vendor-ID 
+belassen, da eine Änderung dieser zu Problemen mit den Treibern führen kann.
+Anschließend muss das Netzwerk-Interface erneut durch \texttt{ifconfig} gestartet werden.
+(Siehe Abb. X-Y)
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/10}
+	\centering
+	\caption{macspoofing: Änderung der MAC-Adresse von eth0}
+\end{figure}
+
+Bei erneuter Aufzeichnung des Traffics zum Zielserver lässt sich nun die gerade geänderte 
+MAC-Adresse in dem Ethernet-Header jedes Pakets wiederfinden. (Siehe Abb. Z)
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/11}
+	\centering
+	\caption{macspoofing: Veränderter Netzwerk-Verkehr}
+\end{figure}
 
 \newpage
 
@@ -163,18 +255,124 @@ Sie die Betreuenden auf eine Ersatzaufgabe an.
 
 \subsubsection*{Antwort}
 
+Der Aufgabe entsprechend haben wir einen Schwachstellen-Scan bei dem vorgegebenen 
+Zielserver durchgeführt. Dieser hat das folgende Ergebnis erzielt:
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/12}
+	\centering
+	\caption{wpscan: Fehler}
+\end{figure}
+
+Nun musste die flag angehängt werden
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/13}
+	\centering
+	\caption{wpscan: Ergebnis 1/2}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/14}
+	\centering
+	\caption{wpscan: Ergebnis 2/2}
+\end{figure}
+
+Hieraus lassen sich folgende Informationen ableiten: XYZ
+
 \newpage
 
 \subsection{Google-Hacking}
 
 \subsubsection*{Aufgabenstellung}
 
-Mit "Google Hacking" ist gemeint, dass man die Google Suche zum Auffinden von S
-oftwareinstallationen mit Schwachstellen nutzen kann. Eine Sammlung von Beispielen ist 
+Mit "Google Hacking" ist gemeint, dass man die Google Suche zum Auffinden von
+Softwareinstallationen mit Schwachstellen nutzen kann. Eine Sammlung von Beispielen ist 
 bei \url{https://www.exploit-db.com/google-hacking-database/} zu finden. Erklären Sie 
 anhand von drei selbstgewählten Beispielen, was man damit herausfinden kann.
 Achtung: Firefox und Google Chrome warnten teilweise beim Aufruf der Seite und bezeichneten diese als riskant. Man kann die Seite aber aus einem Browser innerhalb von Kali Linux oder ParrotOS aufrufen, dann kommt keine Warnung.
 
 \subsubsection*{Antwort}
+
+Innerhalb der Exploit-Datenbank haben wir uns drei, unserer Meinung nach, besonders 
+interessante Beispiele ausgesucht.
+
+
+
+Das erste unserer Beispiele beruht auf dem Prinzip Google-Filter zu verwenden um von 
+Google indexierte Dateien mit bestimmten Namen oder Dateiendungen zu finden. So können zum 
+Beispiel falsch konfigurierte Web-Server aus Versehen vertrauliche Daten öffentlich 
+zugänglich machen. Ein interessantes Beispiel ist hierbei nach rohen SQL-Backups zu 
+suchen. Diese könnten, bei schlechten Sicherheitsmaßnahmen des Servers, rohe Nutzerdaten 
+enthalten und somit entweder einen Angriff auf die betroffenen Accounts ermöglichen oder 
+weiter verwendet werden um Zugriff auf andere, möglicherweise interessantere, Systeme zu 
+erlangen.
+
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/15}
+	\centering
+	\caption{Google Hacking: Backup: Schwachstelle}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/16}
+	\centering
+	\caption{Google Hacking: Backup: Google Suche}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/17}
+	\centering
+	\caption{Google Hacking: Backup: Ergebnis}
+\end{figure}
+
+Das zweite unserer Beispiele ist die Suche nach Webseiten die Tokens o.ä. vertraulichen 
+Informationen im Klartext enthalten. Dies ist ein besonders hohes Risiko bei Seiten, die 
+Quellcode enthalten (Wie z.B. Pastebin oder GitHub). Das Beispiel in unserer Abbildung 
+sucht nach Tokens auf öffentlich-zugänglichen Pastebin-Seiten.
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/18}
+	\centering
+	\caption{Google Hacking: Tokens: Suche}
+\end{figure}
+
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/19}
+	\centering
+	\caption{Google Hacking: Tokens: Ergebnis}
+\end{figure}
+
+Die letzte, und wohl kritischte, Schwachstelle, die wir im Rahmen dieser Aufgabe gefunden 
+haben,
+
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/20}
+	\centering
+	\caption{Google Hacking: SQL Injektion: Schwachstelle}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/21}
+	\centering
+	\caption{Google Hacking: SQL Injektion: Schwachstelle}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/22}
+	\centering
+	\caption{Google Hacking: SQL Injektion: Suche}
+\end{figure}
+
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/23}
+	\centering
+	\caption{Google Hacking: SQL Injektion: Ergebnis}
+\end{figure}
+
 
 \end{document}
