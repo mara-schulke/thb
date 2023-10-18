@@ -93,8 +93,8 @@ Passwort.
 \subsubsection*{Antwort}
 
 Nach dem wir die Datei analysiert und den Telnet-Login-Vorgang bei dem Paket 
-\textcolor{red}{XY} lokalisiert haben, konnten wir den Start des Passwords in Text-Form 
-bei dem Paket \textcolor{red}{YZ} entdeckend. (Siehe Abb. 1).
+22 lokalisiert haben, konnten wir den Start des Passwords in Text-Form 
+bei dem Paket 23 entdeckend. (Siehe Abb. 1).
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/01}
@@ -103,7 +103,7 @@ bei dem Paket \textcolor{red}{YZ} entdeckend. (Siehe Abb. 1).
 \end{figure}
 
 Nun enthielt jedes weitere Paket ein Zeichen des Passworts, bis die End-Sequenz
-in dem Paket \textcolor{red}{YY} gesendet wurde. Zusammengesetzt ergibt dies das 
+in dem Paket 46 gesendet wurde. Zusammengesetzt ergibt dies das 
 Passwort \texttt{sshnutzen}. (Siehe Abb. 2).
 
 \begin{figure}[H]
@@ -297,8 +297,6 @@ Achtung: Firefox und Google Chrome warnten teilweise beim Aufruf der Seite und b
 Innerhalb der Exploit-Datenbank haben wir uns drei, unserer Meinung nach, besonders 
 interessante Beispiele ausgesucht.
 
-
-
 Das erste unserer Beispiele beruht auf dem Prinzip Google-Filter zu verwenden um von 
 Google indexierte Dateien mit bestimmten Namen oder Dateiendungen zu finden. So können zum 
 Beispiel falsch konfigurierte Web-Server aus Versehen vertrauliche Daten öffentlich 
@@ -306,14 +304,17 @@ zugänglich machen. Ein interessantes Beispiel ist hierbei nach rohen SQL-Backup
 suchen. Diese könnten, bei schlechten Sicherheitsmaßnahmen des Servers, rohe Nutzerdaten 
 enthalten und somit entweder einen Angriff auf die betroffenen Accounts ermöglichen oder 
 weiter verwendet werden um Zugriff auf andere, möglicherweise interessantere, Systeme zu 
-erlangen.
-
+erlangen. (Siehe Abb. 15)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/15}
 	\centering
 	\caption{Google Hacking: Backup: Schwachstelle}
 \end{figure}
+
+Bei einer Google-Suche nach Dateiverzeichnissen, die eine Datei namens backup.zip enthalten
+sind wir sofort auf einen Web-Server gestoßen, bei dem sowohl eine backup.zip und eine backup.sql
+Datei versehentlich veröffentlicht wurden. (Siehe Abb. 16 \& 17)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/16}
@@ -327,10 +328,16 @@ erlangen.
 	\caption{Google Hacking: Backup: Ergebnis}
 \end{figure}
 
-Das zweite unserer Beispiele ist die Suche nach Webseiten die Tokens o.ä. vertraulichen 
+---
+
+Das zweite unserer Beispiele ist die Suche nach Webseiten die Tokens oder ähnlich vertrauliche 
 Informationen im Klartext enthalten. Dies ist ein besonders hohes Risiko bei Seiten, die 
 Quellcode enthalten (Wie z.B. Pastebin oder GitHub). Das Beispiel in unserer Abbildung 
 sucht nach Tokens auf öffentlich-zugänglichen Pastebin-Seiten.
+
+Bei einer Suche nach pastebin.com Seiten, die entweder einen Benutzernamen, ein Passwort oder
+einen Schlüssel enthalten haben wir ebenfalls sofort Ergebnisse erzielen können.
+(Siehe Abb. 18 \& 19)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/18}
@@ -345,8 +352,12 @@ sucht nach Tokens auf öffentlich-zugänglichen Pastebin-Seiten.
 	\caption{Google Hacking: Tokens: Ergebnis}
 \end{figure}
 
-Die letzte, und wohl kritischte, Schwachstelle, die wir im Rahmen dieser Aufgabe gefunden 
-haben,
+---
+
+Die letzte, und wohl kritischte Schwachstelle, die wir im Rahmen dieser Aufgabe gefunden 
+haben, ist eine SQL-Injektion durch einen falsch programmierten PHP-Web-Server. Die Exploit-Datenbank
+listet hierzu drei typische Suchbefehle, wobei wir uns für den ersten entschieden haben, da er
+die größte Erfolgswahrscheinlichkeit hatte. (Siehe Abb. 20 \& 21)
 
 
 \begin{figure}[H]
@@ -361,12 +372,19 @@ haben,
 	\caption{Google Hacking: SQL Injektion: Schwachstelle}
 \end{figure}
 
+Bei einer Google-Suche, kam neben einem PHP-Tutorial, sofort eine öffentliche PHP-Datei,
+die rohe SQL-Befehle als Query-Parameter annimmt. (Siehe Abb. 22)
+
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/22}
 	\centering
 	\caption{Google Hacking: SQL Injektion: Suche}
 \end{figure}
 
+Beim Aufruf dieser Seite wurden ursprünglich lediglich nicht vertrauliche Datensätze geladen,
+allerdings konnten wir zeigen, dass das SQL-Statement austauschbar ist, in dem wir (wie in Abb. 23 gezeigt)
+einen \texttt{show tables;} Befehl ausgeführt haben um die verschiedenen Tabellen in der angebundenen Datenbank
+aufzulisten.
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/23}
@@ -374,5 +392,9 @@ haben,
 	\caption{Google Hacking: SQL Injektion: Ergebnis}
 \end{figure}
 
+Diese Schwachstelle könnte nun genutzt werden, um Beispielsweise neue Admin-Nutzer anzulegen,
+bestehende zu löschen, die Daten innerhalb der Datenbank zu manipulieren oder abzufragen etc.
+Über die Abfrage nach weiteren Tabellen hinaus, haben wir keine Befehle ausgeführt um strafrechtliche
+Probleme zu vermeiden.
 
 \end{document}
