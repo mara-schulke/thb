@@ -126,7 +126,9 @@ sind und welches Betriebssystem verwendet wird.
 
 \subsubsection*{Antwort}
 
-Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgeführt. 
+Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgeführt.
+Auf den im Internet verfügbaren ubuntu manpage Seiten sind verschiedene Scan-Techniken mit
+\texttt{nmap} aufgelistet. (Siehe Abb. 3).
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/03}
@@ -134,7 +136,16 @@ Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgefü
 	\caption{nmap: Scan-Techniken}
 \end{figure}
 
+Nach kurzer Recherche haben wir uns für die folgenden vier Scan-Techniken entschieden, da sie in 
+Kombinationen eine gute Aussage-Stärke über das Host-System des Servers und die darauf ausgeführten
+Programme treffen.
+
 \subsubsection*{Port Scan}
+
+Eine der bekanntesten Techniken mit \texttt{nmap} ist der Port-Scan – dieser kann entweder auf die
+``well-known'' Ports beschränkt werden, oder über alle ports von 0-65536 ausgeführt werden. Da wir 
+im Rahmen dieser Aufgabe eine Aussage über die Dienste des Servers treffen sollen, haben wir uns dafür
+entschieden einen kompletten Port-Scan auszuführen. (Siehe Abb. 4)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/04}
@@ -142,7 +153,15 @@ Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgefü
 	\caption{nmap: Port Scan}
 \end{figure}
 
+Hier lässt sich erkennen, dass der Server einen SSH-Server, einen HTTP- bzw. HTTPS-Server betreibt.
+Diese Server sind öffentlich und für das Internet zugänglich. Auf dem Port 3544 wird vermutlich eine
+Torredo-Instanz ausgeführt, \texttt{nmap} kann aber keine genaue Aussage darüber treffen, ob dieser
+Dienst wirklich aktiv ist (daher wurde dieser Port als \texttt{CLOSED} markiert).
+
 \subsubsection*{TCP Scan}
+
+Als nächstes haben wir einen tiefgreifenden TCP-Scan ausgeführt, um detailiertere Informationen über
+die drei (im vorherigen Schritt entdeckte) Dienste herauszufinden. (Siehe Abb. 5)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/05}
@@ -150,7 +169,14 @@ Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgefü
 	\caption{nmap: TCP Scan}
 \end{figure}
 
-\subsubsection*{OS Scan}
+In diesem Scan konnten wir weitere Informationen herausfinden, wie z.B. die Versionen / Distributionen
+des SSH- und HTTP-Servers, die öffentlichen SSH-Schlüssel des Servers und die Konfiguration des Apache-
+Servers.
+
+\subsubsection*{Betriebsystem Scan}
+
+Um eine Aussage über das ausgeführte Betriebssystem treffen zu können, bietet \texttt{nmap} einen 
+dedizierten Betriebssystem-Scan an – dieser kann durch \texttt{-O} gestartet werden. (Siehe Abb. 6)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/06}
@@ -158,13 +184,23 @@ Der Aufgabe entsprechend haben wir drei sinnvolle \texttt{nmap} scans durchgefü
 	\caption{nmap: OS Scan}
 \end{figure}
 
+Das Ergebnis dieses Scans ist zwar nicht eindeutig, lässt aber darauf deuten, dass der Server eine Linux-
+Distribution ausführt.
+
 \subsubsection*{UDP Scan}
+
+Zuletzt haben wir noch die bisher wenig betrachteten UDP-Dienste des Servers gescannt. (Siehe Abb. 7)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/07}
 	\centering
 	\caption{nmap: UDP Scan}
 \end{figure}
+
+Hierbei wurden mehrere Dienste gefunden. Zwei der 4 UDP-Dienste stehen in Verbindung mit Microsoft,
+was entweder auf eine Windows-basierte Firewall oder einen Irrtum bei dem Betriebsystems-Scan hindeutet.
+
+Jeder Dienst hat den Status \texttt{open|filtered}, was auf eine aktive Firewall-Konfiguration hindeutet.
 
 \newpage
 
@@ -189,7 +225,7 @@ Hinweis: Bei der ersten Methode heißt der Eintrag in den erweiterten Einstellun
 Um die MAC-Adresse unter Kali-Linux zu ändern genügte eine einfache Kombination aus dem 
 Programm \texttt{macchanger} und \texttt{ifconfig}. Zu erst, um eine erfolgreiche Änderung 
 bzw. ein erfolgreiches Spoofing feststellen zu können, haben wir den Netzwerk-Verkehr zum 
-Web-Server der vorherigen Aufgaben wiederverwendet. (Siehe Abb. X)
+Web-Server der vorherigen Aufgaben aufgezeichnet. (Siehe Abb. 8)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/08}
@@ -197,21 +233,29 @@ Web-Server der vorherigen Aufgaben wiederverwendet. (Siehe Abb. X)
 	\caption{macspoofing: Ursprünglicher Netzwerk-Verkehr}
 \end{figure}
 
+Anschließend haben wir mittels \texttt{ifconfig} auf dem Host und in der virtuellen Maschine
+die MAC-Adressen ausgelesen und mit dem Ethernet-Adressen aus dem aufgezeichneten Netzwerk-Verkehr
+in Verbindung gebracht. (Siehe Abb. 9)
+
+Die Source-Adresse (\texttt{eth0} in der VM) lautet: \texttt{00:15:5d:cf:a4:3a}
+
+Die Source-Adresse (\texttt{WSL} auf dem Host) lautet: \texttt{00:15:5d:5d:86:e8}
+
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/09}
 	\centering
 	\caption{macspoofing: Ursprüngliche Source und Destination}
 \end{figure}
 
-In den beiden Screenshots ist zu erkennen, dass die momentane MAC-Adresse 
-\texttt{XX:XX:XX} entspricht.
+In den beiden Screenshots ist zu erkennen, dass die momentane MAC-Adresse der virtuellen
+Maschine \texttt{00:15:5d:cf:a4:3a} entspricht.
 
 Nun muss zu erst das \texttt{eth0} Interface mittels \texttt{ifconfig} deaktiviert werden. 
 Anschließend kann die MAC-Adresse mittels \texttt{macchanger} geändert werden. In diesem 
-Beispiel haben wir lediglich die XYZ-Nummer von XYZ zu XYZ geändert und die Vendor-ID 
-belassen, da eine Änderung dieser zu Problemen mit den Treibern führen kann.
-Anschließend muss das Netzwerk-Interface erneut durch \texttt{ifconfig} gestartet werden.
-(Siehe Abb. X-Y)
+Beispiel haben wir lediglich die Hersteller-Nummer von \texttt{cf:a4:3a} zu \texttt{cf:a4:01}
+geändert und die Vendor-ID belassen, da eine Änderung dieser zu Problemen mit den Treibern
+führen kann. Anschließend muss das Netzwerk-Interface erneut durch \texttt{ifconfig} gestartet werden.
+(Siehe Abb. 10)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/10}
@@ -219,8 +263,9 @@ Anschließend muss das Netzwerk-Interface erneut durch \texttt{ifconfig} gestart
 	\caption{macspoofing: Änderung der MAC-Adresse von eth0}
 \end{figure}
 
-Bei erneuter Aufzeichnung des Traffics zum Zielserver lässt sich nun die gerade geänderte 
-MAC-Adresse in dem Ethernet-Header jedes Pakets wiederfinden. (Siehe Abb. Z)
+Bei erneuter Aufzeichnung des Netzwerk-Verkehrs zum Zielserver lässt sich nun die gerade geänderte 
+MAC-Adresse (\texttt{00:15:5d:cf:a4:01}) in dem Ethernet-Header jedes Pakets wiederfinden.
+(Siehe Abb. 11)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/11}
