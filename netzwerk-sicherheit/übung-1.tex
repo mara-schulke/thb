@@ -300,8 +300,20 @@ Sie die Betreuenden auf eine Ersatzaufgabe an.
 
 \subsubsection*{Antwort}
 
-Der Aufgabe entsprechend haben wir einen Schwachstellen-Scan bei dem vorgegebenen 
-Zielserver durchgeführt. Dieser hat das folgende Ergebnis erzielt:
+\texttt{wpscan} ist ein Open-Source-Tool, das für die Sicherheitsüberprüfung von 
+WordPress-Websites entwickelt wurde, um potenzielle Schwachstellen und Sicherheitsprobleme in 
+diesen zu erkennen. Es ermöglicht die Analyse von WordPress Webseiten nach eigenen Angaben 
+seit über 10 Jahren und hat in dieser Zeit einen Katalog von mehr als 43000 Core, Plugin oder 
+Theme Schwachstellen aufgebaut (Quelle \url{https://wpscan.com}). Ein Scan einer Webseite ist 
+direkt von der \url{wpscan.com} Webseite möglich, oder vom eigenen Client aus mit dem CLI 
+Programm \texttt{wpscan}.
+
+Man bietet neben der kostenfreien Version für ``Researcher'' mit maximalen 25 API Calls pro 
+Tag, auch eine nicht kostenlose Enterprise Version an.
+
+Die Nutzung ist dabei gänzlich einfach. Der einfache Quick Scan wird durch den Aufruf 
+\texttt{wpscan –url <webseite>} aufgerufen. Dabei erhielten wir jedoch statt eines 
+Ergebnisses eine Fehler-Meldung über einen 403-Status-Code. (Siehe Abb. 12)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/12}
@@ -309,7 +321,22 @@ Zielserver durchgeführt. Dieser hat das folgende Ergebnis erzielt:
 	\caption{wpscan: Fehler}
 \end{figure}
 
-Nun musste die flag angehängt werden
+Der hier referenzierte HTTP-Statuscode bedeutet, dass der Server den Zugriff auf die 
+angefragte Seite verweigert. Dies kann auf fehlende Zugriffsberechtigungen oder eine Web 
+Application Firewalls (WAF) hinweisen. Eine WAF soll Websites und Webanwendungen vor 
+böswilligen Anfragen und Zugriffen schützen, indem sie den Datenverkehr zwischen dem Client 
+und dem Webserver analysiert, um Angriffe wie SQL-Injection, Cross-Site Scripting (XSS) und 
+Distributed Denial of Service (DDoS) zu erkennen und zu blockieren. Sie verwendet dazu Regeln 
+und Signaturen und ist ein wichtiger Bestandteil um die Sicherheit einer Webseite zu 
+gewährleisten und Angriffe auf Anwendungsebene abzuwehren.
+
+Der Parameter \texttt{--random-user-agent} aus dem gegebenen Hinweis versucht diesen 
+Sicherheitsmechanismus zu umgehen, indem automatisch zufällige Benutzer-Agenten für jede 
+HTTP-Anfrage, die es während des Scans an die WordPress-Website sendet, generiert um diese 
+Anfragen weniger auffällig und weniger vorhersehbar zu gestalten um nicht automatisiert zu 
+wirken. Da wir kein Bot-Netz oder ähnliches verwenden, ist die IP-Adresse der Anfragen jedoch 
+die gleiche. Dies schien jedoch nicht von der Firewall verhindert zu werden, denn mit jenem 
+Parameter lässt sich ein Scan durchführen. (Siehe Abb. 13)
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/13}
@@ -317,13 +344,30 @@ Nun musste die flag angehängt werden
 	\caption{wpscan: Ergebnis 1/2}
 \end{figure}
 
+In einer detaillierten Ansicht erhalten wir Informationen ausgegeben, die durch den Scan 
+gewonnen wurden konnte. (Siehe Abb. 14)
+
+\begin{itemize}
+	\item Ein Apache Webserver mit der PHP Version 8.1.24 liefert die Webseite aus (diese ist aktuell – Release Datum 28.09.2023)
+	\item WordPress ist installiert in der Version 6.3.1 (ebenfalls zum Zeitpunkt des Scans 
+		aktuell mit Release Datum 29.08.2023). Ein RSS Feed ist vorhanden unter angegebener 
+		URL.
+	\item \texttt{robots.txt} (Anweisungen/Berechtigungen für Web-Crawler von Suchmaschinen) 
+		und Wordpress-Readme sind vorhanden – Ausgabe mit Pfad
+	\item WP-Cron ist aktiviert – dies lässt eine automatisierte Aktualisierung der Software-Komponenten der Wordpress-Installation annehmen
+	\item twentysixteen ist das installierte Wordpress-Theme (ebenfalls zum Zeitpunkt des Scanns aktuell mit Release Datum 29.03.2023). Eine eigene Readme ist unter der angegebenen URL zu erreichen. Eine kurze Description und eine Style URI sind auslesbar.
+	\item Ein Plugin-Scan mit passiver Scan-Methode findet keine installierten Plugins.
+	\item Es werden keine scanbaren Config-Backups gefunden
+\end{itemize}
+
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/14}
 	\centering
 	\caption{wpscan: Ergebnis 2/2}
 \end{figure}
 
-Hieraus lassen sich folgende Informationen ableiten: XYZ
+Da wir, wie in der Aufgabenstellung beschrieben, keine Registrierung beim \texttt{wpscan}
+Anbieter durchführen und daher keinen API-Key besitzen, endet unser Scan an dieser Stelle.
 
 \newpage
 
