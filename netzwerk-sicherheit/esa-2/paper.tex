@@ -114,7 +114,6 @@ wie erwartet?
 
 \subsubsection*{Antwort}
 
-
 \newpage
 
 \subsection{Verschlüsselung}
@@ -133,11 +132,58 @@ ansehen: https://youtu.be/atb2pdxd394.
 
 \subsubsection*{Antwort}
 
-Um das zur Verfügung gestellte VeraCrypt File öffnen zu können, soll der Exponent 
-e des RSA-Schlüssels der Webseite nwsmooc.mooin.org verwendet werden. Diesen 
+Um das zur Verfügung gestellte VeraCrypt File öffnen zu können, soll der Exponent e 
+des RSA-Schlüssels der Webseite nwsmooc.mooin.org verwendet werden. Diesen 
 Exponenten kann man sich ganz einfach ausgeben lassen, in dem man sich im Mozilla 
-Firefox Browser jene Webseite öffnet und auf das Schlosssymbol drückt, um sich das 
-Zertifikat anzusehen.
+Firefox Browser jene Webseite öffnet und auf das Schlosssymbol drückt, um sich 
+das Zertifikat anzusehen.
+
+Im Abschnitt „Öffentlicher Schlüssel – Informationen“ bekommt man diesen einfach 
+ausgegeben (Siehe Abbildung XXX). Wir merken an dieser Stelle an, dass wir diesen 
+Exponenten zunächst auch blind getestet hatten, da in der Praxis fast immer die 
+Zahl 65537 als Exponent verwendet wird. Für das RSA Verfahren werden große 
+Primzahlen bevorzugt verwendet und der Algorithmus muss dabei unterschiedliche 
+Operationen bei der Bearbeitung basierend auf dem Binärcode tätigen. 6553710 ist 
+binär kodiert 10000000000000001 (??????????????)
+was es zu einer effizienten Zahl für den Algorithmus macht (Einsen werden 
+multipliziert, Nullen potenziert).
+
+Mounted man mit VeraCrypt die bereitgestellte Datei und gibt als Passwort 65537 an, 
+erhält man Zugriff auf die Datei. (siehe Abbildung XXX)
+
+
+Der Inhalt des Textfiles „Datei-angezeigter-Container.txt“ lautet:	„Das 
+Zugangskennwort für den versteckten Container lautet: 	VerSteCon0815“
+
+Wir konnten uns an das Modul Digitaler Selbstschutz erinnern, in dessen Reportinhalt 
+VeraCrypt bereits vorkam, und haben den Container gecloned und ein 2. Mal gemounted, 
+wobei wir dieses Mal das Passwort VerSteCon0815 eingegeben haben.
+
+Damit konnten wir Zugriff auf den versteckten Container und seinem Inhalt „Datei-
+versteckter-Container.txt“ erhalten.
+
+Der Text dieser Datei lautet:
+
+Das gesuchte Kennwort lautet: HiddenVolumeVeraCrypt
+
+% Die Einstellungen von SilentEye, die Sie für die Fortgeschrittenenaufgabe brauchen, 
+% sind:
+
+% Key (für beide Dateien): NWSMOOC_Test
+% Passphrase (nur für jpg-Datei): SilentEye_Test
+
+Die anderen Einstellungen entsprechen den Default-Einstellungen
+
+Für mooin.jpg: 
+Luminance Interval = 5 
+Header Position = bottom
+CharSet = UTF8
+
+Für mooin.bmp (Oben beim "Media's encoding format" auf "BMP" wechseln):
+Image quality: 96,975% (normal); keine Veränderungen bei "Advanced"
+Aktivieren Sie zusätzlich zu "Compressed Data" jeweils auch "Encrypted Data" mit AES256. Dort muss der Key in beide Kästchen eingetragen werden.
+Über die SilentEye-Aufgabe erhalten Sie über mooin.bmp übrigens schon vorab eine Aufgabensammlung zur Klausurvorbereitung.
+
 
 \newpage
 
@@ -155,5 +201,19 @@ Hinweis: Sollte es Schwierigkeiten geben, wenn Sie beide Dateien nacheinander
 untersuchen, dann schließen Sie SilentEye zwischendurch.
 
 \subsubsection*{Antwort}
+
+SilentEye ist eine Open-Source-Software, die zur Steganographie verwendet wird, um 
+zusätzliche Informationen in Bildern und Audiodateien zu verstecken oder auszulesen. 
+
+Um mooin.jpg zu untersuchen, öffnen wir die Datei mit dem Programm Silenteye und 
+verwenden die Einstellungen aus der Lösung der Aufgabe 1.4.
+
+Dadurch kann der verborgene Bereich des Bildes erfolgreich entschlüsselt werden und 
+gibt als dekodierte Message den Text ``Kennwort: SteganographieInNWSMOOC'' frei.
+
+Mit diesem Kennwort und den bereitgestellten Einstellungen für das zweite Bild, lässt 
+sich auch dessen versteckter Inhalt sichtbar machen und entschlüsseln. Wir können an 
+dieser Stelle die Datei AufgabensammlungSS16.pdf extrahieren und abspeichern.
+
 
 \end{document}
