@@ -194,63 +194,63 @@ Kompatibilität mit diversen Webtechnologien (z.B. CSS, Frames usw.) getestet wi
 
 \subsubsection*{Aufgabenstellung}
 
-Rufen Sie die Test-Webseiten https://aaacertificateservices.comodoca.com:442/ sowie 
-https://aaacertificateservices.comodoca.com:444/  mit Firefox und mit Google 
+Rufen Sie die Test-Webseiten \url{https://aaacertificateservices.comodoca.com:442/} sowie 
+\url{https://aaacertificateservices.comodoca.com:444/} mit Firefox und mit Google 
 Chrome auf. Erklären Sie, was passiert. Sind die Resultate bei allen vier Tests so 
 wie erwartet?
 
 \subsubsection*{Antwort}
 
-ÜBERARBEITEN
+Um das Verhalten der beiden Browser näher zu betrachten haben wir uns dazu entschieden, die Tests simultan
+durchzuführen, um zu veranschaulichen, wann die beiden Browser sich anders verhalten. Als erstes haben wir den
+Server auf dem Port 442 getestet:
 
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/05}
 	\centering
-	\caption{QualysSSL Test – Browser Protocol Features}
+	\caption{Google Chrome vs Firefox – 442 – Unsafe / Unsafe}
 \end{figure}
 
-\textbf{Google Chrome Ergebnisse:}
+Bei diesem Web-Server / Port erkennen beide Browser direkt ein abgelaufenes Zertifikat und warnen den
+Nutzer davor, diese Webseite zu verwenden (da die Identität des Servers nicht sicher gestellt werden konnte).
 
-\begin{itemize}
-    \item Der Zugriff auf die Site auf Port 442 führt zu einer Sicherheitswarnung,
-		die besagt, dass die Verbindung nicht privat ist.
-	\item Der Zugriff auf die Site auf Port 444 zeigt ebenfalls eine Sicherheitswarnung an,
-		die darauf hinweist, dass das Sicherheitszertifikat der Site nicht vertrauenswürdig ist.
-\end{itemize}
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/06}
+	\centering
+	\caption{Google Chrome vs Firefox – 444 – Safe / Unsafe}
+\end{figure}
 
-\textbf{Mozilla Firefox Ergebnisse:}
+Bei dem zweiten Test (also dem Server auf Port 444) verhalten sich die Browser interessanterweise unterschiedlich:
+Chrome zeigt dies als sichere Verbindung an, obwohl Firefox warnt und angibt, dass das Zertifikat widerrufen worden sei.
 
-\begin{itemize}
-	\item Der Zugriff auf die Site auf Port 442 zeigt eine Warnung vor einem potenziellen Sicherheitsrisiko an.
-	\item Der Zugriff auf die Site auf Port 444 zeigt eine Warnung, dass das Sicherheitszertifikat der Site widerrufen wurde.
-\end{itemize}
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/07} 
+	\centering
+	\caption{Google Chrome vs Firefox – 444 – Details}
+\end{figure}
 
-Hinsichtlich der Frage, ob die Ergebnisse wie erwartet sind:
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/08}
+	\centering
+	\caption{Google Chrome vs Firefox – 444 – Chrome Zertifikat}
+\end{figure}
 
-\begin{itemize}
-    \item \textbf{Sicherheitswarnungen:} Diese sind zu erwarten, wenn eine Website SSL/TLS-Probleme hat, wie zum Beispiel ein ungültiges, abgelaufenes oder widerrufenes Zertifikat, oder wenn das Zertifikat nicht mit dem Domainnamen übereinstimmt. Es scheint, dass das Zertifikat für die über Port 444 aufgerufene Site widerrufen wurde, was ein kritisches Sicherheitsproblem darstellt, während die Site auf Port 442 ein anderes Zertifikatproblem hat, das die Browser nicht akzeptieren (wie es könnte selbstsigniert, abgelaufen sein oder es könnte eine Hostnamen-Diskrepanz geben).
+Auch bei näherer Betrachtung des Zertifikats im Chrome-Certificate-Viewer, lässt sich keine Spur von dem Widerruf finden.
 
-    \item \textbf{Browser-Konsistenz:} Die Tatsache, dass beide Browser für beide Ports Fehler anzeigen, deutet darauf hin, dass das Problem bei den Zertifikaten der Website liegt und nicht bei den Browsern selbst. Dies ist ein konsistentes und erwartetes Verhalten.
-
-    \item \textbf{Unterschiede in den Browser-Warnungen:} Die Unterschiede in den Sicherheitswarnungen zwischen Chrome und Firefox sind auf die unterschiedlichen Arten zurückzuführen, wie diese Browser Sicherheitsprobleme behandeln und melden. Beide identifizieren jedoch korrekt, dass es ein Problem mit dem SSL/TLS-Zertifikat der Website gibt.
-\end{itemize}
-
-Angesichts der Screenshots können wir schlussfolgern, dass die Websites SSL/TLS-Konfigurationsprobleme haben, die dazu führen, dass beide Browser korrekt Sicherheitswarnungen anzeigen. Es wäre ratsam, diese Websites nicht ohne eine sichere Verbindung zu besuchen, da dies sensible Informationen einer Abfanggefahr aussetzen kann. Der Website-Administrator sollte die Zertifikatsprobleme lösen, um einen sicheren Zugang für die Benutzer zu gewährleisten.
-
-
-Diese Diskrepanz kann aus mehreren Gründen auftreten:
+Die unterschiedlichen Verhaltensweisen der Browser könnten mehrere Gründe haben:
 
 \begin{enumerate}
-  \item \textbf{CRL und OCSP}: Chrome und Firefox verwenden möglicherweise unterschiedliche Methoden zur Überprüfung des Widerrufsstatus eines Zertifikats. Chrome überprüft möglicherweise nicht den Widerrufsstatus oder konnte den Certificate Revocation List (CRL) oder Online Certificate Status Protocol (OCSP) Server nicht erreichen. Wenn der Server nicht erreichbar ist, kann Chrome die Verbindung unter bestimmten Bedingungen zulassen.
-  \item \textbf{Caching}: Es könnte ein Caching-Problem geben, bei dem Chrome das Zertifikat oder seinen Status zwischengespeichert hat und keinen Live-Check durchführt, um zu sehen, ob das Zertifikat widerrufen wurde.
+  \item \textbf{CRL und OCSP}: Chrome und Firefox verwenden wahrscheinlich unterschiedliche Methoden zur Überprüfung des Widerrufsstatus eines Zertifikats. Chrome überprüft möglicherweise nicht den Widerrufsstatus oder konnte den Certificate Revocation List (CRL) oder Online Certificate Status Protocol (OCSP) Server nicht erreichen. Wenn der Server nicht erreichbar ist, kann Chrome die Verbindung unter bestimmten Bedingungen zulassen.
+  \item \textbf{Caching}: Es könnte ein Caching-Problem vorliegen, bei dem Chrome das Zertifikat oder seinen Status zwischengespeichert hat und keinen Live-Check durchführt, um zu sehen, ob das Zertifikat widerrufen wurde.
   \item \textbf{Widerrufsinformationen}: Es ist auch möglich, dass Firefox aktualisierte Widerrufsinformationen hat, die Chrome nicht hat. Dies kann passieren, wenn die Widerrufsinformationen kürzlich aktualisiert wurden und Chrome das Update noch nicht erhalten hat.
   \item \textbf{Browser-Konfiguration}: Die Sicherheitseinstellungen des Browsers könnten unterschiedlich konfiguriert sein. Zum Beispiel könnte Chrome so eingerichtet sein, dass es mit bestimmten Arten von Zertifikatsfehlern fortfährt, die Firefox nicht zulässt, oder umgekehrt.
   \item \textbf{Certificate Pinning}: Chrome könnte das Zertifikat für diese Seite gepinnt haben, was die normale Überprüfung der Vertrauenskette umgehen würde, die sonst zu einer erkannten Widerrufsstatus führen könnte.
-  \item \textbf{Software-Versionen}: Wenn ein Browser nicht auf dem neuesten Stand ist, erkennt er möglicherweise neuere Arten von Zertifikaten oder Widerrufsmethoden nicht richtig.
 \end{enumerate}
 
-Aus Sicherheitsgründen ist es wichtig, dem restriktiveren Browser in einem solchen Szenario zu vertrauen, in diesem Fall Firefox, der darauf hinweist, dass das Zertifikat widerrufen wurde. Widerrufene Zertifikate deuten darauf hin, dass dem Zertifikat nicht mehr vertraut werden sollte, typischerweise aufgrund eines Kompromisses oder eines Ausstellungsfehlers. Es ist ratsam, das Problem weiter zu untersuchen, möglicherweise indem der Zertifikatsstatus auf anderen Systemen oder Netzwerken überprüft wird, um zu sehen, ob das Problem weiterhin besteht, und die Widerrufsliste der Zertifizierungsstelle zur Bestätigung zu konsultieren.
+Da wir allerdings beide Browser kontrollieren und beide Browser zum Zeitpunkt des Tests auf dem neusten Stand waren und wir den Web-Server vorher noch nie
+verwendet haben, deutet dies auf eine Diskrepanz bei den CRL / OSCP Abfragen hin – wahrscheinlich, da unterschiedliche Informationen verwendet werden.
 
+In einem solchen Fall, sollte immer dem Browser mit Sicherheitsbedenken vertraut werden.
 
 \newpage
 
