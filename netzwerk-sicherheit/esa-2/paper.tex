@@ -270,41 +270,90 @@ ansehen: https://youtu.be/atb2pdxd394.
 
 \subsubsection*{Antwort}
 
-ÜBERARBEITEN
+Um das zur Verfügung gestellte VeraCrypt File öffnen zu können, soll der Exponent 
+$e$ des RSA-Schlüssels der Webseite \texttt{nwsmooc.mooin.org} verwendet werden. 
+Diesen Exponenten kann man sich ganz einfach ausgeben lassen, in dem man sich im 
+Mozilla Firefox Browser jene Webseite öffnet und auf das Schlosssymbol drückt, um 
+sich das Zertifikat anzusehen.
 
-Um das zur Verfügung gestellte VeraCrypt File öffnen zu können, soll der Exponent e 
-des RSA-Schlüssels der Webseite nwsmooc.mooin.org verwendet werden. Diesen 
-Exponenten kann man sich ganz einfach ausgeben lassen, in dem man sich im Mozilla 
-Firefox Browser jene Webseite öffnet und auf das Schlosssymbol drückt, um sich 
-das Zertifikat anzusehen.
+\begin{figure}[H]
+	\includegraphics[width=0.675\textwidth]{images/09}
+	\centering
+	\caption{Vercrypt – Exponent}
+\end{figure}
 
-Im Abschnitt „Öffentlicher Schlüssel – Informationen“ bekommt man diesen einfach 
-ausgegeben (Siehe Abbildung XXX). Wir merken an dieser Stelle an, dass wir diesen 
-Exponenten zunächst auch blind getestet hatten, da in der Praxis fast immer die 
-Zahl 65537 als Exponent verwendet wird. Für das RSA Verfahren werden große 
-Primzahlen bevorzugt verwendet und der Algorithmus muss dabei unterschiedliche 
-Operationen bei der Bearbeitung basierend auf dem Binärcode tätigen. 6553710 ist 
-binär kodiert 10000000000000001 (??????????????)
-was es zu einer effizienten Zahl für den Algorithmus macht (Einsen werden 
-multipliziert, Nullen potenziert).
+Im Abschnitt ``Öffentlicher Schlüssel – Informationen'' bekommt man den Exponenten 
+des öffentlichen Schlüssels ausgegeben (siehe Abb. 9). Allerdings gelang uns der 
+Zugriff auf den Container auch vor der Analyse des Zertifikats, da $e = 65537_{10}$ 
+in der Praxis üblich ist.
 
-Mounted man mit VeraCrypt die bereitgestellte Datei und gibt als Passwort 65537 an, 
-erhält man Zugriff auf die Datei. (siehe Abbildung XXX)
+Für das RSA Verfahren werden große Primzahlen bevorzugt verwendet und der 
+Algorithmus muss dabei unterschiedliche Operationen bei der Bearbeitung basierend 
+auf dem Binärcode tätigen. Da $65537_{10} = 10000000000000001_2$ führt 
+dies zu einer effizienten Arbeitsweise des Algorithmus – Einsen werden 
+multipliziert, Nullen potenziert.
 
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/10}
+	\centering
+	\caption{Vercrypt – Einbinden Container}
+\end{figure}
 
-Der Inhalt des Textfiles „Datei-angezeigter-Container.txt“ lautet:	„Das 
-Zugangskennwort für den versteckten Container lautet: 	VerSteCon0815“
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/11}
+	\centering
+	\caption{Vercrypt – Passworteingabe}
+\end{figure}
 
-Wir konnten uns an das Modul Digitaler Selbstschutz erinnern, in dessen Reportinhalt 
-VeraCrypt bereits vorkam, und haben den Container gecloned und ein 2. Mal gemounted, 
-wobei wir dieses Mal das Passwort VerSteCon0815 eingegeben haben.
+Nun können wir mit VeraCrypt (unter Angabe des Passworts 65537) die im Kurs 
+bereitgestellte Datei als Laufwerk einbinden und somit Zugriff auf den Inhalt 
+erhalten.
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/12}
+	\centering
+	\caption{Vercrypt – Einbinden Versteckter Container}
+\end{figure}
 
-Damit konnten wir Zugriff auf den versteckten Container und seinem Inhalt „Datei-
-versteckter-Container.txt“ erhalten.
+Die enthaltene Textdatei ``Datei-angezeigter-Container.txt'' lautet: ``Das 
+Zugangskennwort für den versteckten Container lautet: 	VerSteCon0815''
 
-Der Text dieser Datei lautet:
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/13}
+	\centering
+	\caption{Vercrypt – Versteckter Container}
+\end{figure}
 
-Das gesuchte Kennwort lautet: HiddenVolumeVeraCrypt
+Wir konnten uns an das Modul Digitaler Selbstschutz erinnern, in dessen Report-
+Inhalt VeraCrypt bereits vorkam, und haben den Container kopiert und ein 2. Mal 
+eingebunden, wobei dieses Mal das Passwort ``VerSteCon0815'' eingegeben werden muss 
+um Zugriff auf den versteckten Container zu erhalten.
+
+Somit konnten wir Zugriff auf den versteckten Container und seinem Inhalt ``Datei-
+versteckter-Container.txt'' erlangen und den Inhalt auslesen: 
+``HiddenVolumeVeraCrypt''.
+
+\newpage
+
+\subsection{Steganographie}
+
+\subsubsection*{Aufgabenstellung}
+
+Installieren Sie SilentEye  auf Ihrem Rechner und untersuchen Sie die 
+bereitgestellten Beispieldateien. mooin.jpg enthält ein verstecktes Kennwort, 
+mooin.bmp eine Datei. Die notwendigen Einstellungen können Sie der Aufgabe mit 
+VeraCrypt entnehmen. Dokumentieren Sie Ihre Vorgehensweise mit Screenshots und 
+geben Sie das gefundene Kennwort an.
+
+Hinweis: Sollte es Schwierigkeiten geben, wenn Sie beide Dateien nacheinander 
+untersuchen, dann schließen Sie SilentEye zwischendurch.
+
+\subsubsection*{Antwort}
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/14}
+	\centering
+	\caption{Vercrypt – Hidden Container}
+\end{figure}
 
 % Die Einstellungen von SilentEye, die Sie für die Fortgeschrittenenaufgabe brauchen, 
 % sind:
@@ -324,23 +373,7 @@ Image quality: 96,975% (normal); keine Veränderungen bei "Advanced"
 Aktivieren Sie zusätzlich zu "Compressed Data" jeweils auch "Encrypted Data" mit AES256. Dort muss der Key in beide Kästchen eingetragen werden.
 Über die SilentEye-Aufgabe erhalten Sie über mooin.bmp übrigens schon vorab eine Aufgabensammlung zur Klausurvorbereitung.
 
-
-\newpage
-
-\subsection{Steganographie}
-
-\subsubsection*{Aufgabenstellung}
-
-Installieren Sie SilentEye  auf Ihrem Rechner und untersuchen Sie die 
-bereitgestellten Beispieldateien. mooin.jpg enthält ein verstecktes Kennwort, 
-mooin.bmp eine Datei. Die notwendigen Einstellungen können Sie der Aufgabe mit 
-VeraCrypt entnehmen. Dokumentieren Sie Ihre Vorgehensweise mit Screenshots und 
-geben Sie das gefundene Kennwort an.
-
-Hinweis: Sollte es Schwierigkeiten geben, wenn Sie beide Dateien nacheinander 
-untersuchen, dann schließen Sie SilentEye zwischendurch.
-
-\subsubsection*{Antwort}
+---
 
 ÜBERARBEITEN
 
