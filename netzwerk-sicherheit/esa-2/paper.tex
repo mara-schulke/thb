@@ -349,45 +349,41 @@ untersuchen, dann schließen Sie SilentEye zwischendurch.
 
 \subsubsection*{Antwort}
 
+SilentEye ist eine Open-Source-Software, die zur Steganographie verwendet wird, um 
+zusätzliche Informationen in Bildern und Audiodateien zu verstecken oder auszulesen.
+Wir haben die Software aus dem Internet heruntergeladen und unter Windows 
+installiert. Nach dem öffnen der Software ist es erforderlich eine Bild-Datei 
+auszuwählen, von der der Nutzer weiß oder vermutet, dass diese eine mittels 
+Steganographie codierte Nachricht enthält. (Siehe Abb. 14)
+
+
 \begin{figure}[H]
 	\includegraphics[width=0.75\textwidth]{images/14}
 	\centering
-	\caption{Vercrypt – Hidden Container}
+	\caption{Steganographie – SilentEye UI}
 \end{figure}
 
-% Die Einstellungen von SilentEye, die Sie für die Fortgeschrittenenaufgabe brauchen, 
-% sind:
+Um der Aufgabenstellung entsprechend nun die Datei \texttt{mooin.jpg} zu untersuchen, 
+öffnen wir die Datei und verwenden die Einstellungen aus der Lösung der Aufgabe 1.4. 
+Anschließend zeigt SilentEye, unter Verwendung der richtigen Parameter, eine 
+decodierte Nachricht in einem Textfeld an – diese lautet
+\texttt{Kennwort: SteganographieInNWSMOOC} (Siehe Abb. 15)
 
-% Key (für beide Dateien): NWSMOOC_Test
-% Passphrase (nur für jpg-Datei): SilentEye_Test
-
-Die anderen Einstellungen entsprechen den Default-Einstellungen
-
-Für mooin.jpg: 
-Luminance Interval = 5 
-Header Position = bottom
-CharSet = UTF8
-
-Für mooin.bmp (Oben beim "Media's encoding format" auf "BMP" wechseln):
-Image quality: 96,975% (normal); keine Veränderungen bei "Advanced"
-Aktivieren Sie zusätzlich zu "Compressed Data" jeweils auch "Encrypted Data" mit AES256. Dort muss der Key in beide Kästchen eingetragen werden.
-Über die SilentEye-Aufgabe erhalten Sie über mooin.bmp übrigens schon vorab eine Aufgabensammlung zur Klausurvorbereitung.
-
----
-
-ÜBERARBEITEN
-
-SilentEye ist eine Open-Source-Software, die zur Steganographie verwendet wird, um 
-zusätzliche Informationen in Bildern und Audiodateien zu verstecken oder auszulesen. 
-
-Um mooin.jpg zu untersuchen, öffnen wir die Datei mit dem Programm Silenteye und 
-verwenden die Einstellungen aus der Lösung der Aufgabe 1.4.
-
-Dadurch kann der verborgene Bereich des Bildes erfolgreich entschlüsselt werden und 
-gibt als dekodierte Message den Text ``Kennwort: SteganographieInNWSMOOC'' frei.
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/15}
+	\centering
+	\caption{Steganographie – JPG Entschlüsselung}
+\end{figure}
 
 Mit diesem Kennwort und den bereitgestellten Einstellungen für das zweite Bild, lässt 
 sich auch dessen versteckter Inhalt sichtbar machen und entschlüsseln. Wir können an 
-dieser Stelle die Datei AufgabensammlungSS16.pdf extrahieren und abspeichern.
+dieser Stelle die Datei AufgabensammlungSS16.pdf extrahieren und abspeichern. (Siehe 
+Abb. 16)
+
+\begin{figure}[H]
+	\includegraphics[width=0.75\textwidth]{images/16}
+	\centering
+	\caption{Steganographie – BMP Entschlüsselung}
+\end{figure}
 
 \end{document}
