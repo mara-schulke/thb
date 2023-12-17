@@ -21,6 +21,9 @@ class View:
         self.views[id] = V(self.root)
         self.views[id].grid(row=0, column=0, sticky="nsew")
 
+    def get(self, id: ViewId):
+        return self.views[id]
+
     def switch(self, id: ViewId) -> None:
         self.views[id].tkraise()
 
