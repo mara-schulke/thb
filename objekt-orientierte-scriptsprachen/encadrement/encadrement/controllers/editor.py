@@ -1,4 +1,8 @@
 import tkinter as tk
+from tkinter import colorchooser, filedialog, messagebox
+from tkinter.messagebox import askyesno, showerror
+
+from PIL import Image, ImageFilter, ImageGrab, ImageOps, ImageTk
 
 from ..models.main import Model
 from ..views.main import View, ViewId
@@ -15,6 +19,7 @@ class EditorController:
     def bind(self):
         self.frame.open.config(command=self.open)
         self.frame.save.config(command=self.save)
+        self.frame.clear.config(command=self.clear)
 
     # def on_mount(self) -> None:
         # if self.model.image.path:
@@ -32,7 +37,14 @@ class EditorController:
         # pass
 
     def open(self) -> None:
-        pass
+        self.model.image.load(filedialog.askopenfilename())
+        self.frame.set_image(self.model.image.image)
 
     def save(self) -> None:
-        pass
+        file = filedialog.asksaveasfilename(defaultextension=".png")
+
+        if file:
+            self.model.image.save(file)
+
+    def clear(self) -> None:
+        self.frame.reset()
