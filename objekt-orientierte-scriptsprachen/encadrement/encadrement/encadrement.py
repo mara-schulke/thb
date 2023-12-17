@@ -1,6 +1,7 @@
 # 20215853, mara.schulke@th-brandenburg.de
 
 import tkinter as tk
+from enum import Enum
 from tkinter import Frame, colorchooser, filedialog, messagebox
 from tkinter.messagebox import askyesno, showerror
 
@@ -8,6 +9,12 @@ from PIL import Image, ImageFilter, ImageGrab, ImageOps, ImageTk
 
 WIDTH = 800
 HEIGHT = 800
+
+class Color(Enum):
+    BLACK = 0
+    RED = 1
+    GREEN = 2
+    BLUE = 3
 
 class EditorState:
     pen_size = 3
@@ -94,7 +101,7 @@ class Layout(tk.Frame):
                 # self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
                 # self.root.geometry(f"{width}x{height}")
 
-if __name__ == "__main__":
+def main():
     app = tk.Tk()
     app.title('Encadrement')
     app.geometry(f"{WIDTH}x{HEIGHT}")

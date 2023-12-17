@@ -29,8 +29,6 @@ pkgs.mkShell {
   ];
 
   shellHook = with pkgs; ''
-    #glib-compile-schemas ${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}/glib-2.0/schemas
-
     export PYTHONPATH=$PYTHONPATH:${python310Packages.pip}/lib/python3.10/site-packages
     export PKG_CONFIG_PATH=${cairo.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
     export PKG_CONFIG_PATH=${glib.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -46,9 +44,7 @@ pkgs.mkShell {
     export PKG_CONFIG_PATH=${expat.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
     export PKG_CONFIG_PATH=${gtk3.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
     export PKG_CONFIG_PATH=${gobject-introspection.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
-
     export DYLIB_LIBRARY_PATH=${glib.out}/lib:$DYLIB_LIBRARY_PATH
-
     export GIO_EXTRA_MODULES=${glib-networking}/lib/gio/modules:$GIO_EXTRA_MODULES
     export XDG_DATA_DIRS=${gsettings-desktop-schemas}/share:$XDG_DATA_DIRS
     export GSETTINGS_SCHEMA_DIR=${gsettings-desktop-schemas}/share
