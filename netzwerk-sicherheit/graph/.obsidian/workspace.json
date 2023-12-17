@@ -11,18 +11,96 @@
             "id": "e405dc6bba5291ba",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Unbenannt.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0
-                }
+                "file": "Compliance und IT-Governance.md",
+                "mode": "source",
+                "source": false
               }
             }
+          },
+          {
+            "id": "7919108e38293b8b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Compliance und IT-Governance.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "1f760588c830229f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Schichten/Layer 1 – Transmission Layer.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "4e787bee0f576915",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Schichten/Layer 1 – Transmission Layer.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "3730f916c137c392",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Schichten/Layer 3 – IP Layer.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "83e05ce318ee08c8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Schichten/Layer 4 – Transport Layer.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "7942e5955128e74b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Compliance und IT-Governance.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "6ccaec1f6e683829",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -68,8 +146,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -89,7 +166,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Unbenannt.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -106,7 +182,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Unbenannt.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -128,9 +203,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Unbenannt.canvas"
-              }
+              "state": {}
             }
           }
         ]
@@ -150,11 +223,24 @@
       "command-palette:Befehlspalette öffnen": false
     }
   },
-  "active": "e405dc6bba5291ba",
+  "active": "6ccaec1f6e683829",
   "lastOpenFiles": [
+    "Compliance und IT-Governance.md",
+    "Vorlagen",
+    "Schichten/Layer 1 – Transmission Layer.md",
+    "Schichten/Layer 2 – Ethernet Layer.md",
+    "Schichten/Layer 3 – IP Layer.md",
+    "Schichten/Layer 5 – Application  Layer.md",
+    "Schichten/Layer 4 – Transport Layer.md",
+    "Schichten",
+    "Themenliste.md",
+    "Angriffe/Arten",
+    "Angriffe/Werkzeuge",
+    "Kommunikationsszenarien",
+    "Angriffe",
+    "Definitionen",
     "Unbenannt.canvas",
     "IT-Governance.md",
-    "Compliance und IT-Governance.md",
     "Grundbegriffe und Konzepte.md",
     "Verschlüsselungstechnologien.md"
   ]
