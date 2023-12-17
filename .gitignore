@@ -8,6 +8,7 @@ bin
 .settings
 .project
 .vim
+__pycache__
 
 # LaTeX
 *.aux
@@ -25,4 +26,3 @@ bin
 *.snm
 *.nav
 *.synctex.gz
-
