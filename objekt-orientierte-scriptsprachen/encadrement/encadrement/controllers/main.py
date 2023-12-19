@@ -35,7 +35,6 @@ class Controller:
     def __init__(self, model: Model, view: View) -> None:
         self.view = view
         self.model = model
-
         self.editor = EditorController(model, view)
         self.menu = Menu(self, model, view)
 

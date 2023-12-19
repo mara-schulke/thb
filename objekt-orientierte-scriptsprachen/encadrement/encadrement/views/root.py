@@ -1,9 +1,11 @@
-from tkinter import Frame, Tk
+import tkinter
+
+import ttkbootstrap as ttk
 
 
-class Root(Tk):
+class Root(ttk.Window):
     def __init__(self):
-        super().__init__()
+        super().__init__(themename="darkly")
 
         start_width = 600
         min_width = 400

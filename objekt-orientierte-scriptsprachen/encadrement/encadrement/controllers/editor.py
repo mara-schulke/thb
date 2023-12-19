@@ -37,14 +37,14 @@ class EditorController:
         # pass
 
     def open(self) -> None:
-        self.model.image.load(filedialog.askopenfilename())
-        self.frame.set_image(self.model.image.image)
+        self.model.canvas.load(filedialog.askopenfilename())
+        self.frame.set_image(self.model.canvas.layers[0])
 
     def save(self) -> None:
         file = filedialog.asksaveasfilename(defaultextension=".png")
 
         if file:
-            self.model.image.save(file)
+            self.model.canvas.save(file)
 
     def clear(self) -> None:
         self.frame.reset()

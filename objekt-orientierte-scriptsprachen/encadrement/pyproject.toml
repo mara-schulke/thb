@@ -14,3 +14,4 @@ encadrement = "encadrement.encadrement:main"
 [tool.poetry.dependencies]
 python = "^3.10"
 pillow = "^10.1.0"
+ttkbootstrap = "^1.10.1"
