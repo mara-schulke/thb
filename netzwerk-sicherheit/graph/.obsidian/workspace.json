@@ -4,103 +4,191 @@
     "type": "split",
     "children": [
       {
-        "id": "eed7d44e3b467f26",
+        "id": "9ec552ced963465a",
         "type": "tabs",
         "children": [
           {
-            "id": "e405dc6bba5291ba",
+            "id": "1aab2b79a7c9e885",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Compliance und IT-Governance.md",
+                "file": "Protocols/Ethernet/WLAN/WPA2.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "7919108e38293b8b",
+            "id": "6bc335f3e16ef484",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Compliance und IT-Governance.md",
+                "file": "Protocols/Ethernet/WLAN/WPA3.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "1f760588c830229f",
+            "id": "e8b2cf3cbf690721",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Schichten/Layer 1 – Transmission Layer.md",
+                "file": "Protocols/Ethernet/Bluetooth Security.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "4e787bee0f576915",
+            "id": "a66406265ffd57d8",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Schichten/Layer 1 – Transmission Layer.md",
+                "file": "Definitions/VPS.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "3730f916c137c392",
+            "id": "d39f52163952a5c6",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Schichten/Layer 3 – IP Layer.md",
+                "file": "Definitions/Hybrid Model.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "83e05ce318ee08c8",
+            "id": "8f248999936b4bd3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Schichten/Layer 4 – Transport Layer.md",
+                "file": "Definitions/Encryption/Symmetric/Symmetric Encryption.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "7942e5955128e74b",
+            "id": "22f0aa1add140660",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Compliance und IT-Governance.md",
+                "file": "Definitions/Encryption/Asymmetric/Asymmetric Encryption.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "6ccaec1f6e683829",
+            "id": "a385c91925355770",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Encryption/Symmetric/DES.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "70438d8a9eefd578",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Encryption/Asymmetric/Asymmetric Encryption.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "0c184ff42af44a5b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Encryption/Asymmetric/Diffie Hellman.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "17c03c2fcc6fa717",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Encryption/Asymmetric/RSA.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "c2791624c0dcbcfe",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Encryption/Asymmetric/Backward Secrecy.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d9b1623dd31477d7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Definitions/Quantum Computers.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "19cf4de998484e49",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Templates/Summary.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "f3830ee063877469",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Grundbegriffe und Konzepte.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 14
       }
     ],
     "direction": "vertical"
@@ -166,6 +254,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Grundbegriffe und Konzepte.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -182,6 +271,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Grundbegriffe und Konzepte.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -203,45 +293,65 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Grundbegriffe und Konzepte.md"
+              }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
       "switcher:Schnellauswahl öffnen": false,
       "graph:Graphen-Ansicht öffnen": false,
-      "canvas:Neuen Canvas erstellen": false,
       "daily-notes:Heutige Notiz öffnen": false,
+      "canvas:Neuen Canvas erstellen": false,
       "templates:Vorlage einfügen": false,
       "command-palette:Befehlspalette öffnen": false
     }
   },
-  "active": "6ccaec1f6e683829",
+  "active": "f3830ee063877469",
   "lastOpenFiles": [
-    "Compliance und IT-Governance.md",
-    "Vorlagen",
-    "Schichten/Layer 1 – Transmission Layer.md",
-    "Schichten/Layer 2 – Ethernet Layer.md",
-    "Schichten/Layer 3 – IP Layer.md",
-    "Schichten/Layer 5 – Application  Layer.md",
-    "Schichten/Layer 4 – Transport Layer.md",
-    "Schichten",
-    "Themenliste.md",
-    "Angriffe/Arten",
-    "Angriffe/Werkzeuge",
-    "Kommunikationsszenarien",
-    "Angriffe",
-    "Definitionen",
-    "Unbenannt.canvas",
-    "IT-Governance.md",
+    "Templates/Summary.md",
+    "Protocols/Routing/Border Gateway Protocol.md",
+    "Protocols/Ethernet/UTMS & LTE Security.md",
+    "Protocols/Ethernet/Bluetooth Security.md",
+    "Protocols/Ethernet/WLAN/WPA3.md",
+    "Protocols/Ethernet/WLAN/WPA2.md",
+    "Protocols/Ethernet/WLAN/WPA.md",
+    "Protocols/Ethernet/WLAN/WEP.md",
+    "Definitions/VPS.md",
+    "Definitions/Quantum Cryptography.md",
+    "Definitions/Quantum Computers.md",
+    "Definitions/Hybrid Model.md",
+    "Definitions/Encryption/Symmetric/Symmetric Encryption.md",
+    "Definitions/Encryption/Symmetric/DES.md",
+    "Definitions/Encryption/Symmetric/AES.md",
+    "Definitions/Encryption/Asymmetric/RSA.md",
+    "Definitions/Encryption/Asymmetric/Forward Secrecy.md",
+    "Definitions/Encryption/Asymmetric/Diffie Hellman.md",
+    "Definitions/Encryption/Asymmetric/Backward Secrecy.md",
+    "Definitions/Encryption/Asymmetric/Asymmetric Encryption.md",
+    "Protocols/Ethernet/WLAN/WPS.md",
+    "Templates/Definition.md",
     "Grundbegriffe und Konzepte.md",
-    "Verschlüsselungstechnologien.md"
+    "Themenliste.md",
+    "IT-Governance.md",
+    "Unbenannt.canvas",
+    "Definitions/Hash-Functions",
+    "Definitions/Encryption/Asymmetric",
+    "Definitions/Encryption/Symmetric",
+    "Definitions/Encryption",
+    "Protocols/Ethernet/WLAN",
+    "Protocols/Ethernet",
+    "Protocols/Routing",
+    "Protocols",
+    "Templates",
+    "Layers"
   ]
 }
