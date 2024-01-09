@@ -20,25 +20,33 @@ class EditorController:
         self.frame.open.config(command=self.open)
         self.frame.save.config(command=self.save)
         self.frame.clear.config(command=self.clear)
+        self.frame.layers.add.config(command=self.new_layer)
 
-    # def on_mount(self) -> None:
-        # if self.model.image.path:
-            # self.frame.path.config(text=f"{self.model.image.path}")
-        # else:
-            # self.frame.path.config(text="No Image")
+        self.render()
 
-    # def on_update(self) -> None:
-        # if self.model.image.path:
-            # self.frame.path.config(text=f"{self.model.image.path}")
-        # else:
-            # self.frame.path.config(text="No Image")
+        self.model.canvas.listen("canvas::render", self.render)
 
-    # def on_unmount(self) -> None:
-        # pass
+    # listeners
+
+    def render(self, *args) -> None:
+        self.frame.set_image(self.model.canvas.merged())
+        self.frame.set_layers(
+            layers=self.model.canvas.layers,
+            active=self.model.canvas.active,
+            hidden=self.model.canvas.hidden,
+        )
+
+        self.frame.layers.add.config(command=self.new_layer)
+
+        # todo: fix activation!!!!
+        # for i, canvas in enumerate(self.frame.layers.canvas[::-1]):
+            # layer = self.frame.layers.ca
+            # self.frame.layers.canvas[i].bind("<Button-1>", lambda x: self.model.canvas.activate(i))
+
+    # commands
 
     def open(self) -> None:
         self.model.canvas.load(filedialog.askopenfilename())
-        self.frame.set_image(self.model.canvas.layers[0])
 
     def save(self) -> None:
         file = filedialog.asksaveasfilename(defaultextension=".png")
@@ -47,4 +55,10 @@ class EditorController:
             self.model.canvas.save(file)
 
     def clear(self) -> None:
+        self.model.canvas.reset()
         self.frame.reset()
+
+    # layers
+
+    def new_layer(self) -> None:
+        self.model.canvas.new_layer()

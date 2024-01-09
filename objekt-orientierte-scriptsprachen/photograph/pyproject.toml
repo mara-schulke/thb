@@ -3,13 +3,13 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "encadrement"
+name = "photograph"
 version = "0.1.0"
-description = "Un petit programme de traitement d'images"
+description = "Photographing / image editing software"
 authors = ["Mara Schulke <mara.schulke@th-brandenburg.de>"]
 
 [tool.poetry.scripts]
-encadrement = "encadrement.encadrement:main"
+photograph = "photograph.photograph:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
