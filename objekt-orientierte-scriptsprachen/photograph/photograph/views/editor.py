@@ -24,15 +24,15 @@ class EditorView(tk.Frame):
         self.top.grid_columnconfigure(3, weight=1)
         self.top.grid_columnconfigure(4, weight=1)
 
-        self.open = ttk.Button(self.top, text="Open")
+        self.open = ttk.Button(self.top, bootstyle="dark", text="Open")
         self.open.grid(row=0, column=0, sticky="ew")
-        self.save = ttk.Button(self.top, text="Save")
+        self.save = ttk.Button(self.top, bootstyle="dark", text="Save")
         self.save.grid(row=0, column=1, sticky="ew")
-        self.clear = ttk.Button(self.top, text="Clear")
+        self.clear = ttk.Button(self.top, bootstyle="dark",text="Clear")
         self.clear.grid(row=0, column=2, sticky="ew")
-        self.pen = ttk.Button(self.top, text="Pen")
+        self.pen = ttk.Button(self.top, bootstyle="dark", text="Pen")
         self.pen.grid(row=0, column=3, sticky="ew")
-        self.select = ttk.Button(self.top, text="Select")
+        self.select = ttk.Button(self.top, bootstyle="dark", text="Select")
         self.select.grid(row=0, column=4, sticky="ew")
 
         self.content = tk.Frame(self)
@@ -56,21 +56,19 @@ class EditorView(tk.Frame):
         )
         self.layers.grid(row=0, column=1, sticky="nsew")
 
-    def set_layers(self, layers, active, hidden):
+    def set_layers(self, layers):
         self.layers = Layers(
             self.content,
             layers,
-            active,
-            hidden,
             width=100,
             highlightbackground="red",
             highlightthickness=1
         )
         self.layers.grid(row=0, column=1, sticky="nsew")
 
-    def set_image(self, image):
-        self.canvas = ZoomableCanvas(self.content, image)
-        self.canvas.grid(row=0, column=0, sticky="nsew")
+    def set_image(self, image, scale):
+        self.canvas.image = image
+        self.canvas.render()
 
     def reset(self):
         self.canvas = ZoomableCanvas(self.content)

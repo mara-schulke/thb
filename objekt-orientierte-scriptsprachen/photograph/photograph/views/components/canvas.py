@@ -19,7 +19,7 @@ class AutoScrollbar(ttk.Scrollbar):
         raise ttk.TclError('Cannot use place with this widget')
 
 class ZoomableCanvas(tk.Frame):
-    def __init__(self, mainframe, image = None, *args, **kwargs):
+    def __init__(self, mainframe, image = None, scale = 1, *args, **kwargs):
         tk.Frame.__init__(self, master=mainframe, *args, **kwargs)
 
         self.canvas = ttk.Canvas(
@@ -45,11 +45,13 @@ class ZoomableCanvas(tk.Frame):
 
         self.width, self.height = self.image.size
 
-        self.scale = 1.0 
+        self.scale = scale
         self.delta = 1.2
 
-        self.container = self.canvas.create_rectangle(0, 0, self.width, self.height, width=0)
+        if not self.scale:
+            self.scale = 1.0 
 
+        self.container = self.canvas.create_rectangle(0, 0, self.width, self.height, width=0)
         self.render()
 
     def zoom(self, direction):
@@ -73,6 +75,9 @@ class ZoomableCanvas(tk.Frame):
             self.scale
         )
 
+        if self.onzoom is not None:
+            self.onzoom(self.scale)
+
         self.render()
 
     def zoom_in(self, event=None):
@@ -91,6 +96,6 @@ class ZoomableCanvas(tk.Frame):
 
         image = self.image
         imagetk = ImageTk.PhotoImage(image.resize((w, h)))
-        imageid = self.canvas.create_image(x, y, image=imagetk, anchor='nw')
 
+        self.canvas.imageid = self.canvas.create_image(x, y, image=imagetk, anchor='nw')
         self.canvas.imagetk = imagetk
