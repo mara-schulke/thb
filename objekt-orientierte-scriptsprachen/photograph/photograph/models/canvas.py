@@ -13,7 +13,7 @@ class Canvas(ObservableModel):
         self.height = 512
         self.scale = 1
         self.file = ""
-        self.layers = [pillow.Image.new(mode='RGBA', size=self.size())]
+        self.layers = [pillow.Image.new(mode='RGBA', size=self.size(), color='white')]
         self.hidden = []
         self.trigger("canvas::update")
 
@@ -25,7 +25,7 @@ class Canvas(ObservableModel):
             return
 
         self.file = path
-        self.layers = [pillow.Image.open(self.file)]
+        self.layers = [pillow.Image.open(self.file).convert('RGBA')]
         self.hidden = []
         self.width, self.height = self.layers[0].size
         self.trigger("canvas::open")
@@ -51,7 +51,7 @@ class Canvas(ObservableModel):
         self.height = 512
         self.scale = 1
         self.file = ""
-        self.layers = [pillow.Image.new(mode='RGBA', size=self.size())]
+        self.layers = [pillow.Image.new(mode='RGBA', size=self.size(), color="white")]
         self.hidden = []
         self.trigger("canvas::reset")
         self.trigger("canvas::render")
