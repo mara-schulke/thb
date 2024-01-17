@@ -13,11 +13,15 @@ class Layers(tk.Frame):
         if not self.layers:
             self.layers = [Image.new(mode="RGBA", size=((512, 512)))]
 
-        self.grid_columnconfigure(0, weight=1, minsize=100)
-        self.grid_rowconfigure(0, weight=0, minsize=50)
+        self.grid_columnconfigure(0, weight=1, minsize=50)
+        self.grid_columnconfigure(1, weight=1, minsize=50)
+        self.grid_rowconfigure(0, weight=0, minsize=25)
 
-        self.add = ttk.Button(self, text="New Layer")
+        self.add = ttk.Button(self, style="dark", text="+")
         self.add.grid(row=0, column=0, columnspan=1, sticky="nsew")
+
+        self.rm = ttk.Button(self, style="dark", text="-")
+        self.rm.grid(row=0, column=1, columnspan=1, sticky="nsew")
 
         self.canvas = []
 
@@ -30,7 +34,7 @@ class Layers(tk.Frame):
             row = i + 1
 
             self.grid_rowconfigure(row, weight=0, minsize=100)
-            self.canvas[i].grid(row=row, column=0, columnspan=1, sticky="nsew", pady=5)
+            self.canvas[i].grid(row=row, column=0, columnspan=2, sticky="nsew", pady=5)
             self.canvas[i].background = self.canvas[i].create_rectangle(0, 0, 100, 100, fill="#ffffff")
 
             image = ImageTk.PhotoImage(layer.resize((100,100)))

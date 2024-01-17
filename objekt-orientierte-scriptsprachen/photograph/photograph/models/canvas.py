@@ -67,10 +67,8 @@ class Canvas(ObservableModel):
         self.layers.append(pillow.Image.new(mode='RGBA', size=self.size()))
         self.trigger("canvas::render")
 
-    def rm_layer(self, i) -> None:
-        if i == 0:
-            print("cant delete layer 0")
-
-        del self.layers[i]
+    def del_layer(self) -> None:
+        if len(self.layers) > 1:
+            self.layers.pop()
 
         self.trigger("canvas::render")

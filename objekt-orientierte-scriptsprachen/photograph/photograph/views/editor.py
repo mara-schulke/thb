@@ -54,8 +54,6 @@ class EditorView(tk.Frame):
         self.layers = Layers(
             self.content,
             width=100,
-            highlightbackground="red",
-            highlightthickness=1
         )
         self.layers.grid(row=0, column=1, sticky="nsew")
 
@@ -64,8 +62,6 @@ class EditorView(tk.Frame):
             self.content,
             layers,
             width=100,
-            highlightbackground="red",
-            highlightthickness=1
         )
         self.layers.grid(row=0, column=1, sticky="nsew")
 

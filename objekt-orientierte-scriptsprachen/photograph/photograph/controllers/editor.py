@@ -26,6 +26,7 @@ class EditorController:
         self.frame.pen.config(command=self.use_pen)
         self.frame.erasor.config(command=self.use_erasor)
         self.frame.layers.add.config(command=self.new_layer)
+        self.frame.layers.rm.config(command=self.del_layer)
 
         self.render()
 
@@ -41,6 +42,7 @@ class EditorController:
         )
 
         self.frame.layers.add.config(command=self.new_layer)
+        self.frame.layers.rm.config(command=self.del_layer)
         self.frame.canvas.onzoom = self.model.canvas.set_scale
 
         if self.model.editor.mode == Mode.VIEW:
@@ -83,6 +85,9 @@ class EditorController:
 
     def new_layer(self) -> None:
         self.model.canvas.new_layer()
+
+    def del_layer(self) -> None:
+        self.model.canvas.del_layer()
 
     # drawing
 
