@@ -6,6 +6,7 @@ from tkinter.messagebox import askyesno, showerror
 
 from PIL import Image, ImageDraw, ImageFilter, ImageGrab, ImageOps, ImageTk
 
+from ..models.canvas import Effect
 from ..models.editor import Mode
 from ..models.main import Model
 from ..views.main import View, ViewId
@@ -82,6 +83,9 @@ class EditorController:
         self.model.editor.toggle_erasor()
 
     # layers
+
+    def apply(self, effect: Effect) -> None:
+        self.model.canvas.apply(effect)
 
     def new_layer(self) -> None:
         self.model.canvas.new_layer()

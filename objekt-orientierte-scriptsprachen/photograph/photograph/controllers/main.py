@@ -1,6 +1,7 @@
 import tkinter as tk
 from enum import Enum
 
+from ..models.canvas import Effect
 from ..models.main import Model
 from ..views.main import View, ViewId
 from .editor import EditorController
@@ -17,14 +18,14 @@ class Menu:
         file.add_command(label="Exit", command=view.root.quit)
 
         fx = tk.Menu(bar, tearoff=0)
-        fx.add_command(label="Grayscale", command=view.root.quit)
-        fx.add_command(label="Blur", command=view.root.quit)
-        fx.add_command(label="Contour", command=view.root.quit)
-        fx.add_command(label="Detail", command=view.root.quit)
-        fx.add_command(label="Emboss", command=view.root.quit)
-        fx.add_command(label="Edge Enhance", command=view.root.quit)
-        fx.add_command(label="Sharpen", command=view.root.quit)
-        fx.add_command(label="Smooth", command=view.root.quit)
+        fx.add_command(label="Grayscale", command=lambda: controller.editor.apply(Effect.GRAYSCALE))
+        fx.add_command(label="Blur", command=lambda: controller.editor.apply(Effect.BLUR))
+        fx.add_command(label="Contour", command=lambda: controller.editor.apply(Effect.CONTOUR))
+        fx.add_command(label="Detail", command=lambda: controller.editor.apply(Effect.DETAIL))
+        fx.add_command(label="Emboss", command=lambda: controller.editor.apply(Effect.EMBOSS))
+        fx.add_command(label="Edge Enhance", command=lambda: controller.editor.apply(Effect.EDGE_ENHANCE))
+        fx.add_command(label="Sharpen", command=lambda: controller.editor.apply(Effect.SHARPEN))
+        fx.add_command(label="Smooth", command=lambda: controller.editor.apply(Effect.SMOOTH))
 
         bar.add_cascade(label="File", menu=file)
         bar.add_cascade(label="Effects", menu=fx)

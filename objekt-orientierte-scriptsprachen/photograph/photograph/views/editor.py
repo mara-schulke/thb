@@ -23,7 +23,6 @@ class EditorView(tk.Frame):
         self.top.grid_columnconfigure(2, weight=1)
         self.top.grid_columnconfigure(3, weight=1)
         self.top.grid_columnconfigure(4, weight=1)
-        self.top.grid_columnconfigure(5, weight=1)
 
         self.open = ttk.Button(self.top, bootstyle="dark", text="Open")
         self.open.grid(row=0, column=0, sticky="ew")
@@ -35,8 +34,6 @@ class EditorView(tk.Frame):
         self.pen.grid(row=0, column=3, sticky="ew")
         self.erasor = ttk.Button(self.top, bootstyle="dark", text="Erasor")
         self.erasor.grid(row=0, column=4, sticky="ew")
-        self.select = ttk.Button(self.top, bootstyle="dark", text="Select")
-        self.select.grid(row=0, column=5, sticky="ew")
 
         self.content = tk.Frame(self)
         self.content.grid(row=1, column=0, sticky="nsew")

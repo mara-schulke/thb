@@ -1,3 +1,4 @@
+from enum import Enum
 from tkinter import filedialog
 from typing import TypedDict, Union
 
@@ -5,6 +6,16 @@ import PIL as pillow
 
 from .base import ObservableModel
 
+
+class Effect(Enum):
+    GRAYSCALE = 0
+    BLUR = 1
+    CONTOUR = 2
+    DETAIL = 3
+    EMBOSS = 4
+    EDGE_ENHANCE = 5
+    SHARPEN = 6
+    SMOOTH = 7
 
 class Canvas(ObservableModel):
     def __init__(self):
@@ -62,6 +73,28 @@ class Canvas(ObservableModel):
         self.scale = scale
 
     # layers
+
+    def apply(self, effect) -> None:
+        layer = self.layers[-1]
+
+        if effect == Effect.GRAYSCALE:
+            self.layers[-1] = pillow.ImageOps.grayscale(layer)
+        elif effect == Effect.BLUR:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.BLUR)
+        elif effect == Effect.CONTOUR:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.CONTOUR)
+        elif effect == Effect.DETAIL:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.DETAIL)
+        elif effect == Effect.EMBOSS:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.EMBOSS)
+        elif effect == Effect.EDGE_ENHANCE:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.EDGE_ENHANCE)
+        elif effect == Effect.SHARPEN:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.SHARPEN)
+        elif effect == Effect.SMOOTH:
+            self.layers[-1] = layer.filter(pillow.ImageFilter.SMOOTH)
+
+        self.trigger("canvas::render")
 
     def new_layer(self) -> None:
         self.layers.append(pillow.Image.new(mode='RGBA', size=self.size()))
