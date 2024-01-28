@@ -4,7 +4,24 @@ import ttkbootstrap as ttk
 
 
 class Root(ttk.Window):
+    """
+    The main application window.
+
+    This class represents the main application window of the Photograph application. It inherits from ttkbootstrap's
+    Window class and provides customization for the window's appearance and behavior.
+
+    Attributes:
+        themename (str): The theme name for styling the application window.
+    """
+
     def __init__(self):
+        """
+        Initializes the main application window.
+
+        Parameters:
+            themename (str, optional): The theme name for styling the application window. Defaults to "darkly".
+        """
+
         super().__init__(themename="darkly")
 
         start_width = 600

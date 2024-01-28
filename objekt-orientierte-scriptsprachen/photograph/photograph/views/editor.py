@@ -8,7 +8,30 @@ from .components.layers import Layers
 
 
 class EditorView(tk.Frame):
+    """
+    A tkinter Frame that serves as the main view for an image editing application.
+
+    This class sets up the user interface for an image editor, including buttons for open, save, clear,
+    pen, and erasor functionalities, along with a zoomable canvas for image manipulation and a layers panel
+    for managing different layers of the image.
+
+    Attributes:
+        top (tk.Frame): A frame to hold the top row of buttons.
+        open (ttk.Button): Button to open an image.
+        save (ttk.Button): Button to save the current image.
+        clear (ttk.Button): Button to clear the canvas.
+        pen (ttk.Button): Button to activate drawing mode.
+        erasor (ttk.Button): Button to activate erasing mode.
+        content (tk.Frame): A frame to hold the main content area, including the canvas and layers panel.
+        canvas (ZoomableCanvas): A custom canvas widget that supports zooming and panning.
+        layers (Layers): A panel for managing image layers.
+    """
+
     def __init__(self, *args, **kwargs):
+        """
+        Initializes the EditorView, setting up the layout, buttons, canvas, and layers panel.
+        """
+
         super().__init__(*args, **kwargs)
 
         self.grid_rowconfigure(0, weight=0)
@@ -55,6 +78,13 @@ class EditorView(tk.Frame):
         self.layers.grid(row=0, column=1, sticky="nsew")
 
     def set_layers(self, layers):
+        """
+        Updates the layers panel with a new set of layers.
+
+        Parameters:
+            layers (list[PIL.Image.Image]): A list of PIL Image objects representing the layers.
+        """
+
         self.layers = Layers(
             self.content,
             layers,
@@ -63,9 +93,21 @@ class EditorView(tk.Frame):
         self.layers.grid(row=0, column=1, sticky="nsew")
 
     def set_image(self, image, scale):
+        """
+        Sets the image to be displayed on the canvas and adjusts the zoom level.
+
+        Parameters:
+            image (PIL.Image.Image): The image to display on the canvas.
+            scale (float, optional): The initial zoom level for the image. Defaults to 1.
+        """
+
         self.canvas.image = image
         self.canvas.render()
 
     def reset(self):
+        """
+        Resets the editor view to its default state, including reinitializing the canvas and clearing layers.
+        """
+
         self.canvas = ZoomableCanvas(self.content)
         self.canvas.grid(row=0, column=0, sticky="nsew")

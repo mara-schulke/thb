@@ -5,7 +5,29 @@ from PIL import Image, ImageTk
 
 
 class Layers(tk.Frame):
+    """
+    A custom tkinter Frame for managing and displaying layers of an image editing application.
+
+    This class provides a UI component to add, remove, and display layers. Each layer is represented
+    by a small preview canvas within this frame. Users can add new layers or remove existing ones
+    using the provided '+' and '-' buttons.
+
+    Attributes:
+        master: The parent widget.
+        layers (list[PIL.Image.Image]): A list of PIL Image objects representing the layers.
+        hidden (list[bool]): A list indicating the visibility of each layer, not currently used.
+    """
+
     def __init__(self, master, layers = None, hidden = [], *args, **kwargs):
+        """
+        Initializes the Layers frame with optional layers and hidden status lists.
+
+        Parameters:
+            master: The parent widget.
+            layers (list[PIL.Image.Image], optional): The initial set of layers to display. Defaults to a single blank layer.
+            hidden (list[bool], optional): The initial visibility status for each layer. Defaults to an empty list.
+        """
+
         super().__init__(master=master, *args, **kwargs)
 
         self.layers = layers

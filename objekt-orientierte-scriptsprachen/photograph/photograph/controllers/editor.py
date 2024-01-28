@@ -15,7 +15,26 @@ from ..views.main import View, ViewId
 
 
 class EditorController:
+    """
+    Controls the interactions between the model and view in an image editing application,
+    handling user inputs for image manipulation such as drawing, erasing, and layer management.
+
+    Attributes:
+        model (Model): The data model of the application.
+        view (View): The UI view of the application.
+        frame: The frame within the view dedicated to the editor.
+    """
+
     def __init__(self, model: Model, view: View) -> None:
+        """
+        Initializes the EditorController with a given model and view, setting up the editor frame
+        and binding UI elements to their respective commands.
+
+        Parameters:
+            model (Model): The data model of the application.
+            view (View): The UI view of the application.
+        """
+
         self.model = model
         self.view = view
         self.frame = self.view.get(ViewId.EDITOR)
@@ -23,6 +42,10 @@ class EditorController:
         self.bind()
 
     def bind(self):
+        """
+        Binds UI elements to their respective command functions and sets up listeners for model updates.
+        """
+
         self.frame.open.config(command=self.open)
         self.frame.save.config(command=self.save)
         self.frame.clear.config(command=self.clear)
@@ -39,6 +62,14 @@ class EditorController:
     # listeners
 
     def render(self, *args) -> None:
+        """
+        Renders the canvas and updates UI elements based on the current state of the model. This method
+        is called in response to model updates.
+
+        Parameters:
+            *args: Variable length argument list to accommodate various signals from the model.
+        """
+
         self.frame.set_image(self.model.canvas.merged(), self.model.canvas.scale)
         self.frame.set_layers(
             layers=self.model.canvas.layers,
@@ -64,40 +95,79 @@ class EditorController:
     # commands
 
     def open(self) -> None:
+        """
+        Opens a dialog for the user to select an image file to load into the canvas.
+        """
+
         self.model.canvas.load(filedialog.askopenfilename())
 
     def save(self) -> None:
+        """
+        Opens a dialog for the user to select a file path to save the current canvas state as an image.
+        """
+
         file = filedialog.asksaveasfilename(defaultextension=".png")
 
         if file:
             self.model.canvas.save(file)
 
     def clear(self) -> None:
+        """
+        Clears the current drawing on the canvas and resets the editor state.
+        """
+
         self.frame.reset()
         self.model.canvas.reset()
 
     def use_pen(self) -> None:
+        """
+        Sets the editor mode to drawing, allowing the user to draw on the canvas.
+        """
+
         self.model.canvas.scale = 1;
         self.model.editor.toggle_pen()
 
     def use_erasor(self) -> None:
+        """
+        Sets the editor mode to erasing, allowing the user to erase parts of the drawing on the canvas.
+        """
+
         self.model.canvas.scale = 1;
         self.model.editor.toggle_erasor()
 
     # layers
 
     def apply(self, effect: Effect) -> None:
+        """
+        Applies an effect to the canvas and redraws the ui.
+        """
         self.model.canvas.apply(effect)
 
     def new_layer(self) -> None:
+        """
+        Adds a new layer to the canvas, allowing for non-destructive edits.
+        """
+
         self.model.canvas.new_layer()
 
     def del_layer(self) -> None:
+        """
+        Removes the currently selected layer from the canvas.
+        """
+
         self.model.canvas.del_layer()
 
     # drawing
 
     def draw(self, ev) -> None:
+        """
+        Handles the drawing action on the canvas when the user moves the mouse with the button pressed.
+        This method captures the mouse position and draws on the current layer based on the editor mode.
+
+        Parameters:
+            ev: The event object containing information about the mouse event.
+        """
+
         layer = self.model.canvas.layers[-1]
         draw = ImageDraw.Draw(layer)
 
@@ -133,6 +203,17 @@ class EditorController:
         self.model.canvas.trigger("canvas::render")
 
     def interpolate_drawing(self, draw, ev: (int, int), fill: int, radius: int) -> None:
+        """
+        Performs cubic spline interpolation between the last drawn points to create a smooth drawing line.
+        This method is called during the drawing action.
+
+        Parameters:
+            draw: The ImageDraw object used to draw on the canvas.
+            ev: A tuple containing the current x and y coordinates of the mouse event.
+            fill: The fill color to use for drawing.
+            radius: The radius of the drawing tool.
+        """
+
         x, y = ev
 
         last_usage = self.model.editor.pen.last_usage
