@@ -4,7 +4,9 @@ import tkinter as tk
 from tkinter import colorchooser, filedialog, messagebox
 from tkinter.messagebox import askyesno, showerror
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageGrab, ImageOps, ImageTk
+from scipy.interpolate import CubicSpline
 
 from ..models.canvas import Effect
 from ..models.editor import Mode
@@ -108,9 +110,9 @@ class EditorController:
         if (imx + imw) < ev.x or (imy + imh) < ev.y:
             return
 
+        # todo(mara.schulke): take scaling into account!
         x = ev.x - imx
         y = ev.y - imy
-
 
         if self.model.editor.mode == Mode.DRAW:
             radius = self.model.editor.pen.size
@@ -124,29 +126,52 @@ class EditorController:
             fill=fill
         )
 
-        # infer missed drawing events
+        self.interpolate_drawing(draw, (x, y), fill, radius)
+
+        self.model.editor.pen.last_points.append((int(x), int(y)))
+        self.model.editor.pen.last_usage = time.time() * 1000
+        self.model.canvas.trigger("canvas::render")
+
+    def interpolate_drawing(self, draw, ev: (int, int), fill: int, radius: int) -> None:
+        x, y = ev
+
         last_usage = self.model.editor.pen.last_usage
+        last_points = self.model.editor.pen.last_points
+
         now = time.time() * 1000
 
-        if last_usage is not None and (now - last_usage) <= 100:
-            lx, ly = self.model.editor.pen.last_coords
-            # delta movements
-            dx = x - lx
-            dy = y - ly
-            # delta vector
-            dv = (dx, dy)
-            # length of delta vector
-            delta = math.sqrt(dx**2 + dy**2)
+        if last_usage is None or (now - last_usage) >= 100:
+            self.model.editor.pen.last_points = []
+            return
 
-            for i in range(1, 1000):
-                progress = i / 1000
-                posx = x + (progress * dx)
-                posy = y + (progress * dy)
-                draw.ellipse(
-                    (posx-radius, posy-radius, posx+radius, posy+radius), 
-                    fill=fill
-                )
+        if len(last_points) < 2:
+            return
 
-        self.model.editor.pen.last_coords = (x, y)
-        self.model.editor.pen.last_usage = now
-        self.model.canvas.trigger("canvas::render")
+        lx, ly = last_points[-1]
+        dx, dy = x - lx, y - ly
+        delta = math.sqrt(dx**2 + dy**2)
+
+        if delta < 1:
+            return
+
+        xseries, yseries = zip(*last_points)
+        xseries, yseries = np.array(xseries), np.array(yseries)
+
+        # Perform cubic spline interpolation
+        cs_x = CubicSpline(np.arange(len(xseries)), xseries)
+        cs_y = CubicSpline(np.arange(len(yseries)), yseries)
+
+        # Generate more points for a smoother line
+        x_interp = cs_x(np.linspace(0, len(xseries) - 1, num=len(xseries) * 10))
+        y_interp = cs_y(np.linspace(0, len(yseries) - 1, num=len(yseries) * 10))
+
+        # Draw the smooth line
+        for i in range(len(x_interp) - 1):
+            draw.line(
+                (x_interp[i], y_interp[i], x_interp[i+1], y_interp[i+1]),
+                fill=fill,
+                width=radius*2
+            )
+
+        while len(self.model.editor.pen.last_points) > 2:
+            self.model.editor.pen.last_points.pop(0)

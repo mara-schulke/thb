@@ -30,7 +30,8 @@ class Mode(Enum):
 class PenState:
     size = 10
     color = Color.BLACK
-    last_coords = None
+
+    last_points = []
     last_usage = None
 
 
