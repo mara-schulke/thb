@@ -180,9 +180,9 @@ class EditorController:
         if (imx + imw) < ev.x or (imy + imh) < ev.y:
             return
 
-        # todo(mara.schulke): take scaling into account!
-        x = ev.x - imx
-        y = ev.y - imy
+        # todo(mara.schulke): repair in zoom drawing
+        x = (ev.x - imx) / self.model.canvas.scale
+        y = (ev.y - imy) / self.model.canvas.scale
 
         if self.model.editor.mode == Mode.DRAW:
             radius = self.model.editor.pen.size

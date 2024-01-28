@@ -150,7 +150,7 @@ class ZoomableCanvas(tk.Frame):
         self.zoom(1)
 
     def zoom_out(self, event=None):
-       """
+        """
         Decreases the zoom level of the image.
 
         Parameters:

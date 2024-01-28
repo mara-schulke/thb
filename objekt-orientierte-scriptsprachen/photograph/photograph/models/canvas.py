@@ -86,6 +86,7 @@ class Canvas(ObservableModel):
         self.layers = [pillow.Image.open(self.file).convert('RGBA')]
         self.hidden = []
         self.width, self.height = self.layers[0].size
+        self.scale = 512 / self.width
         self.trigger("canvas::open")
         self.trigger("canvas::render")
 
