@@ -1,0 +1,130 @@
+threagile_version: 1.0.0
+
+title: Google Meet Threat Model
+
+date: 2024-04-18
+
+author:
+  name: Mara Schulke
+
+management_summary_comment: >
+  This threat model addresses the security aspects related to Google Meet,
+  focusing on video streaming, user data management, and integration with other
+  Google services.
+
+business_criticality: mission-critical
+
+business_overview:
+  description: >
+    Google Meet is a video-communication service developed by Google. It is one
+    of the key components of Google Workspace that allows high-quality video
+    meetings secured with various layers of security to ensure business
+    continuity and data protection.
+
+technical_overview:
+  description: >
+    Google Meet operates on a complex infrastructure designed to handle massive
+    simultaneous connections, integrating seamlessly with other Google services
+    like Calendar and Gmail to provide a comprehensive communication platform.
+
+questions:
+  How are video streams encrypted?: >
+    Video streams are encrypted using TLS and SRTP protocols to ensure that all
+    communication is secured.
+
+abuse_cases:
+  Zoombombing: >
+    As an attacker, I want to gain unauthorized access to private meetings to
+    disrupt ongoing sessions or eavesdrop on confidential discussions.
+  Credential Stuffing: >
+    As an attacker, I want to use breached or weak credentials to gain
+    unauthorized access to user accounts and impersonate legitimate users.
+
+security_requirements:
+  Encryption of Video Streams: Video streams must be encrypted using industry-standard protocols.
+  Strong Authentication: Multi-factor authentication must be enforced to prevent unauthorized access.
+
+tags_available:
+  - HTML5
+  - CSS3
+  - JavaScript
+  - Internet
+  - External
+  - Cloud
+  - Browser
+  - WebRTC
+  - OAuth
+  - GCP
+  - Google-Workspace
+
+data_assets:
+  User Account Information:
+    id: user-accounts
+    description: User account data including authentication credentials and user preferences.
+    usage: business
+    tags: [OAuth, Google-Workspace]
+    origin: User
+    owner: Google Inc.
+    quantity: very-many
+    confidentiality: confidential
+    integrity: critical
+    availability: critical
+    justification_cia_rating: >
+      User account data is critical for user management and personalization of the service. It must be available and accurate to ensure user satisfaction and system integrity.
+
+  Video Meeting Data:
+    id: meeting-data
+    description: Data related to the video meetings, including video and audio streams.
+    usage: business
+    tags: [WebRTC]
+    origin: User
+    owner: Google Inc.
+    quantity: very-many
+    confidentiality: confidential
+    integrity: operational
+    availability: critical
+    justification_cia_rating: >
+      Video and audio stream data are sensitive as they may contain confidential information discussed during meetings. This data requires high availability to ensure service functionality and user satisfaction.
+
+technical_assets:
+  Web Application:
+    id: web-app
+    description: The web application for accessing Google Meet.
+    type: process
+    usage: business
+    used_as_client_by_human: true
+    out_of_scope: false
+    size: application
+    technology: browser
+    tags: [HTML5, CSS3, JavaScript]
+    internet: true
+    machine: virtual
+    encryption: data-with-asymmetric-shared-key
+    owner: Google Inc.
+    confidentiality: confidential
+    integrity: critical
+    availability: mission-critical
+    justification_cia_rating: >
+      The web application is the primary interface for users to interact with the service, requiring high confidentiality, integrity, and availability.
+
+trust_boundaries:
+  Public Internet:
+    id: public-internet
+    description: The boundary representing the public internet access layer.
+    type: network-cloud-provider
+    tags: [Internet, External]
+    technical_assets_inside: [web-app]
+
+shared_runtimes:
+  Google Cloud Platform:
+    id: gcp
+    description: Google Cloud Platform services used to host and run Google Meet.
+    technical_assets_running: [web-app]
+
+risk_tracking:
+  unauthorized-access@web-app:
+    status: in-discussion
+    justification: Currently evaluating potential solutions for enhanced user authentication mechanisms.
+    ticket: SEC-001
+    date: 2024-04-18
+    checked_by: Google Security Analyst
