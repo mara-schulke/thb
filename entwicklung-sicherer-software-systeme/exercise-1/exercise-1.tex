@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{float}
+
+\graphicspath{{./images/}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{\fancyplain{}{Mara Schulke} }
+\rhead{\fancyplain{}{\today}}
+\cfoot{\fancyplain{}{\thepage}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Studiengang IT Sicherheit \\
+		Fachbereich Informatik und Medien \\
+		Entwicklung Sicherer Softwaresysteme \\
+		Prof. Dr.-Ing. Martin Schafföner
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe: Threat Analysis}\\[0.5em]
+		\large{Sommersemester 2024}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\begin{abstract}
+	In dieser Einsendeaufgabe wird die Online-Meeting-Plattform Google Meet der Firma 
+	Google hinsichtlich ihrer softwareseitigen Risiken und Gefahren analysiert.
+	Es wird die Vorgehensweise der Gefahrenanalyse, die entdeckten Risiken und Gefahren 
+	zusammengefasst und eine Priorisierung mit Handlungsempfehlung daraus abgeleitet. Des 
+	weiteren wird auf die Methodik der Gefahrenanalyse eingegangen und von alternativen 
+	Vorgehensweisen abgegrenzt.
+\end{abstract}
+
+\tableofcontents
+
+\listoffigures
+
+\newpage
+
+\section{Projektauswahl: Google Meet}
+
+Die Auswahl des zu analysierenden Projektes viel auf die Onlne-Meeting-Plattform Google 
+Meet da diese mehrere Punkte abdeckt:
+
+\begin{enumerate}
+	\item Ihre Funktionsweise- und -umfang ist ihm Rahmen einer Kurzanalyse greifbar
+	\item Die Anwendungsarchitektur lässt sich aus vergleichbaren Echtzeit-Meeting Anwendungen ableiten und vereinfachen
+	\item Sie hat einen weitreichenden Bekanntheitsgrad
+\end{enumerate}
+
+Vereinfacht lässt sich Google Meet in einer Client-Server Architektur darstellen, auch 
+wenn an dieser Stelle angemerkt werden muss, dass durch die Menge an Nutzern, die Vielzahl 
+an Integrationen und die Stabilität der Software davon auszugehen ist, dass es sich nicht 
+um eine naive Architektur der Server bzw. Server-Infrastruktur handelt. 
+
+Im Rahmen dieser Einsendeaufgabe wird die Annahme getroffen, dass Google Meet der folgenden Architektur entlang aufgebaut ist:
+
+%\begin{figure}[H]
+%	\includegraphics[width=0.75\textwidth]{images/01-architecture.png}
+%	\centering
+%	\caption{Anwendungsarchitektur Google Meet}
+%\end{figure}
+
+Dies ist notwendig um in einem zeitlich angemessenen Rahmen in der Lage zu sein eine 
+beispielhafte Gefahrenanalyse durchführen zu können.
+
+\section{Auswahl der Gefahrenanalyse Software}
+
+Um eine automatisierte Gefahrenanalyse durchzuführen stehen mittlerweile (Stand Mai 2024), 
+eine Vielzahl an verschiedenen Tools zur Verfügung. Nachfolgend sind einige beliebtesten 
+bzw. bekanntesten, kostenlosen \textit{Threat-Modelling}-Programme aufgelistet:
+
+% [1]
+
+\subsection*{Kostenlose Software}
+
+Da diese Einsendeaufgabe von geringem Umfang ist und keine weiteren Anwendungsfälle für 
+eine ausgereifte Threat-Modelling Software absehbar sind beschränke ich den Vergleich 
+verschiedener Software-Lösungen auf kostenlose bzw. Open-Source Programme.
+
+\subsubsection*{MTMT – Microsoft Threat Modeling Tool}
+
+MTMT ist das Threat Modeling Tool der Firma Microsoft. Es ist ein weit verbreitetes 
+Werkzeug zur Modellierung von Software und der Automatisierten Analyse dieser Modelle. Da 
+der Anbieter Microsoft ist, besteht leider die Anforderung MTMT auf einem Windows-System 
+auszuführen.
+
+Das MTMT ist weiterhin ein sehr umfangreiches Werkzeug, das ebenfalls im professionellen 
+Kontext Einsatz findet – dies resultiert in einer komplexen Oberfläche mit 
+vielen Möglichkeiten und ausgereiften Konzepten.
+
+Leider musste ich durch die Gegebenheit, kein Windows-System zu betreiben, die Analyse 
+des MTMT hier beenden, da es mir leider nicht möglich war eine ausführbare Version für 
+Unix-Systeme zu finden ohne Virtualisierung zu verwenden.
+
+\subsubsection*{OWASP ThreatDragon}
+
+\subsubsection*{AWS ThreatComposer}
+
+\subsubsection*{Threagile}
+
+Threagile ist kostenlose Open-Source Software zur Gefahrenanalyse ohne eine 
+Benutzeroberfläche. Dies ist eine Eigenheit im Vergleich zu den anderen vorgestellten 
+Programmen die hauptsächlich über das Desktop- oder Web-Interface zu bedienen sind.
+Threagile lässt sich über eine .yaml Datei bedienen die einem vorgegebenen Schema 
+entsprechen muss. So lassen sich im Quelltext Komponenten (und ihre Beziehungen), 
+Datenbanken, Verschlüsselungen, Datenflüsse, verwendete Technologien und vieles mehr 
+Dokumentieren.
+
+Der klare Vorteil von Threagile liegt in der Möglichkeit diese YAML-Datei bzw. die 
+analysierte Architektur ohne weiteres in git oder anderen VCS (kurz für \textit{Version 
+Control Systems}) zu versionieren. Bei anderer proprietär Software ist dies zwar 
+grundsätzlich Möglich aber da VCS in der Regel auf Klartext-Dateien ausgelegt sind sind 
+die Möglichkeiten begrenzt bzw. parallel im Team an einer Datei zu arbeiten.
+
+Des Weiteren ist es einfach mittels Threagile eine Gefahrenanalyse auf der YAML-Datei 
+auszuführen und der generierte Report hat eine hohe Qualität (optisch, strukturell und 
+inhaltlich).
+
+\subsection{Begründung der Auswahl}
+
+Im Rahmen dieser Einsendeaufgabe habe ich mich unter den oben dargestellten Abgrenzungen 
+der verschiedenen Softwarelösungen für die Nutzung von Threagile entschieden. Threagile 
+ist einfach zu bedienen, reproduzierbar (mittels Docker), eine nützliche Resource für 
+zukünftige berufliche Situationen.
+
+\section{Ergebnis der automatisierten Gefahrenanalyse}
+
+\section{Detaillierte Gefahrenanalyse}
+
+Analyze some of the threats in more detail.
+
+\section{Priorisierung der Gefahren}
+
+\section{Zusammenfassung}
+
+% [1] https://www.iriusrisk.com/resources-blog/recommended-threat-modeling-tools
+
+
+\end{document}
