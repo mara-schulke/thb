@@ -87,9 +87,9 @@ data_assets:
       Video and audio stream data are sensitive as they may contain confidential information discussed during meetings. This data requires high availability to ensure service functionality and user satisfaction.
 
 technical_assets:
-  Web Application:
-    id: web-app
-    description: The web application for accessing Google Meet.
+  Google Meet Client:
+    id: google-meet-client
+    description: Google Meet Client
     type: process
     usage: business
     used_as_client_by_human: true
@@ -106,6 +106,144 @@ technical_assets:
     availability: mission-critical
     justification_cia_rating: >
       The web application is the primary interface for users to interact with the service, requiring high confidentiality, integrity, and availability.
+
+  Google Meet Server:
+    id: google-meet-server
+    description: Google Meet Server
+    type: process
+    usage: business
+    used_as_client_by_human: false
+    out_of_scope: false
+    size: application
+    technology: web-server
+    internet: false
+    machine: container
+    confidentiality: internal
+    integrity: mission-critical
+    availability: mission-critical
+    multi_tenant: false
+    redundant: false
+    custom_developed_parts: false
+    data_assets_processed:
+      - user-accounts
+      - meeting-data
+    data_assets_stored:
+      - meeting-data
+    data_formats_accepted:
+      - json
+    communication_links:
+      Web Interface:
+        target: google-meet-client
+        description: 
+        protocol: https # values: see help
+        authentication: token # values: none, credentials, session-id, token, client-certificate, two-factor
+        authorization: technical-user # values: none, technical-user, end-user-identity-propagation
+        tags:
+        vpn: false
+        ip_filtered: false
+        readonly: false
+        usage: business
+        data_assets_sent:
+          - user-accounts
+          - meeting-data
+        data_assets_received:
+          - user-accounts
+          - meeting-data
+      User Authentication Access:
+        target: auth-server
+        description: Link to the auth server for managing users
+        protocol: https
+        authentication: credentials
+        authorization: technical-user
+        tags:
+        vpn: false
+        ip_filtered: false
+        readonly: false
+        usage: business
+        data_assets_sent:
+          - user-accounts
+        data_assets_received:
+          - user-accounts
+
+  Load Balancer:
+    id: load-balancer
+    description: Load Balancer (HA-Proxy)
+    type: process
+    usage: business
+    used_as_client_by_human: false
+    out_of_scope: false
+    justification_out_of_scope:
+    size: component
+    technology: load-balancer
+    tags:
+    internet: false
+    machine: physical
+    encryption: none
+    owner: Google
+    confidentiality: internal
+    integrity: mission-critical
+    availability: mission-critical
+    justification_cia_rating: >
+      The correct configuration and reachability of the load balancer is mandatory for all users of google meet
+    multi_tenant: false
+    redundant: false
+    custom_developed_parts: false
+    data_assets_processed:
+      - user-accounts
+      - meeting-data
+    data_assets_stored:
+    data_formats_accepted:
+    communication_links:
+      Google Meet Traffic:
+        target: google-meet-server
+        description: Link to the web server
+        protocol: http
+        authentication: session-id
+        authorization: end-user-identity-propagation
+        tags:
+        vpn: false
+        ip_filtered: false
+        readonly: false
+        usage: business
+        data_assets_sent:
+          - user-accounts
+          - meeting-data
+        data_assets_received:
+          - user-accounts
+          - meeting-data
+
+  Identity Provider:
+    id: identity-provider
+    description: Identity provider server
+    type: process
+    usage: business
+    used_as_client_by_human: false
+    out_of_scope: false
+    justification_out_of_scope:
+    size: component
+    technology: identity-provider # values: see help
+    tags:
+      - linux
+      - jboss
+      - keycloak
+    internet: false
+    machine: virtual
+    encryption: none
+    owner: Google
+    confidentiality: confidential
+    integrity: critical
+    availability: critical
+    justification_cia_rating: >
+      The auth data of google users
+    multi_tenant: false
+    redundant: false
+    custom_developed_parts: false
+    data_assets_processed:
+      - user-accounts
+    data_assets_stored:
+      - user-accounts
+    data_formats_accepted:
+      - json
 
 trust_boundaries:
   Public Internet:

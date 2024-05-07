@@ -57,8 +57,6 @@
 
 \listoffigures
 
-\newpage
-
 \section{Projektauswahl: Google Meet}
 
 Die Auswahl des zu analysierenden Projektes viel auf die Onlne-Meeting-Plattform Google 
@@ -75,16 +73,20 @@ wenn an dieser Stelle angemerkt werden muss, dass durch die Menge an Nutzern, di
 an Integrationen und die Stabilität der Software davon auszugehen ist, dass es sich nicht 
 um eine naive Architektur der Server bzw. Server-Infrastruktur handelt. 
 
-Im Rahmen dieser Einsendeaufgabe wird die Annahme getroffen, dass Google Meet der folgenden Architektur entlang aufgebaut ist:
+Im Rahmen dieser Einsendeaufgabe wird die Annahme getroffen, dass Google Meet der 
+folgenden Architektur entlang aufgebaut ist:
 
-%\begin{figure}[H]
-%	\includegraphics[width=0.75\textwidth]{images/01-architecture.png}
-%	\centering
-%	\caption{Anwendungsarchitektur Google Meet}
-%\end{figure}
+\begin{figure}[H]
+	\includegraphics[width=0.5\textwidth]{./google-meet-diagram.png}
+	\centering
+	\caption{Anwendungsarchitektur Google Meet (stark vereinfacht)}
+\end{figure}
 
-Dies ist notwendig um in einem zeitlich angemessenen Rahmen in der Lage zu sein eine 
-beispielhafte Gefahrenanalyse durchführen zu können.
+Im Rahmen dieser Aufgabe wird von einer monolithischen Anwendungsarchitektur von Google 
+Meet ausgegangen in einem zeitlich angemessenen Rahmen in der Lage zu sein eine 
+hypothetische Gefahrenanalyse durchführen zu können. Der Google Meet Server in der 
+beistehenden Grafik übernimmt die Verwaltung der Sitzungen, die Account-Authentifizierung 
+und die Aushandlung der WebRTC-Sitzungen zwischen verschiedenen Nutzer.
 
 \section{Auswahl der Gefahrenanalyse Software}
 
@@ -117,7 +119,24 @@ Unix-Systeme zu finden ohne Virtualisierung zu verwenden.
 
 \subsubsection*{OWASP ThreatDragon}
 
+OWASP ThreatDragon ist eine Software der Organization OWASP (kurz für \textit{Open 
+Worldwide Application Security Project}). Die Software ist kostenlos und
+Browser basiert. Sie enthält Funktionen für die Diagramm-Zeichnung und anschließende 
+Erstellung eines Sicherheits-Reports. Die Arbeitsstände müssen allerdings immer 
+heruntergeladen werden und in lokalen Dateien gespeichert werden – dies ist eine relativ 
+umständliche Arbeitsweise, da anders als bei nativer Software nicht eine Datei durchgehend 
+geöffnet und bearbeitet werden kann. Außerdem bietet ThreatDragon nur einen begrenzten 
+Umfang an erkannten Sicherheitslücken bei einer offensichtlich fehlerhaften 
+Softwarearchitektur.
+
 \subsubsection*{AWS ThreatComposer}
+
+AWS ThreatComposer ist eine Open Source Software der Firma Amazon. Sie ist ebenfalls 
+Browser basiert, allerdings etwas ausgereifter und nutzerfreundlicher als die OWASP 
+alternative. Dennoch gibt es auch hier einige Unannehmlichkeiten für Nutzer: Die 
+Benutzeroberfläche ist unklar (e.g. Diagramme sind nur zur Dokumentation hinzuzufügen, 
+nicht zur automatisierten Auswertung). Es gibt keine klare Datenverwaltung bzw. keinen 
+klaren Datenexport und der allgemeine Funktionsumfang wirkt etwas eingeengt.
 
 \subsubsection*{Threagile}
 
@@ -147,6 +166,11 @@ ist einfach zu bedienen, reproduzierbar (mittels Docker), eine nützliche Resour
 zukünftige berufliche Situationen.
 
 \section{Ergebnis der automatisierten Gefahrenanalyse}
+
+Der automatisierte Report von Threagile hat basierend der oben dargestellten, stark 
+vereinfachten, Anwendungsarchitektur folgende Risiken identifizieren können.
+
+\subsection{}
 
 \section{Detaillierte Gefahrenanalyse}
 
