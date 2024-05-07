@@ -56,6 +56,9 @@ tags_available:
   - OAuth
   - GCP
   - Google-Workspace
+  - linux
+  - jboss
+  - keycloak
 
 data_assets:
   User Account Information:
@@ -119,6 +122,7 @@ technical_assets:
     internet: false
     machine: container
     confidentiality: internal
+    encryption: data-with-asymmetric-shared-key
     integrity: mission-critical
     availability: mission-critical
     multi_tenant: false
@@ -178,7 +182,7 @@ technical_assets:
     tags:
     internet: false
     machine: physical
-    encryption: none
+    encryption: data-with-asymmetric-shared-key
     owner: Google
     confidentiality: internal
     integrity: mission-critical
@@ -199,7 +203,7 @@ technical_assets:
         description: Link to the web server
         protocol: http
         authentication: session-id
-        authorization: end-user-identity-propagation
+        authorization: technical-user
         tags:
         vpn: false
         ip_filtered: false
@@ -212,9 +216,9 @@ technical_assets:
           - user-accounts
           - meeting-data
 
-  Identity Provider:
-    id: identity-provider
-    description: Identity provider server
+  Auth Server:
+    id: auth-server
+    description: Authentication Server
     type: process
     usage: business
     used_as_client_by_human: false
@@ -228,7 +232,7 @@ technical_assets:
       - keycloak
     internet: false
     machine: virtual
-    encryption: none
+    encryption: data-with-symmetric-shared-key
     owner: Google
     confidentiality: confidential
     integrity: critical
@@ -251,16 +255,19 @@ trust_boundaries:
     description: The boundary representing the public internet access layer.
     type: network-cloud-provider
     tags: [Internet, External]
-    technical_assets_inside: [web-app]
+    technical_assets_inside: [google-meet-client]
 
 shared_runtimes:
   Google Cloud Platform:
     id: gcp
     description: Google Cloud Platform services used to host and run Google Meet.
-    technical_assets_running: [web-app]
+    technical_assets_running:
+      - google-meet-server
+      - load-balancer
+      - auth-server
 
 risk_tracking:
-  unauthorized-access@web-app:
+  unauthorized-access@google-meet-client:
     status: in-discussion
     justification: Currently evaluating potential solutions for enhanced user authentication mechanisms.
     ticket: SEC-001
