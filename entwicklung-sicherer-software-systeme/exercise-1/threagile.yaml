@@ -109,6 +109,31 @@ technical_assets:
     availability: mission-critical
     justification_cia_rating: >
       The web application is the primary interface for users to interact with the service, requiring high confidentiality, integrity, and availability.
+    data_assets_processed:
+      - user-accounts
+      - meeting-data
+    data_assets_stored:
+      - meeting-data
+    data_formats_accepted:
+      - json
+    communication_links:
+      Web Server:
+        target: load-balancer
+        description: 
+        protocol: https # values: see help
+        authentication: token # values: none, credentials, session-id, token, client-certificate, two-factor
+        authorization: technical-user # values: none, technical-user, end-user-identity-propagation
+        tags:
+        vpn: false
+        ip_filtered: false
+        readonly: false
+        usage: business
+        data_assets_sent:
+          - user-accounts
+          - meeting-data
+        data_assets_received:
+          - user-accounts
+          - meeting-data
 
   Google Meet Server:
     id: google-meet-server
@@ -248,8 +273,35 @@ technical_assets:
       - user-accounts
     data_formats_accepted:
       - json
+    communication_links:
+      Google Meet Server:
+        target: google-meet-server
+        description: 
+        protocol: https # values: see help
+        authentication: token # values: none, credentials, session-id, token, client-certificate, two-factor
+        authorization: technical-user # values: none, technical-user, end-user-identity-propagation
+        tags:
+        vpn: false
+        ip_filtered: false
+        readonly: false
+        usage: business
+        data_assets_sent:
+          - user-accounts
+        data_assets_received:
+          - user-accounts
+
 
 trust_boundaries:
+  Google Cloud:
+    id: google-cloud
+    description: The boundary representing the google cloud
+    type: network-cloud-provider
+    tags: []
+    technical_assets_inside:
+      - google-meet-server
+      - load-balancer
+      - auth-server
+
   Public Internet:
     id: public-internet
     description: The boundary representing the public internet access layer.
