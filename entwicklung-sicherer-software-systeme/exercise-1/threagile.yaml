@@ -226,7 +226,7 @@ technical_assets:
       Google Meet Traffic:
         target: google-meet-server
         description: Link to the web server
-        protocol: http
+        protocol: https
         authentication: session-id
         authorization: technical-user
         tags:
