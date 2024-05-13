@@ -59,8 +59,8 @@
 
 \section{Projektauswahl: Google Meet}
 
-Die Auswahl des zu analysierenden Projektes viel auf die Onlne-Meeting-Plattform Google 
-Meet da diese mehrere Punkte abdeckt:
+Die Auswahl des zu analysierenden Projektes fiel auf die Online-Meeting-Plattform Google 
+Meet, da diese mehrere Punkte abdeckt:
 
 \begin{enumerate}
 	\item Ihre Funktionsweise- und -umfang ist ihm Rahmen einer Kurzanalyse greifbar
@@ -91,10 +91,8 @@ und die Aushandlung der WebRTC-Sitzungen zwischen verschiedenen Nutzer.
 \section{Auswahl der Gefahrenanalyse Software}
 
 Um eine automatisierte Gefahrenanalyse durchzuführen stehen mittlerweile (Stand Mai 2024), 
-eine Vielzahl an verschiedenen Tools zur Verfügung. Nachfolgend sind einige beliebtesten 
-bzw. bekanntesten, kostenlosen \textit{Threat-Modelling}-Programme aufgelistet:
-
-% [1]
+eine Vielzahl an verschiedenen Tools zur Verfügung. Nachfolgend sind einige beliebte 
+bzw. bekannte, kostenlose \textit{Threat-Modelling}-Programme aufgelistet:
 
 \subsection*{Kostenlose Software}
 
@@ -168,22 +166,96 @@ zukünftige berufliche Situationen.
 \section{Ergebnis der automatisierten Gefahrenanalyse}
 
 Der automatisierte Report von Threagile hat basierend der oben dargestellten, stark 
-vereinfachten, Anwendungsarchitektur folgende Risiken identifizieren können.
+vereinfachten, Anwendungsarchitektur hat insgesamt 21 mögliche Risiken und in 12 
+verschiedenen Risiko-Klassen identifizieren können.
 
-- 19 risiken insgesamt
-- davon 4 elevated
-- 12 medium
-- 3 low risk
+Folgende Risiko-Klassen wurden mit der Stufe \textit{Elevated – Wahrscheinlicher Angriff mit hohem Schaden} markiert:
 
-\section{Detaillierte Gefahrenanalyse}
+\begin{enumerate}
+	\item Cross-Site-Scripting 
+	\item Missing Cloud Hardening
+	\item Missing Hardening
+	\item Server-Side-Request-Forgery
+\end{enumerate}
 
-Analyze some of the threats in more detail.
+Alle anderen entdeckten Risiko-Klassen wurden mit der Stufe \textit{Medium – Unwahrscheinlicher Angriff mit hohem Schaden} markiert:
+
+\begin{enumerate}
+	\item Container Base Image Backdooring
+	\item Cross-Site-Request-Forgery
+	\item DoS-Risky Access Across Trust Boundary
+	\item Missing Identity Propagation
+	\item Missing Identity Provider Isolation
+	\item Missing Two-Factor Authentication
+	\item Missing Vault
+	\item Mixed Targets on Shared-Runtime
+\end{enumerate}
+
+Zusammenfassend lässt sich über die entdeckten Risiken sagen, dass diese ein konkretes,
+greifbares Risiko darstellen und Threagile wenige ``False-Positives'' entdeckt hat (bspw. 
+Fehler die lediglich aufgrund einer Ungenauigkeit der Diagramm-Funktion markiert werden). 
+Threagile lässt eine sehr detaillierte Dokumentation von Verschlüsselungs-Methoden, 
+übertragenen Datensätzen und verwendeten Datenformaten etc. zu. Die Liste der einzelnen 
+Risiken finden sie im Threagile-Report (Anhang 1). 
 
 \section{Priorisierung der Gefahren}
 
+Die logische Schlussfolgerung der oben eingestuften Risiko-Klassen ist die priorisierung 
+der Gefahren nach absolutem Risiko:
+
+$$Risiko = Schaden * Wahrscheinlichkeit$$
+
+\vspace{0.5em}
+
+Demzufolge bezieht sich diese Priorisierung lediglich auf die Gefahren aus der Klasse 
+\textit{Elevated}:
+
+\begin{enumerate}
+	\item Cross-Site Scripting (XSS) risk at Google Meet Server (\textit{Likely with High impact})
+	\item Missing Cloud Hardening risk at Google Cloud (\textit{Unlikely with Very High impact})
+	\item Missing Cloud Hardening risk at Public Internet (\textit{Unlikely with Very High impact})
+	\item Cross-Site Scripting (XSS) risk at Auth Server (\textit{Likely with Medium impact})
+	\item Missing Hardening risk at Google Meet Server (\textit{Likely with Medium impact})
+	\item Server-Side Request Forgery (SSRF) risk at Auth Server server-side web-requesting the target Google Meet Server via Google Meet Server (\textit{Likely with Medium impact})
+	\item Server-Side Request Forgery (SSRF) risk at Google Meet Server server-side web-requesting the target Auth Server via User Authentication Access: (\textit{Likely with Medium impact})
+	\item Server-Side Request Forgery (SSRF) risk at Google Meet Server server-side web-requesting the target Google Meet Client via Web Interface (\textit{Likely with Medium impact})
+\end{enumerate}
+
+\section{Detaillierte Betrachtung}
+
+\subsection{Cross-Site-Scripting (XSS)}
+
+Da Google Meet text-basierte Nutzereingaben als eine der Kernfunktionen (Chat) zulässt, 
+stellt Cross-Site-Scripting ein erhebliches Risiko dar. Allerdings muss an dieser Stelle
+angemerkt werden, dass die Empfänger einer bösartigen lediglich die Nutzer einer Sitzung 
+sind (meist, ein bis zweistellige Nutzerzahlen) – wohingegen auf Plattformen wie Twitter 
+und YouTube etc. Nutzer öffentlich Beiträge posten können was die Anzahl an betroffenen 
+Nutzern drastisch erhöht.
+
+Davon unberührt ist allerdings die Ausführung von Code bzw. Befehlen auf dem Google 
+Meet Server (auch bekannt als \textit{RCE – Remote Code Execution}) mittels XSS.
+
+\subsection{Missing Cloud Hardening}
+
+Die fehlende Absicherung der Cloud gegen unbefugten Zugriff (bspw. via SSH, 
+Netzwerkschwachstellen etc) stellt neben XSS die größte Gefahr dar, da diese mit einer 
+möglichen ``Escalation of Privilege'' einhergehen könnte und somit ein Angreifer nach der 
+infiltration einer der Cloud-Internen-Komponenten wohlmöglich weitere Komponenten 
+infizieren könnte. Mögliche Lösungsstrategien zur Absicherung der Cloud bestehen darin,
+verwaltete Services (für Netzwerkverbindungen, Datenbanken, Load-Balancing, Server-
+Hosting) der GCP in Anspruch zu nehmen, anstatt mittels VM eine manuelle Infrastruktur 
+einzurichten. Bei Verwendung der verwalteten Lösungen (was bei Google's eigener Software 
+sehr wahrscheinlich ist) besteht keine Notwendigkeit, dass sich das Google Meet Team um 
+Updates der Netzwerk-Software, Firewall etc. kümmert. 
+
+Threagile schlägt zur Unterbindung dieser Gefahr vor, bekannte Absicherungs-Frameworks 
+(unteranderem von OWASP) zu verwenden, um die cloud-interne Architektur zu überprüfen.
+
 \section{Zusammenfassung}
 
-% [1] https://www.iriusrisk.com/resources-blog/recommended-threat-modeling-tools
-
+Insgesamt lassen sich aus dem generierten Threagile-Report mit wenig Aufwand wichtige 
+Hinweise zu grundlegenden Problemen der verwendeten Software-Architektur ableiten. Da 
+Threagile gleichzeitig zur internen Dokumentation und zur Gefahrenanalyse verwendet werden 
+kann, bietet die Nutzung eine 
 
 \end{document}
