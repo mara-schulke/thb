@@ -1,0 +1,315 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{pdflscape}
+
+\graphicspath{{./images/}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{\fancyplain{}{Mara Schulke} }
+\rhead{\fancyplain{}{\today}}
+\cfoot{\fancyplain{}{\thepage}}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{flushleft}
+		TH Brandenburg \\
+		Studiengang IT Sicherheit \\
+		Fachbereich Informatik und Medien \\
+		Entwicklung Sicherer Softwaresysteme \\
+		Prof. Dr.-Ing. Martin Schafföner
+	\end{flushleft}
+
+	\vfill
+
+	\begin{center}
+		\Large{Einsendeaufgabe: Nichtfunktionale Sicherheitsanforderungen}\\[0.5em]
+		\large{Sommersemester 2024}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{flushright}
+		Mara Schulke \\
+		Matrikel-Nr. 20215853
+	\end{flushright}
+\end{titlepage}
+
+\tableofcontents
+
+\listoffigures
+
+\section{Einführung}
+
+In der vorherigen Einsendeaufgabe wurde die Online-Meeting-Plattform Google Meet 
+analysiert und ausgewertet. Die Sicherheitsbegutachtung von Google Meet wird im Rahmen 
+dieser Aufgabe fortgeführt und um Sicherheits-Akzeptanzkriterien bzw. 
+sicherheitsspezifische Anforderungen erweitert. Außerdem werden die verschiedenen 
+Vorgehensweisen verglichen und es werden Testszenarien definiert, mittels derer die 
+Sicherheits-Akzeptanzkriterien verifiziert werden können.
+
+\section{Funktionale Anforderungen}
+
+Da die funktionalen Anforderungen im Rahmen der letzten Einsendeaufgabe noch nicht konkret 
+benannt worden sind, ist der erste Schritt um sinnvolle Sicherheitsanforderungen zu 
+definieren die Benennung der funktionalen Anforderungen an Google Meet. Im konkreten 
+(angenommen, es wird nur der grundlegende Umfang einer Meeting-Plattform abgedeckt) 
+handelt es sich dabei um die folgenden Anforderungen:
+
+\begin{itemize}
+	\item \textbf{Benutzerauthentifizierung:} Google Meet muss es Benutzern ermöglichen, sich zu registrieren, anzumelden und abzumelden.
+	\item \textbf{Meeting-Planung:} Google Meet muss es den Benutzern ermöglichen, Besprechungen mit bestimmten Teilnehmern zu planen.
+	\item \textbf{Video- und Audio-Streaming}: Google Meet muss Video- und Audiostreaming in Echtzeit unterstützen.
+	\item \textbf{Chat-Funktionalität:} Google Meet muss Textchats in Echtzeit während der Sitzungen unterstützen.
+	\item \textbf{File-Sharing:} Google Meet muss es den Nutzern ermöglichen, während einer Besprechung Dateien gemeinsam zu nutzen bzw. zu teilen.
+	\item \textbf{Bildschirmfreigabe:} Google Meet muss es den Nutzern ermöglichen, ihren Bildschirm während einer Besprechung gemeinsam zu nutzen.
+\end{itemize}
+
+\section{Nichtfunktionale Sicherheitsanforderungen}
+
+Die nichtfunktionalen Sicherheitsanforderungen an Google Meet bauen auf den funktionalen 
+Anforderungen auf und decken die zugrundeliegenden Sicherheitsmechanismen ab. Sie benennen 
+die konkreten Aspekte die Software-Entwickler bei der Umsetzung der obigen Anforderungen 
+in einem System berücksichtigen müssen. Bei der Formulierung von nichtfunktionalen 
+Sicherheitsanforderungen stehen einige Möglichkeiten zur Verfügung:
+
+\subsection{Verschiedene Vorgehensweisen}
+
+\subsubsection{Evil User Stories}
+
+Evil User Stories sind ein Mittel, um potenzielle Sicherheitsbedrohungen zu 
+identifizieren, indem man aus der Perspektive eines böswilligen Nutzers (bzw. Angreifers) 
+denkt. Diese Methode hilft Software-Entwicklern, Schwachstellen im System zu erkennen und 
+entsprechende Gegenmaßnahmen zu planen.
+Diese folgen in der Regel der Struktur:
+
+\begin{quote}
+``Als [böswilliger Akteur] möchte ich [schädliche Aktion], um [negativen Effekt] zu erreichen.''	
+\end{quote}
+
+\begin{flushleft}
+Ein Beispiel für diese Vorgehensweise könnte sein:
+\end{flushleft}
+
+\begin{quote}
+``Als Angreifer möchte ich unverschlüsselte Daten abfangen, um vertrauliche Informationen zu stehlen.''
+\end{quote}
+
+\subsubsection{Sicherheits-Akzeptanzkriterien}
+
+Sicherheits-Akzeptanzkriterien sind spezifische, messbare Bedingungen, die erfüllt sein 
+müssen, damit ein Sicherheitsfeature als erfolgreich implementiert gilt. Diese Kriterien 
+helfen dabei, sicherzustellen, dass die Sicherheitsanforderungen korrekt und vollständig 
+umgesetzt wurden.
+
+\begin{flushleft}
+Ein Beispiel für diese Vorgehensweise könnte sein:
+\end{flushleft}
+
+\begin{quote}
+``Alle Datenübertragungen müssen mit mindestens mit AES-256 verschlüsselt sein.''
+\end{quote}
+
+\subsubsection{Sicherheitsspezifische Anforderungen}
+
+Sicherheitsspezifische Anforderungen sind detaillierte, konkrete Anforderungen, die 
+Sicherheitsmechanismen und -verfahren beschreiben, um das System vor Bedrohungen zu 
+schützen. Diese Anforderungen sind spezifisch und oft technischer Natur.
+
+\begin{flushleft}
+Ein Beispiel für diese Vorgehensweise könnte sein:
+\end{flushleft}
+
+\begin{quote}
+``Implementiere HMAC für alle Nachrichten, um ihre Integrität sicherzustellen''
+\end{quote}
+
+\newpage
+
+\begin{landscape}
+	
+\subsection{Auflistung der nichtfunktionale Sicherheitsanforderungen}
+
+\begin{tabularx}{20cm}{|l|X|X|}
+    \hline
+    & \vspace{0em} \textbf{Sicherheits-Akzeptanzkriterien} \vspace{0.5em}
+    & \vspace{0em}\textbf{Sicherheitsspez. Anforderungen} \vspace{0.5em} \\
+    \hline
+        \textbf{Authentifizierung}
+        & Die Verfahren zur Benutzerauthentifizierung müssen einen Penetrationstest 
+          bestehen, um die Robustheit der Multi-Faktor-Authentifizierung zu überprüfen.
+        & Alle Authentifizierungen müssen durch eine Multi-Faktor-Authentifizierung 
+    	  geschützt sein.\vspace{0.5em}
+    	
+    	  Passwörter müssen mit einer dem Industriestandard entsprechenden Verschlüsselung 
+    	  (z. B. bcrypt) gespeichert werden.
+        \\
+    \hline
+        \textbf{Datenübertragung}
+        & Alle Datenübertragungen müssen mit einem Netzwerkprotokoll-Analysator validiert 
+          werden, um sicherzustellen, dass die Verschlüsselungsstandards eingehalten 
+          werden.
+        & Alle zwischen den Clients und dem Server übertragenen Daten
+          müssen mit TLS 1.2 oder höher verschlüsselt werden.
+        \\
+    \hline
+        \textbf{Zugangskontrolle}
+        & Die Zugriffskontrollmechanismen müssen anhand rollenbasierter Zugriffsszenarien 
+          getestet werden, um eine ordnungsgemäße Durchsetzung sicherzustellen.
+          \vspace{0.5em}
+
+          Unerlaubte Zugriffsversuche müssen protokolliert und während eines 
+          Audits überprüft werden.
+        & Die Nutzer dürfen nur auf Sitzungen zugreifen, zu denen sie ausdrücklich 
+          eingeladen wurden.\vspace{0.5em}
+          
+		  Es muss eine rollenbasierte Zugriffskontrolle (RBAC) implementiert werden, um 
+		  den Zugriff auf Verwaltungsfunktionen zu beschränken.
+        \\
+    \hline
+        \textbf{Datenschutz}
+        & Die Verschlüsselung von Besprechungsaufzeichnungen muss durch unbefugte 
+          Zugriffsversuche überprüft werden.
+        & Sitzungsaufzeichnungen müssen verschlüsselt und sicher gespeichert werden und 
+          nur autorisierten Benutzern zugänglich sein.
+        \\
+    \hline
+        \textbf{Protokollierung}
+        & Die Protokolle müssen monatlich überprüft werden, um sicherzustellen, dass sie 
+          detailliert und gegen Manipulationen geschützt sind.\vspace{0.5em}
+
+		  Automatisierte Tools müssen die Protokolle auf verdächtige Aktivitäten 
+		  überwachen, wobei Warnungen innerhalb von 24 Stunden überprüft werden müssen.
+        & Jeder Zugriff auf sensible Informationen und jede Aktion muss protokolliert und 
+          auf verdächtige Aktivitäten überwacht werden.\vspace{0.5em}
+
+		  Die Protokolle sind vor Manipulationen zu schützen und mindestens ein Jahr lang 
+		  sicher aufzubewahren.
+        \\
+    \hline
+        \textbf{Notfallmanagement}
+        & Vierteljährlich muss eine Übung zur Reaktion auf Zwischenfälle durchgeführt 
+          werden, über die ein Bericht erstellt und auf ihre Wirksamkeit überprüft wird.
+        & Google Meet muss über einen Plan zur Reaktion auf Zwischenfälle verfügen, der 
+          Verfahren zur Erkennung, Meldung und Behebung von Sicherheitsvorfällen enthält.
+        \\
+    \hline
+\end{tabularx}
+
+\end{landscape}
+
+\newpage
+
+\section{Vergleich und Präferenz}
+
+\textit{Sicherheitsspezifische Anforderungen} bieten Software-Entwicklern klare und 
+umsetzbare Schritte zur Implementierung von einzelnen Sicherheitsmaßnahmen. Sie sind 
+spezifisch und können leicht in die Entwicklung integriert werden, allerdings kann es 
+ihnen an Kontext fehlen und sie können manchmal zu präskriptiv sein, was weniger Raum für 
+Flexibilität lässt.
+
+\textit{Sicherheits-Akzeptanzkriterien} bieten den Vorteil, dass sie sich auf die 
+Ergebnisse und überprüfbaren Bedingungen konzentrieren. Sie gewährleisten, dass die 
+implementierten Maßnahmen wirksam sind, anstatt eine konkrete Implementierung 
+vorzuschreiben. Außerdem bieten sie eine Möglichkeit, bzw. ein klares Szenario, diese 
+Maßnahmen zu testen.
+
+\vspace{1em}
+
+Ich persönlich bevorzuge den Einsatz von Sicherheits-Akzeptanzkriterien, weil sie einen 
+klaren Rahmen für die Überprüfung der Wirksamkeit von Sicherheitsmaßnahmen bieten. Dieser 
+Ansatz stellt sicher, dass die Sicherheit nicht nur implementiert, sondern auch getestet 
+und validiert wird, wodurch die Sicherheit des Systems besser gewährleistet werden kann 
+und das System allgemein robuster wird.
+
+\section{Testszenarien}
+
+Mithilfe von verschiedenen Testszenarien lässt sich eine bessere Sicherheit für das 
+Gesamtsystem sicherstellen. Die Verwendung von Sicherheits-Akzeptanzkriterien ist hier 
+sehr dienlich, da diese eine konkrete Ableitung eines Testszenarios zulassen.
+
+Um diese Ausarbeitung in einem angemessenen Umfang zu halten habe ich untenstehend zwei 
+Szenarien je definierter nichtfunktionaler Sicherheitsanforderung aus dem zweiten 
+Abschnitt erarbeitet:
+
+\subsubsection*{Authentifizierung}
+
+\begin{quote}
+Nach mehrfachen Versuchen, sich mit falschen MFA-Codes zu authentifizieren muss 
+sichergestellt werden, dass die Mechanismen zur Kontosperrung ausgelöst wurden.
+\end{quote}
+
+\begin{quote}
+Versuch die gespeicherten Passwörter zu knacken, um die Stärke der Verschlüsselung zu 
+überprüfen.
+\end{quote}
+
+\subsubsection*{Sicherheit der Datenübertragung}
+
+\begin{quote}
+Unter Verwendung eines Netzwerk-Analysetools wie z.B. Wireshark – das 
+Datenübertragungen abfangen und überprüfen kann – muss verifiziert werden, ob alle Daten 
+verschlüsselt sind.	
+\end{quote}
+
+\begin{quote}
+Versuch die TLS-Version herabzustufen und anschließende Überprüfung, ob das System die 
+Verbindung ablehnt.
+\end{quote}
+
+\subsubsection*{Zugangskontrolle}
+
+\begin{quote}
+Versuchen, auf ein Meeting ohne Einladungslink zuzugreifen. Es muss sichergestellt 
+werden, dass der Zugang verweigert wird.
+\end{quote}
+
+\begin{quote}
+Durchführung eines Tests mit verschiedene Benutzerrollen, um sicherzustellen, dass die 
+Berechtigungen korrekt durchgesetzt werden.
+\end{quote}
+
+\subsubsection*{Datenschutz}
+
+\begin{quote}
+Versuch, unbefugten Zugriff auf verschlüsselte Besprechungsaufzeichnungen zu 
+erhalten mit anschließender Übprüfung, dass der Zugriff verweigert wird.
+\end{quote}
+
+\subsubsection*{Protokollierung und Überwachung}
+
+\begin{quote}
+Generierung von Sicherheitsereignissen (z.B. durch fehlgeschlagene Anmeldeversuche, 
+Datei-Uploads usw.) mit anschließender Überprüfung, ob diese korrekt protokolliert 
+werden.
+\end{quote}
+
+\begin{quote}
+Test des Überwachungssystems, indem verdächtige Aktivitäten simuliert werden mit 
+anschließender Überprüfung, dass Warnungen generiert und darauf reagiert wird.
+\end{quote}
+
+\subsubsection*{Notfallmanagement}
+
+\begin{quote}
+Durchführung eines simulierten Sicherheitsverstoßes und anschließende Befolgung des 
+Reaktionsplans, um dessen Wirksamkeit sicherzustellen.
+\end{quote}
+
+\begin{quote}
+Überprüfung des Berichts über die Reaktion auf einen Vorfall, um sicherzustellen, dass 
+alle Schritte befolgt wurden, und um Bereiche mit Verbesserungsbedarf zu ermitteln.
+\end{quote}
+
+\end{document}
