@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{hyperref}
@@ -20,9 +21,7 @@
 
 \newcommand{\annotation}[1]{
     \begin{quote}
-    	\begin{textit}
-			{#1}
-	    \end{textit}
+    	\begin{textit}{#1}\end{textit}
     \end{quote}
 }
 
@@ -401,6 +400,8 @@ Die Equal-Error-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\
 ``Gleichfehlerrate, Wert von FMR und FNMR an dem Arbeitspunkt, in welchem sich der gleiche Fehlerwert einstellt. Kann z.B. anhand des Fehlerratendiagramms ermittelt werden.''
 }
 
+\newpage
+
 \subsection{Skizzieren Sie die vorgenannten Fehlerraten als Diagramm \"uber einen Schwellwert basierte biometrische Verifikation}
 
 \begin{figure}[ht]
@@ -412,24 +413,38 @@ Die Equal-Error-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\
 	}
 \end{figure}
 
-Hier Aufgabe 1
+Die Equal-Error-Rate beschreibt den Schnittpunkt der beiden Fehlerraten (Falscherkennungs-Rate (FMR) und Falschablehnungs-
+Rate (FNMR)). Die Schwellwert-Linie für Authentifizierungs-Entscheidungen kann nun von den Systemherstellern selbst
+festgelegt werden: typischerweise sollte diese in der unmittelbaren Nähe zum EER-Punkt liegen.
+
+Wird die Schwellwert-Linie (in der Abb. 3) rechts von der EER angesetzt wird das System zwar insgesamt sicherer (ie. die
+Falscherkennungen nehmen ab), aber gleichermaßen benutzerunfreundlicher, da authentische Nutzer (häufiger) 
+fälschlicherweise Abgelehnt werden und u.U. mehrere Authentifizierungsversuche vornehmen müssen um erfolgreich
+erkannt zu werden.
+
+Wird die Schwellwert-Linie (in der Abb. 3) links von der EER angesetzt, kommt es zu einem permissiven System, in dem
+Nutzer im Zweifel erfolgreich authentifiziert werden. Somit wird das Gesamtsystem unsicherer, da ein Angriff hier deutlich 
+einfacher ist.
+
+Die Entscheidung wo die Schwellwert-Linie einzuzeichnen ist, ist davon abhängig zu machen in welchem Kontext das System
+verwendet werden soll. Ist das biometrische System nur einer von vielen Faktoren zur Authentifizierung, oder wird in einem
+zeitkritischen oder lebensbedrohlichen Szenario verwendet, kann es entgegen der Sicherheit des Systems dennoch sinnvoll 
+sein, ein permissives biometrisches System zu verwenden, da die Folgen einer falschen Ablehnung (beispielsweise während 
+einer Not-Operation) dramatisch sein könnten. Wird das System allerdings weder in einem zeitkritischem noch anderweitig
+bedrohlichem Szenario verwendet, sollte in der Regel der Fokus auf die Sicherheit des Systems gelegt werden, was für 
+einen, tendenziell, restriktiveren Ansatz des Schwellwertes spricht.
+
 
 \subsection{Diagramm Zusatzaufgabe}
 
 \annotation{
     Betrachten Sie nun nochmal das Diagramm, welches Sie für Teil b) erstellt haben.
     Nehmen Sie nun an, dass der hier eingezeichnete Graph für die FMR ausschließlich
-    auf Basis anderer legitimer Nutzer („nicht-Imposter“) erstellt wurde.
-}
-
-\annotation{
+    auf Basis anderer legitimer Nutzer („nicht-Imposter“) erstellt wurde.\\\\
     Wie würde sich im Vergleich dazu ein zweiter FMR-Graph aussehen, der die
     False-Matches von gezielten Angriffen (Impostern) wiedergibt, unter der Annahme,
     dass diese bezüglich der Merkmale der angegriffenen Personen diesen ähnlicher
-    sind? Zeichnen Sie einen exemplarischen zweiten Graphen ein und erläutern Sie!
-}
-
-\annotation{
+    sind? Zeichnen Sie einen exemplarischen zweiten Graphen ein und erläutern Sie!\\\\
     Hinweis: überlegen Sie ggf. auch nochmal vor dem Hintergrund ihrer Lösung zu Aufgabe 3g!
 }
 
@@ -443,7 +458,20 @@ Hier Aufgabe 1
 	}
 \end{figure}
 
-Hier aufgabe 2e
+In der hier dargestellten Grafik (Abb. 4) werden die Authentifizierungsversuche (inkl. implizierter Häufigkeit)
+in einer Übersichtsgrafik dargestellt:
+
+Der Grafik liegt im Sinne der Veranschaulichung des Sachverhaltes, die Annahme zu Grunde, dass Imposter-Versuche
+tendenziell einen niedrigeren Match-Score (in Abb. 3 als ``Similarity'' beschrieben) erzielen.
+
+Die Überschneidung von Imposter-Versuchen und Authentischen-Versuchen wird hier als EER eingezeichnet, da dieser,
+genau den, in der vorherigen Aufgabe beschriebenen Scheidepunkt abbildet: Liegt die Schwellwert-Linie links, wird das 
+System permissiv und somit anfällig für Imposter – liegt sie rechts vom EER wird das System restriktiv und somit sicherer,
+aber gleichzeitig benutzerunfreundlicher.
+
+Die Verbindung zwischen dieser Grafik und der Aufgabe 3g) ist ebenfalls offensichtlich erkennbar, da sich der Median-
+Match-Score über alle Versuche Versuche hinweg deutlich nach unten verschiebt (angenommen, die Imposter-Versuche schneiden 
+wie im o.g. Beispiel deutlich schlechter ab).
 
 \newpage
 
@@ -479,7 +507,92 @@ Kosten-intensiv sind.
 \subsubsection{Wie viele fehlerfreie Versuche sind nach Doddington’s Rule of 3 notwendig, um für ein biometrisches Iris-Erkennungssystem, welches während des Tests keine False-Matches generiert, mit einer 95\% Konfidenz abzuschätzen, dass es eine FMR von maximal 0,06\% hat?
 }
 
-\subsubsection{Erläutern die folgende Aussage aus dem Lernmodul, finden Sie ggf. eine Beispiele, welche die Aussage begründen: „Daraus folgt: die Beobachtung von 3 Fehler in 100 Versuchen entspricht nicht automatisch der Einschätzung, dass jede der 100 Personen mit einer Fehlerquote von jeweils exakt 3\% hat!“
+Die Anwendung von Doddington's Rule of 3 ist trivial möglich, da lediglich die Gleichung ${3 \over N} = 0.006$ gelöst 
+werden muss:
+
+\begin{align*}
+         {3 \over N} & = 0.006 \\
+                   3 & = 0.006 * N \\
+     {3 \over 0.006} & = N\\
+     {3 \over 0.006} & = 500\\
+                   N & = 500
+\end{align*}
+
+Somit lässt sich nun mit 95\%er Wahrscheinlichkeit sagen, dass die FMR des Iris-Erkennungssystems < als 0.06\% ist.
+
+\subsubsection{Erläutern die folgende Aussage aus dem Lernmodul, finden Sie ggf. einige Beispiele, welche die Aussage begründen: „Daraus folgt: die Beobachtung von 3 Fehler in 100 Versuchen entspricht nicht automatisch der Einschätzung, dass jede der 100 Personen mit einer Fehlerquote von jeweils exakt 3\% hat!“
 }
+
+Die Aussage verweist auf die Tatsache, dass eine beobachtete Fehleranzahl in einer Stichprobe nicht direkt auf die 
+individuelle Fehlerquote jedes einzelnen Testobjektes schließen lässt. Die Gründe hierfür sind:
+ 
+\begin{enumerate}
+ 	\item Statistische Verteilung von Merkmalen – Unterschiedliche Testobjekte haben unterschiedliche biometrische Merkmale. Die Beobachtung von 3 Fehlern in 100 Versuchen lässt lediglich Aussagen über die Gesamtheit des Systems zu, nicht aber über einzelne Testobjekte. So kann beispielsweise ein Testobjekt das ein Merkmal mit einer hohen Trennschärfe besitzt zuverlässiger Identifiziert werden (ie. hat eine geringere Fehlerquote) als ein Testobjekt das lediglich Merkmale mit geringer Trennschärfe hat.
+ 	\item Stichprobenstreuung – Die Verteilung der getesteten Testobjekte in der Gesamt-Variabilität der Merkmale (Inter-Personen-Variabilität) wird nicht angegeben. Es ist gut möglich, dass die Stichproben nicht repräsentativ für die Gesamtverteilung der Merkmale ist und somit der Test in einer anderen Fehlerquote resultiert als dies im tatsächlichen Einsatz der Fall wäre.
+\end{enumerate}
+ 
+\newpage
+ 
+\section{}
+
+\subsection{Modalität Fingerabdruck}
+
+\subsubsection{Benennen Sie die drei unterschiedlichen Stufen (engl. Levels) von Fingerabdruckmerkmalen:}
+
+\subsubsection{Erklären Sie die Merkmalsart ``Minutien'' und skizzieren Sie 5 unterschiedliche Beispiele:}
+
+
+\subsection{Modalität Stimme}
+
+%b1) Benennen Sie die drei grundsätzlichen Ziele der sprachbasierten Biometrie:
+%b2) Erklären Sie stichpunktartig das Konzept der „Mel-Frequency Cepstral Coefficients
+%(MFCC)“:
+%
+
+\subsection{Modalität Gangart}
+
+% (lesen Sie ggf. in der Quelle [NiAd1994] nach, diese ist abrufbar unter
+%http://persci.mit.edu/pub_pdfs/niyogi_XYT.pdf
+%c1) Erklären Sie kurz das Aufzeichnungsszenario für den „kanonischen Gang“ („canonical
+%walk“):
+%c2) Erklären Sie: welche Bildverarbeitungsschritte sind notwendig, um hieraus ein so
+%genanntes XT Diagramm zu generieren:
+%c3) Überlegen, recherchieren und beschreiben Sie 5 Merkmale, welche aus XYT Diagrammen
+%gewonnen werden können:
+
+
+\subsection{Modalität Tastaturanschlag}
+
+%d1) Benennen Sie Vorteile und Anwendungen dieser biometrischen Modalität:
+%d2) Erläutern Sie kurz das Konzept der „Digraphs“ und überlegen und beschreiben Sie die vier
+%Merkmale, die aus einem Digraph gemessen werden können:
+%d3) Argumentieren Sie mathematisch/logisch, wie das biometrische Verfahren Tastaturanschlag
+%zur Verbesserung der Passwortsicherheit eingesetzt werden kann und stellen Sie klar, welche
+%Annahmen Sie dabei tätigen:
+
+\subsection{Modalität Handschrift}
+
+%e1) Benennen Sie die beiden grundlegenden Kategorien von Merkmalen handschriftbasierter
+%Biometrie:
+%e2) Welche Arten von Signalen können durch Handschrift-Digitalisiertabletts erfasst und
+%aufgezeichnet werden, beschreiben Sie:
+%e3) Benennen Sie 5 Beispiele von statistischen Merkmalen, die aus Handschrift-Signalen zur
+%biometrischen Erkennung berechnet werden können:
+%e4) Benennen Sie 4 alternative Semantikklassen zur Unterschrift und diskutieren Sie deren Vor- und Nachteile:
+%
+%
+\subsection{Überlegen und benennen Sie jeweils mindestens einen möglichen Sensortyp für die folgenden Modalitäten:}
+%Modalitäten:
+%• Handschrift:
+%• Fingerabdruck:
+%• Sprache:
+%• Gesicht:
+%• Iris:
+%• Finger-/Handgeometrie:
+%• Gangerkennung:
+%• DNA:
+%
+\subsection{Führen Sie die praktische Übung „Handgeometrie“ durch!}
+\subsection{Führen Sie die praktische Übung „Offline Handschrift“ durch!}
 
 \end{document}
