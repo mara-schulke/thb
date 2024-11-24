@@ -1,0 +1,120 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{hyperref}
+
+\graphicspath{{./images/}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{\fancyplain{}{Mara Schulke} }
+\rhead{\fancyplain{}{\today}}
+\cfoot{\fancyplain{}{\thepage}}
+
+\newcommand{\annotation}[1]{
+\begin{quote}
+	\begin{textit}
+		{#1}
+	\end{textit}
+\end{quote}
+}
+
+\renewcommand*{\thesection}{Kapitel \arabic{section}}
+\renewcommand*{\thesubsection}{\alph{subsection})}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+		\begin{Large}
+			Technische Hochschule Brandenburg \\[1em]
+		\end{Large}
+		
+		IT Sicherheit \\
+		Informatik und Medien \\
+		Biometrie – Dr.\ Tobias Scheidat
+	\end{center}
+	
+	\vfill
+
+	\begin{center}
+		\Large{Übungsaufgaben}\\[0.5em]
+		\large{Wintersemester 2024}\\[0.25em]
+		\large{Abgabetermin \today}
+	\end{center}
+
+	\vfill
+
+	\begin{center}
+		Mara Schulke \\ Matr-Nr. 20215853
+	\end{center}
+\end{titlepage}
+
+
+\tableofcontents
+
+\listoffigures
+
+\newpage
+
+\section{}
+
+\subsection{Erl\"autern Sie den Begriff Benutzerauthentifizierung}
+
+Benutzerauthentifizierung beschreibt den formalen Prozess der Verifikation der Nutzeridentität innerhalb 
+eines Systems. Dies kann anhand einer der drei Authentifizierungsschemata stattfinden: Wissen, Besitz oder 
+Biometrie.
+
+\subsection{Definieren Sie den Begriff biometrische (Benutzer-)Erkennung}
+\annotation{Grenzen Sie zu der vorherigen Aufgabe ab.}
+Die biometrische Benutzer-Erkennung ist streng genommen ein Teilbereich der Benutzerauthentifizierung. Wie 
+oben genannt lässt sich die Benutzerauthentifizierung mittels Wissen, Besitz oder Biometrie durchführen.
+
+Im Gegensatz zu den Schemata Wissen und Besitz fokussiert sich die biometrie-gestützte Erkennung/
+Authentifizierung nicht auf Nachweismöglichkeiten die extrinsisch mit einem Individuum verknüpft sind 
+(Passwort, Schlüssel, ..) sondern auf intrinsische Nachweismöglichkeiten wie die Physiologie oder das
+Verhalten eines Individuums.
+
+Außerhalb der Authentifizierung befasst sich die biometrische Erkennung mit der statistischen Zuordnung 
+von Eingabedaten zu einem hinterlegten biometrischen Fingerprint. Dies umfasst z.B. die Auswertung von 
+Sprachaufnahmen um regionale Sprachmuster zu erkennen.
+
+\subsection{Erläutern Sie die 11 Merkmale der Bertillonawge}
+\annotation{{\"U}berlegen Sie: wie konnte mit den damaligen Mitteln eine Identifikation durchgeführt werden?}
+Die 11 Merkmale mit denen damals die Bertillonage durchgeführt wurde lauten: Körpergröße, Spannweite der 
+Arme, Sitzhöhe, Kopflänge, Kopfbreite, Länge und Breite des rechten Ohrs, Länge des linken Fußes sowie 
+Längen des linken Mittelfingers, des linken kleinen Fingers und des linken Unterarms (Auszug aus dem 
+Skript 1.4).
+
+Die Vorgehensweise der Bertillonage ist der der in der DNA-basierten Identifikation recht ähnlich (zumindest 
+oberflächlich). In beiden Fällen werden bestimmte Merkmale eines Individuums extrahiert (ie. Marker).
+Je mehr Marker zwischen zwei Datensätzen übereinstimmen, desto wahrscheinlicher ist es, dass es sich um 
+das gleiche Individuum handelt. Der Abgleich eines einzelnen Individuums ist nicht rechenaufwendig, daher 
+war dieses Verfahren bereits im 19. Jahrhundert möglich.
+
+\subsection{Was sind biometrische Charakteristika und welche zwei grundsätzlichen Kategorien gibt es hier?}
+\annotation{Klassifizieren Sie biometrische Merkmale in die zwei grundsätzlichen Kategorien und benennen Sie jeweils mindestens vier Beispiele für jede?}	
+Es gibt die grundsätzliche Unterteilung zwischen Online- und Offline- Merkmalen. Diese unterscheiden sich
+primär hinsichtlich ihres Aufzeichnungszeitpunktes: Online Merkmale können nur während einer Handlung 
+aufgenommen werden (z.B. während eine Notiz geschrieben wird) wohingegen Offline-Daten auch im Nachhinein
+verfügbar sind (z.B. der beschriebene Notizzettel).
+
+Beispiele für Online-Merkmale sind z.B. Sprachaufnahmen, ein Video von einer handschriftlichen Notiz, das 
+Tippverhalten an dem Computer, eine Aufnahme vom Geh-Verhalten. Beispiele für Offline-Merkmale sind z.B. 
+Fußstapfen, ein Foto von einer handschriftlichen Notiz, Fingerabdrücke und Körpermaße.
+
+\subsection{Erklären Sie: was verstehen wir unter dem Begriff Lebenderkennung?}
+
+Die Lebenderkennung fokussiert sich primär auf verhaltensbasierte Merkmale, da diese im Gegensatz zu
+physiologischen Merkmalen inhärent nur von lebenden Subjekten entnehmen lassen. Diese Merkmale bieten 
+somit eine (weitgehende) Sicherheit gegen Spoofing-Attacken.
+
+
+\end{document}
