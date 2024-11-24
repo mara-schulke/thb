@@ -19,15 +19,20 @@
 \cfoot{\fancyplain{}{\thepage}}
 
 \newcommand{\annotation}[1]{
-\begin{quote}
-	\begin{textit}
-		{#1}
-	\end{textit}
-\end{quote}
+    \begin{quote}
+    	\begin{textit}
+			{#1}
+	    \end{textit}
+    \end{quote}
+}
+
+\newcommand{\figuresource}[1]{
+	\begin{center}Quelle: {#1}\end{center}
 }
 
 \renewcommand*{\thesection}{Kapitel \arabic{section}}
 \renewcommand*{\thesubsection}{\alph{subsection})}
+\renewcommand*{\thesubsubsection}{\arabic{subsubsection})}
 
 \begin{document}
 
@@ -86,8 +91,9 @@ Außerhalb der Authentifizierung befasst sich die biometrische Erkennung mit der
 von Eingabedaten zu einem hinterlegten biometrischen Fingerprint. Dies umfasst z.B. die Auswertung von 
 Sprachaufnahmen um regionale Sprachmuster zu erkennen.
 
-\subsection{Erläutern Sie die 11 Merkmale der Bertillonawge}
+\subsection{Erläutern Sie die 11 Merkmale der Bertillonage}
 \annotation{{\"U}berlegen Sie: wie konnte mit den damaligen Mitteln eine Identifikation durchgeführt werden?}
+
 Die 11 Merkmale mit denen damals die Bertillonage durchgeführt wurde lauten: Körpergröße, Spannweite der 
 Arme, Sitzhöhe, Kopflänge, Kopfbreite, Länge und Breite des rechten Ohrs, Länge des linken Fußes sowie 
 Längen des linken Mittelfingers, des linken kleinen Fingers und des linken Unterarms (Auszug aus dem 
@@ -101,6 +107,7 @@ war dieses Verfahren bereits im 19. Jahrhundert möglich.
 
 \subsection{Was sind biometrische Charakteristika und welche zwei grundsätzlichen Kategorien gibt es hier?}
 \annotation{Klassifizieren Sie biometrische Merkmale in die zwei grundsätzlichen Kategorien und benennen Sie jeweils mindestens vier Beispiele für jede?}	
+
 Es gibt die grundsätzliche Unterteilung zwischen Online- und Offline- Merkmalen. Diese unterscheiden sich
 primär hinsichtlich ihres Aufzeichnungszeitpunktes: Online Merkmale können nur während einer Handlung 
 aufgenommen werden (z.B. während eine Notiz geschrieben wird) wohingegen Offline-Daten auch im Nachhinein
@@ -116,5 +123,363 @@ Die Lebenderkennung fokussiert sich primär auf verhaltensbasierte Merkmale, da 
 physiologischen Merkmalen inhärent nur von lebenden Subjekten entnehmen lassen. Diese Merkmale bieten 
 somit eine (weitgehende) Sicherheit gegen Spoofing-Attacken.
 
+\newpage
+
+\section{}
+
+\subsection{Finden und beschreiben Sie für jeden der 6 Sicherheitsaspekte ein Beispiel, wie diese speziell für biometrische Systeme relevant sein k\"onnen!
+}
+
+\subsubsection*{Vertraulichkeit}
+
+Ein biometrisches System, das für die Authentifizierung eingesetzt wird, sollte ähnliche 
+Sicherheitscharakteristika haben wie eine passwortbasierte Authentifizierung. D. h. es sollte vergleichbar
+schwer für einen Angreifer sein, ein biometrisches Authentifizierungsverfahren zu umgehen, wie für  
+herkömmliche, da sonst die Vertraulichkeit der Daten durch den Einsatz des biometrischen Systems
+gefährdet ist.
+
+\subsubsection*{Integrität}
+
+Die Verifikationsdaten eines biometrischen Systems sollten sich ausschließlich nach der 
+Sicherstellung der Identität des Benutzers ändern lassen. Idealerweise mittels 
+Multifaktorauthentifizierung.
+
+\subsubsection*{Verfügbarkeit}
+
+Um die Verfügbarkeit eines Systems nicht durch den Einsatz von Biometrie gefährden sollte das biometrische 
+System ausgiebige Tests im Hinblick auf dessen Zuverlässigkeit bestehen. Wenn das Gesamtsystem nicht mehr
+nutzbar ist, da das biometrische Authentifizierungssystem versagt, wird die allgemeine Verfügbarkeit 
+beeinträchtigt.
+
+\subsubsection*{Authentizität}
+
+Die Verifikationsdaten eines biometrischen Systems sollten idealerweise mit einem, bereits bekannten, dem 
+Individuum zugeordneten Schlüsselpaar signiert werden um diese zweifelsfrei an die Identität des Nutzers 
+zu binden.
+
+\subsubsection*{Verbindlichkeit}
+
+Alle Änderungen an den hinterlegten Verifikationsdaten, sowie jegliche Authentifizierungsvorgänge bzw. 
+Versuche sollten dokumentiert werden, damit die Authentifizierung eines Nutzers zurückverfolgt werden 
+kann.
+
+\subsubsection*{Privatsphäre}
+
+Ein biometrisches System sollte niemals rohe biometrische Daten über ein Individuum speichern, vielmehr 
+sollte es entweder eine verschlüsselte Version speichern oder idealerweise einen Fingerprint, der sich aus 
+den Eingabedaten konstruieren lässt, sich aber nicht ohne weiteres zurück in eindeutige biometrische 
+Eigenschaften übersetzen lässt.
+
+\subsection{Geben Sie 3 Beispiele (mit einer kurzen Erläuterung), was bei Security-by-Design für biometrische Systeme berücksichtigt werden sollte!}
+
+\subsubsection*{Nicht-Zurückverfolgbarkeit}
+
+Aus einem biometrischen System sollten nie genug Daten gewonnen werden können, um den Nutzer eindeutig zu 
+identifizieren (ohne das system Selbst zu Verwenden). Ie. es sollten keine Rückschlüsse auf physische 
+Eigenschaften (Hautfarbe, Größe, Geschlecht, etc.) aus den im System hinterlegten Daten möglich sein.
+
+\subsubsection*{Need-to-know}
+
+Lediglich biometrische Merkmale aufzeichnen, die einen konkreten Verwendungszweck für die Aufgabe des 
+biometrischen Systems haben. Mehr Daten aufzuzeichnen als notwendig birgt das Risiko der Zweckentfremdung.
+
+\subsubsection*{Geringe False-Accept-Rate}
+
+Gerade so viele biometrische Merkmale sammeln, dass die Fehlerquote des biometrischen Systems für falsche 
+Authentifizierungen vernachlässigbar gering ausfällt. 
+
+\subsection{Geben Sie 3 Beispiele mit einer kurzen Erläuterung, was bei Ethik-by-Design für biometrische Systeme berücksichtigt werden sollte!}
+
+\subsubsection*{Randomisierte Tests}
+
+Ein biometrisches System sollte mit heterogenen Nutzern getestet werden um sicherzustellen, dass 
+marginalisierte Gruppen nicht benachteiligt werden. Beispielsweise sollte sichergestellt werden, dass eine 
+Gesichtserkennung zuverlässig über ethnische Gruppen hinweg funktioniert, anstatt nur mit einer Ethnie zu 
+testen.
+
+\subsubsection*{Verhinderung von Zweckentfremdung}
+
+Ein System zur biometrischen Authententifizierung ist in den meisten Fällen wahrscheinlich ethisch 
+unbedenklich, wohingegen ein System zur Identifizierung anhand von biometrischen Merkmalen kritisch 
+betrachtet werden kann. Daher ist es wichtig, bei der Entwicklung eines biometrischen Systems 
+sicherzustellen, dass dieses bzw. die Daten, die das System verarbeitet, nicht entfremdet zur 
+Identifikation von Individuen benutzt werden können.
+
+\subsubsection*{Datenhoheit liegt beim Nutzer}
+
+Dem Nutzer muss es freistehen, das System ohne biometrische Authentifizierung zu verwenden damit dieser 
+die Datenhoheit behält. Ie. ein Nutzer sollte nicht gezwungen werden seine biometrischen Merkmale 
+aufzuzeichnen, ohne dass eine Nutzung der biometrischen Authentifizierung beabsichtigt ist.
+
+\newpage
+
+\section{}
+
+\subsection{Aus welchen Phasen besteht das Prozess-/ Mustererkennungsmodell zur biometrischen Erkennung: benennen \& erklären Sie!}
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{assets/pipeline-id}
+	\centering
+	\caption{Biometrie-Pipeline}
+	\figuresource{Biometrie Skript}
+\end{figure}
+
+Eine einfache biometrische Pipeline zur Erkennung von Mustern / zur Authentifizierung besteht aus den 
+folgenden vier Phasen:
+
+\subsubsection*{Datenerfassung}
+
+Die erste Phase des Modells beschäftigt sich mit der Erfassung der Daten aus der physischen Welt mittels 
+eines Sensors. Dies kann ein Fingerabdruck-Sensor sein, sowie ein Mikrofon oder eine Kamera.
+
+\subsubsection*{Vorverarbeitung}
+
+Nachfolgend müssen die Rohdaten vor-verarbeitet werden. Dies umfasst die Filterung, Aufbereitung, 
+Korrektur oder Konvertierung der aufgezeichneten Daten um eine einfachere Verarbeitung in den folgenden 
+Phasen zu ermöglichen.
+
+\subsubsection*{Merkmalsextraktion}
+
+Anschließend müssen aus den vor-verarbeiteten Rohdaten Merkmale bzw. Merkmalsvektoren extrahiert werden um
+verschiedene Eingabedaten im gleichen Raum miteinander zu vergleichen. Die Extraktion ermöglicht einen 
+sehr effizienten Vergleich, da z.B. im Falle von Kameradaten nicht Bilddaten miteinander abgeglichen 
+werden, sondern die Eigenschaften die aus den Bilddaten gewonnen wurden. Somit kann eine Suche in der 
+Referenzdatenbank schnell vonstatten gehen.
+
+\subsubsection*{Vergleich \& Klassifikation}
+
+Die letzte Phase der Pipeline ist der Vergleich und die Klassifizierung des Merkmalsvektors aus dem 
+vorherigen Schritt mit denen in der Referenzdatenbank. Hier werden die verschiedenen Vektoren mittels 
+mathematischer Vergleichsoperationen/modelle korreliert und bei gegebener Nähe wird eine positive 
+Entscheidung zurückgegeben.
+
+Die genaue Umsetzung obliegt dem System, so kann jedes System unterschiedliche Schwellwerte für eine 
+Entscheidung heranziehen und/oder Entscheidungen aus mehreren verschiedenen Merkmalen kombinieren. 
+
+
+\subsection{Skizzieren Sie den Prozess des biometrischen Enrollments, wie im Kurs eingeführt!}
+
+Der Prozess des biometrischen Enrollments ist dem der Authentifizierung sehr ähnlich; da lediglich die 
+letzte Phase ``Vergleich \& Klassifikation'' entfällt. Nach der dritten Phase (Merkmalsextraktion) wird
+der/die Merkmalsvektor(en) in einer Referenzdatenbank hinterlegt gegen die dann die Authentifizierung 
+stattfinden kann.
+
+
+\subsection{Skizzieren Sie den Prozess des biometrischen Authentifikation, wie im Kurs eingeführt!}
+
+Der Prozess der Authentifikation umfasst das \textit{einmalige} abgleichen $n$ Merkmerkmalsvektoren 
+gegenüber der, in der Referenzdatenbank hinterlegten Vektoren, für einen Nutzer. 
+Die Authentifikation grenzt sich gegenüber der Identifikation dahingehend ab, dass keine Suche innerhalb 
+der Referenzdaten stattfindet.
+
+\subsection{Erklären Sie folgende Begriffe}
+
+\subsubsection{Variabilität, Intra-Personen und Inter-Personen Variabilität}
+
+\textbf{Variabilität} im allgemeinen bezieht sich auf die (wie unter Aufgabe \textit{3e)} erklärt) auf
+die Bandbreite der Messungen von biometrischen Daten. Es gibt zwei unterschiedliche Bandbreiten die 
+normalerweise betrachtet werden:
+
+Die \textbf{Intra-Personen Variablität} bezieht sich auf die Schwankungen der Messungen von biometrischen
+Daten der gleichen Person. Beispielsweise unterliegen biometrische Eigenschaften natürlichen Schwankungen,
+wie z.B. offensichtlich erklärbar (ie. durch Nahrungszufuhr) bei dem Gewicht einer Person. Allerdings
+bezieht sich die Variabilität nicht nur auf die rein physische Schwankung sondern betrachtet auch die
+Fehlerraten bei der Messung.
+
+Die \textbf{Inter-Personen Variablität} bezieht sich dementsprechend auf die Schwankungen der Messwerte 
+über alle Personen / Benutzer des biometrischen Systems hinweg. Beispielsweise ließe sich hier die 
+Gesamtverteilung der Körpergröße über alle Menschen hinweg als \textbf{Inter-Personen Variablität} der 
+Körpergröße beschreiben.
+
+\subsubsection{Benennen Sie mindestens drei Ursachen für Variabilität}
+
+Variabilität kann – wie oben genannt – verschiedene Ursachen haben:
+
+\begin{enumerate}
+	\item Biologische / Physische Schwankungen – Beispielsweise ändert sich das Gewicht über den Tag hinweg.
+	\item Biologische Unterschiede – So unterliegen biometrische Parameter immer dem Einfluss der biologischen Gegebenheiten (z.B. Geschlecht, Ethnie etc.)
+	\item Mess-Ungenauigkeit – Leichte Änderungen der Werte über Messungen hinweg können auch einer Ungenauigkeit der Sensorik zugrunde liegen.
+\end{enumerate}
+ 
+\subsection{Welche Eigenschaften sind an biometrische Merkmale zu stellen, benennen \& erklären Sie!}
+ 
+\subsubsection*{Variabilität}
+
+Die Variabilität beschreibt die Eigenschaft eines Merkmals über viele Messungen hinweg. Sie kann in den 
+Dimensionen Intra-Person und Inter-Klasse betrachtet werden.
+
+Ein gutes biometrisches Merkmal hat die Eigenschaft einer geringen Intra-Personen-Variabilität – also 
+einer möglichst konstanten Messbarkeit innerhalb der gleichen Person \textbf{bei gleichzeitiger} möglichst
+großer Inter-Class-Variabilität – also einer möglichst breitgestreuten Verteilung des Merkmals innerhalb 
+der Klasse an Subjekten.
+
+\subsubsection*{Trennschärfe}
+
+Die Trennschärfe ist eingeführt als möglichst großer Grad zwischen der hohen Intra-Personen-Variabilität 
+und Inter-Klassen-Variabilität. Je klarer ein Merkmal zu messen ist und je breit gestreuter die Messungen 
+über alle Subjekte hinweg sind, desto Aussagekräftiger ist die Messung über die Identität.
+
+\subsubsection*{Erfassbarkeit}
+
+Die Erfassbarkeit eines Merkmals beschreibt die Betrachtung des realistisch-möglichen Einsatzes des 
+Merkmals in einem biometrischen System mit verfügbaren Sensoren. Beispielsweise lassen sich Bild-Daten 
+eines Subjektes leicht erfassen wohingegen DNA-Daten sehr aufwändig zu beschaffen sind.
+
+\subsubsection*{Leistung}
+
+Leistung beschreibt den zeitlichen Aspekt der Erfassung bzw. Verarbeitung. D.h. wenn ein Merkmal bspw. 
+extreme Mengen an Daten generiert, könnte dies u.U. zu Performance-Problemen im biometrischen System 
+führen.
+
+\subsubsection*{Privatsphäre}
+
+Die letzte Eigenschaft von Merkmalen ist dahingehend wichtig, dass bestimmte Datensätze Aussagekräftiger 
+über Anwendungszweck-Fremde Daten (wie z.B. Herkunft sind, als andere) und somit a) Vorsicht im Umgang und 
+bei der Speicherung mit solchen Merkmalen geboten ist und b) eine ethische Betrachtung stattfinden sollte, 
+welche Merkmale für ein biometrisches System verwendet werden.
+
+\newpage
+
+\subsection{Erklären Sie beispielhaft anhand eines Häufigkeitshistogramms die Merkmalsverteilungen „Intra-Class“, „Inter-Class“}
+
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{assets/histogramm}
+	\centering
+	\caption{Histogramm: Größe}
+	\figuresource{Universität Münster 
+		(\href{https://campus.uni-muenster.de/fileadmin/einrichtung/ibkf/lehre/skripte/biomathe/bio/eda/help/eda15.html}{campus.uni-münster.de})
+	}
+\end{figure}
+
+Wie in der Abbildung 2) zu erkennen reichen die Messwerte in der oben angeführten Beispielverteilung
+von ca. 145cm bis zu ca. 195cm. Diese Spanne beschreibt die Inter-Class Variabilität von allen Menschen
+in der aufgezeichneten Gruppe. Die Intra-Class- (oder Intra-Personen-) Variabilität fällt deutlich 
+geringer aus: Die Körpergröße ist vergleichsweise (z.B. im direkten Vergleich mit dem Merkmal Gewicht)
+biologisch Stabil (also unterliegt lediglich kleinen Schwankungen) und der größte Anteil hier
+dürfte durch Fehlerraten während der Messung entstehen.
+
+\subsection{Überlegen Sie: bislang bezog sich die „Inter-Class“ Verteilung ja nur auf die Merkmale „anderer“ Personen als die der authentischen, mit ihren eigenen Merkmalen. Wie würde sich die Situation für gezielte Fälschungen im Diagramm darstellen, welche Veränderungen können Sie hier vorhersehen? Beschreiben oder skizzieren Sie im Diagramm!}
+
+Dies kommt auf die Abweichung des zu fälschenden Messwertes von dem Medianwert aller Messungen an.
+Somit ließe sich ein Angriff relativ eindeutig (und bereits nach wenigen böswilligen 
+Authentifizierungsversuchen) erkennen, wenn der gefälschte Messwert mehrere Standardabweichungen vom 
+Median entfernt liegt. (Da es somit zu einer verhältnismäßig starken Änderung des Medianwertes käme). 
+Visuell wäre ein Angriff daran zu erkennen, wenn sich der Balken (bspw. bei 145cm) innerhalb von kurzer 
+Zeit, stark erhöht und somit eine signifikante Auswirkung auf die berechnete Standardabweichung hätte. Bei 
+einer großen Menge (im Verhältnis zu den gesamten Messdaten) an Fälschungen einer Messung nahe am 
+Medianwert würde der mittlere Balken (über der blauen Linie) drastisch Ansteigen. Ebenfalls hier wäre
+dies durch die Beobachtung der Standardabweichung zu erkennen.
+
+\newpage
+
+\section{}
+
+\subsection{Definieren Sie die folgenden biometrischen Fehlerraten}
+
+\subsubsection{False Non-Match Rate (FNMR)}
+
+Die False-Non-Match-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\[0.1em]
+
+\textit{
+``Falschnichtübereinstimmungs-Rate (tlw. auch Falsch-Nichterkennungsrate), Verhältnis zwischen der Anzahl der nicht bestätigten authentischen Verifikationen (d.h. Verifizierungsdaten und Enrolmentdaten von identischen Personen werden fälschlicher Weise negativ verifiziert) und der gesamten Anzahl von Verifikationstests.''
+}
+
+\subsubsection{False Match Rate (FMR)}
+
+Die False-Match-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\[0.1em]
+
+\textit{
+``Falschübereinstimmungs-Rate (tlw. auch Falscherkennungsrate), d.h. Verhältnis zwischen der Anzahl der aufgetretenen Falsch-Verifikationen (d.h. Verifizierungsdaten und Enrolmentdaten von unterscheidlichen Personen werden fälschlicher Weise positiv verifiziert) und der gesamten Anzahl von Verifikationstests''
+}
+
+\subsubsection{Equal-Error Rate (EER)}
+
+Die Equal-Error-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\[0.1em]
+
+\textit{
+``Gleichfehlerrate, Wert von FMR und FNMR an dem Arbeitspunkt, in welchem sich der gleiche Fehlerwert einstellt. Kann z.B. anhand des Fehlerratendiagramms ermittelt werden.''
+}
+
+\subsection{Skizzieren Sie die vorgenannten Fehlerraten als Diagramm \"uber einen Schwellwert basierte biometrische Verifikation}
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{assets/fnmr-fmr-eer}
+	\centering
+	\caption{FNMR vs FMR vs EER}
+	\figuresource{A Comparison Framework for Fingerprint Recognition Methods
+		(\href{https://www.researchgate.net/figure/The-Relationship-between-FNMR-FMR-and-ERR_fig3_259558386}{researchgate.net})
+	}
+\end{figure}
+
+Hier Aufgabe 1
+
+\subsection{Diagramm Zusatzaufgabe}
+
+\annotation{
+    Betrachten Sie nun nochmal das Diagramm, welches Sie für Teil b) erstellt haben.
+    Nehmen Sie nun an, dass der hier eingezeichnete Graph für die FMR ausschließlich
+    auf Basis anderer legitimer Nutzer („nicht-Imposter“) erstellt wurde.
+}
+
+\annotation{
+    Wie würde sich im Vergleich dazu ein zweiter FMR-Graph aussehen, der die
+    False-Matches von gezielten Angriffen (Impostern) wiedergibt, unter der Annahme,
+    dass diese bezüglich der Merkmale der angegriffenen Personen diesen ähnlicher
+    sind? Zeichnen Sie einen exemplarischen zweiten Graphen ein und erläutern Sie!
+}
+
+\annotation{
+    Hinweis: überlegen Sie ggf. auch nochmal vor dem Hintergrund ihrer Lösung zu Aufgabe 3g!
+}
+
+
+\begin{figure}[ht]
+	\includegraphics[width=0.5\textwidth]{assets/fnmr-fmr-eer-imposter}
+	\centering
+	\caption{FNMR vs FMR vs EER – Imposter}
+	\figuresource{Facia AI - Knowledgebase
+		(\href{https://facia.ai/knowledgebase/knowing-the-equal-error-rate-eer-in-biometrics/}{facia.ai})
+	}
+\end{figure}
+
+Hier aufgabe 2e
+
+\newpage
+
+\subsection{Statistische Signifikanz nach Doddington}
+
+\annotation{Erklären Sie folgende Faustregeln:}
+
+\subsubsection{Doddington’s Rule of 30}
+
+Die Doddington's Rule of 30 wird folgendermaßen im Skript (Kapitel 4.2) eingeführt:\\[0.1em]
+
+\textit{``Man teste, bis man insgesamt 30 Fehler erhält. Dann kann man mit 90\%iger Sicherheit annehmen, 
+dass die beobachtete Fehlerwahrscheinlichkeit (z.B. FMR) innerhalb von +/- 30\% des wahren
+Wertes liegt''}\\[0.1em]
+
+Doddington's Rule of 30 bezieht sich auf die statistische Verteilung der tatsächlichen Fehlerrate durch 
+Stichprobentests. Wie im Skript bezogen ist das Testen von biometrischen System nicht trivial auf Grund 
+der physikalischen Abhängigkeiten der Eingabedaten. Somit lässt sich mittels Doddington's Rule of 30 auf
+der Basis von Stichprobentests eine realtiv genaue (ie. laut der Regel ca. 90\%) Vorhersage über die FMR 
+treffen.
+
+\subsubsection{Doddington’s Rule of 3}
+
+Die Doddington's Rule of 3 wird folgendermaßen im Skript (Kapitel 4.2) eingeführt:\\[0.1em]
+
+\textit{``Wenn keine Fehler in N unabhängigen Tests auftreten, kann man mit
+95\%iger Sicherheit davon ausgehen, dass die Fehlerwahrscheinlichkeit <3/N ist''}\\[0.1em]
+
+Mittels Doddington's Rule of 3 lässt sich die FMR eines biometrischen Systems ableiten, die keine Fehler
+in Stichprobentests erzielt haben. Dies ist sehr nützlich, da akkurate biometrische Tests Zeit- und 
+Kosten-intensiv sind.
+
+\subsubsection{Wie viele fehlerfreie Versuche sind nach Doddington’s Rule of 3 notwendig, um für ein biometrisches Iris-Erkennungssystem, welches während des Tests keine False-Matches generiert, mit einer 95\% Konfidenz abzuschätzen, dass es eine FMR von maximal 0,06\% hat?
+}
+
+\subsubsection{Erläutern die folgende Aussage aus dem Lernmodul, finden Sie ggf. eine Beispiele, welche die Aussage begründen: „Daraus folgt: die Beobachtung von 3 Fehler in 100 Versuchen entspricht nicht automatisch der Einschätzung, dass jede der 100 Personen mit einer Fehlerquote von jeweils exakt 3\% hat!“
+}
 
 \end{document}
