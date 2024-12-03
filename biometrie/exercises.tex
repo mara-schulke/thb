@@ -537,61 +537,171 @@ individuelle Fehlerquote jedes einzelnen Testobjektes schließen lässt. Die Gr�
 
 \subsection{Modalität Fingerabdruck}
 
-\subsubsection{Benennen Sie die drei unterschiedlichen Stufen (engl. Levels) von Fingerabdruckmerkmalen:}
+\subsubsection{Benennen Sie die drei unterschiedlichen Stufen (engl. Levels) von Fingerabdruckmerkmalen}
 
-\subsubsection{Erklären Sie die Merkmalsart ``Minutien'' und skizzieren Sie 5 unterschiedliche Beispiele:}
+Das Skript (5.1.1) führt die Modalität Fingerabdruck mit drei unterschiedlichen Stufen ein:
 
+\begin{enumerate}
+	\item Globale Merkmale – die Klassifizierung von zusammengesetzten Mustern der Fingerkuppe
+	\item Minutien-basierte Merkmale – die Eigenschaften von einem oder mehreren Graten auf der Fingerkuppe
+	\item Schweißporen-basierte Merkmale – die Klassifizierung von Poren-Mustern
+\end{enumerate}
+
+\subsubsection{Erklären Sie die Merkmalsart ``Minutien'' und skizzieren Sie 5 unterschiedliche Beispiele}
+
+Minutien-basierte Merkmale beziehen sich auf die Eigenschaften von Graten (im einzelnen oder reziprok). Im Skript 
+angeführte Beispiele sind:
+
+\begin{itemize}
+	\item Die Aufteilung eines Grates in zwei
+	\item Die Terminierung eines Grates an einem Punkt
+	\item Die Kreuzung von zwei oder mehreren Graten
+	\item Ein unabhängiger, freistehender Grat
+	\item Ein umschlossenes Tal von zwei oder mehreren Graten 
+\end{itemize}
 
 \subsection{Modalität Stimme}
 
-%b1) Benennen Sie die drei grundsätzlichen Ziele der sprachbasierten Biometrie:
-%b2) Erklären Sie stichpunktartig das Konzept der „Mel-Frequency Cepstral Coefficients
-%(MFCC)“:
-%
+\subsubsection{Benennen Sie die drei grundsätzlichen Ziele der sprachbasierten Biometrie}
+
+Das Skript (5.2.1) führt die Modalität Stimme mit drei unterschiedlichen Zielen ein:
+
+\begin{enumerate}
+	\item Automatischen Sprechererkennung – Identität / Authentifizierung anhand des Stimm-Merkmals
+	\item Textuelle Spracherkennung – Gesprochene Inhalte in einen digitalen Text zu überführen
+	\item Emotionen aus Stimmcharakteristika – Identifikation von subtilen Merkmalen der Stimme / des Sprechers
+\end{enumerate}
+
+\subsubsection{Erklären Sie stichpunktartig das Konzept der ``Mel-Frequency Cepstral Coefficients (MFCC)''}
+
+\begin{itemize}
+	\item Ein Mel-Frequency-Cepstrum (MFC) beschreibt das energie Spektrum eines Geräusches
+	\item Ein MFC setzt sich aus vielen Koeffizienten (MFCCs) zusammen
+	\item Die MFCCs eines Geräusches lassen sich (stark vereinfacht) mittels einer kombination aus Fourier-Transformation, Überführung in die Mel-Scale, der Anwendung der Logarithmus-Funktion und einer diskreten Cosinus-Transformation ableiten.
+	\item Der Unterschied zwischen einem Cepstrum und dem Mel-Frequency-Cepstrum ist die verwendung der Mel-Scale für die Aufzeichnung der Energie-Werte
+\end{itemize}
 
 \subsection{Modalität Gangart}
+\annotation{Lesen Sie ggf. in der Quelle \href{http://persci.mit.edu/pub_pdfs/niyogi_XYT.pdf}{[NiAd1994]} nach.}
 
-% (lesen Sie ggf. in der Quelle [NiAd1994] nach, diese ist abrufbar unter
-%http://persci.mit.edu/pub_pdfs/niyogi_XYT.pdf
-%c1) Erklären Sie kurz das Aufzeichnungsszenario für den „kanonischen Gang“ („canonical
-%walk“):
-%c2) Erklären Sie: welche Bildverarbeitungsschritte sind notwendig, um hieraus ein so
-%genanntes XT Diagramm zu generieren:
-%c3) Überlegen, recherchieren und beschreiben Sie 5 Merkmale, welche aus XYT Diagrammen
-%gewonnen werden können:
+\subsubsection{Erklären Sie kurz das Aufzeichnungsszenario für den ``kanonischen Gang'' (``canonical walk'')}
 
+Das Szenario für die Aufzeichnung eines kanonischen Gangs setzt voraus, dass die Kamera die das Individuum aufzeichnet im
+90-Grad-Winkel zur Laufrichtung und ungefähr auf der gleichen Höhe wie die Kröpermitte platziert wird (ie. keine Top-Down 
+Perspektive).
+
+\subsubsection{Erklären Sie: welche Bildverarbeitungsschritte sind notwendig, um hieraus ein so genanntes XT Diagramm zu generieren}
+
+\begin{enumerate}
+	\item Entfernung von Hintergrundinformationen
+	\item Kantenerkennung
+	\item Extraktion der XT-Schnittlinie
+	\item Pixel-Extraktion entlang der Linie
+	\item Aufbau des XT-Diagramms
+\end{enumerate}
+
+\subsubsection{Überlegen, recherchieren und beschreiben Sie 5 Merkmale, welche aus XYT Diagrammen gewonnen werden können}
+
+Die folgenden 5 Merkmale bzw. Prozessierungsschritte können aus einem XYT Diagramm extrahiert werden bzw. darauf 
+ausgeführt werden.
+
+\begin{enumerate}
+	\item Geschwindigkeit und Beschleunigung
+	\item Trajektorienanalyse
+	\item Periodizität und Frequenzanalyse
+	\item Interaktionsanalyse
+	\item Anomalieerkennung
+\end{enumerate}
 
 \subsection{Modalität Tastaturanschlag}
 
-%d1) Benennen Sie Vorteile und Anwendungen dieser biometrischen Modalität:
-%d2) Erläutern Sie kurz das Konzept der „Digraphs“ und überlegen und beschreiben Sie die vier
-%Merkmale, die aus einem Digraph gemessen werden können:
-%d3) Argumentieren Sie mathematisch/logisch, wie das biometrische Verfahren Tastaturanschlag
-%zur Verbesserung der Passwortsicherheit eingesetzt werden kann und stellen Sie klar, welche
-%Annahmen Sie dabei tätigen:
+\subsubsection{Benennen Sie Vorteile und Anwendungen dieser biometrischen Modalität}
+
+Die Modalität der Tastaturanschläge bietet weitreichende Vorteile hinsichtlich ihres möglichen Einsatzgebietes, da:
+
+\begin{enumerate}
+	\item Keine Sensor-Notwendigkeit – Tastaturanschläge lassen sich mit jedem (tastatur-basiertem) Eingabegerät aufzeichnen ohne besondere Hardware
+	\item Gute Performance in textabhängigen Tests – Tastaturanschläge sind in Szenarien in denen die Eingabedaten bekannt sind sehr aussagekräftig über die Identität
+\end{enumerate}
+
+Das Tastaturanschlagsmuster kann z.B. als weiteren Faktor bei der Passwort-Authentifizierung verwendet werden, um zu 
+erkennen, wenn ein Imposter versucht sich in dem System anzumelden.
+
+\subsubsection{Erläutern Sie kurz das Konzept der ``Digraphs'' und überlegen und beschreiben Sie die vier Merkmale, die aus einem Digraph gemessen werden können}
+
+Ein ``Diagraph'' ist das Segment von 2 aufeinanderfolgenden Tastenanschlägen.
+Vier Merkmale die anhand von Diagraphen einer Eingabe abgeleitet werden können sind:
+
+\begin{enumerate}
+	\item Inneres Delta – die Zeit zwischen den Tasten innerhalb eines Diagraphen
+	\item Äußeres Delta – die Zeit zwischen zwei Diagraphen
+	\item Repetitions-Interval – Wie häufig ein Diagraph verwendet wird
+	\item Dauer – Wie lange ein Diagraph (von keydown der ersten Taste zu keyup der zweiten) dauert
+\end{enumerate}
+
+\subsubsection{Argumentieren Sie mathematisch/logisch, wie das biometrische Verfahren Tastaturanschlag zur Verbesserung der Passwortsicherheit eingesetzt werden kann und stellen Sie klar, welche Annahmen Sie dabei tätigen}
+
+Wie bereits unter 1) angeführt könnte die Tastaturanschlags-Modalität als zusätzlicher Faktor bei der 
+Passwort-Authentifizierung dienen. Hierbei kann das System das Eingabemuster des Authentischen-Benutzers lernen und
+verwenden, um (bei einer starken Abweichung) einen Imposter zu erkennen, obwohl das Passwort korrekt eingegeben wurde.
+
+Somit wird das System resilient(er) gegenüber Passwortdiebstahl – es könnte z.B. bei einer starken Abweichung das 
+Passwort zurücksetzen. Die Tastaturanschlags-Modalität eignet sich, wie im Skript angeführt, sehr gut für diesen
+Anwendungsfall, da der Eingabetext bekannt ist.
 
 \subsection{Modalität Handschrift}
 
-%e1) Benennen Sie die beiden grundlegenden Kategorien von Merkmalen handschriftbasierter
-%Biometrie:
-%e2) Welche Arten von Signalen können durch Handschrift-Digitalisiertabletts erfasst und
-%aufgezeichnet werden, beschreiben Sie:
-%e3) Benennen Sie 5 Beispiele von statistischen Merkmalen, die aus Handschrift-Signalen zur
-%biometrischen Erkennung berechnet werden können:
-%e4) Benennen Sie 4 alternative Semantikklassen zur Unterschrift und diskutieren Sie deren Vor- und Nachteile:
-%
-%
+\subsubsection{Benennen Sie die beiden grundlegenden Kategorien von Merkmalen handschriftbasierter Biometrie}
+
+Die beiden grundlegenden Kategorien von Merkmalen handschriftbasierter Biometrie sind:
+
+\begin{itemize}
+	\item Statische Merkmale: Alle Merkmale, die aus einem statischen Bild der Handschrift extrahiert werden können (z. B. eingescannter Zettel).
+	\item Dynamische Merkmale: Alle Merkmale, die während des Schreibprozesses erfasst werden und Bewegungsabläufe sowie zeitliche Eigenschaften beschreiben.
+\end{itemize}
+
+\subsubsection{Welche Arten von Signalen können durch Handschrift-Digitalisiertabletts erfasst und aufgezeichnet werden, beschreiben Sie}
+
+\begin{enumerate}
+	\item Position der Hand
+	\item Position des Stifts (z.B. Koordinaten)
+	\item Druck
+	\item Stift-Berührungen des Displays
+	\item Neigung
+	\item Zeitstempel
+\end{enumerate}
+
+\subsubsection{Benennen Sie 5 Beispiele von statistischen Merkmalen, die aus Handschrift-Signalen zur biometrischen Erkennung berechnet werden können}
+
+\begin{enumerate}
+	\item Strichlänge
+	\item Frequenz der Stift-Berührungen
+	\item Schreibwinkel
+	\item Schleifen
+\end{enumerate}
+
+\subsubsection{Benennen Sie 4 alternative Semantikklassen zur Unterschrift und diskutieren Sie deren Vor- und Nachteile}
+
+\begin{enumerate}
+	\item Wörter
+	\item Sätze
+	\item Zahlen
+	\item Freitext
+\end{enumerate}
+
 \subsection{Überlegen und benennen Sie jeweils mindestens einen möglichen Sensortyp für die folgenden Modalitäten:}
-%Modalitäten:
-%• Handschrift:
-%• Fingerabdruck:
-%• Sprache:
-%• Gesicht:
-%• Iris:
-%• Finger-/Handgeometrie:
-%• Gangerkennung:
-%• DNA:
-%
+
+\begin{itemize}
+	\item Handschrift – optischer Sensor
+	\item Fingerabdruck – optischer Sensor
+	\item Sprache – Mikrofon
+	\item Gesicht – optischer Sensor, LIDAR
+	\item Iris – optischer Sensor
+	\item Finger-/Handgeometrie – optischer Sensor, LIDAR
+	\item Gangerkennung – optischer Sensor
+	\item DNA – N/A
+\end{itemize}
+
 \subsection{Führen Sie die praktische Übung „Handgeometrie“ durch!}
 \subsection{Führen Sie die praktische Übung „Offline Handschrift“ durch!}
 
