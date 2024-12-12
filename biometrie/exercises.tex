@@ -703,8 +703,133 @@ Die beiden grundlegenden Kategorien von Merkmalen handschriftbasierter Biometrie
 \end{itemize}
 
 \subsection{Führen Sie die praktische Übung „Handgeometrie“ durch!}
+
 \annotation{Nicht zutreffend (wurde bereits als Team-Aufgabe erledigt).}
 
 \subsection{Führen Sie die praktische Übung „Offline Handschrift“ durch!}
+
+\annotation{Nicht zutreffend (wurde bereits als Team-Aufgabe erledigt).}
+
+\newpage
+
+\section{}
+
+\subsection{Erläutern Sie die Unterschiede zwischen den beiden Varianten ``Key Binding'' und ``Key Generation''
+der Schlüssel-basierten Biometrischen Crypto-Systeme!}
+
+
+
+Die Unterschiede zwischen der ``Key Binding''- und der ``Key Generation'' Variante lassen sich in mehreren Dimensionen vergleichen:
+
+\subsubsection*{Relation zum Schlüssel}
+
+Während im ``Key Binding''-Verfahren der kryptographische Schlüssel komplett Unabhängig von den biometrischen Eingabedaten ist, wird
+im ``Key Generation''-Verfahren der Schlüssel aus den Eingabedaten abgeleitet. Dies kann u.U. weitreichende kryptographische 
+Implikationen mit sich bringen. Eine offensichtliche Implikation der ``Key Generation''-Variante ist, dass sich der Schlüssel mit jedem 
+neuen Enrollment eines Nutzers ändert und sich somit weniger für eine langfristige Verschlüsselung eignet. Wohingegen das Enrollment
+des Nutzers und der kryptographische Schlüssel im ``Key Binding''-Verfahren unabhängig sind.
+
+\subsubsection*{Schlüssel-Rotation}
+
+Während bei der ``Key Binding''-Variante eine Rotation des kryptographischen Schlüsselmaterials ohne größere Probleme stattfinden kann,
+muss bei der ``Key Generation'' ein neues Enrollment stattfinden um einen neuen, unabhängigen Schlüssel zu generieren.
+
+\subsubsection*{Revokierbarkeit}
+
+Durch die biometrische Zugangskontrolle zum Schlüsselmaterial können biometrische Krypto-Systeme die auf dem ``Key Binding''-Verfahren 
+beruhen den Zugang des Nutzers revokieren, in dem diese die Verlinkung zwischen Schlüsselpaar und Nutzer aufheben. Im ``Key 
+Generation''-Verfahren, kann es abhängig vom verwendeten Algorithmus sein, dass der Nutzer in der Lage ist, den Schlüssel aus seinen 
+Eingabedaten abzuleiten – somit ist die Revokierbarkeit nicht zwingend gewährleistet.
+
+\subsubsection*{Schlüssellänge}
+
+Da die biometrischen Gegebenheiten (bspw. Intra- bzw. Inter-Klassenvariabilität) bei dem ``Key Binding''-Verfahren keinen Einfluss
+auf das kryptographische Schlüsselmaterial hat, gibt es keine Begrenzung hinsichtlich möglicher Schlüssellängen etc. – wohingegen diese
+auf Grund der mathematischen Ableitung aus den Eingabedaten bei dem ``Key Generation''-Verfahren besteht.
+
+\subsubsection*{Speicherung}
+
+Letztlich unterscheiden sich die beiden Varianten hinsichtlich der im System gespeicherten Daten. Beim ``Key Binding'' wird das
+biometrisch verschlüsselte Chiffrat gespeichert, alle anderen Daten werden schnellstmöglich Vernichtet. Bei der ``Key Generation''-
+Variante werden die Hilfsdaten, die notwendig für die Schlüssel-Rekonstruktion sind, im biometrischen System gespeichert.
+
+\subsection{Welche Unterschiede bestehen zwischen den Konzepten biometrische Schlüsselgenerierung und
+revokierbaren biometrische Verfahren (engl. Cancelable Biometrics) hinsichtlich}
+
+\subsubsection{den Zielsetzungen}
+
+Primäre Zielsetzung der biometrischen Schlüsselgenerierung umfasst:
+
+\begin{enumerate}
+	\item Die Generierung kryptographischen Schlüsselmaterials aus biometrischen Merkmalen
+	\item Die Minimierung von Daten, die ein Nutzer speichern muss (ie. der Schlüssel lässt sich biometrisch wiederherstellen)
+	\item Erhöhte Sicherheit durch die Verknüpfung von biometrischen Merkmalen mit kryptographischen Verfahren
+\end{enumerate}
+
+
+Primäre Zielsetzung der revokierbaren biometrischen Verfahren umfasst:
+
+\begin{enumerate}
+	\item Der Schutz der ursprünglichen biometrischen Eingabedaten durch irreversible Transformationen.
+	\item Fokus auf die revokierbarkeit des Verfahrens, trotz biometrischer Koppelung
+\end{enumerate}
+
+\subsubsection{möglichen Anwendungen}
+
+Mögliche Anwendungsfälle der biometrischen Schlüsselgenerierung könnten umfassen:
+
+\begin{enumerate}
+	\item Schutz sensibler Daten 
+	\item Authentifizierung in sicherheitskritischen Systemen
+	\item Temporäre Schlüssel für eine einmalige Verwendung
+\end{enumerate}
+
+Mögliche Anwendungsfälle der revokierbaren biometrische Verfahren könnten umfassen:
+
+\begin{enumerate}
+	\item Anwendungsbereiche mit Fokus auf Datenschutz und Wiederverwendbarkeit
+	\item Authentifizierung mit hoher Flexibilität (ie. Smartcards)
+\end{enumerate}	
+
+\subsection{Erläutern Sie in Stichpunkten, den Ablauf des Merkmalsvergleichs bei revokierbaren biometrischen Verfahren (engl. Cancelable Biometrics)}
+
+\begin{enumerate}
+    \item Erfassung der biometrischen Eingabedaten (inkl. Feature-Extraction)
+    \item Irreversible Transformation der Merkmale
+    \item Vergleich mit Referenzdaten
+    \item Authentifizierungs-Entscheidung
+\end{enumerate}
+
+\subsubsection{Wodurch entsteht dabei die Schutzwirkung der biometrischen Referenzen vor Missbrauch}
+
+\begin{enumerate}
+    \item Irreversible Transformation der Merkmale
+    \item Vermeidung von Cross-Application-Linking von biometrischen Daten
+    \item Keine Speicherung von biometrischen Eingabedaten
+    \item Revokierbarkeit (ie. Veränderung der Transformation)
+\end{enumerate}
+
+\subsubsection{Wie kann die Revokierbarkeit also der Widerruf der biometrischen Registrierung, erwirkt
+werden?}
+
+In dem die irreversible Transformations-Funktion ausgetauscht wird. Somit muss ein neues Enrollment
+(mit der neuen Transformation-Funktion) stattfinden, um sich erneut zu Authentifizieren und es ist gleichzeitig nicht mehr Möglich
+gegen die bestehenden Referenz-Daten zu Authentifizieren (bei gleichbleibenden, authentischen Eingabedaten).
+
+\newpage
+
+\section{}
+
+\subsection{Erläutern Sie den Begriff „biometrische Attributierung“ anhand eines selbst gewählten Beispiels.}
+
+\annotation{Grenzen Sie dabei auch den Begriff zur „biometrischen Authentifizierung“ ab.}
+
+\subsection{Überlegen Sie: welche Attribute können prinzipiell aus Sprach-Biometrie abgeleitet werden?}
+
+\annotation{Beschreiben Sie dabei mindestens zwei Merkmale in einem Audiosignal, welche hierfür auswertet werden könnten!}
+
+\newpage
+
+\section{}
 
 \end{document}
