@@ -816,20 +816,133 @@ In dem die irreversible Transformations-Funktion ausgetauscht wird. Somit muss e
 (mit der neuen Transformation-Funktion) stattfinden, um sich erneut zu Authentifizieren und es ist gleichzeitig nicht mehr Möglich
 gegen die bestehenden Referenz-Daten zu Authentifizieren (bei gleichbleibenden, authentischen Eingabedaten).
 
-\newpage
-
 \section{}
 
-\subsection{Erläutern Sie den Begriff „biometrische Attributierung“ anhand eines selbst gewählten Beispiels.}
+\subsection{Erläutern Sie den Begriff ``biometrische Attributierung'' anhand eines selbst gewählten Beispiels.}
 
 \annotation{Grenzen Sie dabei auch den Begriff zur „biometrischen Authentifizierung“ ab.}
+
+Biometrische Attributierung bezieht sich auf das Verfahren der Ableitung von Informationen über ein Individuum durch 
+die Auswertung einer, oder mehrerer biometrische Modalitäten. So lassen sich mit ausreichend hoher Wahrscheinlichkeit
+Vorhersagen über die Herkunft einer Person treffen in dem Modalitäten wie Sprache, Haut- und Haarfarbe, Größe, etc. in 
+Kombination betrachtet werden.
+
+Dieses Verfahren unterscheidet sich vorrangig durch die Motivation der Auswertung zur biometrischen Authentifizierung. 
+Während die biometrische Authentifizierung sich meistens auf eine einzige Modalität bezieht und lediglich das Ziel hat
+zuverlässig die Identität eines einzelnen Individuums sicherzustellen (durch einen Verglich zu bereits hinterlegten 
+Referenzdaten), versucht die biometrische Attributierung, Rückschlüsse über ein (oder mehrere) Individuum/en zu ziehen.
 
 \subsection{Überlegen Sie: welche Attribute können prinzipiell aus Sprach-Biometrie abgeleitet werden?}
 
 \annotation{Beschreiben Sie dabei mindestens zwei Merkmale in einem Audiosignal, welche hierfür auswertet werden könnten!}
 
-\newpage
+Hier sind einige Beispiele für Attribute die aus der Sprache einer Person abgeleitet werden können:
+
+\begin{enumerate}
+	\item Herkunft (ie. ausgedrückt durch Sprache bzw. Dialekt, Stimm-Lage etc.)
+	\item Alter (ie. durch Sprach-Elemente, Stimm-Lage / Stimm-Charakteristika etc.)
+	\item Soziale Herkunft / Zugehörigkeit (ie. durch Phrasen/Wörter, Dialekt etc.)
+	\item Geschlecht (ie. durch Stimm-Lage, Stimm-Charakteristika, Lautstärke, etc.)
+\end{enumerate}
 
 \section{}
+
+\subsection{Angenommen, Sie sollen die Evaluation für ein biometrisches System mittels Tastatur-Anschlagsdynamik durchführen und sind für die Datensammlung verantwortlich.}
+
+\annotation{Überlegen Sie sich hierfür ein Protokoll und beschreiben
+	Sie dieses unter der Berücksichtigung folgender Rahmenbedingungen:\\\\
+	Es sollen je Proband zwei Semantiken untersucht werden: jeweils ein
+	selbstgewähltes individuelles Passwort und ein für alle Probanden gleiches.
+	Wählen Sie nach ihrer Ansicht geeignete Vorgaben und begründen Sie diese!\\\\
+	Überlegen Sie eine sinnvolle Reihenfolge für die Erfassung der Enrolment-
+	bzw. Verifikationsdaten!\\\\
+	Überlegen Sie darüber hinaus ob und welche Fälschungsszenarien umsetzbar sind.
+	Beschreiben Sie im Protokoll, wie diese durch die Probanden umgesetzt werden
+	sollen und welche Kategorien entstehen.
+}
+
+
+Ein realistisches Evaluationsprotokoll könnte folgenden Rahmenbedinungen unterliegen:
+
+\subsubsection*{Semantik-Vorgaben}
+
+Die Länge, Zusammensetzung, Komplexität etc. des vorgegeben Passworts, sowie des selbstgewählten Passworts
+werden vorgegeben und orientieren sich an, für echte Authentifizierung üblichen / empfohlenen Werten.
+
+\subsubsection*{Sensorik-Vorgaben}
+
+Alle Probanden müssen die Datenerhebung mittels der gleichen Sensorik (ie. Tastatur-Modell) vornehmen, um
+eine Vergleichbarkeit zwischen Probanden zu erhalten.
+
+\subsubsection*{Abfolge-Vorgaben}
+
+Die Erfassung der Daten sollte folgendermaßen erfolgen:
+
+\begin{enumerate}
+	\item Selbstgewähltes Passwort – Enrolment
+	\item Vorgegebenes Passwort – Enrolment
+	\item Selbstgewähltes Passwort – Verifikation
+	\item Vorgegebenes Passwort – Verifikation
+\end{enumerate}
+
+Somit gibt es innerhalb einer Semantik eine feste Reihenfolge (ie. erst Enrolment, dann Verifizierung),
+die Semantiken werden aber interleaved erfasst, was dabei Hilft, eine stärkere Variation der Eingabedaten
+zu erhalten, da die Probanden zwischen drin das Muster wechseln müssen. (Ie. nicht (bspw.) 10-mal das 
+gleichen Passwort am Stück tippen).
+
+Eine erweiterte Form könnte hier sein, dass die einzelnen Proben der Verifikationsdaten abwechselnd 
+erhoben werden, um eine stärkere Streuung in der Verifikation zu erhalten, was der Realität am nächsten 
+käme. Ie. beim Enrolment werden – verhältnsmäßig – homogene Daten erhoben, wohingegen bei der Verifikation
+eine breitere Streuung besteht.
+
+\subsubsection*{Fälschungs-Test}
+
+Es könnte (angenommen, es gibt keine Ressourcen für eine weitere Datenerhebung) ein ``Zero-Effort''-
+Fälschungs-Test durchgeführt werden, in dem pro Proband \textbf{alle} verfügbaren Verifikationsdaten 
+(inkl. aller anderen Probanden) zur Verifikation verwendet werden.
+
+Die FMR bzw. FAR ist besonders Aussagekräftig für das vorgegeben Passwort, da die Verifikationsdaten nah
+an den Enrolmentdaten liegen, selbst wenn sie von einem anderen Probanden stammen, da es sich um das 
+gleiche Passwort handelt. 
+
+Ein komplett zufälliger Angriff kann durchgeführt werden, in dem lediglich die Semantik des 
+selbstgewählten Passworts betrachtet wird, da es somit keinen direkten Zusammenhang zwischen
+Enrolment und Verifikations-Daten gibt.
+
+\subsection{Angenommen, bei der Datenerhebung zu einer biometrischen Evaluation nehmen 20 Probanden teil. Jede/r Proband/in gibt dabei 10 Enrolment-Proben, sowie 20 Verifikationsproben ab.}
+
+\subsubsection{Wieviele Einzel-Verifikationsversuche sind dann zur Ermittlung der FNMR/FRR über alle Probanden erforderlich?}
+
+Zur Ermittlung der FNMR bzw. FRR über alle Probanden hinweg sind folgende Verifikationsversuche notwendig:
+
+\begin{enumerate}
+	\item Pro Proband sind 100 Verifikationsversuche notwendig (10 Enrolment-Proben $\times$ 10 Verifikations-Proben)
+	\item Für alle Probanden (20) sind also 2000 Verifikationsversuche notwendig (ie. 100 $\times$ 20)
+\end{enumerate}
+
+Dies leitet sich aus der Definition der FNMR bzw FRR ab, die beschreibt, wie oft eine Verifikationsprobe
+eines Probanden \textbf{nicht} erfolgreich zur Authentifizierung geführt hat.
+
+
+\annotation{Geben Sie die Berechnungsvorschrift an!}
+
+\subsubsection{Wieviele Einzel-Verifikationsversuche sind es zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random}?}
+
+\annotation{Geben Sie die Berechnungsvorschrift an!}
+
+Zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random} über alle Probanden hinweg sind folgende Verifikationsversuche notwendig:
+
+\begin{enumerate}
+	\item Pro Proband wird jede Enrolment-Probe (10) mit jeder Verifikations-Probe (10) \textbf{jedes anderen} Probanden verglichen (19). Dies Ergibt 1900 Verifikationsversuche pro Proband (10 eigene Enrolment-Proben $\times$ 10 fremde Verifikations-Proben $\times$ 19 andere Probanden)
+	\item Für alle Probanden (20) sind also 38000 Verifikationsversuche notwendig (ie. 1900 $\times$ 20)
+\end{enumerate}
+
+Dies leitet sich aus der Definition der FMR bzw. FAR ab, die beschreibt wie Wahrscheinlich es ist, dass 
+eine eine Verifikationsprobe eines anderen Probanden fälschlicherweise als authentische klassifiziert wird 
+(je Proband und Enrolment-Probe).
+
+Anmerkung: Diese Verifikationstests wären bereits im Rahmen eines ``Zero-Effort''-Fälschungstests 
+durchgeführt worden und die FMR\textsubscript{Random} / FAR\textsubscript{Random} könnten somit ohne 
+weiteren Aufwand berechnet werden.
 
 \end{document}
