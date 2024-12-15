@@ -381,7 +381,7 @@ dies durch die Beobachtung der Standardabweichung zu erkennen.
 Die False-Non-Match-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\[0.1em]
 
 \textit{
-``Falschnichtübereinstimmungs-Rate (tlw. auch Falsch-Nichterkennungsrate), Verhältnis zwischen der Anzahl der nicht bestätigten authentischen Verifikationen (d.h. Verifizierungsdaten und Enrolmentdaten von identischen Personen werden fälschlicher Weise negativ verifiziert) und der gesamten Anzahl von Verifikationstests.''
+``Falschnichtübereinstimmungs-Rate (tlw. auch Falsch-Nichterkennungsrate), Verhältnis zwischen der Anzahl der nicht bestätigten authentischen Verifikationen (d.h. Verifizierungsdaten und Enrollmentdaten von identischen Personen werden fälschlicher Weise negativ verifiziert) und der gesamten Anzahl von Verifikationstests.''
 }
 
 \subsubsection{False Match Rate (FMR)}
@@ -389,7 +389,7 @@ Die False-Non-Match-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführ
 Die False-Match-Rate wird folgendermaßen im Skript (Kapitel 4.1) eingeführt:\\[0.1em]
 
 \textit{
-``Falschübereinstimmungs-Rate (tlw. auch Falscherkennungsrate), d.h. Verhältnis zwischen der Anzahl der aufgetretenen Falsch-Verifikationen (d.h. Verifizierungsdaten und Enrolmentdaten von unterscheidlichen Personen werden fälschlicher Weise positiv verifiziert) und der gesamten Anzahl von Verifikationstests''
+``Falschübereinstimmungs-Rate (tlw. auch Falscherkennungsrate), d.h. Verhältnis zwischen der Anzahl der aufgetretenen Falsch-Verifikationen (d.h. Verifizierungsdaten und Enrollmentdaten von unterscheidlichen Personen werden fälschlicher Weise positiv verifiziert) und der gesamten Anzahl von Verifikationstests''
 }
 
 \subsubsection{Equal-Error Rate (EER)}
@@ -723,7 +723,7 @@ Die Unterschiede zwischen der ``Key Binding''- und der ``Key Generation'' Varian
 
 \subsubsection*{Relation zum Schlüssel}
 
-Während im ``Key Binding''-Verfahren der kryptographische Schlüssel komplett Unabhängig von den biometrischen Eingabedaten ist, wird
+Während im ``Key Binding''-Verfahren der kryptographische Schlüssel komplett unabhängig von den biometrischen Eingabedaten ist, wird
 im ``Key Generation''-Verfahren der Schlüssel aus den Eingabedaten abgeleitet. Dies kann u.U. weitreichende kryptographische 
 Implikationen mit sich bringen. Eine offensichtliche Implikation der ``Key Generation''-Variante ist, dass sich der Schlüssel mit jedem 
 neuen Enrollment eines Nutzers ändert und sich somit weniger für eine langfristige Verschlüsselung eignet. Wohingegen das Enrollment
@@ -825,7 +825,7 @@ gegen die bestehenden Referenz-Daten zu Authentifizieren (bei gleichbleibenden, 
 Biometrische Attributierung bezieht sich auf das Verfahren der Ableitung von Informationen über ein Individuum durch 
 die Auswertung einer, oder mehrerer biometrische Modalitäten. So lassen sich mit ausreichend hoher Wahrscheinlichkeit
 Vorhersagen über die Herkunft einer Person treffen in dem Modalitäten wie Sprache, Haut- und Haarfarbe, Größe, etc. in 
-Kombination betrachtet werden.
+kombination betrachtet werden.
 
 Dieses Verfahren unterscheidet sich vorrangig durch die Motivation der Auswertung zur biometrischen Authentifizierung. 
 Während die biometrische Authentifizierung sich meistens auf eine einzige Modalität bezieht und lediglich das Ziel hat
@@ -854,7 +854,7 @@ Hier sind einige Beispiele für Attribute die aus der Sprache einer Person abgel
 	Es sollen je Proband zwei Semantiken untersucht werden: jeweils ein
 	selbstgewähltes individuelles Passwort und ein für alle Probanden gleiches.
 	Wählen Sie nach ihrer Ansicht geeignete Vorgaben und begründen Sie diese!\\\\
-	Überlegen Sie eine sinnvolle Reihenfolge für die Erfassung der Enrolment-
+	Überlegen Sie eine sinnvolle Reihenfolge für die Erfassung der Enrollment-
 	bzw. Verifikationsdaten!\\\\
 	Überlegen Sie darüber hinaus ob und welche Fälschungsszenarien umsetzbar sind.
 	Beschreiben Sie im Protokoll, wie diese durch die Probanden umgesetzt werden
@@ -879,20 +879,20 @@ eine Vergleichbarkeit zwischen Probanden zu erhalten.
 Die Erfassung der Daten sollte folgendermaßen erfolgen:
 
 \begin{enumerate}
-	\item Selbstgewähltes Passwort – Enrolment
-	\item Vorgegebenes Passwort – Enrolment
+	\item Selbstgewähltes Passwort – Enrollment
+	\item Vorgegebenes Passwort – Enrollment
 	\item Selbstgewähltes Passwort – Verifikation
 	\item Vorgegebenes Passwort – Verifikation
 \end{enumerate}
 
-Somit gibt es innerhalb einer Semantik eine feste Reihenfolge (ie. erst Enrolment, dann Verifizierung),
+Somit gibt es innerhalb einer Semantik eine feste Reihenfolge (ie. erst Enrollment, dann Verifizierung),
 die Semantiken werden aber interleaved erfasst, was dabei Hilft, eine stärkere Variation der Eingabedaten
 zu erhalten, da die Probanden zwischen drin das Muster wechseln müssen. (Ie. nicht (bspw.) 10-mal das 
 gleichen Passwort am Stück tippen).
 
 Eine erweiterte Form könnte hier sein, dass die einzelnen Proben der Verifikationsdaten abwechselnd 
 erhoben werden, um eine stärkere Streuung in der Verifikation zu erhalten, was der Realität am nächsten 
-käme. Ie. beim Enrolment werden – verhältnsmäßig – homogene Daten erhoben, wohingegen bei der Verifikation
+käme. Ie. beim Enrollment werden – verhältnsmäßig – homogene Daten erhoben, wohingegen bei der Verifikation
 eine breitere Streuung besteht.
 
 \subsubsection*{Fälschungs-Test}
@@ -902,21 +902,21 @@ Fälschungs-Test durchgeführt werden, in dem pro Proband \textbf{alle} verfügb
 (inkl. aller anderen Probanden) zur Verifikation verwendet werden.
 
 Die FMR bzw. FAR ist besonders Aussagekräftig für das vorgegeben Passwort, da die Verifikationsdaten nah
-an den Enrolmentdaten liegen, selbst wenn sie von einem anderen Probanden stammen, da es sich um das 
+an den Enrollmentdaten liegen, selbst wenn sie von einem anderen Probanden stammen, da es sich um das 
 gleiche Passwort handelt. 
 
 Ein komplett zufälliger Angriff kann durchgeführt werden, in dem lediglich die Semantik des 
 selbstgewählten Passworts betrachtet wird, da es somit keinen direkten Zusammenhang zwischen
-Enrolment und Verifikations-Daten gibt.
+Enrollment und Verifikations-Daten gibt.
 
-\subsection{Angenommen, bei der Datenerhebung zu einer biometrischen Evaluation nehmen 20 Probanden teil. Jede/r Proband/in gibt dabei 10 Enrolment-Proben, sowie 20 Verifikationsproben ab.}
+\subsection{Angenommen, bei der Datenerhebung zu einer biometrischen Evaluation nehmen 20 Probanden teil. Jede/r Proband/in gibt dabei 10 Enrollment-Proben, sowie 20 Verifikationsproben ab.}
 
 \subsubsection{Wieviele Einzel-Verifikationsversuche sind dann zur Ermittlung der FNMR/FRR über alle Probanden erforderlich?}
 
 Zur Ermittlung der FNMR bzw. FRR über alle Probanden hinweg sind folgende Verifikationsversuche notwendig:
 
 \begin{enumerate}
-	\item Pro Proband sind 100 Verifikationsversuche notwendig (10 Enrolment-Proben $\times$ 10 Verifikations-Proben)
+	\item Pro Proband sind 100 Verifikationsversuche notwendig (10 Enrollment-Proben $\times$ 10 Verifikations-Proben)
 	\item Für alle Probanden (20) sind also 2000 Verifikationsversuche notwendig (ie. 100 $\times$ 20)
 \end{enumerate}
 
@@ -926,22 +926,22 @@ eines Probanden \textbf{nicht} erfolgreich zur Authentifizierung geführt hat.
 
 \annotation{Geben Sie die Berechnungsvorschrift an!}
 
-\subsubsection{Wieviele Einzel-Verifikationsversuche sind es zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random}?}
+\subsubsection{Wieviele Einzel-Verifikations-Versuche sind es zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random}?}
 
 \annotation{Geben Sie die Berechnungsvorschrift an!}
 
-Zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random} über alle Probanden hinweg sind folgende Verifikationsversuche notwendig:
+Zur Ermittlung der FMR\textsubscript{Random} / FAR\textsubscript{Random} über alle Probanden hinweg sind folgende Verifikations-Versuche notwendig:
 
 \begin{enumerate}
-	\item Pro Proband wird jede Enrolment-Probe (10) mit jeder Verifikations-Probe (10) \textbf{jedes anderen} Probanden verglichen (19). Dies Ergibt 1900 Verifikationsversuche pro Proband (10 eigene Enrolment-Proben $\times$ 10 fremde Verifikations-Proben $\times$ 19 andere Probanden)
-	\item Für alle Probanden (20) sind also 38000 Verifikationsversuche notwendig (ie. 1900 $\times$ 20)
+	\item Pro Proband wird jede Enrollment-Probe (10) mit jeder Verifikations-Probe (10) \textbf{jedes anderen} Probanden verglichen (19). Dies Ergibt 1900 Verifikations-Versuche pro Proband (10 eigene Enrollment-Proben $\times$ 10 fremde Verifikations-Proben $\times$ 19 andere Probanden)
+	\item Für alle Probanden (20) sind also 38000 Verifikations-Versuche notwendig (ie. 1900 $\times$ 20)
 \end{enumerate}
 
 Dies leitet sich aus der Definition der FMR bzw. FAR ab, die beschreibt wie Wahrscheinlich es ist, dass 
-eine eine Verifikationsprobe eines anderen Probanden fälschlicherweise als authentische klassifiziert wird 
-(je Proband und Enrolment-Probe).
+eine eine Verifikations-Probe eines anderen Probanden fälschlicherweise als authentische klassifiziert 
+wird (je Proband und Enrollment-Probe).
 
-Anmerkung: Diese Verifikationstests wären bereits im Rahmen eines ``Zero-Effort''-Fälschungstests 
+Anmerkung: Diese Verifikations-Tests wären bereits im Rahmen eines ``Zero-Effort''-Fälschungstests 
 durchgeführt worden und die FMR\textsubscript{Random} / FAR\textsubscript{Random} könnten somit ohne 
 weiteren Aufwand berechnet werden.
 
