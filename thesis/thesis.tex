@@ -1,0 +1,207 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{titlesec}
+
+\graphicspath{{./images/}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{\fancyplain{}{Mara Schulke} }
+\rhead{\fancyplain{}{\today}}
+\cfoot{\fancyplain{}{\thepage}}
+
+\newcommand{\figuresource}[1]{
+	\begin{center}Quelle: {#1}\end{center}
+}
+
+\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{20pt}{\Large}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\small\bfseries}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \begin{Large}
+            Brandenburg University of Technology \\[1em]
+        \end{Large}
+        IT Security \\
+        Computerscience and Media \\
+        Prof. Dr. Oleg Lobachev \\
+        Florian Eich
+    \end{center}
+
+    \vfill
+
+    \begin{center}
+        \Large{Embedding Generative Pretrained Transformers into PostgreSQL}\\[0.5em]
+        \large{Bachelor Thesis}\\[1em]
+        
+        \begin{normalsize}
+            Summer semester 2025\\[0.25em]
+            \today
+        \end{normalsize}
+    \end{center}
+
+    \vfill
+
+    \begin{center}
+        Mara Schulke – Matr-Nr. 20215853
+    \end{center}
+\end{titlepage}
+
+\begin{abstract}
+This thesis explores the integration of Generative Pretrained Transformers (GPT)
+into PostgreSQL database systems. The research focuses on implementation strategies,
+performance optimization, and practical applications of this integration.
+\end{abstract}
+
+\tableofcontents
+
+\listoffigures
+
+\section*{List of Abbreviations}
+\begin{tabular}{ll}
+GPT & Generative Pretrained Transformer \\
+SQL & Structured Query Language \\
+API & Application Programming Interface \\
+% Add other abbreviations as needed
+\end{tabular}
+
+\newpage
+
+% Introduction
+\section{Introduction}
+\subsection{Problem Statement and Motivation}
+\subsection{Objectives of the Thesis}
+\subsection{Research Questions}
+\subsection{Methodological Approach}
+\subsection{Structure of the Thesis}
+
+\newpage
+
+% Theoretical Foundations
+\section{Theoretical Foundations}
+
+\subsection{Generative Pretrained Transformers (GPT)}
+\subsubsection{Architecture and Functionality}
+\subsubsection{Training and Fine-tuning}
+\subsubsection{Application Areas}
+
+\subsection{PostgreSQL as a Database System}
+\subsubsection{Architecture of PostgreSQL}
+\subsubsection{Extension Capabilities}
+\subsubsection{PostGIS and Other Extensions as Examples}
+
+\subsection{Embedding AI Models in Database Systems}
+\subsubsection{Current Approaches and Solutions}
+\subsubsection{Technical Challenges}
+\subsubsection{Benefits of Integration}
+
+\newpage
+
+% Conceptual Design
+\section{Conceptual Design of GPT Embedding in PostgreSQL}
+
+\subsection{Requirements Analysis}
+\subsubsection{Functional Requirements}
+\subsubsection{Non-functional Requirements}
+
+\subsection{Architecture Design}
+\subsubsection{Interface Design}
+\subsubsection{Data Model}
+\subsubsection{Integration into PostgreSQL}
+
+\subsection{Technical Implementation Strategies}
+\subsubsection{Foreign Data Wrapper}
+\subsubsection{Extension Using C/C++}
+\subsubsection{PL/Python or Other Procedural Languages}
+\subsubsection{Comparison of Approaches}
+
+\newpage
+
+% Implementation
+\section{Implementation}
+
+\subsection{Development Environment and Tools}
+
+\subsection{Integration of the GPT Model}
+\subsubsection{Model Selection and Optimization}
+\subsubsection{API Connection or Local Embedding}
+
+\subsection{Development of the PostgreSQL Extension}
+\subsubsection{SQL Functions for GPT Interactions}
+\subsubsection{Data Type Conversion and Processing}
+\subsubsection{Error Handling and Logging}
+
+\subsection{Optimization}
+\subsubsection{Performance Tuning}
+\subsubsection{Memory Usage}
+\subsubsection{Parallelization}
+
+\newpage
+
+% Evaluation
+\section{Evaluation}
+
+\subsection{Test Environment and Methodology}
+
+\subsection{Performance Tests}
+\subsubsection{Latency}
+\subsubsection{Throughput}
+\subsubsection{Scalability}
+
+\subsection{Use Cases}
+\subsubsection{Natural Language Queries}
+\subsubsection{Text Generation Within the Database}
+\subsubsection{Semantic Search and Text Classification}
+
+\subsection{Comparison with Alternative Approaches}
+
+\newpage
+
+% Discussion
+\section{Discussion}
+
+\subsection{Interpretation of Results}
+\subsection{Limitations of the Implementation}
+\subsection{Ethical and Data Privacy Considerations}
+\subsection{Potential Future Developments}
+
+\newpage
+
+% Summary and Outlook
+\section{Summary and Outlook}
+
+\subsection{Summary of Results}
+\subsection{Addressing the Research Questions}
+\subsection{Outlook for Future Research and Development}
+
+\newpage
+
+\begin{thebibliography}{99}
+\bibitem{ref1} Author, A. (Year). Title of the reference. Journal/Publisher, Volume(Issue), Pages.
+% Add more references as needed
+\end{thebibliography}
+
+\newpage
+
+\appendix
+\section*{Appendix}
+\subsection*{Installation Guide}
+\subsection*{API Documentation}
+\subsection*{Code Examples}
+\subsection*{Test Data and Results}
+
+\end{document}
