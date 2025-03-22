@@ -49,7 +49,7 @@
 	\begin{center}
 		Tobias Ende – Matr-Nr. 939628 \\
 		Timo Schwabe – Matr-Nr. 20229002 \\
-		Conrad Ferneding – Matr-Nr. 20246863 \\
+		Conrad Ferneding – Matr-Nr. 20226863 \\
 		Mara Schulke – Matr-Nr. 20215853 \\
 	\end{center}
 \end{titlepage}
@@ -59,24 +59,120 @@
 
 \listoffigures
 
-\newpage
 
-\section{Wenn Sie das FAR/FFR-Fehlerratendiagramm erstellt haben, können Sie nun eine Abschätzung der entstandenen EER (Equal Error Rate) vornehmen. Tun Sie dies und geben Sie das Ergebnis hierfür an.}
+\section{Einleitung}
 
-Diese Frage wird die Equal Error Rate (EER) bewerten. Das genutzte biometrische System war als Aufgabe 
-vorgegeben worden und wird daher nicht ausführlich erläutert werden. Genutzt wurde die Modalität der 
-Offline-Handschrift mit zwei verschiedenen Semantiken.
+Die Verwendung von biometrischen Verfahren ist nicht neu und findet in vielen Bereichen bereits Anwendung.
+Die Handschrift-Biometrie ist im Rahmen einer solchen Arbeit leicht und ohne technische Hilfsmittel
+realisierbar. Daher eignet sie sich gut für eine Analyse. Da die Analyse wie beispielsweise die
+Berechnung der Equal Error Rate (EER) bei jedem biometrischen Verfahren gleich ist, lässt sich so
+übertragbares Wissen aufbauen.
 
-Die EER ergibt sich aus der False Requection Rate (FRR) und der False Acceptance Rate (FAR). Die FRR 
-beschreibt die Anzahl der fehlerhaften Ablehnungen im Verhältnis zu der Gesamtanzahl der Versuche. Die FAR 
-beschreibt die fehlerhaften Akzeptierungen im Verhältnis zu der Gesamtanzahl der Versuche. Die Stelle, an 
-der die FRR und FAR gleich sind, ergibt die EER, welche die Genauigkeit eines biometrischen Systems 
-beschreibt. Ein biometrisches System ist ungenau, wenn die EER hoch ist. Die Anzahl der fehlerhaften 
-Akzeptierungen und die Anzahl der fehlerhaften Ablehnungen sind dort hoch. Andererseits deutet eine 
-niedrige EER auf ein genaueres biometrisches System, da hier die Anzahl der Fehler niedriger ist. Ob das 
-biometrische System einen Versuch akzeptiert oder ablehnt, hängt von der berechneten euklidischen Distanz 
-zwischen den Enrolment- und Verifikationsvektoren ab.
+In dieser Arbeit soll die Handschrift-Biometrie näher betrachtet werden. Die Probanden sollen die
+Verifikations- und Enrollmentdaten für zwei Semantiken erstellen und erfassen. Aus den Daten ergibt
+sich für jeden Probanden eine Streumatrix.
 
+Das Kernziel der Arbeit ist es, die erfassten Daten zu analysieren. Es werden wichtige Kennwerte
+wie die EER ermittelt. Anschließend sollen diese Zahlen interpretiert und diskutiert werden. Durch die
+Betrachtung von verschiedenen Fälschungen soll eine Aussage über die Sicherheit des Systems
+getroffen werden. Abschließend sollen Voraussetzungen definiert werden, wie ein System, dass
+Handschrift-Biometrie verwendet, gestaltet werden soll.
+
+Zuerst werden im Kapitel Grundlagen die wichtigsten Begriffe, die in dieser Arbeit verwendet werden,
+erläutert. Anschließend wird das verwendete System zur Erfassung der Offline-Handschrift beschrieben.
+In der Analyse werden die verschiedenen Kennwerte der Semantiken berechnet und interpretiert. In der
+anschließenden Diskussion wird auf die Verwendbarkeit des Systems eingegangen. Im Kapitel der 
+``Evaluation durch gezielte Angriffe'' werden verschiedene Angriffe durch Fälschungen beschrieben und in den 
+Kontext der Handschrift-Biometrie gesetzt. Die letzten beiden Kapitel befassen sich mit der Beschreibung
+des Systems aus technischer Sicht und verschiedenen Voraussetzungen, die für eine Handschrift-Biometrie
+zu treffen sind.
+
+\section{Grundlagen}
+
+Um ein biometrisches System aufzustellen und anschließend bewerten zu können, sollen in diesem Kapitel
+grundlegende Begriffe der Biometrie geklärt werden. Außerdem werden das biometrische System und die
+Modalität vorgestellt, die von diesem verwendet werden.
+
+\subsection{Definitionen}
+
+\begin{itemize}
+	\item Die False Rejection Rate (FRR) beschreibt die Anzahl der Versuche, bei denen ein Benutzer
+		von einem Authentifizierungssystem fälschlicherweise abgelehnt wurde.
+	\item Die Intra-Klassen-Varianz beschreibt die Variabilität der Merkmale für dieselbe Person.
+		Ein biometrisches System strebt eine geringe Intra-Klassen-Varianz an, da dies den
+		Wiedererkennungswert einer Person erhöht. Eine geringe Intra-Klassen-Varianz führt zu
+		einer niedrigen FRR. 
+	\item Die False Acceptance Rate (FAR) ist der Gegensatz der FRR und beschreibt die Anzahl
+		der Versuche, bei denen ein Nutzer fälschlicherweise angenommen wurde. 
+	\item Die Inter-Klassen Varianz beschreibt die Variabilität der Merkmale zwischen verschiedenen Nutzern.
+		Eine hohe Inter-Klassen-Varianz bedeutet eine hohe Unterscheidbarkeit zwischen verschiedenen Personen.
+		Eine hohe Inter-Klassen-Varianz führt zu einer geringen FAR.
+	\item Die Equal Error Rate (EER) beschreibt die Leistung eines biometrischen Systems und ist der Punkt,
+		an dem die FRR und FAR gleich sind. Die EER ist ein Schwellenwert für die Differenzen der Enrolment- gegen
+		Verifikationswerte. Ein niedrigerer Schwellenwert würde eine höhere FRR bedeuten, weil legitime Benutzer
+		häufiger abgelehnt werden. Ein höherer Schwellenwert würde eine höhere FAR bedeuten, weil unberechtigte
+		Benutzer häufiger fälschlicherweise akzeptiert werden. Ein “gutes” biometrisches System versucht daher,
+		die ERR an einen Punkt zu setzen, an dem sowohl FRR als auch FAR möglichst gering sind.
+\end{itemize}
+
+\subsection{Das biometrische System dieser Arbeit}
+
+Das biometrische System, das in dieser Arbeit betrachtet werden soll, nutzt die Modalität der Offline-Handschrift.
+Bei dieser Modalität werden biometrische Merkmale aus Schriftsätzen extrahiert, ohne die aktiven Merkmale
+zu betrachten, die beim Schreiben entstehen. 
+
+Die Phase der Datenerhebung umfasst für diese Arbeit vier Probanden, welche jeweils Enrolment- und Verifikationsdaten
+für zwei Semantiken ablegen. Für die erste Semantik (Semantik A) schreibt jeder Proband fünf Mal ``78402''
+und liest die entstandenen biometrischen Merkmale ab, um sich für das System zu registrieren. Anschließend
+wird dieselbe Zahlenfolge weitere fünf Mal aufgeschrieben, um die Verifikation des Systems zu testen. Die
+Differenz der Enrolment- und Verifikationsdaten wird durch den euklidischen Abstand mit 7-Dimensionen berechnet.
+Letztlich wird dasselbe Vorgehen für eine weitere Semantik (Semantik B) wiederholt, bei der der Schriftzug der
+Probanden, dessen Geburtsort ist. Da die erste Semantik einen Schriftzug aus Zahlen beschreibt, welcher für alle
+Probanden gleich ist, und die zweite Semantik einen individuellen Schriftzug, werden sich die Ergebnisse gut
+in der Interpretation analysieren lassen. 
+
+Bei den sieben erwähnten Merkmalen handelt es sich um die folgende Liste:
+
+\begin{itemize}
+	\item Breiten- und Höhenverhältnis
+	\item Anzahl der kontinuierlich verbundenen Linienabschnitte (Segmentzahl)
+	\item Grundlinien-Winkel
+	\item Schleifenanzahl
+	\item Gesamtzahl der lokalen X-Werte
+	\item Gesamtzahl der lokalen Y-Werte
+	\item Anzahl der Kreuzungspunkte
+\end{itemize}
+
+Für jeden Probanden entstehen durch dieses System (5x7)-Enrolment-Matrizen. Im Vergleich mit je vier
+(7x5)-Verifikations-Matrizen wird dadurch eine (20x20) Streumatrix entstehen. Die folgende Tabelle wird
+diese Streumatrix skizzieren. Die blau markierten Bereiche stellen die Intra-Klassen-Distanzwerte dar,
+während die roten Bereiche die Inter-Klassen-Distanzwerte darstellen.
+
+\vspace{1em}
+
+\begin{tabular}{ |c|c|c|c|c| } 
+  \hline
+                 & Proband 1 Ver.               & Proband 2 Ver.               & Proband 3 Ver.               & Proband 4 Ver. \\
+  \hline
+  Proband 1 Enr. & \textcolor{blue}{Intra P1}   & \textcolor{red}{Inter P2xP1} & \textcolor{red}{Inter P3xP1} & \textcolor{red}{Inter P4xP1} \\
+  \hline
+  Proband 2 Enr. & \textcolor{red}{Inter P1xP2} & \textcolor{blue}{Intra P2}   & \textcolor{red}{Inter P3xP2} & \textcolor{red}{Inter P4xP2} \\
+  \hline
+  Proband 3 Enr. & \textcolor{red}{Inter P1xP3} & \textcolor{red}{Inter P2xP3} & \textcolor{blue}{Intra P3}   & \textcolor{red}{Inter P4xP3} \\
+  \hline
+  Proband 4 Enr. & \textcolor{red}{Inter P1xP4} & \textcolor{red}{Inter P2xP4} & \textcolor{red}{Inter P3xP4} & \textcolor{blue}{Intra P4} \\
+  \hline
+\end{tabular}
+
+
+\section{Auswertung des biometrischen Systems Offline-Handschrift}
+
+Dieses Kapitel wird sich mit der Interpretation des beschriebenen biometrischen Systems beschäftigen.
+Um das System zu bewerten, wird die resultierende EER diskutiert werden.
+
+Wie zuvor beschrieben hängt die Leistung eines biometrischen Systems von der EER ab. Eine niedrige
+EER deutet auf ein genaues biometrisches System, da hier die Anzahl der Fehler - sowohl für legitime,
+als auch unberechtigte Nutzer - niedriger ist. 
 
 \begin{figure}[ht]
 	\centering
@@ -94,34 +190,37 @@ zwischen den Enrolment- und Verifikationsvektoren ab.
 	\end{minipage}
 \end{figure}
 
-Die EER, welche in Abbildung 1 zu sehen ist, beträgt $\approx22\%$, während die EER aus Abbildung 2,
-$\approx2\%$ beträgt. Dass die EER der ersten Semantik höher als die der zweiten Semantik ist, war zu 
-erwarten. Bei der ersten Semantik wurden dieselben Schriftzüge geschrieben und bei der zweiten Semantik 
-unterschiedlich. Die Merkmalsextraktion bei gleichen Texten lassen weniger Unterschiede zu. Da es sich 
-zudem um Zahlen handelte, bei denen z.B. Segmentierung und Schleifen nur begrenzt individualisierbar sind, 
-fallen die FAR und die FRR insgesamt höher aus. Wie bereits aus der Aufgabenstellung deutlich wird, 
-handelt es sich bei diesen Diagrammen um einen „Zero-Effort“ Fälschungs-Test. (Die Frage, ob diese 
-Semantik bereits als blinde Fälschung betrachtet werden kann, wird in den Fragen zwei und vier 
-diskutiert.)
 
-Zusätzlich muss an dieser Stelle angemerkt werden, dass lediglich vier Probanden für die Datenerhebung 
-genutzt wurden, wodurch die Wirksamkeit dieses biometrischen Systems nicht final widerlegt werden kann.
+Die EER der ersten Semantik beträgt $\approx22\%$, und ist in Abbildung 1 zu sehen. Die EER aus der
+zweiten Semantik $\approx2\%$ beträgt und ist in Abbildung 2 zu sehen. Dass die EER der ersten Semantik
+höher als die der zweiten Semantik ist, war zu erwarten. Bei der ersten Semantik wurden dieselben Schriftzüge
+geschrieben und bei der zweiten Semantik unterschiedliche. Die Merkmalsextraktion bei gleichen Texten
+lassen weniger Unterschiede zu. Da es sich zudem um Zahlen handelte, bei denen z.B. Segmentierung und
+Schleifen nur begrenzt individualisierbar sind, fallen die FAR und die FRR insgesamt höher aus. Wie
+bereits aus der Beschreibung der Semantiken deutlich wird, handelt es sich bei diesen Diagrammen um
+einen ``Zero-Effort'' Fälschungs-Test. (Die Frage, ob diese Semantik bereits als blinde Fälschung
+betrachtet werden kann, wird in späteren Kapiteln diskutiert.)
 
-Generell gibt es keinen Standard, welcher die Sicherheit eines biometrischen Systems anhand dessen EER-
-Wertes bewerten kann. Im Zuge dieser Betrachtung wird eine EER von $x < 1\%$ als sicher angesehen, während 
-eine EER von $1\% <= x <= 5\%$ als ausreichend betrachtet werden kann. Eine EER von $5\%$ wäre somit 
-ausreichend sicher, sollte allerdings nicht in sicherheitskritischen Anwendungen genutzt werden. Solche 
-Systeme würden den Komfort des Nutzers über die Sicherheit seiner Daten stellen, da weniger fehlerhafte 
-Ablehnungen auftreten bzw. mehr fehlerhafte Anmeldungen zugelassen werden. In einem solchen System würden 
-zwei von 100 Versuchen für einen ratenden Angreifer statistischen Erfolg versprechen (FAR). Bei Semantik A 
-melden sich alle Nutzer mit demselben Schriftzug an (Enrollment) und erzielen eine 10-Mal höhere EER von 
-$22\%$. Diese ist größer als die bereits hohe EER von $2\%$ und dadurch ebenfalls ungenügend. Dadurch das 
-bei Semantik A jede Person denselben Schriftzug verwendet, kann die resultierende EER als die Genauigkeit 
-der genutzten Merkmale (bei Zahlen) betrachtet werden. Es ist anzunehmen, dass ein Schriftzug aus 
-Buchstaben die EER senken wird.
 
-Der Wertebereich der Differenzen der Verifikationen zu den Referenzen ist bei Semantik A kleiner als bei 
-der Semantik B. Bei Semantik A liegen alle Distanzen im folgenden Bereich:
+Generell gibt es keinen Standard, welcher die Sicherheit eines biometrischen Systems anhand dessen
+EER-Wertes bewerten kann. Im Zuge dieser Betrachtung wird eine EER von $x < 1\%$ als sicher angesehen,
+während eine EER von $1\% <= x <= 5\%$ als ausreichend betrachtet werden kann. Eine EER von $5\%$
+wäre somit ausreichend sicher, sollte allerdings nicht in sicherheitskritischen Anwendungen genutzt werden.
+Solche Systeme würden den Komfort des Nutzers über die Sicherheit seiner Daten stellen, da weniger
+fehlerhafte Ablehnungen auftreten bzw. mehr fehlerhafte Anmeldungen zugelassen werden. In einem solchen
+System würden zwei von 100 Versuchen für einen ratenden Angreifer statistischen Erfolg versprechen (FAR).
+Bei Semantik A melden sich alle Nutzer mit demselben Schriftzug an (Enrollment) und erzielen eine
+10-Mal höhere EER von $22\%$.
+
+Diese ist größer als die bereits hohe EER von $2\%$ und dadurch ebenfalls für ein sicherheitskritisches
+System ungenügend. Dadurch, dass bei Semantik A jede Person denselben Schriftzug verwendet, kann die
+resultierende EER als die Genauigkeit der genutzten Merkmale (bei Zahlen) betrachtet werden. Es ist
+anzunehmen, dass ein Schriftzug aus Buchstaben die EER für Semantik A senken würde. Zusätzlich muss
+an dieser Stelle angemerkt werden, dass lediglich vier Probanden für die Datenerhebung genutzt wurden,
+wodurch die Wirksamkeit dieses biometrischen Systems nicht final widerlegt werden kann.
+
+Der Wertebereich der Differenzen der Verifikationen zu den Referenzen ist bei Semantik A kleiner
+als bei der Semantik B. Bei Semantik A liegen alle Distanzen im folgenden Bereich:
 
 $$1,00 <= x <= 10,96$$
 
@@ -129,45 +228,46 @@ Für die Semantik B liegen alle Distanzen im folgenden Bereich:
 
 $$0,31 <= x <= 22.09$$
 
-Die Distanzen des Wertebereichs der Semantik A fallen kleiner aus, wodurch unterschiedliche Personen eine 
-größere Wahrscheinlichkeit haben, in einen ähnlichen Wertebereich zu fallen. Ähnlichkeiten der 
-Wertebereiche individueller Personen führen zu einer geringeren euklidischen Distanz. Dieser Zusammenhang 
-führt bei Semantik 1 zu einer erhöhten FAR/EER. Es ist anzunehmen, dass ein Test mit mehr als vier 
-Probanden den finalen Wertebereich vergrößern würde, da extremere Relationen zwischen biometrischen 
-Merkmalen auftreten. Ein solcher Test könnte wegen des beschriebenen Zusammenhangs die EER senken.
+Die Distanzen des Wertebereichs der Semantik A fallen kleiner aus, wodurch unterschiedliche Personen eine
+größere Wahrscheinlichkeit haben, in einen ähnlichen Wertebereich zu fallen. Ähnlichkeiten der Wertebereiche
+individueller Personen führen zu einer geringeren euklidischen Distanz. Dieser Zusammenhang führt bei
+Semantik 1 zu einer erhöhten EER. Es ist anzunehmen, dass ein Test mit mehr als vier Probanden den
+finalen Wertebereich vergrößern würde, da extremere Relationen zwischen biometrischen Merkmalen auftreten
+könnten. Ein solcher Test könnte wegen des beschriebenen Zusammenhangs die EER senken.
 
-Bei der Betrachtung der Distanzwerte der FRR- (Intra-Klassen-) Matrizen wird klar, dass nicht alle 
-euklidischen Distanzen auf ähnlichem Level gering sind. Es gibt einzelne Ausnahmen, wie z.B. einen Intra-
-Klassen-Wert von 6.95 in der Semantik A, welcher die höchste Distanz zum Enrolment aufweist. Ein solch 
-hoher Wert wird auch in höheren Intervallen noch abgewiesen. Neben einzelnen Ausnahmen lassen sich durch 
-die FRR-Tabelle auch Personen nachweisen, die einen inkonsistenten Schreibstil haben. So hat Person 1 
-überwiegend Distanzen im Bereich von $3,29 <= x <= 4,39$, während Person 4 ausschließlich Werte unter 3,29 
-aufweist. Person 1 hat einen ungleichmäßigeren Schreibstil als Person 4, was zu einer höheren Rate an 
-fehlerhaften Ablehnungen führt. Diese Inkonsequenz im Schreibstil führt dazu, dass die FRR-Kurve der 
-ersten Semantik nicht typisch logarithmisch geformt ist, sondern zusätzlich einen Wendepunkt hat
+Bei der Betrachtung der Distanzwerte der FRR- (Intra-Klassen-) Matrizen wird klar, dass nicht alle
+euklidischen Distanzen auf ähnlichem Level gering sind. Es gibt einzelne Ausnahmen, wie z.B. einen
+Intra-Klassen-Wert von $6,95$ in der Semantik A, welcher die höchste Distanz zum Enrolment aufweist.
+Ein solch hoher Wert wird auch mit höheren Schwellwerten noch abgewiesen. Neben einzelnen Ausnahmen lassen
+sich durch die FRR-Tabelle auch Personen nachweisen, die einen inkonsistenten Schreibstil haben. So hat
+Proband 1 überwiegend Distanzen im Bereich von $3,29 <= x <= 4,39$, während Proband 4 ausschließlich
+Werte unter $3,29$ aufweist. Proband 1 hat einen ungleichmäßigeren Schreibstil als Proband 4, was zu einer
+höheren Rate an fehlerhaften Ablehnungen führt. Diese Inkonsequenz im Schreibstil führt dazu, dass die
+FRR-Kurve der ersten Semantik nicht typisch logarithmisch geformt ist, sondern zusätzlich einen
+Wendepunkt hat
 
-Die Inkonsequenz im Schreibstil lässt sich auch in der zweiten Semantik finden. Allerdings hat diese keine 
-Auswirkungen auf diese (wie zuvor festgestellt bessere) Semantik, da der Wertebereich größer ist. Durch 
-diese Reichweite fallen die Werte in Intervalle, welche ebenfalls großzügiger sind.
+Die Inkonsequenz im Schreibstil lässt sich auch in der zweiten Semantik finden. Allerdings hat diese
+keine Auswirkungen auf diese (wie zuvor festgestellt bessere) Semantik, da der Wertebereich größer ist.
+Durch diese Reichweite fallen die unterschiedlichen Werte in denselben Intervall, wodurch der Unterschied
+im Diagramm nicht sichtbar wird.
 
-Bei der Betrachtung der FAR- (Inter-Klassen-) Matrizen zeigt sich, dass die festgestellten inkonsistenten 
-Schreibstile, scheinbar keine/wenig Auswirkung auf die FAR-Werte haben. Denn obwohl Person 1 in beiden 
-Semantiken eine höhere Anzahl an fehlerhaften Ablehnungen aufweist als Person 4, hat Person 4 eine höhere 
-Anzahl an fehlerhaften Anmeldungen. Werte im höheren Bereich bei der FRR, schließen somit nicht auf mehr 
+Bei der Betrachtung der FAR- (Inter-Klassen-) Matrizen zeigt sich, dass die festgestellten inkonsistenten
+Schreibstile, scheinbar keine/wenig Auswirkung auf die FAR-Werte haben. Denn obwohl Person 1 in beiden
+Semantiken eine höhere Anzahl an fehlerhaften Ablehnungen aufweist als Person 4, hat Person 4 eine höhere
+Anzahl an fehlerhaften Anmeldungen. Werte im höheren Bereich bei der FRR, schließen somit nicht auf mehr
 fehlerhafte Anmeldungen / ein leichteres Ziel für einen Angriff.
 
-Zusätzlich wird klar, dass sich einige Personen biometrisch ähnlicher sind als andere. So hat Person 2 in 
-Semantik B mit keiner anderen Person eine Distanz, die kleiner als 13,67 ist. Im Gegensatz dazu hat Person 
-1 zu Person 3 und 4 nie eine Distanz, welche größer als 10,28 ist. Dadurch ergeben sich für Person 1 (im 
-Vergleich zu Person 3 und 4) ausschließlich fehlerhafte Anmeldungen in einem Bereich, der für Person 2 
-keinen einzigen ergibt. Das Schriftbild von Person 2 ist somit unähnlich dem, von allen anderen. Im 
-Gegensatz dazu sind sich die Merkmale der Personen 1, 3 und 4 ähnlicher. Bei Semantik A und B ergibt sich 
-durch die biometrische Unähnlichkeit des Schriftbildes von Person 2 zu allen anderen für die FAR ebenfalls 
-keine logarithmische, sondern ebenfalls eine Kurve mit Wendepunkt. Die Distanzen liegen vermehrt in 
-höheren Intervallen, wodurch die Kurve für die restlichen Werte abflacht. 
+Zusätzlich wird klar, dass sich einige Personen biometrisch ähnlicher sind als andere. So hat Person 2
+in Semantik B mit keiner anderen Person eine Distanz, die kleiner als $13,67$ ist. Im Gegensatz dazu
+hat Person 1 zu Person 3 und 4 nie eine Distanz, welche größer als 10,28 ist. Dadurch ergeben sich für
+Person 1 (im Vergleich zu Person 3 und 4) ausschließlich fehlerhafte Anmeldungen in einem Bereich / mit
+einem Schwellwert, der für Person 2 keinen einzigen ergibt. Das Schriftbild von Person 2 ist somit unähnlich
+dem, von allen anderen. Im Gegensatz dazu sind sich die Merkmale der Personen 1, 3 und 4 ähnlicher. Bei
+Semantik A und B ergibt sich durch die biometrische Unähnlichkeit des Schriftbildes von Person 2 zu allen
+anderen für die FAR ebenfalls keine logarithmische, sondern ebenfalls eine Kurve mit Wendepunkt. Die Distanzen
+liegen vermehrt in höheren Intervallen, wodurch die Kurve für die restlichen Werte abflacht.
 
-
-\section{Welche weiteren Schritte wäre nötig, um dieses biometrische Verfahren unter dem Einsatz von gezielten Fälschungen zu evaluieren?}
+\section{Evaluation durch gezielte Fälschungen}
 
 \subsection{Entwicklung der Testprotokolle}
 
@@ -182,19 +282,32 @@ Zusätzlich sollten Inter-Klassen Tests mit verschiedenen Angriffsstärken berü
 Robustheit des Systems gegen Fälschungsversuche zu evaluieren. Diese Tests umfassen:
 
 \begin{itemize}
-	\item Blind-Force Angriffe: Bei dieser Angriffsstärke versucht der Angreifer, eine biometrische Probe zu fälschen, ohne Kenntnisse über das Schriftbild oder den Prozess, der zur Erstellung der authentischen Probe geführt hat.
-	\item Low-Force Angriffe: Hier hat der Angreifer Zugang zu einem sichtbaren Ergebnis, wie beispielsweise einer Unterschrift, und versucht, dieses nachzuahmen. Es besteht jedoch kein Wissen über den dahinterliegenden Erstellungsprozess, wie etwa Geschwindigkeit, Druck oder Reihenfolge der Bewegungen.
+	\item Blind-Force Angriffe: Bei dieser Angriffsstärke versucht der Angreifer, eine biometrische Probe
+		zu fälschen, ohne Kenntnisse über das Schriftbild oder den Prozess, der zur Erstellung der
+		authentischen Probe geführt hat.
+	\item Low-Force Angriffe: Hier hat der Angreifer Zugang zu einem sichtbaren Ergebnis, wie beispielsweise
+		einer Unterschrift, und versucht, dieses nachzuahmen. Es besteht jedoch kein Wissen über den
+		dahinterliegenden Erstellungsprozess, wie etwa Geschwindigkeit, Druck oder Reihenfolge der Bewegungen.
 \end{itemize}
 
 \subsection{Erstellung gezielter Fälschungsdaten}
 
-Zur Erstellung gezielter Fälschungsdaten müssen spezifische Angriffstypen berücksichtigt werden, um die Robustheit des biometrischen Systems unter realistischen Bedingungen zu bewerten.
-Bei den Blind-Force Daten handelt es sich um Proben, die ohne jegliche Kenntnis des Originals erstellt werden. Der Angreifer versucht, das System zu täuschen, ohne eine Vorlage oder Informationen über das authentische Schriftbild oder den Schreibprozess zu haben.
-Bei Low-Force Daten werden auf Grundlage eines sichtbaren Endergebnisses, wie beispielsweise einer Unterschrift, erstellt. Dabei hat der Angreifer keine Kenntnis über den eigentlichen Schreibprozess, wie etwa Bewegungsdynamiken, Geschwindigkeit oder Druck.
+Zur Erstellung gezielter Fälschungsdaten müssen spezifische Angriffstypen berücksichtigt werden, um die Robustheit 
+des biometrischen Systems unter realistischen Bedingungen zu bewerten. Bei den Blind-Force Daten handelt es sich um Proben,
+die ohne jegliche Kenntnis des Originals erstellt werden. Der Angreifer versucht, das System zu täuschen, ohne eine
+Vorlage oder Informationen über das authentische Schriftbild oder den Schreibprozess zu haben. Bei Low-Force Daten werden
+auf Grundlage eines sichtbaren Endergebnisses, wie beispielsweise einer Unterschrift, erstellt. Dabei hat der Angreifer
+keine Kenntnis über den eigentlichen Schreibprozess, wie etwa Bewegungsdynamiken, Geschwindigkeit oder Druck.
 
 \subsection{Implementierung und Durchführung}
 
-Zur Implementierung und Durchführung von Tests sollten mehrere Szenarien berücksichtigt werden, um die Leistungsfähigkeit und Sicherheit des biometrischen Systems zu bewerten. Für den Verifikationstest (Intra-Klassen-Test) werden authentische Proben mit den Enrolment-Daten der gleichen Person abgeglichen. Ziel dieses Tests ist die Messung der False-Non-Match-Rate (FNMR) oder False-Rejection-Rate (FRR), die die intraindividuelle Fehlklassifikation darstellt. Die zuvor erstellten Fälschungsproben werden gegen die Enrolment-Daten der angegriffenen Personen geprüft. Ziel dieser Tests ist die Messung der False-Match-Rate (FMR) oder False-Acceptance-Rate (FAR) für die jeweiligen Angriffsszenarien (FMRBlind, FMRLow-Force).
+Zur Implementierung und Durchführung von Tests sollten mehrere Szenarien berücksichtigt werden, um die Leistungsfähigkeit
+und Sicherheit des biometrischen Systems zu bewerten. Für den Verifikationstest (Intra-Klassen-Test) werden
+authentische Proben mit den Enrolment-Daten der gleichen Person abgeglichen. Ziel dieses Tests ist die Messung
+der False-Non-Match-Rate (FNMR) oder False-Rejection-Rate (FRR), die die intraindividuelle Fehlklassifikation darstellt.
+Die zuvor erstellten Fälschungsproben werden gegen die Enrolment-Daten der angegriffenen Personen geprüft. Ziel
+dieser Tests ist die Messung der False-Match-Rate (FMR) oder False-Acceptance-Rate (FAR) für die jeweiligen
+Angriffsszenarien (FMRBlind, FMRLow-Force).
 
 \subsection{Analyse der Ergebnisse}
 
@@ -221,8 +334,12 @@ Sicherheit des Systems erhöhen und es widerstandsfähiger gegen gezielte Fälsc
 Nach der Optimierung des biometrischen Systems sollten erneut Tests durchgeführt werden, um die Wirksamkeit der vorgenommenen Anpassungen zu validieren.
 
 \begin{itemize}
-	\item Langzeitbeobachtungen: Es ist wichtig zu überprüfen, ob die Verbesserungen des Systems über einen längeren Zeitraum hinweg stabil und nachhaltig bleiben. Dies hilft, potenzielle Schwächen oder Verschlechterungen in der Leistung frühzeitig zu erkennen.
-	\item Cross-Validation: Die Ergebnisse sollten auf unterschiedliche Benutzergruppen und Nutzungsszenarien übertragen werden, um sicherzustellen, dass die Verbesserungen universell anwendbar sind und nicht nur unter spezifischen Bedingungen funktionieren.
+	\item Langzeitbeobachtungen: Es ist wichtig zu überprüfen, ob die Verbesserungen des Systems über einen
+		längeren Zeitraum hinweg stabil und nachhaltig bleiben. Dies hilft, potenzielle Schwächen oder
+		Verschlechterungen in der Leistung frühzeitig zu erkennen.
+	\item Cross-Validation: Die Ergebnisse sollten auf unterschiedliche Benutzergruppen und Nutzungsszenarien
+		übertragen werden, um sicherzustellen, dass die Verbesserungen universell anwendbar sind und
+		nicht nur unter spezifischen Bedingungen funktionieren.
 \end{itemize}
 
 \subsection*{Ausschluss von Zero-Effort}
@@ -236,9 +353,10 @@ Nach der Optimierung des biometrischen Systems sollten erneut Tests durchgeführ
 	Übereinstimmungen.	
 \end{quote}
 
-\section{Welche Rahmenvorgaben-/ annahmen sollten dabei Berücksichtigung finden}
+\section{Rahmenvorgaben der Datenerfassung}
 
-Insbesondere die technische Infrastruktur und die Umgebung der Erfassung der Daten müssen für alle Probanden gleich sein, um vergleichbare Resultate zu erzielen.
+Insbesondere die technische Infrastruktur und die Umgebung der Erfassung der Daten müssen für alle Probanden
+gleich sein, um vergleichbare Resultate zu erzielen.
 
 \subsection{Umgebung}
 
@@ -285,7 +403,8 @@ Berechtigungssystem nötig. Dadurch kann der Zugriff auf die Daten sowohl einges
 nachvollzogen werden. Außerdem müssen biometrische Daten immer ausreichend verschlüsselt gespeichert und 
 übertragen werden.
 
-\section{Beschreiben Sie ein Protokoll für die hierfür erforderliche Datenerhebung}
+\section{Protokoll für die Datenerhebung gezielter Fälschungen
+}
 
 \subsection{Vorbereitung der Datenerhebung}
 
