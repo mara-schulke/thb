@@ -76,7 +76,9 @@ on implementation strategies, performance optimization, and practical applicatio
 GPT & Generative Pretrained Transformer \\
 SQL & Structured Query Language \\
 API & Application Programming Interface \\
-% Add other abbreviations as needed
+LLM & Large Language Model \\
+DBMS & Database Management System \\
+NL2SQL & Natural Language to SQL \\
 \end{tabular}
 
 \newpage
@@ -114,7 +116,7 @@ in how businesses, researchers and professionals interact with their data — it
 \subsection{Objectives of the Thesis}
 
 This thesis aims to address the aforementioned challanges when it comes to database accessibility.
-The following objectives are considered to cover the core research area of this thesis:
+The following objectives are the core research area of this thesis:
 
 \begin{enumerate}
     \item Develop a database extension that can translate natural language queries into semantically
@@ -122,11 +124,10 @@ The following objectives are considered to cover the core research area of this 
     \item To evaluate the effectiveness and feasibility of different Models aswell as prompt engineering
           techniques in order to improve the performance of the system.
     \item Identify and address issues when it comes to handling amibguous, complex and domain specific user input.
-    \item Test the 
+    \item Benchmark the performance of the implementation against common natural language to SQL (NL2SQL) benchmarks.
+    \item Idenitfy potential usecases for real world scenarios that could deliver a noticable upsides to users.
+    \item Analyze the short commings and limitations of this approach and propose potential solutions to overcome them.
 \end{enumerate}  
-
-
-% https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
 
 \subsection{Research Questions}
 \subsection{Methodological Approach}
@@ -197,6 +198,8 @@ The following objectives are considered to cover the core research area of this 
 
 % Evaluation
 \section{Evaluation}
+
+% https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
 
 \subsection{Test Environment and Methodology}
 
