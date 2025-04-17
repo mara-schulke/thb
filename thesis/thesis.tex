@@ -125,11 +125,68 @@ The following objectives are the core research area of this thesis:
           techniques in order to improve the performance of the system.
     \item Identify and address issues when it comes to handling amibguous, complex and domain specific user input.
     \item Benchmark the performance of the implementation against common natural language to SQL (NL2SQL) benchmarks.
-    \item Idenitfy potential usecases for real world scenarios that could deliver a noticable upsides to users.
+    \item Idenitfy potential use cases for real world scenarios that could deliver a noticable upsides to users.
     \item Analyze the short commings and limitations of this approach and propose potential solutions to overcome them.
 \end{enumerate}  
 
 \subsection{Research Questions}
+
+% \subsubsection{Primary Research Questions}
+
+\subsubsection*{RQ1 — Are natural language queries performant and accurate enough to find application in the real world?}
+
+The primary research questions when it comes to natural language database interfaces evolves around their
+semantic accuracy and reliability. LLMs have notoriously been known for their ability to hallucinate /
+produce false, but promising outputs. This behaviour can be especially  dangerous when opting for data
+driven decisions that rely on false data due to a mistranslation from natural language to SQL. LLMs could
+cause hard to understand/debug behaviour, like false computation of distributions when the intermediate
+format is not being shown to the user. This thesis tries to determine whether such hallucinations could be
+reasonably prevented (ie. through pre and post-processing if LLM input/output).
+
+Additionally, this research eveluates the associated performance and hardware requirements, as
+a practical deployment of such a natural language database interface outside of research situations
+is guarded by the ability to:
+
+\begin{enumerate}
+    \item Run on reasonable, mass available hardware  (e.g. excluding high end research GPUs).
+    \item Run within a suitable timeframe that is not causing a significant performance degredation of the 
+          overall system / delay to the end user.
+\end{enumerate}
+
+\subsubsection*{RQ2 — Are there effective approaches against ambiguity in natural language input?}
+
+To provide semantically correct results ambiguity in the user-provided natural language queries must be 
+adequately addressed. This thesis investigates various approaches to ambiguity management and
+resolution. Natural language queries can demonstrate ambiguity even at low levels of complexity —
+e.g. there are two different types of "sales" in a database schema, and the user asks to retireve
+"all sales".
+
+Such situations present the second major challenge associated with the practical implementation of natural
+language database interfaces. The success of this concept will significantly depend on whether suitable 
+designs and mitigation techniques can be implemented without creating problems with regards to the 
+aforementioned performance and hardware requirements. The research focus lies on both preventative measures
+through optimized pre-processing stages and prompt engineering techniques as well as reactive strategies
+that post process LLM output, either on the basis of further user input or context inference.
+
+\subsubsection*{RQ3 — What are possible approaches for increasing semantic accuracy of queries?}
+
+In order to enhance the semantic accuracy a series of improvements may be applied to the pipeline.
+Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
+interactive contextual reasoning through a conversational interface which would allow for user
+refinement, the implementation of a robust SQL parsing and validation mechanism and a hybrid approach
+partly relying on tradition NLP preprocessing techniques. This research will quantify semantic accuracy
+using popular NL2SQL benchmarks and empirically evaluate the impact each approach has on the benchmark
+performance. Furthermore this research will take a look at the optimal combination of the aforementioned
+solutions in order to develop a system that strikes the right balance between accuracy and performance.
+
+% \subsubsection{Secondary Research Questions}
+
+% \subsubsection*{RQ4 — What use cases are most suitable for natural language database interfaces?}
+
+% \subsubsection*{RQ5 — Where are the limitations of natural language database interfaces?}
+
+% \subsubsection*{RQ6 — How is NL2SQL model performance impacted through model selection, fine tuning and pre/post processing?}
+
 \subsection{Methodological Approach}
 \subsection{Structure of the Thesis}
 
