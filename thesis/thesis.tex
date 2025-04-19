@@ -83,6 +83,10 @@ NL2SQL & Natural Language to SQL \\
 
 \newpage
 
+% 1/3 Vorarbeit, Literature Review
+% 1/3 Decomp und System Design
+% 1/3 Implementation und Evaluation
+
 % Introduction
 \section{Introduction}
 \subsection{Problem Statement and Motivation}
@@ -173,7 +177,7 @@ In order to enhance the semantic accuracy a series of improvements may be applie
 Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
 interactive contextual reasoning through a conversational interface which would allow for user
 refinement, the implementation of a robust SQL parsing and validation mechanism and a hybrid approach
-partly relying on tradition NLP preprocessing techniques. This research will quantify semantic accuracy
+partly relying on traditional NLP preprocessing techniques. This research will quantify semantic accuracy
 using popular NL2SQL benchmarks and empirically evaluate the impact each approach has on the benchmark
 performance. Furthermore this research will take a look at the optimal combination of the aforementioned
 solutions in order to develop a system that strikes the right balance between accuracy and performance.
@@ -188,7 +192,7 @@ solutions in order to develop a system that strikes the right balance between ac
 
 \newpage
 
-\subsection{Methodological Approach}
+\subsection{Structure of the Thesis}
 
 This thesis is following a research and development methodology in order to implement a natural language
 interface for databases, in particular postgres is used.
@@ -199,6 +203,10 @@ interface for databases, in particular postgres is used.
           of database operations, and LLM/AI Model integration within database systems.
           This phase establishes the theoretical foundation for this research and identifies current 
           state-of-the-art approaches, their benefits and shortcomings.
+     \item \textbf{Decomposition \& Requirements} — Decomposing the problem statement into its
+          fundamentals and deriving system requirements for the design phase from it. The goal
+          of this section is to arrive at a list of functional and non-functional requirements that
+          must be taken into account and fulfilled by the design and implementation phases respectively.
      \item \textbf{System Design} — Design of a system architecture that can utilize GPU acceleration
           for LLM integration from within postgres. The primary goals of the system design phase
           are to arrive at an architecture that yields low latency natural language processing,
@@ -215,11 +223,23 @@ interface for databases, in particular postgres is used.
           \begin{enumerate}
               \item Semantic Accuracy — Measuring the overall accuracy of results delivered for a given
                     natural language input.
-              \item Performance Metric — 
+              \item Ambiguity Resolution Capabilities — How well the system performs when confronted with
+                    ambiguous natural language input and database schemas.
+              \item Performance Metrics — Measuring the latency, throughput and resource utilization 
+                    of the implementation.
           \end{enumerate}
+      \item \textbf{Discussion} — Analysis and interpretation of the evaluation phase results against
+            the research goals of this thesis. Evaluating the performance and accuracy results recorded
+            during the benchmarks against the question whether real world deployments of NILs are feasible.
+            Furthermore the effectiveness of ambiguity resolution capabilities and semantic accuracy enhancement
+            strategies are showing a statistically significant effect.
+       \item \textbf{Summary and Outlook} — Summarizes the contributions, addresses limitations
+            of this thesis and the implementation, and proposes directions for future research alongside
+            possible applications. Primary future research topics include advanced GPU optimization
+            techniques (e.g. further quantization), accuracy and performance impact of model fine tuning,
+            techniques, scalability of such a system in enterprise scenarios and the evaluation of security
+            and privacy considerations (e.g. managing access control).
 \end{enumerate}
-
-\subsection{Structure of the Thesis}
 
 \newpage
 
@@ -228,25 +248,26 @@ interface for databases, in particular postgres is used.
 
 \subsection{360 Degree vergleichbare paper etc.}
 
+% Welche approaches fuer llm integration
+% Welche approaches fuer natural to sql
+
 \newpage
 
-% Conceptual Design
-\section{Conceptual Design of GPT Embedding in PostgreSQL}
+\section{Decomposition \& Requirements}
 
-\subsection{Requirements Analysis}
-\subsubsection{Functional Requirements}
-\subsubsection{Non-functional Requirements}
+\subsection{Problem Decomposition}
+
+\subsection{Requirements}
+
+% Conceptual Design
+\section{System Design}
 
 \subsection{Architecture Design}
 \subsubsection{Interface Design}
 \subsubsection{Data Model}
-\subsubsection{Integration into PostgreSQL}
+\subsubsection{Integration into SQL}
 
 \subsection{Technical Implementation Strategies}
-\subsubsection{Foreign Data Wrapper}
-\subsubsection{Extension Using C/C++}
-\subsubsection{PL/Python or Other Procedural Languages}
-\subsubsection{Comparison of Approaches}
 
 \newpage
 
