@@ -133,24 +133,23 @@ The following objectives are the core research area of this thesis:
 
 % \subsubsection{Primary Research Questions}
 
-\subsubsection*{RQ1 — Are natural language queries performant and accurate enough to find application in the real world?}
+\subsubsection*{RQ1 — Are natural language database interfaces feasible for real world application?}
 
-The primary research questions when it comes to natural language database interfaces evolves around their
-semantic accuracy and reliability. LLMs have notoriously been known for their ability to hallucinate /
-produce false, but promising outputs. This behaviour can be especially  dangerous when opting for data
-driven decisions that rely on false data due to a mistranslation from natural language to SQL. LLMs could
-cause hard to understand/debug behaviour, like false computation of distributions when the intermediate
-format is not being shown to the user. This thesis tries to determine whether such hallucinations could be
-reasonably prevented (ie. through pre and post-processing if LLM input/output).
+The primary research questions when it comes to natural language database interfaces evolve around their
+semantic accuracy and reliability, therefore questioning their feasibility for real world usage.
+LLMs have notoriously been known for their ability to hallucinate / produce false, but promising outputs.
+This behaviour can be especially  dangerous when opting for data driven decisions that rely on false data
+due to a mistranslation from natural language to SQL. LLMs could cause hard to understand and debug behaviour,
+like false computation of distributions when the intermediate format is not being shown to the user. This
+thesis tries to determine whether such hallucinations could be reasonably prevented and whether the associated
+performance and hardware requirements are suitable for a real world deployment, outside of research situations.
 
-Additionally, this research eveluates the associated performance and hardware requirements, as
-a practical deployment of such a natural language database interface outside of research situations
-is guarded by the ability to:
+Specifically the two big underlying questions are:
 
 \begin{enumerate}
-    \item Run on reasonable, mass available hardware  (e.g. excluding high end research GPUs).
-    \item Run within a suitable timeframe that is not causing a significant performance degredation of the 
-          overall system / delay to the end user.
+    \item Is the semantic accuracy of natural language database interfaces high enough to yield a noticable
+          benefit to users?
+    \item Is it possible to run such an interface on reasonable, mass available hardware (e.g. excluding high end research GPUs).
 \end{enumerate}
 
 \subsubsection*{RQ2 — Are there effective approaches against ambiguity in natural language input?}
@@ -168,7 +167,7 @@ aforementioned performance and hardware requirements. The research focus lies on
 through optimized pre-processing stages and prompt engineering techniques as well as reactive strategies
 that post process LLM output, either on the basis of further user input or context inference.
 
-\subsubsection*{RQ3 — What are possible approaches for increasing semantic accuracy of queries?}
+\subsubsection*{RQ3 — What are effective approaches for increasing semantic accuracy of queries?}
 
 In order to enhance the semantic accuracy a series of improvements may be applied to the pipeline.
 Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
@@ -187,28 +186,47 @@ solutions in order to develop a system that strikes the right balance between ac
 
 % \subsubsection*{RQ6 — How is NL2SQL model performance impacted through model selection, fine tuning and pre/post processing?}
 
+\newpage
+
 \subsection{Methodological Approach}
+
+This thesis is following a research and development methodology in order to implement a natural language
+interface for databases, in particular postgres is used.
+
+\begin{enumerate}
+    \item \textbf{Literature Review} — An analysis of the existing research in the fields of
+          natural language interfaces (NLI) for databases, GPU integration for acceleration
+          of database operations, and LLM/AI Model integration within database systems.
+          This phase establishes the theoretical foundation for this research and identifies current 
+          state-of-the-art approaches, their benefits and shortcomings.
+     \item \textbf{System Design} — Design of a system architecture that can utilize GPU acceleration
+          for LLM integration from within postgres. The primary goals of the system design phase
+          are to arrive at an architecture that yields low latency natural language processing,
+          schema-aware SQL query generation, ambiguity detection and resolution whilst maintaining
+          a high semantic accuracy.
+     \item \textbf{Implementation} — The implementation of a PostgreSQL extension according to the
+          above system design that relies on \texttt{rust} and \texttt{pgrx}. This extension will
+          provide a GPU accelerated framework for executing LLMs, implement a natural language
+          to query generation pipeline that relies on the SQL schema and create database functions
+          and operators for both query generation and execution.
+     \item \textbf{Evaluation and Benchmarking} — An assesment framework and benchmark that introspects
+          the implementations performance in multiple dimensions. Namely the most relevant dimensions
+          for this thesis are:
+          \begin{enumerate}
+              \item Semantic Accuracy — Measuring the overall accuracy of results delivered for a given
+                    natural language input.
+              \item Performance Metric — 
+          \end{enumerate}
+\end{enumerate}
+
 \subsection{Structure of the Thesis}
 
 \newpage
 
 % Theoretical Foundations
-\section{Theoretical Foundations}
+\section{Related Work}
 
-\subsection{Generative Pretrained Transformers (GPT)}
-\subsubsection{Architecture and Functionality}
-\subsubsection{Training and Fine-tuning}
-\subsubsection{Application Areas}
-
-\subsection{PostgreSQL as a Database System}
-\subsubsection{Architecture of PostgreSQL}
-\subsubsection{Extension Capabilities}
-\subsubsection{PostGIS and Other Extensions as Examples}
-
-\subsection{Embedding AI Models in Database Systems}
-\subsubsection{Current Approaches and Solutions}
-\subsubsection{Technical Challenges}
-\subsubsection{Benefits of Integration}
+\subsection{360 Degree vergleichbare paper etc.}
 
 \newpage
 
