@@ -156,7 +156,7 @@ Specifically the two big underlying questions are:
     \item Is it possible to run such an interface on reasonable, mass available hardware (e.g. excluding high end research GPUs).
 \end{enumerate}
 
-\subsubsection*{RQ2 — Are there effective approaches against ambiguity in natural language input?}
+\subsubsection*{RQ2 — What approaches are most effective in resolving ambiguity when translating natural language queries into SQL?}
 
 To provide semantically correct results ambiguity in the user-provided natural language queries must be 
 adequately addressed. This thesis investigates various approaches to ambiguity management and
@@ -171,7 +171,7 @@ aforementioned performance and hardware requirements. The research focus lies on
 through optimized pre-processing stages and prompt engineering techniques as well as reactive strategies
 that post process LLM output, either on the basis of further user input or context inference.
 
-\subsubsection*{RQ3 — What are effective approaches for increasing semantic accuracy of queries?}
+\subsubsection*{RQ3 — Which strategies are increasing semantic accuracy of queries?}
 
 In order to enhance the semantic accuracy a series of improvements may be applied to the pipeline.
 Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
@@ -244,7 +244,10 @@ interface for databases, in particular postgres is used.
 \newpage
 
 % Theoretical Foundations
-\section{Related Work}
+\section{Literature Review}
+
+Test\cite{Atlas}
+
 
 \subsection{360 Degree vergleichbare paper etc.}
 
@@ -332,11 +335,6 @@ interface for databases, in particular postgres is used.
 
 \newpage
 
-\begin{thebibliography}{99}
-\bibitem{ref1} Author, A. (Year). Title of the reference. Journal/Publisher, Volume(Issue), Pages.
-% Add more references as needed
-\end{thebibliography}
-
 \newpage
 
 \appendix
@@ -345,5 +343,10 @@ interface for databases, in particular postgres is used.
 \subsection*{API Documentation}
 \subsection*{Code Examples}
 \subsection*{Test Data and Results}
+
+\nocite{*}
+
+\bibliographystyle{apalike}
+\bibliography{references}
 
 \end{document}

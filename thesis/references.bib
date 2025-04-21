@@ -1,0 +1,431 @@
+% Foundations
+
+@article{NLIDBs,
+    author = {Ion Androutsopoulos, Graeme D. Ritchie and Peter Thanisch},
+    title = {Natural Language Interfaces to Databases - An Introduction},
+    journal = {CoRR},
+    volume = {cmp-lg/9503016},
+    year = {1995},
+    url = {http://arxiv.org/abs/cmp-lg/9503016},
+    timestamp = {Mon, 13 Aug 2018 16:45:57 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/cmp-lg-9503016.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{NLIDBTheory,
+    author = {Popescu, Ana-Maria and Etzioni, Oren and Kautz, Henry},
+    title = {Towards a theory of natural language interfaces to databases},
+    year = {2003},
+    isbn = {1581135866},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/604045.604070},
+    doi = {10.1145/604045.604070},
+    abstract = {The need for Natural Language Interfaces to databases (NLIs) has become increasingly acute as more and more people access information through their web browsers, PDAs, and cell phones. Yet NLIs are only usable if they map natural language questions to SQL queries correctly. As Schneiderman and Norman have argued, people are unwilling to trade reliable and predictable user interfaces for intelligent but unreliable ones. In this paper, we introduce a theoretical framework for reliable NLIs, which is the foundation for the fully implemented Precise NLI. We prove that, for a broad class of semantically tractable natural language questions, Precise is guaranteed to map each question to the corresponding SQL query. We report on experiments testing Precise on several hundred questions drawn from user studies over three benchmark databases. We find that over 80\% of the questions are semantically tractable questions, which Precise answers correctly. Precise automatically recognizes the 20\% of questions that it cannot handle, and requests a paraphrase. Finally, we show that Precise compares favorably with Mooney's learning NLI and with Microsoft's English Query product},
+    booktitle = {Proceedings of the 8th International Conference on Intelligent User Interfaces},
+    pages = {149–157},
+    numpages = {9},
+    keywords = {database, natural language interface, reliability},
+    location = {Miami, Florida, USA},
+    series = {IUI '03}
+}
+
+% Foundations - Benchmarking
+
+@article{ImprovingT2SQLEvaluation,
+    author = {Catherine Finegan{-}Dollak and Jonathan K. Kummerfeld and Li Zhang and Karthik Ramanathan and Sesh Sadasivam and Rui Zhang and Dragomir R. Radev},
+    title = {Improving Text-to-SQL Evaluation Methodology},
+    journal = {CoRR},
+    volume = {abs/1806.09029},
+    year = {2018},
+    url = {http://arxiv.org/abs/1806.09029},
+    eprinttype = {arXiv},
+    eprint = {1806.09029},
+    timestamp = {Fri, 19 Nov 2021 15:41:24 +0100},
+    biburl = {https://dblp.org/rec/journals/corr/abs-1806-09029.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+% Foundations - Datasets
+
+@article{SPIDER,
+    author = {Tao Yu and Rui Zhang and Kai Yang and Michihiro Yasunaga and Dongxu Wang and Zifan Li and James Ma and Irene Li and Qingning Yao and Shanelle Roman and Zilin Zhang and Dragomir R. Radev},
+    title = {Spider: {A} Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task},
+    journal = {CoRR},
+    volume = {abs/1809.08887},
+    year = {2018},
+    url = {http://arxiv.org/abs/1809.08887},
+    eprinttype = {arXiv},
+    eprint = {1809.08887},
+    timestamp = {Sun, 02 Oct 2022 15:31:53 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-1809-08887.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+% Foundations - LLMs
+
+@misc{Atlas,
+    title={Atlas: Few-shot Learning with Retrieval Augmented Language Models}, 
+    author={Gautier Izacard and Patrick Lewis and Maria Lomeli and Lucas Hosseini and Fabio Petroni and Timo Schick and Jane Dwivedi-Yu and Armand Joulin and Sebastian Riedel and Edouard Grave},
+    year={2022},
+    eprint={2208.03299},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2208.03299}, 
+}
+
+% Foundations - NLP
+
+@inproceedings{ILPParsing,
+    author = {Zelle, John M. and Mooney, Raymond J.},
+    title = {Learning to parse database queries using inductive logic programming},
+    year = {1996},
+    isbn = {026251091X},
+    publisher = {AAAI Press},
+    abstract = {This paper presents recent work using the CHILL parser acquisition system to automate the construction of a natural-language interface for database queries. CHILL treats parser acquisition as the learning of search-control rules within a logic program representing a shift-reduce parser and uses techniques from Inductive Logic Programming to learn relational control knowledge. Starting with a general framework for constructing a suitable logical form, CHILL is able to train on a corpus comprising sentences paired with database queries and induce parsers that map subsequent sentences directly into executable queries. Experimental results with a complete database-query application for U.S. geography show that CHILL is able to learn parsers that outperform a preexisting, hand-crafted counterpart. These results demonstrate the ability of a corpus-based system to produce more than purely syntactic representations. They also provide direct evidence of the utility of an empirical approach at the level of a complete natural language application.},
+    booktitle = {Proceedings of the Thirteenth National Conference on Artificial Intelligence - Volume 2},
+    pages = {1050–1055},
+    numpages = {6},
+    location = {Portland, Oregon},
+    series = {AAAI'96}
+}
+
+@inproceedings{ILPParsing2,
+    author = {Tang, Lappoon R. and Mooney, Raymond J.},
+    title = {Using Multiple Clause Constructors in Inductive Logic Programming for Semantic Parsing},
+    year = {2001},
+    isbn = {3540425365},
+    publisher = {Springer-Verlag},
+    address = {Berlin, Heidelberg},
+    abstract = {In this paper, we explored a learning approach which combines different learning methods in inductive logic programming (ILP) to allow a learner to produce more expressive hypotheses than that of each individual learner. Such a learning approach may be useful when the performance of the task depends on solving a large amount of classification problems and each has its own characteristics which may or may not fit a particular learning method. The task of semantic parser acquisition in two different domains was attempted and preliminary results demonstrated that such an approach is promising.},
+    booktitle = {Proceedings of the 12th European Conference on Machine Learning},
+    pages = {466–477},
+    numpages = {12},
+    series = {EMCL '01}
+}
+
+% Foundations - Techniques
+
+@article{Seq2SQL,
+    author = {Victor Zhong and Caiming Xiong and Richard Socher},
+    title = {Seq2SQL: Generating Structured Queries from Natural Language using Reinforcement Learning},
+    journal = {CoRR},
+    volume = {abs/1709.00103},
+    year = {2017},
+    url = {http://arxiv.org/abs/1709.00103},
+    eprinttype = {arXiv},
+    eprint = {1709.00103},
+    timestamp = {Mon, 13 Aug 2018 16:48:41 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-1709-00103.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@inproceedings{NALIR,
+    author = {Li, Fei and Jagadish, Hosagrahar V},
+    title = {NaLIR: an interactive natural language interface for querying relational databases},
+    year = {2014},
+    isbn = {9781450323765},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/2588555.2594519},
+    doi = {10.1145/2588555.2594519},
+    abstract = {In this demo, we present NaLIR, a generic interactive natural language interface for querying relational databases. NaLIR can accept a logically complex English language sentence as query input. This query is first translated into a SQL query, which may include aggregation, nesting, and various types of joins, among other things, and then evaluated against an RDBMS. In this demonstration, we show that NaLIR, while far from being able to pass the Turing test, is perfectly usable in practice, and able to handle even quite complex queries in a variety of application domains. In addition, we also demonstrate how carefully designed interactive communication can avoid misinterpretation with minimum user burden.},
+    booktitle = {Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data},
+    pages = {709–712},
+    numpages = {4},
+    keywords = {usability, relational database, natural language interface},
+    location = {Snowbird, Utah, USA},
+    series = {SIGMOD '14}
+}
+
+@article{SQLizer,
+    author = {Yaghmazadeh, Navid and Wang, Yuepeng and Dillig, Isil and Dillig, Thomas},
+    title = {SQLizer: query synthesis from natural language},
+    year = {2017},
+    issue_date = {October 2017},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {1},
+    number = {OOPSLA},
+    url = {https://doi.org/10.1145/3133887},
+    doi = {10.1145/3133887},
+    abstract = {This paper presents a new technique for automatically synthesizing SQL queries from natural language (NL). At the core of our technique is a new NL-based program synthesis methodology that combines semantic parsing techniques from the NLP community with type-directed program synthesis and automated program repair. Starting with a program sketch obtained using standard parsing techniques, our approach involves an iterative refinement loop that alternates between probabilistic type inhabitation and automated sketch repair. We use the proposed idea to build an end-to-end system called SQLIZER that can synthesize SQL queries from natural language. Our method is fully automated, works for any database without requiring additional customization, and does not require users to know the underlying database schema. We evaluate our approach on over 450 natural language queries concerning three different databases, namely MAS, IMDB, and YELP. Our experiments show that the desired query is ranked within the top 5 candidates in close to 90\% of the cases and that SQLIZER outperforms NALIR, a state-of-the-art tool that won a best paper award at VLDB'14.},
+    journal = {Proc. ACM Program. Lang.},
+    month = oct,
+    articleno = {63},
+    numpages = {26},
+    keywords = {Relational Databases, Programming by Natural Languages, Program Synthesis}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Recent 
+
+% Recent - Benchmarks
+
+@misc{BIRD,
+    title={Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs}, 
+    author={Jinyang Li and Binyuan Hui and Ge Qu and Jiaxi Yang and Binhua Li and Bowen Li and Bailin Wang and Bowen Qin and Rongyu Cao and Ruiying Geng and Nan Huo and Xuanhe Zhou and Chenhao Ma and Guoliang Li and Kevin C. C. Chang and Fei Huang and Reynold Cheng and Yongbin Li},
+    year={2023},
+    eprint={2305.03111},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2305.03111}, 
+}
+
+@misc{T2SQL-LLM-Bench,
+    title={Text-to-SQL Empowered by Large Language Models: A Benchmark Evaluation}, 
+    author={Dawei Gao and Haibin Wang and Yaliang Li and Xiuyu Sun and Yichen Qian and Bolin Ding and Jingren Zhou},
+    year={2023},
+    eprint={2308.15363},
+    archivePrefix={arXiv},
+    primaryClass={cs.DB},
+    url={https://arxiv.org/abs/2308.15363}, 
+}
+
+@misc{T2SQL-LLM-Bench-2,
+    title={Benchmarking the Text-to-SQL Capability of Large Language Models: A Comprehensive Evaluation}, 
+    author={Bin Zhang and Yuxiao Ye and Guoqing Du and Xiaoru Hu and Zhishuai Li and Sun Yang and Chi Harold Liu and Rui Zhao and Ziyue Li and Hangyu Mao},
+    year={2024},
+    eprint={2403.02951},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2403.02951}, 
+}
+
+@misc{T2SQL-LLM-Bench-3,
+    title={Evaluating the Text-to-SQL Capabilities of Large Language Models}, 
+    author={Nitarshan Rajkumar and Raymond Li and Dzmitry Bahdanau},
+    year={2022},
+    eprint={2204.00498},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2204.00498}, 
+}
+
+@misc{LLM-SQL,
+    title={Evaluating SQL Understanding in Large Language Models}, 
+    author={Ananya Rahaman and Anny Zheng and Mostafa Milani and Fei Chiang and Rachel Pottinger},
+    year={2024},
+    eprint={2410.10680},
+    archivePrefix={arXiv},
+    primaryClass={cs.DB},
+    url={https://arxiv.org/abs/2410.10680}, 
+}
+
+@misc{SPIDER2,
+    title={Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows}, 
+    author={Fangyu Lei and Jixuan Chen and Yuxiao Ye and Ruisheng Cao and Dongchan Shin and Hongjin Su and Zhaoqing Suo and Hongcheng Gao and Wenjing Hu and Pengcheng Yin and Victor Zhong and Caiming Xiong and Ruoxi Sun and Qian Liu and Sida Wang and Tao Yu},
+    year={2025},
+    eprint={2411.07763},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2411.07763}, 
+}
+
+@inproceedings{NL2SQLUnsolved,
+    author={Avrilia Floratou and Fotis Psallidas and Fuheng Zhao and Shaleen Deep and Gunther Hagleither and Wangda Tan and Joyce Cahoon and Rana Alotaibi and Jordan Henkel and Abhik Singla and Alex Van Grootel and Brandon Chow and Kai Deng and Katherine Lin and Marcos Campos and K. Venkatesh Emani and Vivek Pandit and Victor Shnayder and Wenjing Wang and Carlo Curino},
+    title={NL2SQL is a solved problem... Not!},
+    year={2024},
+    cdate={1704067200000},
+    url={https://www.cidrdb.org/cidr2024/papers/p74-floratou.pdf},
+    booktitle={CIDR},
+    crossref={conf/cidr/2024}
+}
+
+% Recent - LLM - Models
+
+@misc{ModelDomainAdaption,
+    title={Domain Adaptation of a State of the Art Text-to-SQL Model: Lessons Learned and Challenges Found}, 
+    author={Irene Manotas and Octavian Popescu and Ngoc Phuoc An Vo and Vadim Sheinin},
+    year={2023},
+    eprint={2312.05448},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2312.05448}, 
+}
+
+@misc{CodeS,
+    title={CodeS: Towards Building Open-source Language Models for Text-to-SQL}, 
+    author={Haoyang Li and Jing Zhang and Hanbing Liu and Ju Fan and Xiaokang Zhang and Jun Zhu and Renjie Wei and Hongyan Pan and Cuiping Li and Hong Chen},
+    year={2024},
+    eprint={2402.16347},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2402.16347}, 
+}
+
+% Recent - LLM
+
+@article{PICARD,
+    author = {Torsten Scholak and Nathan Schucher and Dzmitry Bahdanau},
+    title = {{PICARD:} Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models},
+    journal = {CoRR},
+    volume = {abs/2109.05093},
+    year = {2021},
+    url = {https://arxiv.org/abs/2109.05093},
+    eprinttype = {arXiv},
+    eprint = {2109.05093},
+    timestamp = {Tue, 21 Sep 2021 17:46:04 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-2109-05093.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{PromptingTechniques,
+    title={How to Prompt LLMs for Text-to-SQL: A Study in Zero-shot, Single-domain, and Cross-domain Settings}, 
+    author={Shuaichen Chang and Eric Fosler-Lussier},
+    year={2023},
+    eprint={2305.11853},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2305.11853}, 
+}
+
+@misc{DBGPT,
+    title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
+    author={Siqiao Xue and Caigao Jiang and Wenhui Shi and Fangyin Cheng and Keting Chen and Hongjun Yang and Zhiping Zhang and Jianshan He and Hongyang Zhang and Ganglin Wei and Wang Zhao and Fan Zhou and Danrui Qi and Hong Yi and Shaodong Liu and Faqiang Chen},
+    year={2024},
+    eprint={2312.17449},
+    archivePrefix={arXiv},
+    primaryClass={cs.DB},
+    url={https://arxiv.org/abs/2312.17449}, 
+}
+
+% Recent - NLP
+
+@article{GRAPPA,
+  author = {Tao Yu and Chien{-}Sheng Wu and Xi Victoria Lin and Bailin Wang and Yi Chern Tan and Xinyi Yang and Dragomir R. Radev and Richard Socher and Caiming Xiong},
+  title = {GraPPa: Grammar-Augmented Pre-Training for Table Semantic Parsing},
+  journal = {CoRR},
+  volume = {abs/2009.13845},
+  year = {2020},
+  url = {https://arxiv.org/abs/2009.13845},
+  eprinttype = {arXiv},
+  eprint = {2009.13845},
+  timestamp = {Fri, 27 Dec 2024 10:33:44 +0100},
+  biburl = {https://dblp.org/rec/journals/corr/abs-2009-13845.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{STRUG,
+  author = {Xiang Deng and Ahmed Hassan Awadallah and Christopher Meek and Oleksandr Polozov and Huan Sun and Matthew Richardson},
+  title = {Structure-Grounded Pretraining for Text-to-SQL},
+  journal = {CoRR},
+  volume = {abs/2010.12773},
+  year = {2020},
+  url = {https://arxiv.org/abs/2010.12773},
+  eprinttype = {arXiv},
+  eprint = {2010.12773},
+  timestamp = {Wed, 31 May 2023 19:02:38 +0200},
+  biburl = {https://dblp.org/rec/journals/corr/abs-2010-12773.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+% Recent - Techniques
+
+@misc{RetAug,
+      title={Improving Retrieval-augmented Text-to-SQL with AST-based Ranking and Schema Pruning}, 
+      author={Zhili Shen and Pavlos Vougiouklis and Chenxin Diao and Kaustubh Vyas and Yuanyi Ji and Jeff Z. Pan},
+      year={2024},
+      eprint={2407.03227},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.03227}, 
+}
+
+@inproceedings{10.5555/3618408.3618843,
+    author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
+    title = {PAL: program-aided language models},
+    year = {2023},
+    publisher = {JMLR.org},
+    abstract = {Large language models (LLMs) have demonstrated an impressive ability to perform arithmetic and symbolic reasoning tasks, when provided with a few examples at test time ("few-shot prompting"). Much of this success can be attributed to prompting methods such as "chain-of-thought", which employ LLMs for both understanding the problem description by decomposing it into steps, as well as solving each step of the problem. While LLMs seem to be adept at this sort of step-by-step decomposition, LLMs often make logical and arithmetic mistakes in the solution part, even when the problem is decomposed correctly. In this paper, we present Program-Aided Language models (PAL): a novel approach that uses the LLM to read natural language problems and generate programs as the intermediate reasoning steps, but offloads the solution step to a runtime such as a Python interpreter. With PAL, decomposing the natural language problem into runnable steps remains the only learning task for the LLM, while solving is delegated to the interpreter. We demonstrate this synergy between a neural LLM and a symbolic interpreter across 13 mathematical, symbolic, and algorithmic reasoning tasks from BIG-Bench Hard and others. In all these natural language reasoning tasks, generating code using an LLM and reasoning using a Python interpreter leads to more accurate results than much larger models. For example, PAL using CODEX achieves state-of-the-art few-shot accuracy on GSM8K, surpassing PaLM-540B which uses chain-of-thought by absolute 15\% top-1.},
+    booktitle = {Proceedings of the 40th International Conference on Machine Learning},
+    articleno = {435},
+    numpages = {36},
+    location = {Honolulu, Hawaii, USA},
+    series = {ICML'23}
+}
+
+@inproceedings{10.5555/3666122.3667699,
+    author = {Pourreza, Mohammadreza and Rafiei, Davood},
+    title = {DIN-SQL: decomposed in-context learning of text-to-SQL with self-correction},
+    year = {2023},
+    publisher = {Curran Associates Inc.},
+    address = {Red Hook, NY, USA},
+    abstract = {There is currently a significant gap between the performance of fine-tuned models and prompting approaches using Large Language Models (LLMs) on the challenging task of text-to-SQL, as evaluated on datasets such as Spider. To improve the performance of LLMs in the reasoning process, we study how decomposing the task into smaller sub-tasks can be effective. In particular, we show that breaking down the generation problem into sub-problems and feeding the solutions of those sub-problems into LLMs can be an effective approach for significantly improving their performance. Our experiments with three LLMs show that this approach consistently improves their simple few-shot performance by roughly 10\%, pushing the accuracy of LLMs towards SOTA or surpassing it. On the holdout test set of Spider, the SOTA, in terms of execution accuracy, was 79.9 and the new SOTA at the time of this writing using our approach is 85.3. Our approach with in-context learning beats many heavily fine-tuned models by at least 5\%. Additionally, when evaluated on the BIRD benchmark, our approach achieved an execution accuracy of 55.9\%, setting a new SOTA on its holdout test set.},
+    booktitle = {Proceedings of the 37th International Conference on Neural Information Processing Systems},
+    articleno = {1577},
+    numpages = {10},
+    location = {New Orleans, LA, USA},
+    series = {NIPS '23}
+}
+
+@misc{CoE-SQL,
+    title={CoE-SQL: In-Context Learning for Multi-Turn Text-to-SQL with Chain-of-Editions}, 
+    author={Hanchong Zhang and Ruisheng Cao and Hongshen Xu and Lu Chen and Kai Yu},
+    year={2024},
+    eprint={2405.02712},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2405.02712}, 
+}
+
+@misc{MAGIC,
+    title={MAGIC: Generating Self-Correction Guideline for In-Context Text-to-SQL}, 
+    author={Arian Askari and Christian Poelitz and Xinye Tang},
+    year={2024},
+    eprint={2406.12692},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2406.12692}, 
+}
+
+@misc{CHASE,
+    title={CHASE-SQL: Multi-Path Reasoning and Preference Optimized Candidate Selection in Text-to-SQL}, 
+    author={Mohammadreza Pourreza and Hailong Li and Ruoxi Sun and Yeounoh Chung and Shayan Talaei and Gaurav Tarlok Kakkar and Yu Gan and Amin Saberi and Fatma Ozcan and Sercan O. Arik},
+    year={2024},
+    eprint={2410.01943},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG},
+    url={https://arxiv.org/abs/2410.01943}, 
+}
+
+@misc{XiYan,
+    title={A Preview of XiYan-SQL: A Multi-Generator Ensemble Framework for Text-to-SQL}, 
+    author={Yingqi Gao and Yifu Liu and Xiaoxia Li and Xiaorong Shi and Yin Zhu and Yiming Wang and Shiqi Li and Wei Li and Yuntao Hong and Zhiling Luo and Jinyang Gao and Liyu Mou and Yu Li},
+    year={2025},
+    eprint={2411.08599},
+    archivePrefix={arXiv},
+    primaryClass={cs.AI},
+    url={https://arxiv.org/abs/2411.08599}, 
+}
+
+@inproceedings{IRNet,
+    title = "Towards Complex Text-to-{SQL} in Cross-Domain Database with Intermediate Representation",
+    author = "Guo, Jiaqi  and Zhan, Zecheng  and Gao, Yan  and Xiao, Yan and Lou, Jian-Guang  and Liu, Ting  and Zhang, Dongmei",
+    editor = "Korhonen, Anna  and Traum, David  and M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1444/",
+    doi = "10.18653/v1/P19-1444",
+    pages = "4524--4535",
+    abstract = "We present a neural approach called IRNet for complex and cross-domain Text-to-SQL. IRNet aims to address two challenges: 1) the mismatch between intents expressed in natural language (NL) and the implementation details in SQL; 2) the challenge in predicting columns caused by the large number of out-of-domain words. Instead of end-to-end synthesizing a SQL query, IRNet decomposes the synthesis process into three phases. In the first phase, IRNet performs a schema linking over a question and a database schema. Then, IRNet adopts a grammar-based neural model to synthesize a SemQL query which is an intermediate representation that we design to bridge NL and SQL. Finally, IRNet deterministically infers a SQL query from the synthesized SemQL query with domain knowledge. On the challenging Text-to-SQL benchmark Spider, IRNet achieves 46.7{\%} accuracy, obtaining 19.5{\%} absolute improvement over previous state-of-the-art approaches. At the time of writing, IRNet achieves the first position on the Spider leaderboard."
+}
+
