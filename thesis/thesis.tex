@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{titlesec}
+\usepackage[natbibapa]{apacite}
 
 \graphicspath{{./images/}}
 
@@ -34,18 +35,18 @@
 \begin{titlepage}
     \begin{center}
         \begin{Large}
-            Brandenburg University of Technology \\[1em]
+            Brandenburg University of Applied Sciences \\[1em]
         \end{Large}
         IT Security \\
-        Computerscience and Media \\
+        Computerscience \\
         Prof. Dr. Oleg Lobachev \\
-        Florian Eich
+        MSc. Florian Eich
     \end{center}
 
     \vfill
 
     \begin{center}
-        \Large{Natural Language Queries using Large Language Models}\\[0.5em]
+        \Large{A Natural Language Interface Implementation for PostgreSQL using LLMs, Self-Correction and Incremental Schema Analysis}\\[0.5em]
         \large{Bachelor Thesis}\\[1em]
         
         \begin{normalsize}
@@ -246,10 +247,7 @@ interface for databases, in particular postgres is used.
 % Theoretical Foundations
 \section{Literature Review}
 
-Test\cite{Atlas}
-
-
-\subsection{360 Degree vergleichbare paper etc.}
+Test\citep{Atlas}
 
 % Welche approaches fuer llm integration
 % Welche approaches fuer natural to sql
@@ -279,19 +277,13 @@ Test\cite{Atlas}
 
 \subsection{Development Environment and Tools}
 
-\subsection{Integration of the GPT Model}
-\subsubsection{Model Selection and Optimization}
-\subsubsection{API Connection or Local Embedding}
+\subsection{Integration of the Model}
+
 
 \subsection{Development of the PostgreSQL Extension}
-\subsubsection{SQL Functions for GPT Interactions}
-\subsubsection{Data Type Conversion and Processing}
-\subsubsection{Error Handling and Logging}
+
 
 \subsection{Optimization}
-\subsubsection{Performance Tuning}
-\subsubsection{Memory Usage}
-\subsubsection{Parallelization}
 
 \newpage
 
@@ -346,7 +338,7 @@ Test\cite{Atlas}
 
 \nocite{*}
 
-\bibliographystyle{apalike}
+\bibliographystyle{apacite}
 \bibliography{references}
 
 \end{document}
