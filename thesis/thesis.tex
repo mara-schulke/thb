@@ -46,7 +46,7 @@
     \vfill
 
     \begin{center}
-        \Large{A Natural Language Interface Implementation for PostgreSQL using LLMs, Self-Correction and Incremental Schema Analysis}\\[0.5em]
+        \Large{Reliable Natural Language Interfaces using LLMs, Self-Correction and Incremental Schema Analysis}\\[0.5em]
         \large{Bachelor Thesis}\\[1em]
         
         \begin{normalsize}
@@ -251,7 +251,8 @@ In this section a comprehensive literature review is performed to asses the rese
 (sometimes also referred to as Text-to-SQL or T2SQL) and NLIDBs. Following their development starting in
 the late 1990s and early 2000s \citep{NLIDBs, NLIDBTheory, ILPParsing, ILPParsing2} until now, observing multiple 
 larger paradigm shifts happening over time \citep{GRAPPA, STRUG, Seq2SQL, NALIR, SQLizer}. In particular this 
-research focuses on the recent advancements when it comes to language models and how they can be harnessed for effective NL2SQL systems \citep{LLM-Sql, T2SQL-LLM-Bench, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
+research focuses on the recent advancements when it comes to language models and how they can be harnessed for
+effective NL2SQL systems \citep{LLM-Sql, T2SQL-LLM-Bench, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
 
 This literature review is covering the foundational concepts, challenges, key advancements and research gaps
 associated with using natural language instead of SQL. It lays the foundation for this thesis and helps to set
@@ -284,6 +285,26 @@ tractable questions}) which therefore results in a better and interactive end us
 also showed that this approach is \textit{transferrable} and \textit{unbiased} — it is possible to feed in new, 
 unknown questions into the system and maintain performance characteristics, whereas it was shown that 
 \cite{ILPParsing} were suffering from a distribution drift of the questions asked. \citep{NLIDBTheory}
+
+The theoretical foundations and research questions highlighted by the aforementioned works, shaped the research
+field and highlighted the following, ongoing research:
+
+\begin{enumerate}
+    \item The trade-off characteristics derived from choosing a machine learning vs. traditional NLP approach (e.g. 
+          \textsc{Chill} versus \textsc{Percise}). E.g. coverage versus correctness. \citep{ILPParsing, NLIDBTheory}
+    \item The linguistic challenges associated with bringing NLIDBs into use (e.g. semantic inaccuracy, linguistic 
+          ambiguity, unclear language coverage etc.) \citep{NLIDBs}
+    \item The value of systems and approaches which double down on reliability and semantic accuracy rather than giving
+          promising but incorrect answers. \citep{NLIDBs, NLIDBTheory}
+\end{enumerate}
+
+Fundamentally this highlights the tension and mismatch between the characteristics of natural language, which is 
+able to be ambiguous, \textit{semantically untractable} or able to be incomplete in meaning and formal languages
+like SQL which always have on deterministic and \textit{semantically tractable} meaning they convey in each statement. 
+As Schneiderman and Norman have pointed out according to \citeauthor*{NLIDBTheory}, users are ``unwilling to trade 
+reliable and predictable user interfaces for intelligent but unreliable ones'' which induces performance expectations
+on NLIDB implementations to be highly certain about the questions it can, and can't answer, whilst maintaing as high
+as possible natural language coverage. \citep{NLIDBTheory}
 
 % Welche approaches fuer llm integration
 % Welche approaches fuer natural to sql
