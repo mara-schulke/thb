@@ -262,12 +262,13 @@ the research questions introduced in the previous chapter in context.
 
 \subsection{Foundations of Natural Language Interfaces to Databases}
 
-One of the first corner stone research papers on Natural Language Database Interfaces (NLIDBs) was published
-over three decades ago by \citeauthor*{NLIDBs} where an introduction and an overview of the state-of-the-art
-in the field were provided. \citep{NLIDBs} Their work outlined multiple key issues and challenges associated
-with NLIDBs, and compared them against existing / competing solutions like formal query languages, form-based
-interfaces and graphical interfaces. These challenges (like unobvious limits, linguistic ambiguities, semantic 
-inaccuracy, tedious configuration etc.) have shaped this field of research and are still considered relevant
+Earlier papers in the research landscape on Natural Language Database Interfaces (NLIDBs) date over half
+a century back, into the early 1970s. Two decades after the first major research systems where developed
+in this domain, \citeauthor*{NLIDBs} have published an introduction and an overview over NLIDBs where an overview of
+state-of-the-art approaches were provided. \citep{NLIDBs} Their work outlined multiple key issues and challenges
+associated with NLIDBs, and compared them against existing / competing solutions like formal query languages,
+form-based interfaces and graphical interfaces. These challenges (like unobvious limits, linguistic ambiguities,
+semantic inaccuracy, tedious configuration etc.) have shaped this field of research and are still considered relevant
 metrics today.
 
 Early NLIDBs primarily relied on traditional natural language processing (NLP) techniques in order to achieve
@@ -317,14 +318,37 @@ for NL2SQL.
 
 \subsubsection{Rule-based and Grammar-based Systems}
 
-Early research of NL2SQL system mostly focused around applying rule engines that were tedious to set up and expensive
+Foundational research of NL2SQL system mostly focused around applying rule engines that were tedious to set up and expensive
 to maintain / transfer across database systems. These rule engines mostly relied on the systematic identification
 of linguistic patterns / were trying to template SQL from information that was derived from processing the natural
-language query. \citep*{Rendevouz, Lunar, Ladder} These approaches mostly tried to formalize natural language queries into 
-formal grammers which could then be deterministically mapped into a valid SQL query. These approaches have strong downsides
-when it comes to the variety of natural language constructs they can process, aswell as runtime adoption of new / unknown
-databases, query constructs etc. A potential upside of this class of NL2SQL systems is that they can confidently and 
-reproducably identify questions they can, and can't answer — thus leading to very reliable and predictable user interfaces.
+language query. \citep{Rendevouz, Lunar, Ladder} These approaches mostly tried to formalize natural language queries into 
+formal grammers which could then be deterministically mapped into a valid SQL query. \citep{Lunar} These approaches have
+strong downsides when it comes to the variety of natural language constructs they can process, aswell as runtime adoption of 
+new / unknown databases, query constructs etc. A potential upside of this class of NL2SQL systems is that they can confidently 
+and reproducably identify questions they can, and can't answer — thus leading to very reliable and predictable user interfaces.
+
+\subsubsection{Semantic Parsing using String-Kernels}
+
+A significiant milestone in parsing techniques of natural language queries was reached by \citeauthor*{StringKernels} in 
+\citeyear{StringKernels}. The introduction of string kernels for semantic parsing represented a novel achievement, when 
+it comes to fusing discrete parsing approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and learning / 
+training approaches to understand unseen language patterns / unknown natural language query structures. This allowed for more 
+flexible pattern recognition when compared to traditional rule-based systems.
+
+The core innovative characteristic of this approach lies in its capability to understand similarities between natural language 
+expressions based on subsequence patterns rather than relying on exact matches. This made \textsc{Krisp}, the research NLIDB
+system developed by \cite{StringKernels} much more robust to language variations in phrasing and noise (e.g. spelling mistakes) 
+in the input. As the \citeauthor*{StringKernels} demonstrated through experiments on real-world datasets, this approach 
+compared favorably to existing systems of the time like \textsc{Chill}, especially in handling noisy inputs — a frequent 
+challenge rigid rule-based systems faced in real world scenarios. \citep{StringKernels, ILPParsing}
+
+
+
+
+
+
+
+
 
 
 \subsection{Neural NL2SQL Approaches}
