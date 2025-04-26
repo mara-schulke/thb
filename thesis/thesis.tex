@@ -381,6 +381,24 @@ possible to overcome these limtations through choosing the right interaction mod
 multiple possible interpretations for a natural language query and translate all of them in natural language for the
 user to choose from'' —, rather than optimizing the generation part of the system \cite{NALIR}.
 
+\subsubsection{Query Synthesis}
+
+\cite{SQLizer} introduced SQLizer, which synthesizes SQL queries from natural language \citep{SQLizer}. This paper
+presents a novel approach when it comes to NL2SQL as it is merging prevalent semantic parsing techniques (outlined above)
+with an program synthesis (or query synthesis) approach. SQLizer makes use of a three stage processing model for 
+natural language models: first generating a sketch of the query using semantic parsing, then using type-directed
+synthesis to complete the sketch and finally using automated repair, if required. 
+
+\citeauthor*{SQLizer} show that alternating between quantitative repair and synthesis yields results that beat
+state-of-the-art approaches like NaLIR. SQLizer is fully automated and database-agnostic, requiring no knowledge
+of the underlying schema. The authors evaluated SQLizer on 455 queries across three databases, where it ranked the
+correct query in the top 5 results for about 90\% of cases, significantly outperforming NaLIR \citep{NALIR},
+the previous state-of-the-art system \citep{SQLizer}.
+
+Potential short commings of this approch include queries which yield empty results, dealing with language variations
+as SQLizer is still using semantic parsing, and domain-specific terminology, all while still requiring users
+to select from multiple query options which reduces the overall usability of the system \citep[p.22-23]{SQLizer}.
+
 \subsection{Neural NL2SQL Approaches}
 
 \subsection{Benchmark Evolution}
