@@ -318,38 +318,68 @@ for NL2SQL.
 
 \subsubsection{Rule-based and Grammar-based Systems}
 
-Foundational research of NL2SQL system mostly focused around applying rule engines that were tedious to set up and expensive
-to maintain / transfer across database systems. These rule engines mostly relied on the systematic identification
-of linguistic patterns / were trying to template SQL from information that was derived from processing the natural
-language query. \citep{Rendevouz, Lunar, Ladder} These approaches mostly tried to formalize natural language queries into 
-formal grammers which could then be deterministically mapped into a valid SQL query. \citep{Lunar} These approaches have
-strong downsides when it comes to the variety of natural language constructs they can process, aswell as runtime adoption of 
-new / unknown databases, query constructs etc. A potential upside of this class of NL2SQL systems is that they can confidently 
-and reproducably identify questions they can, and can't answer — thus leading to very reliable and predictable user interfaces.
+Foundational research of NL2SQL system mostly focused around applying rule engines that were tedious to set up and
+expensive to maintain / transfer across database systems. These rule engines mostly relied on the systematic 
+identification of linguistic patterns / were trying to template SQL from information that was derived from processing the 
+natural language query. \citep{Rendezvous, Lunar, Ladder} These approaches mostly tried to formalize natural language 
+queries into formal grammers which could then be deterministically mapped into a valid SQL query. \citep{Lunar} These 
+approaches have strong downsides when it comes to the variety of natural language constructs they can process, aswell as 
+runtime adoption of new / unknown databases, query constructs etc. A potential upside of this class of NL2SQL systems is 
+that they can confidently and reproducably identify questions they can, and can't answer — thus leading to very reliable 
+and predictable user interfaces.
 
 \subsubsection{Semantic Parsing using String-Kernels}
 
 A significiant milestone in parsing techniques of natural language queries was reached by \citeauthor*{StringKernels} in 
 \citeyear{StringKernels}. The introduction of string kernels for semantic parsing represented a novel achievement, when 
-it comes to fusing discrete parsing approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and learning / 
-training approaches to understand unseen language patterns / unknown natural language query structures. This allowed for more 
-flexible pattern recognition when compared to traditional rule-based systems.
+it comes to fusing discrete parsing approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and 
+learning / training approaches to understand unseen language patterns / unknown natural language query structures. This 
+allowed for more flexible pattern recognition when compared to traditional rule-based systems.
 
-The core innovative characteristic of this approach lies in its capability to understand similarities between natural language 
-expressions based on subsequence patterns rather than relying on exact matches. This made \textsc{Krisp}, the research NLIDB
-system developed by \cite{StringKernels} much more robust to language variations in phrasing and noise (e.g. spelling mistakes) 
-in the input. As the \citeauthor*{StringKernels} demonstrated through experiments on real-world datasets, this approach 
-compared favorably to existing systems of the time like \textsc{Chill}, especially in handling noisy inputs — a frequent 
-challenge rigid rule-based systems faced in real world scenarios. \citep{StringKernels, ILPParsing}
+The core innovative characteristic of this approach lies in its capability to understand similarities between natural 
+language expressions based on subsequence patterns rather than relying on exact matches. This made \textsc{Krisp}, the 
+research NLIDB system developed by \cite{StringKernels} much more robust to language variations in phrasing and noise 
+(e.g. spelling mistakes) in the input. As the \citeauthor*{StringKernels} demonstrated through experiments on real-world 
+datasets, this approach compared favorably to existing systems of the time like \textsc{Chill}, especially in handling 
+noisy inputs — a frequent challenge rigid rule-based systems faced in real world scenarios \citep{StringKernels, 
+ILPParsing}.
 
+\subsubsection{Graph Matching Methods}
 
+\cite{GraphMatching} brought together several research threads and reapplied emerging graph matching research models
+to natural language processing, specifically to natural language queries. Graph matching was applied once the natural 
+language query was parsed using a Combinatory Categorial Grammar (CCG) approach into a semantic graph which denotes the 
+relationship between semantic entities in it. This graph could then be matched against the actual graph derived from 
+the database, since they share topological traits that can be used for matching \citep{GraphMatching}. This approach 
+allowed to apply querying systems without having any question-answer pairs or manual annotations for training the system, 
+which implies easier scalability / transferability across domains, since the system does not require any additional 
+tweaks.
 
+Even though this approach was novel and showed improved the performance over existing state-of-the-art approaches, it
+was showing that graph matching quickly reaches its limitations. This approach relied heavily on the CCG parser's 
+accuracy, with parsing errors accounting for 10-25\% (depending on the dataset) of system failures \citep{GraphMatching}. 
+Furthermore it struggled with both ambiguous language constructs and potential mismatches between natural language 
+representation of relationships and database layouts — more complicated database designs, which may not match the users 
+intuitive understanding resulted in a different topology and hence could not be matched \citep[p.~387]{GraphMatching}.
 
+\subsubsection{Interactive Systems}
 
+In \citeyear{NALIR} \citeauthor*{NALIR} identified that perfect translation of natural language into SQL was challenging
+due to natural language not being made for query expressions as it heavily relies on contextual information and clarifying
+questions in order to disambiguate conversations \citep{NALIR}. These learnings relate to early prior art from 
+\citeauthor{UnnaturalQueryLanguage} and \citeauthor{Rendezvous} which also made this observation — ``natural language
+is not a natural query language.'' \citep{UnnaturalQueryLanguage}. The solution introduced by NaLIR further emphasized
+how important an interactive, conversational usage model is, when offering a natural language interface \citep{NALIR}.
 
-
-
-
+NaLIR could accept logically complex English language sentences as input and translate them into SQL queries with various 
+complexities, including aggregation, nesting, and different types of joins etc. The key innovative characteristic of 
+NaLIR lies in its interactive communication mechanism (much like \textsc{Rendezvous}) that could detect potential 
+misinterpretations and engage users to resolve ambiguities present in their natural language query without forcing them
+to entirely rephrase their query \cite{NALIR}. This approach, while showing awareness for its limitations (with regards
+to entirely automating / deriving SQL generation from potentially ambiguous or faulty user input) showed that it was 
+possible to overcome these limtations through choosing the right interaction model — ``In our system, we generate
+multiple possible interpretations for a natural language query and translate all of them in natural language for the
+user to choose from'' —, rather than optimizing the generation part of the system \cite{NALIR}.
 
 \subsection{Neural NL2SQL Approaches}
 
