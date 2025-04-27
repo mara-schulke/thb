@@ -389,15 +389,51 @@ with an program synthesis (or query synthesis) approach. SQLizer makes use of a 
 natural language models: first generating a sketch of the query using semantic parsing, then using type-directed
 synthesis to complete the sketch and finally using automated repair, if required. 
 
-\citeauthor*{SQLizer} show that alternating between quantitative repair and synthesis yields results that beat
-state-of-the-art approaches like NaLIR. SQLizer is fully automated and database-agnostic, requiring no knowledge
-of the underlying schema. The authors evaluated SQLizer on 455 queries across three databases, where it ranked the
-correct query in the top 5 results for about 90\% of cases, significantly outperforming NaLIR \citep{NALIR},
+\citeauthor*{SQLizer} show that alternating between repairing and synthesis yields results that beat state-of-the-art
+NL2SQL approaches like NaLIR. SQLizer is fully automated and database-agnostic, requiring no knowledge of the underlying
+schema. The authors evaluated SQLizer on 455 queries across three databases, where it ranked the correct query in the
+top 5 results for roughly 90\% of the queries. This represents a significant improvement over NaLIR \citep{NALIR},
 the previous state-of-the-art system \citep{SQLizer}.
 
 Potential short commings of this approch include queries which yield empty results, dealing with language variations
 as SQLizer is still using semantic parsing, and domain-specific terminology, all while still requiring users
 to select from multiple query options which reduces the overall usability of the system \citep[p.22-23]{SQLizer}.
+
+\subsubsection{Limitations of Traditional Approaches to NL2SQL}
+
+Despite being innovative and achieving state-of-the-art results, many of the above outlined approaches face severe 
+challenges when moving outside of an research environment. Many of these systems performed comparatively good on research
+benchmarks that were often composed of controlled question types and limited data variety. Ultimatively no standard
+benchmark existed for NL2SQL in this era, hence comparing different NL2SQL systems against each other is a problem on 
+its own. Despite not having a standard benchmark that all approaches could be unifiably evaluated against, several 
+fundamental challenges emerged / remained with these approaches:
+
+\begin{enumerate}
+    \item \textbf{Limited linguistic coverage} — Prevalent rule-based and semantic-parsing based systems were only able to 
+          process the a small subset of the natural language they were programmed for. This severely limited their 
+          ability to handle different phrasings of the same end-user goal \citep{StringKernels, UnnaturalQueryLanguage, 
+          Lunar, Ladder}.
+    \item \textbf{Transferability} — Traditional approaches typically required extensive manual configuration or at least
+          a training phase / adaption for each database they were deployed for, hindering cross domain usage through being 
+          expensive and time-consuming to adapt \citep{NLIDBs, Lunar}.
+    \item \textbf{Brittleness} — Many of the systems introduced in this subchapter did not handle synonyms, paraphrasing,   
+          or spelling errors well. Manual adaption / handling was needed in order to becomes resilient against each class
+          of problems \citep{StringKernels, SQLizer}.
+    \item \textbf{Poor scalability} — With potentially more complex underlying databases, traditional 
+          solutions often showed to perform worse. \citeauthor*{GraphMatching} found, that with increasing schema
+          complexity more compute was required to resolve the natural language query to a suitable query candidate
+          making them less transferable and scalable than initially anticipated \citep{GraphMatching} — ``Evaluating on
+          all domains in Freebase would generate a very large number of queries for which denotations would have to be 
+          computed ... Our system loads Freebase using Virtuoso and queries it with SPARQL. Virtuoso is slow in dealing with
+          millions of queries indexed on the entire Freebase, and is the only reason we did not work with the complete
+          Freebase.'' which indicates underlying system design issues with runtime complexity.
+\end{enumerate}
+
+These flaws of traditional NL2SQL approaches made it apparent, that a different class of approaches is needed, which 
+increase transferability and reduce the brittleness since users are ``unwilling to trade reliable and predictable user 
+interfaces for intelligent but unreliable ones'' according to \cite{NLIDBTheory}. Whilst many approaches outlined tractable 
+ways to increase user satisfaction and accuracy (like \citeauthor*{Rendezvous} did in \citeyear{Rendezvous} with a 
+conversational approach), NLIDBs were and are not considered to be a solved problem.
 
 \subsection{Neural NL2SQL Approaches}
 
