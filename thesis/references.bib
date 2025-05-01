@@ -268,6 +268,100 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Neural Network Era
+
+@inproceedings{IRNet,
+    title = "Towards Complex Text-to-{SQL} in Cross-Domain Database with Intermediate Representation",
+    author = "Guo, Jiaqi  and Zhan, Zecheng  and Gao, Yan  and Xiao, Yan and Lou, Jian-Guang  and Liu, Ting  and Zhang, Dongmei",
+    editor = "Korhonen, Anna  and Traum, David  and M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1444/",
+    doi = "10.18653/v1/P19-1444",
+    pages = "4524--4535",
+    abstract = "We present a neural approach called IRNet for complex and cross-domain Text-to-SQL. IRNet aims to address two challenges: 1) the mismatch between intents expressed in natural language (NL) and the implementation details in SQL; 2) the challenge in predicting columns caused by the large number of out-of-domain words. Instead of end-to-end synthesizing a SQL query, IRNet decomposes the synthesis process into three phases. In the first phase, IRNet performs a schema linking over a question and a database schema. Then, IRNet adopts a grammar-based neural model to synthesize a SemQL query which is an intermediate representation that we design to bridge NL and SQL. Finally, IRNet deterministically infers a SQL query from the synthesized SemQL query with domain knowledge. On the challenging Text-to-SQL benchmark Spider, IRNet achieves 46.7{\%} accuracy, obtaining 19.5{\%} absolute improvement over previous state-of-the-art approaches. At the time of writing, IRNet achieves the first position on the Spider leaderboard."
+}
+
+@article{SQLNet,
+  author = {Xiaojun Xu and Chang Liu and Dawn Song},
+  title = {SQLNet: Generating Structured Queries From Natural Language Without Reinforcement Learning},
+  journal = {CoRR},
+  volume = {abs/1711.04436},
+  year = {2017},
+  url = {http://arxiv.org/abs/1711.04436},
+  eprinttype = {arXiv},
+  eprint = {1711.04436},
+  timestamp = {Mon, 22 Jul 2019 13:37:30 +0200},
+  biburl = {https://dblp.org/rec/journals/corr/abs-1711-04436.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org},
+  abstract = {Synthesizing SQL queries from natural language is a long-standing open problem and has been attracting considerable interest recently. Toward solving the problem, the de facto approach is to employ a sequence-to-sequence-style model. Such an approach will necessarily require the SQL queries to be serialized. Since the same SQL query may have multiple equivalent serializations, training a sequence-to-sequence-style model is sensitive to the choice from one of them. This phenomenon is documented as the "order-matters" problem. Existing state-of-the-art approaches rely on reinforcement learning to reward the decoder when it generates any of the equivalent serializations. However, we observe that the improvement from reinforcement learning is limited. In this paper, we propose a novel approach, i.e., SQLNet, to fundamentally solve this problem by avoiding the sequence-to-sequence structure when the order does not matter. In particular, we employ a sketch-based approach where the sketch contains a dependency graph so that one prediction can be done by taking into consideration only the previous predictions that it depends on. In addition, we propose a sequence-to-set model as well as the column attention mechanism to synthesize the query based on the sketch. By combining all these novel techniques, we show that SQLNet can outperform the prior art by 9\% to 13\% on the WikiSQL task.}
+}
+
+@inproceedings{TypeSQL,
+    title = "{T}ype{SQL}: Knowledge-Based Type-Aware Neural Text-to-{SQL} Generation",
+    author = "Yu, Tao and Li, Zifan and Zhang, Zilin and Zhang, Rui and Radev, Dragomir",
+    editor = "Walker, Marilyn and Ji, Heng and Stent, Amanda",
+    booktitle = "Proceedings of the 2018 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)",
+    month = jun,
+    year = "2018",
+    address = "New Orleans, Louisiana",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N18-2093/",
+    doi = "10.18653/v1/N18-2093",
+    pages = "588--594",
+    abstract = "Interacting with relational databases through natural language helps users with any background easily query and analyze a vast amount of data. This requires a system that understands users' questions and converts them to SQL queries automatically. In this paper, we present a novel approach TypeSQL which formats the problem as a slot filling task in a more reasonable way. In addition, TypeSQL utilizes type information to better understand rare entities and numbers in the questions. We experiment this idea on the WikiSQL dataset and outperform the prior art by 6{\%} in much shorter time. We also show that accessing the content of databases can significantly improve the performance when users' queries are not well-formed. TypeSQL can reach 82.6{\%} accuracy, a 17.5{\%} absolute improvement compared to the previous content-sensitive model."
+}
+
+@inproceedings{SyntaxSQLNet,
+    title = "{S}yntax{SQLN}et: Syntax Tree Networks for Complex and Cross-Domain Text-to-{SQL} Task",
+    author = "Yu, Tao and Yasunaga, Michihiro and Yang, Kai and Zhang, Rui and Wang, Dongxu and Li, Zifan and Radev, Dragomir",
+    editor = "Riloff, Ellen and Chiang, David and Hockenmaier, Julia and Tsujii, Jun{'}ichi",
+    booktitle = "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing",
+    month = oct # "-" # nov,
+    year = "2018",
+    address = "Brussels, Belgium",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D18-1193/",
+    doi = "10.18653/v1/D18-1193",
+    pages = "1653--1663",
+    abstract = "Most existing studies in text-to-SQL tasks do not require generating complex SQL queries with multiple clauses or sub-queries, and generalizing to new, unseen databases. In this paper we propose SyntaxSQLNet, a syntax tree network to address the complex and cross-domain text-to-SQL generation task. SyntaxSQLNet employs a SQL specific syntax tree-based decoder with SQL generation path history and table-aware column attention encoders. We evaluate SyntaxSQLNet on a new large-scale text-to-SQL corpus containing databases with multiple tables and complex SQL queries containing multiple SQL clauses and nested queries. We use a database split setting where databases in the test set are unseen during training. Experimental results show that SyntaxSQLNet can handle a significantly greater number of complex SQL examples than prior work, outperforming the previous state-of-the-art model by 9.5{\%} in exact matching accuracy. To our knowledge, we are the first to study this complex text-to-SQL task. Our task and models with the latest updates are available at \url{https://yale-lily.github.io/seq2sql/spider}."
+}
+
+@inproceedings{GNN,
+    title = "Representing Schema Structure with Graph Neural Networks for Text-to-{SQL} Parsing",
+    author = "Bogin, Ben and Berant, Jonathan and Gardner, Matt",
+    editor = "Korhonen, Anna and Traum, David and M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1448/",
+    doi = "10.18653/v1/P19-1448",
+    pages = "4560--4565",
+    abstract = "Research on parsing language to SQL has largely ignored the structure of the database (DB) schema, either because the DB was very simple, or because it was observed at both training and test time. In spider, a recently-released text-to-SQL dataset, new and complex DBs are given at test time, and so the structure of the DB schema can inform the predicted SQL query. In this paper, we present an encoder-decoder semantic parser, where the structure of the DB schema is encoded with a graph neural network, and this representation is later used at both encoding and decoding time. Evaluation shows that encoding the schema structure improves our parser accuracy from 33.8{\%} to 39.4{\%}, dramatically above the current state of the art, which is at 19.7{\%}."
+}
+
+@inproceedings{RATSQL,
+    title = "{RAT-SQL}: Relation-Aware Schema Encoding and Linking for Text-to-{SQL} Parsers",
+    author = "Wang, Bailin and Shin, Richard and Liu, Xiaodong and Polozov, Oleksandr and Richardson, Matthew",
+    editor = "Jurafsky, Dan and Chai, Joyce and Schluter, Natalie and Tetreault, Joel",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.677/",
+    doi = "10.18653/v1/2020.acl-main.677",
+    pages = "7567--7578",
+    abstract = "When translating natural language questions into SQL queries to answer questions from a database, contemporary semantic parsing models struggle to generalize to unseen database schemas. The generalization challenge lies in (a) encoding the database relations in an accessible way for the semantic parser, and (b) modeling alignment between database columns and their mentions in a given query. We present a unified framework, based on the relation-aware self-attention mechanism, to address schema encoding, schema linking, and feature representation within a text-to-SQL encoder. On the challenging Spider dataset this framework boosts the exact match accuracy to 57.2{\%}, surpassing its best counterparts by 8.7{\%} absolute improvement. Further augmented with BERT, it achieves the new state-of-the-art performance of 65.6{\%} on the Spider leaderboard. In addition, we observe qualitative improvements in the model`s understanding of schema linking and alignment. Our implementation will be open-sourced at \url{https://github.com/Microsoft/rat-sql}."
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Recent 
 
 % Recent - Benchmarks
@@ -527,19 +621,4 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     primaryClass={cs.AI},
     url={https://arxiv.org/abs/2411.08599},
     abstract={To tackle the challenges of large language model performance in natural language to SQL tasks, we introduce XiYan-SQL, an innovative framework that employs a multi-generator ensemble strategy to improve candidate generation. We introduce M-Schema, a semi-structured schema representation method designed to enhance the understanding of database structures. To enhance the quality and diversity of generated candidate SQL queries, XiYan-SQL integrates the significant potential of in-context learning (ICL) with the precise control of supervised fine-tuning. On one hand, we propose a series of training strategies to fine-tune models to generate high-quality candidates with diverse preferences. On the other hand, we implement the ICL approach with an example selection method based on named entity recognition to prevent overemphasis on entities. The refiner optimizes each candidate by correcting logical or syntactical errors. To address the challenge of identifying the best candidate, we fine-tune a selection model to distinguish nuances of candidate SQL queries. The experimental results on multiple dialect datasets demonstrate the robustness of XiYan-SQL in addressing challenges across different scenarios. Overall, our proposed XiYan-SQL achieves the state-of-the-art execution accuracy of 75.63% on Bird benchmark, 89.65% on the Spider test set, 69.86% on SQL-Eval, 41.20% on NL2GQL. The proposed framework not only enhances the quality and diversity of SQL queries but also outperforms previous methods.},
-}
-
-@inproceedings{IRNet,
-    title = "Towards Complex Text-to-{SQL} in Cross-Domain Database with Intermediate Representation",
-    author = "Guo, Jiaqi  and Zhan, Zecheng  and Gao, Yan  and Xiao, Yan and Lou, Jian-Guang  and Liu, Ting  and Zhang, Dongmei",
-    editor = "Korhonen, Anna  and Traum, David  and M{\`a}rquez, Llu{\'i}s",
-    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
-    month = jul,
-    year = "2019",
-    address = "Florence, Italy",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/P19-1444/",
-    doi = "10.18653/v1/P19-1444",
-    pages = "4524--4535",
-    abstract = "We present a neural approach called IRNet for complex and cross-domain Text-to-SQL. IRNet aims to address two challenges: 1) the mismatch between intents expressed in natural language (NL) and the implementation details in SQL; 2) the challenge in predicting columns caused by the large number of out-of-domain words. Instead of end-to-end synthesizing a SQL query, IRNet decomposes the synthesis process into three phases. In the first phase, IRNet performs a schema linking over a question and a database schema. Then, IRNet adopts a grammar-based neural model to synthesize a SemQL query which is an intermediate representation that we design to bridge NL and SQL. Finally, IRNet deterministically infers a SQL query from the synthesized SemQL query with domain knowledge. On the challenging Text-to-SQL benchmark Spider, IRNet achieves 46.7{\%} accuracy, obtaining 19.5{\%} absolute improvement over previous state-of-the-art approaches. At the time of writing, IRNet achieves the first position on the Spider leaderboard."
 }
