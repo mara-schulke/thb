@@ -108,7 +108,7 @@ costly staffing and yield little to no novel technical value.
 Emerging technologies such as Large Language Models (LLMs) have proven themselves as a sensible tool for bridging
 fuzzy user provided input into discrete, machine readable formats. Prominent models in this field have demostrated
 outstanding capabilities that enable computer scientists to tackle new problem classes, that used to be
-challenging / yielded unsatisfying results with discrete programming approaches.
+challenging / yielded unsatisfying results with logical programming approaches.
 
 This thesis is exploring ways to overcome the above outlined barrier using natural language queries, so that domain experts,
 business owners, support staff etc. are able to seamlessly interact with their data, essentially eliminating the
@@ -312,9 +312,9 @@ as possible natural language coverage. \citep{NLIDBTheory}
 \subsection{Traditional NL2SQL Approaches}
 
 Prior to the wide-spread dominance of machine learning approaches for natural language processing a variety of
-traditional, rather discrtete approaches have been explored in the field of NL2SQL / NLIDBs. These discrete
-approaches have laid the foundations for transitioning towards the application of machine learning techniques
-for NL2SQL.
+traditional, rather discrtete approaches have been explored in the field of NL2SQL / NLIDBs. These logical
+programming approaches have laid the foundations for transitioning towards the application of machine learning
+techniques for NL2SQL.
 
 \subsubsection{Rule-based and Grammar-based Systems}
 
@@ -332,7 +332,7 @@ and predictable user interfaces.
 
 A significiant milestone in parsing techniques of natural language queries was reached by \citeauthor*{StringKernels} in 
 \citeyear{StringKernels}. The introduction of string kernels for semantic parsing represented a novel achievement, when 
-it comes to fusing discrete parsing approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and 
+it comes to fusing logical programming approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and 
 learning / training approaches to understand unseen language patterns / unknown natural language query structures. This 
 allowed for more flexible pattern recognition when compared to traditional rule-based systems.
 
@@ -437,15 +437,38 @@ conversational approach), NLIDBs were and are not considered to be a solved prob
 
 \subsection{Neural NL2SQL Approaches}
 
+The previously outlined limitations of traditional approaches to solving NL2SQL / implementing NLIDBs pushed the research
+branch around neural network application forward to step in and propose new solutions which address the brittleness, 
+transferability and scalability concerns addressed with logical programming approaches. Neural approaches showed to yield
+significant improvements in terms of transferability and overall accuracy which led to a paradigm shift in this research
+field.
+
+\subsubsection{Early Neural Approaches}
+
+In \citeyear{Seq2SQL} \citeauthor*{Seq2SQL} released Seq2SQL which represents a significant breakthrough and leap in NLIDB research. 
+Seq2SQL was an early research system that in the field of neural network application and as one of the first papers to frame the
+implementation of NLIDBs / NL2SQL Systems as a reinforement learning problem. The system utilized iterative query execution in the
+reward function to improve its accuracy \citep{Seq2SQL}. In the same paper \citeauthor*{Seq2SQL} introduced WikiSQL, a training dataset,
+which enables large scale (in \citeyear{Seq2SQL}) model training.
+
+SQLNet \citep{SQLNet} addressed primarily the order-sensitivitiy trait of Seq2SQL \citep{Seq2SQL} that was prevalent due to being a derivative
+approach from sequence-to-sequence approaches. SQLNet diverges from sequence-to-sequence and joins multiple research threads, employing a
+sketch-based query generation. SQLNet breaks down complex queries into smaller (hence more manageable) sub-queries which can then be individually
+sketched and refined, yielding a system that outperformed state-of-the-art by 9\% to 13\% \citep{SQLNet}.
+
 \subsection{Benchmark Evolution}
 
 \subsection{LLM-based NL2SQL Systems}
 
+% Prompt engineering and fine tuning
+
 \subsection{Optimization for LLM-based NL2SQL}
 
-\subsection{Complex Techniques in NL2SQL}
+% PICARD, DIN-SQL, MAGIC & CHASE
 
 \subsection{Research Gaps}
+
+\subsubsection{Deployment Gaps}
 
 \newpage
 
