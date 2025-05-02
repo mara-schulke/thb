@@ -117,7 +117,6 @@ this translation becomes very robust (e.g. against different kinds of phrasing) 
 in how businesses, researchers and professionals interact with their data — it represents a fundamental shift 
 (ie. moving away from SQL) towards a more inclusive and data driven world. 
 
-
 \subsection{Objectives of the Thesis}
 
 This thesis aims to address the aforementioned challanges when it comes to database accessibility.
@@ -445,16 +444,49 @@ field.
 
 \subsubsection{Early Neural Approaches}
 
-In \citeyear{Seq2SQL} \citeauthor*{Seq2SQL} released Seq2SQL which represents a significant breakthrough and leap in NLIDB research. 
-Seq2SQL was an early research system that in the field of neural network application and as one of the first papers to frame the
-implementation of NLIDBs / NL2SQL Systems as a reinforement learning problem. The system utilized iterative query execution in the
-reward function to improve its accuracy \citep{Seq2SQL}. In the same paper \citeauthor*{Seq2SQL} introduced WikiSQL, a training dataset,
-which enables large scale (in \citeyear{Seq2SQL}) model training.
+In \citeyear{Seq2SQL} \citeauthor*{Seq2SQL} released Seq2SQL which represents a significant breakthrough and leap in NLIDB 
+research. Seq2SQL was an early research system that in the field of neural network application and as one of the first papers
+to frame the implementation of NLIDBs / NL2SQL Systems as a reinforement learning problem. The system utilized iterative query 
+execution in the reward function to improve its accuracy \citep{Seq2SQL}. In the same paper \citeauthor*{Seq2SQL} introduced 
+WikiSQL, a training dataset, which enables large scale (in \citeyear{Seq2SQL}) model training.
 
-SQLNet \citep{SQLNet} addressed primarily the order-sensitivitiy trait of Seq2SQL \citep{Seq2SQL} that was prevalent due to being a derivative
-approach from sequence-to-sequence approaches. SQLNet diverges from sequence-to-sequence and joins multiple research threads, employing a
-sketch-based query generation. SQLNet breaks down complex queries into smaller (hence more manageable) sub-queries which can then be individually
-sketched and refined, yielding a system that outperformed state-of-the-art by 9\% to 13\% \citep{SQLNet}.
+SQLNet \citep{SQLNet} addressed primarily the order-sensitivitiy trait of Seq2SQL \citep{Seq2SQL} that was prevalent due to being
+a derivative approach from sequence-to-sequence approaches. SQLNet diverges from sequence-to-sequence and joins multiple research 
+threads, employing a sketch-based query generation. SQLNet breaks down complex queries into smaller (hence more manageable)
+sub-queries which can then be individually sketched and refined, yielding a system that outperformed state-of-the-art by 9\% 
+to 13\% \citep{SQLNet}.
+
+\citeauthor*{TypeSQL} have introduced \textsc{TypeSQL}, a variation of the SQLNet-approach, in \citeyear{TypeSQL}.
+\textsc{TypeSQL}'s primary difference to SQLNet is the encoding of type information for SQL generation. The approach scanned
+for entity references and values in natural language and was able to improve performance by 5.5\% over SOTA-Models like
+SQLNet whilst requiring significantly less training time, indicating that type information was a useful information for deriving 
+accurate SQL queries from user input \citep{TypeSQL}.
+
+\subsubsection{Intermediate Neural Developments}
+
+Later in \citeyear{SyntaxSQLNet} \citeauthor*{SyntaxSQLNet} released SyntaxSQLNet, a followup research to \textsc{TypeSQL},
+which represented a slight change in approach and research focus. In direct comparison SyntaxSQLNet focused primarily around
+complex query generation using a syntax tree decoder, allowing for longer and more cohesive query generation \citep{SyntaxSQLNet}.
+This advancement over \textsc{TypeSQL} allowed more complex queries to be reliably generated, enabling multiple clauses aswell as
+nested queries. SyntaxSQLNet was one of the earlier research efforts which utilized Spider instead of WikiSQL (introduced by 
+\cite{Seq2SQL}), a large-scale NL2SQL dataset, incorperating 10.181 hand annotated natural language question and alongside
+5.693 unique SQL examples that spread across 138 different domains \citep{Spider}. This research led the transition of
+comparatively simple, research-grade, neural systems for NLIDBs towards systems which are feasible in the real world.
+
+Building on the above approaches, \citeauthor*{IRNet} have introduced IRNet, a neural network approach using intermediate
+representation as a bridge between natural language and SQL in which semantic queries could be expressed. The intermediate
+format SemQL (or semantic query language) was utilized to transform and synthesize queries on the actual database schema more
+accurately than Seq2SQL. IRNet followed a three phase approach: schema linking between the natural language query and database
+layout, synthesis of SemQL as intermediate representation and deterministic conversion of SemQL to SQL. This approach allowed
+IRNet to outperform state-of-the-art approaches on the \textsc{Spider} benchmark by 19.5\%, placing IRNet at an overall accuracy
+of 46.7\% \citep{IRNet}.
+
+Following IRNet, graph neural networks (GNN) have been explored as alternative architecture by \cite{GNN}, representing the
+database schema as a graph and using message passing to model relationships between tables, columns and natural language input.
+This approach demonstrated the capability to improve reasoning and query generation capability. \citeauthor{GNN} showed that when 
+evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLNet (and therefore \textsc{SQLNet} \&
+\textsc{TypeSQL}). Although presenting a signficiant advancement over previous state-of-the-art approaches, GNN falls behind in
+performance against IRNet by 6\% \citep{IRNet, GNN}.
 
 \subsection{Benchmark Evolution}
 
