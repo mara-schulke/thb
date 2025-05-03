@@ -488,6 +488,29 @@ evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLN
 \textsc{TypeSQL}). Although presenting a signficiant advancement over previous state-of-the-art approaches, GNN falls behind in
 performance against IRNet by 6\% \citep{IRNet, GNN}.
 
+\subsubsection{Relation-Aware Transformer Approaches}
+
+The release of RAT-SQL (Relation-Aware Transformer for SQL) \cite{RATSQL} represents the most significant leap in research of
+neural NL2SQL approaches. RAT-SQL diverged from earlier research through emphasizing the relationship between natural language
+and the database schema elements using relation-aware self-attention representing a novel approach for solving \textit{schema 
+linking} \citep{RATSQL}.
+
+RAT-SQL's primary innovations was the ability to infer, understand and utilize the relationship between individual tokens in the 
+natural language query and link it to the database schema. Thus allowing for reasoning capabilities on the actual database schema
+while generating the query.
+
+This architecture yielded a 57.2\% in exact match accuracy when being evaluated on the \textsc{Spider} benchmark, substantially
+outperforming comparative approaches like GNN, IRNet and IRNet V2 by 10.5\%, 9.8\% and 8.7\% respectively. Although overall
+accuracy improved across all approaches when being paired with BERT (Bidirectional Encoder Representations from Transformers, a 
+popular pre-trained lanugage model from Google) the $\delta$ between the indivudual approaches remained relatively steady, leaving
+RAT-SQL outperforming state-of-the-art approaches by 5\% to 12.2\% further demonstrating the capability advancement yielded by this 
+system \citep{RATSQL}.
+
+\subsubsection{Comparative Analysis of Neural Approaches}
+
+The evolution from early neural approaches to RAT-SQL emphasized the rapid advancements that happened in the research field of 
+neural NL2SQL approaches:
+
 \subsection{Benchmark Evolution}
 
 \subsection{LLM-based NL2SQL Systems}
