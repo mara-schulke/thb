@@ -509,12 +509,74 @@ system \citep{RATSQL}.
 \subsubsection{Comparative Analysis of Neural Approaches}
 
 The evolution from early neural approaches to RAT-SQL emphasized the rapid advancements that happened in the research field of 
-neural NL2SQL approaches:
+neural NL2SQL approaches in different dimensions:
 
-\subsection{Benchmark Evolution}
+\begin{enumerate}
+    \item \textbf{Model Complexity} — Given the research progression from early sequence to sequence translation approaches 
+          (\textsc{Seq2SQL}) towards sketch based and type augumented and graph based approaches (\textsc{TypeSQL, SQLNet, GNN})
+          and syntax tree decoding emphasized by \textsc{SyntaxSQLNet}, neural approaches continously advanced in the complexity of 
+          approaches that is required to beat state-of-the-art approaches in contemprorary benchmarks like \textsc{Spider}. RAT-SQL 
+          presents one of the late and most complex advancements in the field of neural NL2SQL approaches with its adapted self 
+          attention mechanism \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
+    \item \textbf{Transferability} — Each of the approaches introduced above represents a succession in terms of their transferability.
+          The field of neural NL2SQL approaches significantly improved the ability for NLIDBs to generalize over the underlying database
+          schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the \textsc{Spider} benchmark). With
+          standard benchmarks emerging it became easier to verify and quantify which approach had the highest transferability as
+          \textsc{Spider} specifically had independent development and test datasets, preventing approaches from over-optimizing on
+          training data \citep{Spider, RATSQL}.
+    \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation (Seq2SQL)
+          their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized structured decoding,
+          \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges around \textit{schema linking}
+          outlined by \cite{RATSQL} have increasilingly led to more robust systems that can handle rephrasings, spelling mistakes and
+          variations in natural language usage far beyond what traditional NL2SQL approaches could accomplish \cite{SyntaxSQLNet, IRNet, RATSQL}.
+    \item \textbf{Query Complexity} — The performance on complex queries involving multiple tables, relying on complex aggregations,
+          nested structures and joins dramatically improved over the course of the research that happened in this field. Whilst 
+          \textsc{IRNet} reresents one of the first singificant advancements when it comes to the ability of neural approaches to handle
+          complex queries, \textsc{RAT-SQL} still showed to outperform the intermediate representation approach introduced by \textsc{IRNet}
+          by up to 10.5\% \citep{IRNet, RATSQL}.
+    \item \textbf{Schema Understanding} — Whilst early approaches like Seq2SQL primarily applied reinforcement learning for end to end
+          query generation \citep{Seq2SQL}, later approaches like \textsc{TypeSQL, GNN} and specifically \textsc{RAT-SQL} showed novel and state-of-
+          the-art \textit{schema understanding / schema linking} capabilities, yielding the ability to accurately reason about user intent and
+          traverse the database schema while generating queries \citep{TypeSQL, GNN, RATSQL}. 
+\end{enumerate}
 
-\subsection{LLM-based NL2SQL Systems}
+\subsection{Limitations of Neural Approaches}
 
+Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late neural
+approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
+
+\begin{enumerate}
+    \item \textbf{Training Data} — Utilizing neural networks these approaches required susbtantially more training data (ie. natural language
+          paired with output SQL queries) than traditional systems which required serious efforts of data collection \citep{Spider}.
+    \item \textbf{Correctness} — The inherent mismatch between neural networks and formal languages yielded cases where models produced
+          invalid SQL code. Approaches like \textsc{SyntaxSQLNet} improved the tried to solve this circumstance by utilizing syntax trees
+          during decoding but nonetheless syntactic correctness remained a challenge across future iterations of neural systems. \citep{SyntaxSQLNet}
+    \item \textbf{Domain Language} — Despite increased \textit{transferability} characteristics neural approaches still suffered from a
+          limited vocabulary and inter-domain understanding of terminology and relation between concepts which made highly domain
+          specific natural language queries challenging.
+    \item \textbf{Observability} — The black-box nature of neural networks made approaches relying on them, particularly the ones with complex
+          architectures, hard do understand / explain in case when neural systems yielded undesirable output. 
+\end{enumerate}
+
+
+The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility of NLIDBs. The
+research shift started in this era established the foundations for further and more advanced machine learning approaches (specifically language
+model oriented approaches )being researched. Neural approaches showed to significant improvements in performance when being paired with pre-trained
+language models \citep{RATSQL} which led to further research on their applicability.
+
+\subsection{Pre-trained Language Models}
+
+% PLM approaches
+% RESDSQL, Graphix-T5
+% T5 fine-tuning etc.
+
+% https://arxiv.org/abs/2109.05093
+
+\subsection{Large Language Models}
+
+% CodeS
+% GPT-X based
+% 
 % Prompt engineering and fine tuning
 
 \subsection{Optimization for LLM-based NL2SQL}
