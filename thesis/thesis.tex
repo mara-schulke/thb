@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{titlesec}
+\usepackage[natbibapa]{apacite}
 
 \graphicspath{{./images/}}
 
@@ -34,18 +35,18 @@
 \begin{titlepage}
     \begin{center}
         \begin{Large}
-            Brandenburg University of Technology \\[1em]
+            Brandenburg University of Applied Sciences \\[1em]
         \end{Large}
         IT Security \\
-        Computerscience and Media \\
+        Computerscience \\
         Prof. Dr. Oleg Lobachev \\
-        Florian Eich
+        MSc. Florian Eich
     \end{center}
 
     \vfill
 
     \begin{center}
-        \Large{Natural Language Queries using Large Language Models}\\[0.5em]
+        \Large{Reliable Natural Language Interfaces using LLMs, Self-Correction and Incremental Schema Analysis}\\[0.5em]
         \large{Bachelor Thesis}\\[1em]
         
         \begin{normalsize}
@@ -107,7 +108,7 @@ costly staffing and yield little to no novel technical value.
 Emerging technologies such as Large Language Models (LLMs) have proven themselves as a sensible tool for bridging
 fuzzy user provided input into discrete, machine readable formats. Prominent models in this field have demostrated
 outstanding capabilities that enable computer scientists to tackle new problem classes, that used to be
-challenging / yielded unsatisfying results with discrete programming approaches.
+challenging / yielded unsatisfying results with logical programming approaches.
 
 This thesis is exploring ways to overcome the above outlined barrier using natural language queries, so that domain experts,
 business owners, support staff etc. are able to seamlessly interact with their data, essentially eliminating the
@@ -115,7 +116,6 @@ requirement of learning SQL (and its pitfalls). By translating natural language 
 this translation becomes very robust (e.g. against different kinds of phrasing) and enables novel applications
 in how businesses, researchers and professionals interact with their data — it represents a fundamental shift 
 (ie. moving away from SQL) towards a more inclusive and data driven world. 
-
 
 \subsection{Objectives of the Thesis}
 
@@ -246,13 +246,346 @@ interface for databases, in particular postgres is used.
 % Theoretical Foundations
 \section{Literature Review}
 
-Test\cite{Atlas}
+In this section a comprehensive literature review is performed to asses the research landscape on NL2SQL
+(sometimes also referred to as Text-to-SQL or T2SQL) and NLIDBs. From the time their development accelerated in
+the late 1990s and early 2000s \citep{NLIDBs, NLIDBTheory, ILPParsing, ILPParsing2} until now, observing multiple 
+larger paradigm shifts happening over time \citep{GRAPPA, STRUG, Seq2SQL, NALIR, SQLizer}. In particular this 
+research focuses on the recent advancements when it comes to language models and how they can be harnessed for
+effective NL2SQL systems \citep{LLM-Sql, T2SQL-LLM-Bench, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
+
+This literature review is covering the foundational concepts, challenges, key advancements and research gaps
+associated with using natural language instead of SQL. It lays the foundation for this thesis and helps to set
+the research questions introduced in the previous chapter in context.
+
+% bessere einleitung
+
+\subsection{Foundations of Natural Language Interfaces to Databases}
+
+Earlier papers in the research landscape on Natural Language Database Interfaces (NLIDBs) date over half
+a century back, into the early 1970s. Two decades after the first major research systems where developed
+in this domain, \citeauthor*{NLIDBs} have published an introduction and an overview over NLIDBs where an overview of
+state-of-the-art approaches were provided. \citep{NLIDBs} Their work outlined multiple key issues and challenges
+associated with NLIDBs, and compared them against existing / competing solutions like formal query languages,
+form-based interfaces and graphical interfaces. These challenges (like unobvious limits, linguistic ambiguities,
+semantic inaccuracy, tedious configuration etc.) have shaped this field of research and are still considered relevant
+metrics today.
+
+Early NLIDBs primarily relied on traditional natural language processing (NLP) techniques in order to achieve
+natural language understanding capabilities. With \textsc{Chill} an inductive logic programming (ILP) approach
+was first introduced for NL2SQL systems, marking one of the key events when it comes to machine learning usage.
+\citep{ILPParsing} In \citeyear{ILPParsing2} \citeauthor*{ILPParsing2} have extended the approach of ILP
+parsing for natural language database queries with multi clause construction, yielding promising results
+in the field of NLIDBs. \citep{ILPParsing2}
+
+Building on the systematic overview of \citeauthor*{NLIDBs} and the first machine learning approaches from
+\citeauthor*{ILPParsing} aswell as \citeauthor*{ILPParsing2}, \citeauthor{NLIDBTheory} have proposed a novel 
+approach for implementing NLIDBs and outperformed at the time state-of-the-art solutions from \cite{ILPParsing} 
+\cite{ILPParsing2} — achieving 80\% semantic accuracy. \citep{NLIDBTheory} The novelty of the \textsc{Percise}
+system lies in its natural language processing approach, specifically its lexical mapping strategy, allowing 
+\textsc{Percise} to identify questions it can, and can't answer (introducing the concept of \textit{semantically 
+tractable questions}) which therefore results in a better and interactive end user experience. Their experiements 
+also showed that this approach is \textit{transferrable} and \textit{unbiased} — it is possible to feed in new, 
+unknown questions into the system and maintain performance characteristics, whereas it was shown that 
+\cite{ILPParsing} were suffering from a distribution drift of the questions asked. \citep{NLIDBTheory}
+
+The theoretical foundations and research questions highlighted by the aforementioned works, shaped the research
+field and highlighted the following, ongoing research:
+
+\begin{enumerate}
+    \item The trade-off characteristics derived from choosing a machine learning vs. traditional NLP approach (e.g. 
+          \textsc{Chill} versus \textsc{Percise}). E.g. coverage versus correctness. \citep{ILPParsing, NLIDBTheory}
+    \item The linguistic challenges associated with bringing NLIDBs into use (e.g. semantic inaccuracy, linguistic 
+          ambiguity, unclear language coverage etc.) \citep{NLIDBs}
+    \item The value of systems and approaches which double down on reliability and semantic accuracy rather than giving
+          promising but incorrect answers. \citep{NLIDBs, NLIDBTheory}
+\end{enumerate}
+
+Fundamentally this highlights the tension and mismatch between the characteristics of natural language, which is 
+able to be ambiguous, \textit{semantically untractable} or able to be incomplete in meaning and formal languages
+like SQL which always have on deterministic and \textit{semantically tractable} meaning they convey in each statement. 
+As Schneiderman and Norman have pointed out according to \citeauthor*{NLIDBTheory}, users are ``unwilling to trade 
+reliable and predictable user interfaces for intelligent but unreliable ones'' which induces performance expectations
+on NLIDB implementations to be highly certain about the questions it can, and can't answer, whilst maintaing as high
+as possible natural language coverage. \citep{NLIDBTheory}
+
+\subsection{Traditional NL2SQL Approaches}
+
+Prior to the wide-spread dominance of machine learning approaches for natural language processing a variety of
+traditional, rather discrtete approaches have been explored in the field of NL2SQL / NLIDBs. These logical
+programming approaches have laid the foundations for transitioning towards the application of machine learning
+techniques for NL2SQL.
+
+\subsubsection{Rule-based and Grammar-based Systems}
+
+Foundational research of NL2SQL system mostly focused around applying rule engines that were tedious to set up and
+expensive to maintain / transfer across database systems. These rule engines mostly relied on the systematic 
+identification of linguistic patterns / were trying to template SQL from information that was derived from processing the 
+natural language query. \citep{Rendezvous, Lunar, Ladder} These approaches mostly tried to formalize natural language 
+queries into formal grammers which could then be deterministically mapped into a valid SQL query. \citep{Lunar} These 
+approaches have strong downsides when it comes to the variety of natural language constructs they can process, aswell as 
+runtime adoption of new / unknown databases, query constructs etc. A potential upside of this class of NL2SQL systems is 
+that they can confidently and reproducably identify questions they can, and can't answer — thus leading to very reliable 
+and predictable user interfaces.
+
+\subsubsection{Semantic Parsing using String-Kernels}
+
+A significiant milestone in parsing techniques of natural language queries was reached by \citeauthor*{StringKernels} in 
+\citeyear{StringKernels}. The introduction of string kernels for semantic parsing represented a novel achievement, when 
+it comes to fusing logical programming approaches using a formal grammer like LSNLIS developed by \cite{Lunar} and 
+learning / training approaches to understand unseen language patterns / unknown natural language query structures. This 
+allowed for more flexible pattern recognition when compared to traditional rule-based systems.
+
+The core innovative characteristic of this approach lies in its capability to understand similarities between natural 
+language expressions based on subsequence patterns rather than relying on exact matches. This made \textsc{Krisp}, the 
+research NLIDB system developed by \cite{StringKernels} much more robust to language variations in phrasing and noise 
+(e.g. spelling mistakes) in the input. As the \citeauthor*{StringKernels} demonstrated through experiments on real-world 
+datasets, this approach compared favorably to existing systems of the time like \textsc{Chill}, especially in handling 
+noisy inputs — a frequent challenge rigid rule-based systems faced in real world scenarios \citep{StringKernels, 
+ILPParsing}.
+
+\subsubsection{Graph Matching Methods}
+
+\cite{GraphMatching} brought together several research threads and reapplied emerging graph matching research models
+to natural language processing, specifically to natural language queries. Graph matching was applied once the natural 
+language query was parsed using a Combinatory Categorial Grammar (CCG) approach into a semantic graph which denotes the 
+relationship between semantic entities in it. This graph could then be matched against the actual graph derived from 
+the database, since they share topological traits that can be used for matching \citep{GraphMatching}. This approach 
+allowed to apply querying systems without having any question-answer pairs or manual annotations for training the system, 
+which implies easier scalability / transferability across domains, since the system does not require any additional 
+tweaks.
+
+Even though this approach was novel and showed improved the performance over existing state-of-the-art approaches, it
+was showing that graph matching quickly reaches its limitations. This approach relied heavily on the CCG parser's 
+accuracy, with parsing errors accounting for 10-25\% (depending on the dataset) of system failures \citep{GraphMatching}. 
+Furthermore it struggled with both ambiguous language constructs and potential mismatches between natural language 
+representation of relationships and database layouts — more complicated database designs, which may not match the users 
+intuitive understanding resulted in a different topology and hence could not be matched \citep[p.~387]{GraphMatching}.
+
+\subsubsection{Interactive Systems}
+
+In \citeyear{NALIR} \citeauthor*{NALIR} identified that perfect translation of natural language into SQL was challenging
+due to natural language not being made for query expressions as it heavily relies on contextual information and clarifying
+questions in order to disambiguate conversations \citep{NALIR}. These learnings relate to early prior art from 
+\citeauthor{UnnaturalQueryLanguage} and \citeauthor{Rendezvous} which also made this observation — ``natural language
+is not a natural query language.'' \citep{UnnaturalQueryLanguage}. The solution introduced by NaLIR further emphasized
+how important an interactive, conversational usage model is, when offering a natural language interface \citep{NALIR}.
+
+NaLIR could accept logically complex English language sentences as input and translate them into SQL queries with various 
+complexities, including aggregation, nesting, and different types of joins etc. The key innovative characteristic of 
+NaLIR lies in its interactive communication mechanism (much like \textsc{Rendezvous}) that could detect potential 
+misinterpretations and engage users to resolve ambiguities present in their natural language query without forcing them
+to entirely rephrase their query \cite{NALIR}. This approach, while showing awareness for its limitations (with regards
+to entirely automating / deriving SQL generation from potentially ambiguous or faulty user input) showed that it was 
+possible to overcome these limtations through choosing the right interaction model — ``In our system, we generate
+multiple possible interpretations for a natural language query and translate all of them in natural language for the
+user to choose from'' —, rather than optimizing the generation part of the system \cite{NALIR}.
+
+\subsubsection{Query Synthesis}
+
+\cite{SQLizer} introduced SQLizer, which synthesizes SQL queries from natural language \citep{SQLizer}. This paper
+presents a novel approach when it comes to NL2SQL as it is merging prevalent semantic parsing techniques (outlined above)
+with an program synthesis (or query synthesis) approach. SQLizer makes use of a three stage processing model for 
+natural language models: first generating a sketch of the query using semantic parsing, then using type-directed
+synthesis to complete the sketch and finally using automated repair, if required. 
+
+\citeauthor*{SQLizer} show that alternating between repairing and synthesis yields results that beat state-of-the-art
+NL2SQL approaches like NaLIR. SQLizer is fully automated and database-agnostic, requiring no knowledge of the underlying
+schema. The authors evaluated SQLizer on 455 queries across three databases, where it ranked the correct query in the
+top 5 results for roughly 90\% of the queries. This represents a significant improvement over NaLIR \citep{NALIR},
+the previous state-of-the-art system \citep{SQLizer}.
+
+Potential short commings of this approch include queries which yield empty results, dealing with language variations
+as SQLizer is still using semantic parsing, and domain-specific terminology, all while still requiring users
+to select from multiple query options which reduces the overall usability of the system \citep[p.22-23]{SQLizer}.
+
+\subsubsection{Limitations of Traditional Approaches to NL2SQL}
+
+Despite being innovative and achieving state-of-the-art results, many of the above outlined approaches face severe 
+challenges when moving outside of an research environment. Many of these systems performed comparatively good on research
+benchmarks that were often composed of controlled question types and limited data variety. Ultimatively no standard
+benchmark existed for NL2SQL in this era, hence comparing different NL2SQL systems against each other is a problem on 
+its own. Despite not having a standard benchmark that all approaches could be unifiably evaluated against, several 
+fundamental challenges emerged / remained with these approaches:
+
+\begin{enumerate}
+    \item \textbf{Limited linguistic coverage} — Prevalent rule-based and semantic-parsing based systems were only able to 
+          process the a small subset of the natural language they were programmed for. This severely limited their 
+          ability to handle different phrasings of the same end-user goal \citep{StringKernels, UnnaturalQueryLanguage, 
+          Lunar, Ladder}.
+    \item \textbf{Transferability} — Traditional approaches typically required extensive manual configuration or at least
+          a training phase / adaption for each database they were deployed for, hindering cross domain usage through being 
+          expensive and time-consuming to adapt \citep{NLIDBs, Lunar}.
+    \item \textbf{Brittleness} — Many of the systems introduced in this subchapter did not handle synonyms, paraphrasing,   
+          or spelling errors well. Manual adaption / handling was needed in order to becomes resilient against each class
+          of problems \citep{StringKernels, SQLizer}.
+    \item \textbf{Poor scalability} — With potentially more complex underlying databases, traditional 
+          solutions often showed to perform worse. \citeauthor*{GraphMatching} found, that with increasing schema
+          complexity more compute was required to resolve the natural language query to a suitable query candidate
+          making them less transferable and scalable than initially anticipated \citep{GraphMatching} — ``Evaluating on
+          all domains in Freebase would generate a very large number of queries for which denotations would have to be 
+          computed ... Our system loads Freebase using Virtuoso and queries it with SPARQL. Virtuoso is slow in dealing with
+          millions of queries indexed on the entire Freebase, and is the only reason we did not work with the complete
+          Freebase.'' which indicates underlying system design issues with runtime complexity.
+\end{enumerate}
+
+These flaws of traditional NL2SQL approaches made it apparent, that a different class of approaches is needed, which 
+increase transferability and reduce the brittleness since users are ``unwilling to trade reliable and predictable user 
+interfaces for intelligent but unreliable ones'' according to \cite{NLIDBTheory}. Whilst many approaches outlined tractable 
+ways to increase user satisfaction and accuracy (like \citeauthor*{Rendezvous} did in \citeyear{Rendezvous} with a 
+conversational approach), NLIDBs were and are not considered to be a solved problem.
+
+\subsection{Neural NL2SQL Approaches}
+
+The previously outlined limitations of traditional approaches to solving NL2SQL / implementing NLIDBs pushed the research
+branch around neural network application forward to step in and propose new solutions which address the brittleness, 
+transferability and scalability concerns addressed with logical programming approaches. Neural approaches showed to yield
+significant improvements in terms of transferability and overall accuracy which led to a paradigm shift in this research
+field.
+
+\subsubsection{Early Neural Approaches}
+
+In \citeyear{Seq2SQL} \citeauthor*{Seq2SQL} released Seq2SQL which represents a significant breakthrough and leap in NLIDB 
+research. Seq2SQL was an early research system that in the field of neural network application and as one of the first papers
+to frame the implementation of NLIDBs / NL2SQL Systems as a reinforement learning problem. The system utilized iterative query 
+execution in the reward function to improve its accuracy \citep{Seq2SQL}. In the same paper \citeauthor*{Seq2SQL} introduced 
+WikiSQL, a training dataset, which enables large scale (in \citeyear{Seq2SQL}) model training.
+
+SQLNet \citep{SQLNet} addressed primarily the order-sensitivitiy trait of Seq2SQL \citep{Seq2SQL} that was prevalent due to being
+a derivative approach from sequence-to-sequence approaches. SQLNet diverges from sequence-to-sequence and joins multiple research 
+threads, employing a sketch-based query generation. SQLNet breaks down complex queries into smaller (hence more manageable)
+sub-queries which can then be individually sketched and refined, yielding a system that outperformed state-of-the-art by 9\% 
+to 13\% \citep{SQLNet}.
+
+\citeauthor*{TypeSQL} have introduced \textsc{TypeSQL}, a variation of the SQLNet-approach, in \citeyear{TypeSQL}.
+\textsc{TypeSQL}'s primary difference to SQLNet is the encoding of type information for SQL generation. The approach scanned
+for entity references and values in natural language and was able to improve performance by 5.5\% over SOTA-Models like
+SQLNet whilst requiring significantly less training time, indicating that type information was a useful information for deriving 
+accurate SQL queries from user input \citep{TypeSQL}.
+
+\subsubsection{Intermediate Neural Developments}
+
+Later in \citeyear{SyntaxSQLNet} \citeauthor*{SyntaxSQLNet} released SyntaxSQLNet, a followup research to \textsc{TypeSQL},
+which represented a slight change in approach and research focus. In direct comparison SyntaxSQLNet focused primarily around
+complex query generation using a syntax tree decoder, allowing for longer and more cohesive query generation \citep{SyntaxSQLNet}.
+This advancement over \textsc{TypeSQL} allowed more complex queries to be reliably generated, enabling multiple clauses aswell as
+nested queries. SyntaxSQLNet was one of the earlier research efforts which utilized Spider instead of WikiSQL (introduced by 
+\cite{Seq2SQL}), a large-scale NL2SQL dataset, incorperating 10.181 hand annotated natural language question and alongside
+5.693 unique SQL examples that spread across 138 different domains \citep{Spider}. This research led the transition of
+comparatively simple, research-grade, neural systems for NLIDBs towards systems which are feasible in the real world.
+
+Building on the above approaches, \citeauthor*{IRNet} have introduced IRNet, a neural network approach using intermediate
+representation as a bridge between natural language and SQL in which semantic queries could be expressed. The intermediate
+format SemQL (or semantic query language) was utilized to transform and synthesize queries on the actual database schema more
+accurately than Seq2SQL. IRNet followed a three phase approach: schema linking between the natural language query and database
+layout, synthesis of SemQL as intermediate representation and deterministic conversion of SemQL to SQL. This approach allowed
+IRNet to outperform state-of-the-art approaches on the \textsc{Spider} benchmark by 19.5\%, placing IRNet at an overall accuracy
+of 46.7\% \citep{IRNet}.
+
+Following IRNet, graph neural networks (GNN) have been explored as alternative architecture by \cite{GNN}, representing the
+database schema as a graph and using message passing to model relationships between tables, columns and natural language input.
+This approach demonstrated the capability to improve reasoning and query generation capability. \citeauthor{GNN} showed that when 
+evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLNet (and therefore \textsc{SQLNet} \&
+\textsc{TypeSQL}). Although presenting a signficiant advancement over previous state-of-the-art approaches, GNN falls behind in
+performance against IRNet by 6\% \citep{IRNet, GNN}.
+
+\subsubsection{Relation-Aware Transformer Approaches}
+
+The release of RAT-SQL (Relation-Aware Transformer for SQL) \cite{RATSQL} represents the most significant leap in research of
+neural NL2SQL approaches. RAT-SQL diverged from earlier research through emphasizing the relationship between natural language
+and the database schema elements using relation-aware self-attention representing a novel approach for solving \textit{schema 
+linking} \citep{RATSQL}.
+
+RAT-SQL's primary innovations was the ability to infer, understand and utilize the relationship between individual tokens in the 
+natural language query and link it to the database schema. Thus allowing for reasoning capabilities on the actual database schema
+while generating the query.
+
+This architecture yielded a 57.2\% in exact match accuracy when being evaluated on the \textsc{Spider} benchmark, substantially
+outperforming comparative approaches like GNN, IRNet and IRNet V2 by 10.5\%, 9.8\% and 8.7\% respectively. Although overall
+accuracy improved across all approaches when being paired with BERT (Bidirectional Encoder Representations from Transformers, a 
+popular pre-trained lanugage model from Google) the $\delta$ between the indivudual approaches remained relatively steady, leaving
+RAT-SQL outperforming state-of-the-art approaches by 5\% to 12.2\% further demonstrating the capability advancement yielded by this 
+system \citep{RATSQL}.
+
+\subsubsection{Comparative Analysis of Neural Approaches}
+
+The evolution from early neural approaches to RAT-SQL emphasized the rapid advancements that happened in the research field of 
+neural NL2SQL approaches in different dimensions:
+
+\begin{enumerate}
+    \item \textbf{Model Complexity} — Given the research progression from early sequence to sequence translation approaches 
+          (\textsc{Seq2SQL}) towards sketch based and type augumented and graph based approaches (\textsc{TypeSQL, SQLNet, GNN})
+          and syntax tree decoding emphasized by \textsc{SyntaxSQLNet}, neural approaches continously advanced in the complexity of 
+          approaches that is required to beat state-of-the-art approaches in contemprorary benchmarks like \textsc{Spider}. RAT-SQL 
+          presents one of the late and most complex advancements in the field of neural NL2SQL approaches with its adapted self 
+          attention mechanism \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
+    \item \textbf{Transferability} — Each of the approaches introduced above represents a succession in terms of their transferability.
+          The field of neural NL2SQL approaches significantly improved the ability for NLIDBs to generalize over the underlying database
+          schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the \textsc{Spider} benchmark). With
+          standard benchmarks emerging it became easier to verify and quantify which approach had the highest transferability as
+          \textsc{Spider} specifically had independent development and test datasets, preventing approaches from over-optimizing on
+          training data \citep{Spider, RATSQL}.
+    \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation (Seq2SQL)
+          their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized structured decoding,
+          \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges around \textit{schema linking}
+          outlined by \cite{RATSQL} have increasilingly led to more robust systems that can handle rephrasings, spelling mistakes and
+          variations in natural language usage far beyond what traditional NL2SQL approaches could accomplish \cite{SyntaxSQLNet, IRNet, RATSQL}.
+    \item \textbf{Query Complexity} — The performance on complex queries involving multiple tables, relying on complex aggregations,
+          nested structures and joins dramatically improved over the course of the research that happened in this field. Whilst 
+          \textsc{IRNet} reresents one of the first singificant advancements when it comes to the ability of neural approaches to handle
+          complex queries, \textsc{RAT-SQL} still showed to outperform the intermediate representation approach introduced by \textsc{IRNet}
+          by up to 10.5\% \citep{IRNet, RATSQL}.
+    \item \textbf{Schema Understanding} — Whilst early approaches like Seq2SQL primarily applied reinforcement learning for end to end
+          query generation \citep{Seq2SQL}, later approaches like \textsc{TypeSQL, GNN} and specifically \textsc{RAT-SQL} showed novel and state-of-
+          the-art \textit{schema understanding / schema linking} capabilities, yielding the ability to accurately reason about user intent and
+          traverse the database schema while generating queries \citep{TypeSQL, GNN, RATSQL}. 
+\end{enumerate}
+
+\subsection{Limitations of Neural Approaches}
+
+Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late neural
+approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
+
+\begin{enumerate}
+    \item \textbf{Training Data} — Utilizing neural networks these approaches required susbtantially more training data (ie. natural language
+          paired with output SQL queries) than traditional systems which required serious efforts of data collection \citep{Spider}.
+    \item \textbf{Correctness} — The inherent mismatch between neural networks and formal languages yielded cases where models produced
+          invalid SQL code. Approaches like \textsc{SyntaxSQLNet} improved the tried to solve this circumstance by utilizing syntax trees
+          during decoding but nonetheless syntactic correctness remained a challenge across future iterations of neural systems. \citep{SyntaxSQLNet}
+    \item \textbf{Domain Language} — Despite increased \textit{transferability} characteristics neural approaches still suffered from a
+          limited vocabulary and inter-domain understanding of terminology and relation between concepts which made highly domain
+          specific natural language queries challenging.
+    \item \textbf{Observability} — The black-box nature of neural networks made approaches relying on them, particularly the ones with complex
+          architectures, hard do understand / explain in case when neural systems yielded undesirable output. 
+\end{enumerate}
 
 
-\subsection{360 Degree vergleichbare paper etc.}
+The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility of NLIDBs. The
+research shift started in this era established the foundations for further and more advanced machine learning approaches (specifically language
+model oriented approaches )being researched. Neural approaches showed to significant improvements in performance when being paired with pre-trained
+language models \citep{RATSQL} which led to further research on their applicability.
 
-% Welche approaches fuer llm integration
-% Welche approaches fuer natural to sql
+\subsection{Pre-trained Language Models}
+
+% PLM approaches
+% RESDSQL, Graphix-T5
+% T5 fine-tuning etc.
+
+% https://arxiv.org/abs/2109.05093
+
+\subsection{Large Language Models}
+
+% CodeS
+% GPT-X based
+% 
+% Prompt engineering and fine tuning
+
+\subsection{Optimization for LLM-based NL2SQL}
+
+% PICARD, DIN-SQL, MAGIC & CHASE
+
+\subsection{Research Gaps}
+
+\subsubsection{Deployment Gaps}
 
 \newpage
 
@@ -279,19 +612,13 @@ Test\cite{Atlas}
 
 \subsection{Development Environment and Tools}
 
-\subsection{Integration of the GPT Model}
-\subsubsection{Model Selection and Optimization}
-\subsubsection{API Connection or Local Embedding}
+\subsection{Integration of the Model}
+
 
 \subsection{Development of the PostgreSQL Extension}
-\subsubsection{SQL Functions for GPT Interactions}
-\subsubsection{Data Type Conversion and Processing}
-\subsubsection{Error Handling and Logging}
+
 
 \subsection{Optimization}
-\subsubsection{Performance Tuning}
-\subsubsection{Memory Usage}
-\subsubsection{Parallelization}
 
 \newpage
 
@@ -346,7 +673,7 @@ Test\cite{Atlas}
 
 \nocite{*}
 
-\bibliographystyle{apalike}
+\bibliographystyle{apacite}
 \bibliography{references}
 
 \end{document}
