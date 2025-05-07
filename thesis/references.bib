@@ -362,6 +362,113 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Pre-Trained Language Model
+
+@inproceedings{GAZP,
+    title = "Grounded Adaptation for Zero-shot Executable Semantic Parsing",
+    author = "Zhong, Victor and Lewis, Mike and Wang, Sida I. and Zettlemoyer, Luke",
+    editor = "Webber, Bonnie and Cohn, Trevor and He, Yulan and Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.558/",
+    doi = "10.18653/v1/2020.emnlp-main.558",
+    pages = "6869--6882",
+    abstract = "We propose Grounded Adaptation for Zeroshot Executable Semantic Parsing (GAZP) to adapt an existing semantic parser to new environments (e.g. new database schemas). GAZP combines a forward semantic parser with a backward utterance generator to synthesize data (e.g. utterances and SQL queries) in the new environment, then selects cycle-consistent examples to adapt the parser. Unlike data-augmentation, which typically synthesizes unverified examples in the training environment, GAZP synthesizes examples in the new environment whose input-output consistency are verified through execution. On the Spider, Sparc, and CoSQL zero-shot semantic parsing tasks, GAZP improves logical form and execution accuracy of the baseline parser. Our analyses show that GAZP outperforms data-augmentation in the training environment, performance increases with the amount of GAZP-synthesized data, and cycle-consistency is central to successful adaptation."
+}
+
+@misc{RESDSQL,
+      title={RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL}, 
+      author={Haoyang Li and Jing Zhang and Cuiping Li and Hong Chen},
+      year={2023},
+      eprint={2302.05965},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      abstract={One of the recent best attempts at Text-to-SQL is the pre-trained language model. Due to the structural property of the SQL queries, the seq2seq model takes the responsibility of parsing both the schema items (i.e., tables and columns) and the skeleton (i.e., SQL keywords). Such coupled targets increase the difficulty of parsing the correct SQL queries especially when they involve many schema items and logic operators. This paper proposes a ranking-enhanced encoding and skeleton-aware decoding framework to decouple the schema linking and the skeleton parsing. Specifically, for a seq2seq encoder-decode model, its encoder is injected by the most relevant schema items instead of the whole unordered ones, which could alleviate the schema linking effort during SQL parsing, and its decoder first generates the skeleton and then the actual SQL query, which could implicitly constrain the SQL parsing. We evaluate our proposed framework on Spider and its three robustness variants: Spider-DK, Spider-Syn, and Spider-Realistic. The experimental results show that our framework delivers promising performance and robustness.},
+      url={https://arxiv.org/abs/2302.05965}, 
+}
+
+@misc{GRAPHIX,
+      title={Graphix-T5: Mixing Pre-Trained Transformers with Graph-Aware Layers for Text-to-SQL Parsing}, 
+      author={Jinyang Li and Binyuan Hui and Reynold Cheng and Bowen Qin and Chenhao Ma and Nan Huo and Fei Huang and Wenyu Du and Luo Si and Yongbin Li},
+      year={2023},
+      eprint={2301.07507},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2301.07507},
+      abstract={The task of text-to-SQL parsing, which aims at converting natural language questions into executable SQL queries, has garnered increasing attention in recent years, as it can assist end users in efficiently extracting vital information from databases without the need for technical background. One of the major challenges in text-to-SQL parsing is domain generalization, i.e., how to generalize well to unseen databases. Recently, the pre-trained text-to-text transformer model, namely T5, though not specialized for text-to-SQL parsing, has achieved state-of-the-art performance on standard benchmarks targeting domain generalization. In this work, we explore ways to further augment the pre-trained T5 model with specialized components for text-to-SQL parsing. Such components are expected to introduce structural inductive bias into text-to-SQL parsers thus improving model's capacity on (potentially multi-hop) reasoning, which is critical for generating structure-rich SQLs. To this end, we propose a new architecture GRAPHIX-T5, a mixed model with the standard pre-trained transformer model augmented by some specially-designed graph-aware layers. Extensive experiments and analysis demonstrate the effectiveness of GRAPHIX-T5 across four text-to-SQL benchmarks: SPIDER, SYN, REALISTIC and DK. GRAPHIX-T5 surpass all other T5-based parsers with a significant margin, achieving new state-of-the-art performance. Notably, GRAPHIX-T5-large reach performance superior to the original T5-large by 5.7% on exact match (EM) accuracy and 6.6% on execution accuracy (EX). This even outperforms the T5-3B by 1.2% on EM and 1.5% on EX.}
+}
+
+@misc{RYANSQL,
+      title={RYANSQL: Recursively Applying Sketch-based Slot Fillings for Complex Text-to-SQL in Cross-Domain Databases}, 
+      author={DongHyun Choi and Myeong Cheol Shin and EungGyun Kim and Dong Ryeol Shin},
+      year={2020},
+      eprint={2004.03125},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2004.03125},
+      abstract={Text-to-SQL is the problem of converting a user question into an SQL query, when the question and database are given. In this paper, we present a neural network approach called RYANSQL (Recursively Yielding Annotation Network for SQL) to solve complex Text-to-SQL tasks for cross-domain databases. State-ment Position Code (SPC) is defined to trans-form a nested SQL query into a set of non-nested SELECT statements; a sketch-based slot filling approach is proposed to synthesize each SELECT statement for its corresponding SPC. Additionally, two input manipulation methods are presented to improve generation performance further. RYANSQL achieved 58.2% accuracy on the challenging Spider benchmark, which is a 3.2%p improvement over previous state-of-the-art approaches. At the time of writing, RYANSQL achieves the first position on the Spider leaderboard.}
+}
+
+@article{NATSQL,
+    author = {Yujian Gan and Xinyun Chen and Jinxia Xie and Matthew Purver and John R. Woodward and John H. Drake and Qiaofu Zhang},
+    title = {Natural {SQL:} Making {SQL} Easier to Infer from Natural Language Specifications},
+    journal = {CoRR},
+    volume = {abs/2109.05153},
+    year = {2021},
+    url = {https://arxiv.org/abs/2109.05153},
+    eprinttype = {arXiv},
+    eprint = {2109.05153},
+    timestamp = {Tue, 21 Sep 2021 17:46:04 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-2109-05153.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org},
+    abstract={Addressing the mismatch between natural language descriptions and the corresponding SQL queries is a key challenge for text-to-SQL translation. To bridge this gap, we propose an SQL intermediate representation (IR) called Natural SQL (NatSQL). Specifically, NatSQL preserves the core functionalities of SQL, while it simplifies the queries as follows: (1) dispensing with operators and keywords such as GROUP BY, HAVING, FROM, JOIN ON, which are usually hard to find counterparts for in the text descriptions; (2) removing the need for nested subqueries and set operators; and (3) making schema linking easier by reducing the required number of schema items. On Spider, a challenging text-to-SQL benchmark that contains complex and nested SQL queries, we demonstrate that NatSQL outperforms other IRs, and significantly improves the performance of several previous SOTA models. Furthermore, for existing models that do not support executable SQL generation, NatSQL easily enables them to generate executable SQL queries, and achieves the new state-of-the-art execution accuracy.}
+}
+
+% PLM - Techniques
+
+@article{GRAPPA,
+    author = {Tao Yu and Chien{-}Sheng Wu and Xi Victoria Lin and Bailin Wang and Yi Chern Tan and Xinyi Yang and Dragomir R. Radev and Richard Socher and Caiming Xiong},
+    title = {GraPPa: Grammar-Augmented Pre-Training for Table Semantic Parsing},
+    journal = {CoRR},
+    volume = {abs/2009.13845},
+    year = {2020},
+    url = {https://arxiv.org/abs/2009.13845},
+    eprinttype = {arXiv},
+    eprint = {2009.13845},
+    timestamp = {Fri, 27 Dec 2024 10:33:44 +0100},
+    biburl = {https://dblp.org/rec/journals/corr/abs-2009-13845.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org},
+    abstract={We present GraPPa, an effective pre-training approach for table semantic parsing that learns a compositional inductive bias in the joint representations of textual and tabular data. We construct synthetic question-SQL pairs over high-quality tables via a synchronous context-free grammar (SCFG) induced from existing text-to-SQL datasets. We pre-train our model on the synthetic data using a novel text-schema linking objective that predicts the syntactic role of a table field in the SQL for each question-SQL pair. To maintain the model's ability to represent real-world data, we also include masked language modeling (MLM) over several existing table-and-language datasets to regularize the pre-training process. On four popular fully supervised and weakly supervised table semantic parsing benchmarks, GraPPa significantly outperforms RoBERTa-large as the feature representation layers and establishes new state-of-the-art results on all of them.},
+}
+
+@article{STRUG,
+    author = {Xiang Deng and Ahmed Hassan Awadallah and Christopher Meek and Oleksandr Polozov and Huan Sun and Matthew Richardson},
+    title = {Structure-Grounded Pretraining for Text-to-SQL},
+    journal = {CoRR},
+    volume = {abs/2010.12773},
+    year = {2020},
+    url = {https://arxiv.org/abs/2010.12773},
+    eprinttype = {arXiv},
+    eprint = {2010.12773},
+    timestamp = {Wed, 31 May 2023 19:02:38 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-2010-12773.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org},
+    abstract={Learning to capture text-table alignment is essential for tasks like text-to-SQL. A model needs to correctly recognize natural language references to columns and values and to ground them in the given database schema. In this paper, we present a novel weakly supervised Structure-Grounded pretraining framework (StruG) for text-to-SQL that can effectively learn to capture text-table alignment based on a parallel text-table corpus. We identify a set of novel prediction tasks: column grounding, value grounding and column-value mapping, and leverage them to pretrain a text-table encoder. Additionally, to evaluate different methods under more realistic text-table alignment settings, we create a new evaluation set Spider-Realistic based on Spider dev set with explicit mentions of column names removed, and adopt eight existing text-to-SQL datasets for cross-database evaluation. STRUG brings significant improvement over BERT-LARGE in all settings. Compared with existing pretraining methods such as GRAPPA, STRUG achieves similar performance on Spider, and outperforms all baselines on more realistic sets. The Spider-Realistic dataset is available at this https URL.},
+}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Recent 
 
 % Recent - Benchmarks
@@ -506,37 +613,7 @@
     abstract={The recent breakthroughs in large language models (LLMs) are positioned to transition many areas of software. Database technologies particularly have an important entanglement with LLMs as efficient and intuitive database interactions are paramount. In this paper, we present DB-GPT, a revolutionary and production-ready project that integrates LLMs with traditional database systems to enhance user experience and accessibility. DB-GPT is designed to understand natural language queries, provide context-aware responses, and generate complex SQL queries with high accuracy, making it an indispensable tool for users ranging from novice to expert. The core innovation in DB-GPT lies in its private LLM technology, which is fine-tuned on domain-specific corpora to maintain user privacy and ensure data security while offering the benefits of state-of-the-art LLMs. We detail the architecture of DB-GPT, which includes a novel retrieval augmented generation (RAG) knowledge system, an adaptive learning mechanism to continuously improve performance based on user feedback and a service-oriented multi-model framework (SMMF) with powerful data-driven agents. Our extensive experiments and user studies confirm that DB-GPT represents a paradigm shift in database interactions, offering a more natural, efficient, and secure way to engage with data repositories. The paper concludes with a discussion of the implications of DB-GPT framework on the future of human-database interaction and outlines potential avenues for further enhancements and applications in the field. The project code is available at this https URL. Experience DB-GPT for yourself by installing it with the instructions this https URL and view a concise 10-minute video at this https URL.},
 }
 
-% Recent - NLP
 
-@article{GRAPPA,
-    author = {Tao Yu and Chien{-}Sheng Wu and Xi Victoria Lin and Bailin Wang and Yi Chern Tan and Xinyi Yang and Dragomir R. Radev and Richard Socher and Caiming Xiong},
-    title = {GraPPa: Grammar-Augmented Pre-Training for Table Semantic Parsing},
-    journal = {CoRR},
-    volume = {abs/2009.13845},
-    year = {2020},
-    url = {https://arxiv.org/abs/2009.13845},
-    eprinttype = {arXiv},
-    eprint = {2009.13845},
-    timestamp = {Fri, 27 Dec 2024 10:33:44 +0100},
-    biburl = {https://dblp.org/rec/journals/corr/abs-2009-13845.bib},
-    bibsource = {dblp computer science bibliography, https://dblp.org},
-    abstract={We present GraPPa, an effective pre-training approach for table semantic parsing that learns a compositional inductive bias in the joint representations of textual and tabular data. We construct synthetic question-SQL pairs over high-quality tables via a synchronous context-free grammar (SCFG) induced from existing text-to-SQL datasets. We pre-train our model on the synthetic data using a novel text-schema linking objective that predicts the syntactic role of a table field in the SQL for each question-SQL pair. To maintain the model's ability to represent real-world data, we also include masked language modeling (MLM) over several existing table-and-language datasets to regularize the pre-training process. On four popular fully supervised and weakly supervised table semantic parsing benchmarks, GraPPa significantly outperforms RoBERTa-large as the feature representation layers and establishes new state-of-the-art results on all of them.},
-}
-
-@article{STRUG,
-    author = {Xiang Deng and Ahmed Hassan Awadallah and Christopher Meek and Oleksandr Polozov and Huan Sun and Matthew Richardson},
-    title = {Structure-Grounded Pretraining for Text-to-SQL},
-    journal = {CoRR},
-    volume = {abs/2010.12773},
-    year = {2020},
-    url = {https://arxiv.org/abs/2010.12773},
-    eprinttype = {arXiv},
-    eprint = {2010.12773},
-    timestamp = {Wed, 31 May 2023 19:02:38 +0200},
-    biburl = {https://dblp.org/rec/journals/corr/abs-2010-12773.bib},
-    bibsource = {dblp computer science bibliography, https://dblp.org},
-    abstract={Learning to capture text-table alignment is essential for tasks like text-to-SQL. A model needs to correctly recognize natural language references to columns and values and to ground them in the given database schema. In this paper, we present a novel weakly supervised Structure-Grounded pretraining framework (StruG) for text-to-SQL that can effectively learn to capture text-table alignment based on a parallel text-table corpus. We identify a set of novel prediction tasks: column grounding, value grounding and column-value mapping, and leverage them to pretrain a text-table encoder. Additionally, to evaluate different methods under more realistic text-table alignment settings, we create a new evaluation set Spider-Realistic based on Spider dev set with explicit mentions of column names removed, and adopt eight existing text-to-SQL datasets for cross-database evaluation. STRUG brings significant improvement over BERT-LARGE in all settings. Compared with existing pretraining methods such as GRAPPA, STRUG achieves similar performance on Spider, and outperforms all baselines on more realistic sets. The Spider-Realistic dataset is available at this https URL.},
-}
 
 % Recent - Techniques
 
