@@ -85,7 +85,7 @@ NL2SQL & Natural Language to SQL \\
 \newpage
 
 % 1/3 Vorarbeit, Literature Review
-% 1/3 Decomp und System Design
+% 1/3 Theory, Decomp und System Design
 % 1/3 Implementation und Evaluation
 
 % Introduction
@@ -540,7 +540,7 @@ neural NL2SQL approaches in different dimensions:
           traverse the database schema while generating queries \citep{TypeSQL, GNN, RATSQL}. 
 \end{enumerate}
 
-\subsection{Limitations of Neural Approaches}
+\subsubsection{Limitations of Neural Approaches}
 
 Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late neural
 approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
@@ -559,18 +559,64 @@ approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious 
 \end{enumerate}
 
 
-The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility of NLIDBs. The
-research shift started in this era established the foundations for further and more advanced machine learning approaches (specifically language
-model oriented approaches )being researched. Neural approaches showed to significant improvements in performance when being paired with pre-trained
-language models \citep{RATSQL} which led to further research on their applicability.
+The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility of
+NLIDBs. The research shift started in this era established the foundations for further and more advanced machine learning approaches
+(specifically language model oriented approaches )being researched. Neural approaches showed to significant improvements in performance
+when being paired with pre-trained language models \citep{RATSQL} which led to further research on their applicability.
 
 \subsection{Pre-trained Language Models}
 
-% PLM approaches
-% RESDSQL, Graphix-T5
-% T5 fine-tuning etc.
+The advantages of combining specialized neural networks with general-purpose pre-trained language models
+led to a pivotal point in the NL2SQL research field towards focusing increasingly on the application of pre-trained
+language models for NLIDBs. Models like BERT or T5 offer noticable performance improvements (especially when it
+comes to language understanding) over specialized NL2SQL networks due to training happening on unrestrained amounts
+of natural language data, instead of pure NL2SQL datasets which are often fairly limited in size and therfore natural
+language use — \textsc{Spider2.0} which is a contemprary NL2SQL benchmark consists of just 632 real-world questions 
+\citep{SPIDER2}. Thus PLM-based (or at least augumented) NL2SQL systems can observe dramatic performance improvements
+through the language models's ability to understand patterns and identify semantic relationships of natural language
+query elements. 
 
-% https://arxiv.org/abs/2109.05093
+\subsubsection{Early Pre-trained Language Model Adaptations}
+
+The above outlined benefits have led to concrete research efforts focusing on the question whether the sole application
+of pre-trained language models could outperform neural state-of-the-art approaches — which often implicitly require
+a far more sophisticate architecture when it comes to natural language analysis. The application of T5-3B for NL2SQL
+tasks which yielded 71.4\% execution accuracy presented a breakthrough in this research domain \citep{T2SQL-LLM-Bench-3}.
+This demonstrated that PLMs are correctly positioned to significantly outperform existing approaches.
+
+In the time of emerging PLM applicationm \textsc{Grappa} was introduced by \citeauthor*{GRAPPA} in \citeyear{GRAPPA} —
+a novel grammar-augmented pre-training approach built on RoBERTa\textsubscript{\tiny{LARGE}} (a derivative model from BERT).
+It generates synthetic training data (ie. natural language and sql pairs) using a synchronous context-free grammar (SCFG)
+which analyses and identifies patterns in natural language queries that can be used as templates for sythesizing training
+data. The specialized pre-training helps \textsc{Grappa} to establish a robust connection between natural-language and
+database schema elements, showing significant improvements on existing approaches on multiple contemporary benchmarks like 
+\textsc{Spider} and \textsc{WikiSQL} \citep{GRAPPA}.
+
+Several NL2SQL approaches in this era focused on \textit{schema understanding} and \textit{schema linking} — the 
+generalizability of PLMs required advanced techniques on ensuring that models both understand the semantic intent
+of users when querying and correctly identify database schema elements in natural language queries. Thus improving
+semantic accuracy of generated SQL queries. \textsc{StruG} (Structure-Grounded-Pretraining) was introduced in
+\citeyear{STRUG} by \citeauthor*{STRUG} and presented a novel pretraining approach that improves model abilities when it comes to
+\textit{schema linking}, it separates the problem in three facets: column grounding, value grounding and
+column-value mapping. In direct comparison with \textsc{Grappa}, \textsc{StruG} achieves similar performance
+while being significantly cheaper to train \citep{STRUG}.
+
+\subsubsection{Intermediate Pre-trained Language Model Approaches}
+
+% RYANSQL, GAZP
+% RESDSQL, GRAPHIX, NATSQL
+
+% T5 fine-tuning etc.
+% https://arxiv.org/pdf/2302.05965
+
+\subsubsection{Constrained Decoding and Ranking Techniques}
+
+% PICARD etc.
+
+\subsubsection{Comparison with Large Language Models}
+
+
+
 
 \subsection{Large Language Models}
 
