@@ -657,9 +657,75 @@ and real-world feasibility. This era primed the research field for the transitio
 
 \subsubsection{Constrained Decoding and Ranking Techniques}
 
-% PICARD etc.
+A major challenge in NL2SQL research is making sure that model generated queries are not just semantically accurate
+but also syntactically valid queries and thus executable. To address this issue \citeauthor*{PICARD} released \textsc{Picard}
+(Parsing Incrementally for Constrained Auto-Regressive Decoding) in \citeyear{PICARD}, a constrained decoding mechanism
+for language models which utilizes the SQL grammar and constrained decoding mechanisms to incrementally parse the generate SQL,
+rejecting invalid tokens based on the grammar. \textsc{Picard} showed to significantly improve the performance of pre-trained
+language models (like T5 or BERT) when it comes to NL2SQL tasks, lifting them from mid-level to state-of-the-art solutions
+on the \textsc{Spider} benchmark \citep{PICARD}.
+
+\textsc{Picard} operates as a incremental parser during model output decoding of pre-trained language models and continuously
+evaluates the probability of each token. Instead of just passing model outputs to a database for execution \textsc{Picard}
+incrementally parses and validates the generated SQL, rejecting tokens if neeeded thus significantly improving the valid
+output accuracy (sometimes referred to as VA) of language models. This approach is addressing a significant issue associated
+with pre-trained language models — while they outperform in natural language understanding and reasoning, they often lack
+SQL grammer knowledge and tend to generate queries that are not executable due to ther unconstrained output space \citep{PICARD}.
+
+The above introduces RESDSQL built ontop of \textsc{Picard}'s foundations and used a ranking-enhanced framework for input
+encoding. These two approaches represent a unqiue class of approaches that utilize input and output constraining in order
+to increase the performance characteristics of pre-trained language models \citep{RESDSQL}.
+
+\subsubsection{Advantages of PLM Approaches}
+
+PLM approaches to NL2SQL tasks have yielded significant performance improvements for the NL2SQL domain and represent a
+leap in NLIDB-research. They primed the research field towards using language models which led to a transition towards
+large language models in the following years. Namely PLM approaches brought a series of upsides with them:
+
+\begin{enumerate}
+    \item \textbf{Compute Efficiency} — PLMs like \textsc{RESDSQL} achieve high accuracy (up to 84.1\% on \textsc{Spider}
+        depending on variants) wilst using far fewer parameters than conteporary LLMs, making them significantly more efficient
+        and therefore reduce hardware requirements for their deployment \citep{RESDSQL}.
+    \item \textbf{Transferability} — Approaches like \textsc{Grappa} and \textsc{StruG} can incorporate domain-specific understanding
+        of natural language, table structures and SQL syntax during pre-training which addressed one of the primary issues with neural
+        approaches \citep{GRAPPA, STRUG}.
+    \item \textbf{Vocabulary} — PLMs offer a larger vocabulary due to the vast amounts of training data available. This enables them to
+        handle a wide variety of natural language patterns which addresses the benchmark-overfitting tendency of neural approaches which
+        primarily trained on the development sets of contemporary benchmarks.
+\end{enumerate}
+
+\subsubsection{Limitations of PLM Approaches}
+
+Although representing the state-of-the-art at the time, PLMs introduce a class of problems which are associated with their
+non-NL2SQL associated nature. There have been an array of approaches to mitigate these shortcommings but nonetheless they
+must be considered when using a PLM-based approach to NL2SQL:
+
+\begin{enumerate}
+
+    \item \textbf{Fine-tuning Requirements} — Most PLMs require substantial domain-specific, or at least NL2SQL specific, fine-tuning, limiting a 
+          straight forward adaptation to new domains or databases. Although being significantly more efficient than LLM-based approaches the potential need 
+          for initial fine-tuning represent a significant computational resource burden. Furthermore when not using synthetic data generation (e.g. 
+          \textsc{Grappa}) annotated datasets of training data are needed to achieve appropiate performance characteristics \citep{GRAPPA}.
+    \item \textbf{Wide Input \& Output Space} — Due to the general nature of PLMs their input and output space is often far larger than needed 
+          NL2SQL tasks. ``Large pre-trained language models for textual data have an unconstrained output space; at each decoding step, they can
+          produce any of 10,000s of sub-word tokens'' \citep{PICARD}. This applies to both the input and output token space, therefore multiple
+          approaches have been researched which focus on constraining these to the subset needed for NL2SQL tasks. Namely GRAPHIX-T5 and \textsc{Picard}
+          have proposed potential (and promising) solutions to this issue \citep{GRAPHIX, PICARD}.
+    \item \textbf{Limited Schema Awareness} — Due to being general purpose, and non-NL2SQL optimized, PLMs tend to incorporate limited amounts
+          of schema awareness when being applied out of the box for NL2SQL tasks. Multiple research efforts focused on improving this situation,
+          most notably \textsc{Resdsql} and GRAPHIX-T5 tried to improve the schema linking \& awareness of PLMs \citep{RESDSQL, GRAPHIX},
+          nonetheless the non-specialized nature of PLMs prevents NL2SQL being part of the fundamental model architecture.
+\end{enumerate}
+
+These characteristics positioned PLMs as powerful but comparatively resource-intensive solutions for NL2SQL (especially in direct comparison with neural 
+approaches), ultimately yielding the research domain to transition toward exploring Large Language Model approaches that promise even greater flexibility
+in adaptation and potentially superior handling of complex queries through advanced in-context learning approaches.
 
 \subsubsection{Comparison with Large Language Models}
+
+
+% https://raw.githubusercontent.com/HKUSTDial/NL2SQL_Handbook/refs/heads/main/assets/river.svg
+% https://arxiv.org/abs/2109.05093
 
 \subsection{Large Language Models}
 
