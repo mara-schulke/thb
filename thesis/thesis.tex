@@ -243,8 +243,9 @@ interface for databases, in particular postgres is used.
 
 \newpage
 
-% Theoretical Foundations
 \section{Literature Review}
+
+% https://github.com/HKUSTDial/NL2SQL_Handbook/blob/main/assets/river.svg
 
 In this section a comprehensive literature review is performed to asses the research landscape on NL2SQL
 (sometimes also referred to as Text-to-SQL or T2SQL) and NLIDBs. From the time their development accelerated in
@@ -580,9 +581,7 @@ query elements.
 
 The above outlined benefits have led to concrete research efforts focusing on the question whether the sole application
 of pre-trained language models could outperform neural state-of-the-art approaches — which often implicitly require
-a far more sophisticate architecture when it comes to natural language analysis. The application of T5-3B for NL2SQL
-tasks which yielded 71.4\% execution accuracy presented a breakthrough in this research domain \citep{T2SQL-LLM-Bench-3}.
-This demonstrated that PLMs are correctly positioned to significantly outperform existing approaches.
+a far more sophisticate architecture when it comes to natural language analysis.
 
 In the time of emerging PLM applicationm \textsc{Grappa} was introduced by \citeauthor*{GRAPPA} in \citeyear{GRAPPA} —
 a novel grammar-augmented pre-training approach built on RoBERTa\textsubscript{\tiny{LARGE}} (a derivative model from BERT).
@@ -601,22 +600,66 @@ semantic accuracy of generated SQL queries. \textsc{StruG} (Structure-Grounded-P
 column-value mapping. In direct comparison with \textsc{Grappa}, \textsc{StruG} achieves similar performance
 while being significantly cheaper to train \citep{STRUG}.
 
-\subsubsection{Intermediate Pre-trained Language Model Approaches}
+In parallel, \citeauthor*{GAZP} released GAZP (Grounded Adaptation for Zero-shot Executable Semantic Parsing) in
+\citeyear{GAZP}. \citeauthor*{GAZP} specifically addressed the challenge of adapting semantic parsers across databases
+/ domains which was a apparent problem with neural approaches which had a strong tendency to overfit on benchmark datasets. 
+Its novel contribution was the combination of forward semantic parsing with a backward utterance generator which allowed
+for data synthesis in unseen environments which could then be used to adapt the semantic parser \citep{GAZP}. This
+approach enables a improvement in robustness and accuracy in situations where training and inference environments
+differ without requiring manually annotated examples \citep{GAZP}.
 
-% RYANSQL, GAZP
-% RESDSQL, GRAPHIX, NATSQL
+\subsubsection{Advanced Pre-trained Language Model Approaches}
 
-% T5 fine-tuning etc.
-% https://arxiv.org/pdf/2302.05965
+Building on earlier foundational research on PLM application for NL2SQL tasks, researchers have developed increasingly complex
+systems that leveraged pre-trained language models whilst addressing their limitations when it comes to generating valid SQL.
+
+\citeauthor*{RYANSQL} introduced \textsc{Ryansql} (Recursively Yielding Annotation Network for SQL) in \citeyear{RYANSQL},
+which implements a sketch-based approach for decomposing complex SQL generation into multiple smaller problems. \textsc{Ryansql}
+transformed nested statements into a set of top-level statements using the Statement Position Code (SPC) technique. This
+flattening of structure allowed \textsc{Ryansql} to limit the complexity of the query generation problem whilst maintaining
+its ability to answer complex questions by recomposing complex queries from their parts. This approach allowed \textsc{Ryansql}
+to achieve 58.2\% accuracy on the \textsc{Spider} benchmark, representing a 3.2\% improvement over contemporary state-of-the-art
+approaches at the time \citep{RYANSQL}. The sketch-based approach makes \textsc{Ryansql} a PLM-augumented successor of \textsc{SQLNet}
+which was a early neural approach to employ sketch-based query generation \citep{RYANSQL, SQLNet}.
+
+A significant advancement in terms of execution accuracy was reached with the application of T5-Models for NL2SQL tasks. T5
+(Text-to-Text Transfer Transformer) Models have proven themselves as well-suited for for query generation — T5-3B for NL2SQL
+yielded 71.4\% execution accuracy and thus presented a breakthrough in this domain of research \citep{T2SQL-LLM-Bench-3}.
+This established a new baseline for PLM-based approaches and demonstrated that general-purpose language models could not
+only compete but outperform specialized architectures by far when properly fine-tuned \citep{T2SQL-LLM-Bench-3}.
+
+Following the adavancements through T5, \citeauthor*{GRAPHIX} introduced GRAPHIX-T5 in \citeyear{GRAPHIX}, which combined
+the T5 PLMs with a further graph-aware layers for NL2SQL tasks. This architecture could leverage both pre-trained knowledge
+of T5 models aswell as the database schema structure during inference. GRAPHIX-T5 constructs a schema graph where nodes
+represent tables and columns and edges represent relationships between them, such as foreign keys or columns association.
+This architecture allows the model to deeply understand relationships and the layout of the database schema \citep{GRAPHIX}. 
+GRAPHIX-T5 outperformed standard T5 models significantly, with GRAPHIX-T5\textsubscript{\tiny{LARGE}} showing 6.6\% increase
+in execution accuracy over T5\textsubscript{\tiny{LARGE}}. When both GRAPHIX and the baseline T5 models were combined with
+\textsc{Picard} (a novel constrained decoding mechanism) absolute $\delta$ between them jumped to 7.6\% (81.0\% in absolute
+numbers), evaluated on \textsc{Spider-Dev} \citep{GRAPHIX}.
+
+In parallel, \citeauthor*{RESDSQL} proposed \textsc{Resdsql} in \citeyear{RESDSQL}, which proposed to decouple
+\textit{schema linking} and \textit{skeleton parsing}. This addressed the typical challenges sequence-to-sequence models
+faced when simultaneously trying to link both schema elements and generate the query skeleton (e.g. 
+\texttt{SELECT <columns> FROM <table>}). \textsc{Resdsql} further employed a ranking approach to filter schema elements
+before passing them to the model for query generation, which reduced noise (when working with large database schemas)
+and enabled passing only the most relevant parts. This twofold approach allowed \textsc{Resdsql} to achieve state-of-the-art
+performance when being evaluated on \textsc{Spider}, outperforming GRAPHIX-T5\textsubscript{\tiny{3B}}-PICARD by 0.8\% in
+execution accuracy. When combined with \textsc{NatSQL} (a contemporary intermediate representation approach introduced
+by \cite{NATSQL}) absolute improvement over GRAPHIX-T5\textsubscript{\tiny{3B}}-PICARD jumped to 3.1\% emphasizing the
+robustness gain decoupeled architectures have over model-oriented approaches.
+
+These advancement showed rapid improvements over earlier methods — far surpassing neural approaches — through advanced
+mechanisms when it comes to schema understanding and query generation. The wide language understanding inherited from
+PLM-basemodels further strengthens robustness and shows effectiveness through a large gain on the \textsc{Spider}
+benchmark. Collectively these approaches represent a leap in NL2SQL research, emphasizing their usability potential
+and real-world feasibility. This era primed the research field for the transition towards large language model adoption.
 
 \subsubsection{Constrained Decoding and Ranking Techniques}
 
 % PICARD etc.
 
 \subsubsection{Comparison with Large Language Models}
-
-
-
 
 \subsection{Large Language Models}
 
@@ -625,8 +668,7 @@ while being significantly cheaper to train \citep{STRUG}.
 % 
 % Prompt engineering and fine tuning
 
-\subsection{Optimization for LLM-based NL2SQL}
-
+%\subsection{Optimization for LLM-based NL2SQL}
 % PICARD, DIN-SQL, MAGIC & CHASE
 
 \subsection{Research Gaps}
@@ -635,19 +677,16 @@ while being significantly cheaper to train \citep{STRUG}.
 
 \newpage
 
-\section{Decomposition \& Requirements}
+\section{Theoretical Foundations}
 
 \subsection{Problem Decomposition}
 
 \subsection{Requirements}
 
 % Conceptual Design
-\section{System Design}
+\subsection{System Design}
 
-\subsection{Architecture Design}
-\subsubsection{Interface Design}
-\subsubsection{Data Model}
-\subsubsection{Integration into SQL}
+\subsubsection{Architecture Design}
 
 \subsection{Technical Implementation Strategies}
 
