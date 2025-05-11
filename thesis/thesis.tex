@@ -762,7 +762,7 @@ and \textsc{StruG}, but applying these examples at inference time, rather than t
 the inference cost of such a system, the upsides lie primarily in the flexibility of such an approach — database content
 / prior usage of the system can be dynamically utilized, rather than requiring retraining.
 
-Example selection strategies showed to have a significant impact on ICL performance. \cite{DAIL-SQL} evaluated
+Example selection strategies showed to have a considerable impact on ICL performance. \cite{DAIL-SQL} evaluated
 various example selection methods like \textit{Random}, \textit{Question Similarity Selection (QTS)}, 
 \textit{Masked Question Similarity Selection (MQS)}, and \textit{Query Similarity Selection (QRS)}. \citeauthor*{DAIL-SQL}
 propose a novel strategy to select, organize and present ICL examples to LLMs. DAIL-SQL utilizes both question and
@@ -771,21 +771,21 @@ query similarity, masking domain-specific words and prioritizing examples that e
 token efficiency. Using a Code Representation Prompt (CR) for question and schema encoding yielded DAIL-SQL to achieve
 state-of-the-art 86.6\% execution accuracy on \textsc{Spider}.
 
-The comparison between zero-shot and few-shot performance reveals the significant impact of supplying in-context examples
-to models. While LLMs demonstrate impressive zero-shot capabilities, with models like GPT-4 achieving 72.3\% execution
-accuracy on \textsc{Spider} without any examples \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning shows to substantially
-improve execution accuracy. \cite{DAIL-SQL} shows that even one-shot learning boosts GPT-4's execution accuracy to 80.2\%,
-representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-SQL}. This improvement
-in execution accuracy is particularly noticable for complex queries which involve multiple joins or nested subqueries,
-where zero-shot approaches often fail generate semantically accurate SQL queries \citep{DAIL-SQL}. Notable is the
-leap in exact match ratio measured by the \textsc{Spider} benchmark — jumping from 22.1\% for GPT-4 using zero-shot to
-71.9\% with five-shot. The results presented by \cite{DAIL-SQL} show signficant correlation between $k$ and the execution
-accuracy of $k$-shot approaches.
+The comparison between zero-shot and few-shot performance reveals the accuracy gain potential through supplying examples
+to models in the inference context. While contemporary LLMs (such as GPT-4) have demonstrate impressive zero-shot performance
+(achieving 72.3\% execution accuarcy on benchmarks like \textsc{Spider}) \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning 
+still shows to substantially improve model performance. \cite{DAIL-SQL} shows that even one-shot learning boosts GPT-4's
+execution accuracy to 80.2\%, representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-SQL}. 
 
-The effectiveness of ICL approaches has established them as the standard technique applied in LLM-based NL2SQL systems.
-They provide a robust foundation which can be extended with advanced techniques such as problem-decomposition, self-correction
-and chain-of-thoughts. ICL alone is still subject to frequent limitations observed with NL2SQL systems like ambiguoity handling,
-schema linking and dealing with complex queries. This motivated further research of LLM-based NL2SQL systems.
+Especially with complex queryies which can involve multiple tables, nested queries and complex joins, zero-shot approaches
+often dramatically underperform $k$-shot ones. NL2SQL approaches that dont supply examples to the model during inference time
+fail more frequently to generate semantically accurate SQL queries \citep{DAIL-SQL}. Notable is the leap in exact match ratio
+measured by the \textsc{Spider} benchmark — jumping from 22.1\% for GPT-4 using zero-shot to 71.9\% with five-shot. The
+results presented by \cite{DAIL-SQL} show signficant correlation between $k$ and the execution accuracy of $k$-shot approaches.
+
+This effectiveness has established ICL approaches as a standard technique applied in LLM-based NL2SQL approaches. Contemporary
+approaches like \textsc{XiYan-SQL, Chase-SQL and Din-SQL} all utilize variations of ICL to achieve state-of-the-art results
+\citep{XiYan, CHASE, DINSQL}.
 
 \subsection{Research Gaps}
 
