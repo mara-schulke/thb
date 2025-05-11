@@ -252,7 +252,7 @@ In this section a comprehensive literature review is performed to asses the rese
 the late 1990s and early 2000s \citep{NLIDBs, NLIDBTheory, ILPParsing, ILPParsing2} until now, observing multiple 
 larger paradigm shifts happening over time \citep{GRAPPA, STRUG, Seq2SQL, NALIR, SQLizer}. In particular this 
 research focuses on the recent advancements when it comes to language models and how they can be harnessed for
-effective NL2SQL systems \citep{LLM-Sql, T2SQL-LLM-Bench, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
+effective NL2SQL systems \citep{LLM-Sql, DAIL-SQL, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
 
 This literature review is covering the foundational concepts, challenges, key advancements and research gaps
 associated with using natural language instead of SQL. It lays the foundation for this thesis and helps to set
@@ -702,40 +702,90 @@ must be considered when using a PLM-based approach to NL2SQL:
 
 \begin{enumerate}
 
-    \item \textbf{Fine-tuning Requirements} — Most PLMs require substantial domain-specific, or at least NL2SQL specific, fine-tuning, limiting a 
-          straight forward adaptation to new domains or databases. Although being significantly more efficient than LLM-based approaches the potential need 
-          for initial fine-tuning represent a significant computational resource burden. Furthermore when not using synthetic data generation (e.g. 
-          \textsc{Grappa}) annotated datasets of training data are needed to achieve appropiate performance characteristics \citep{GRAPPA}.
-    \item \textbf{Wide Input \& Output Space} — Due to the general nature of PLMs their input and output space is often far larger than needed 
-          NL2SQL tasks. ``Large pre-trained language models for textual data have an unconstrained output space; at each decoding step, they can
-          produce any of 10,000s of sub-word tokens'' \citep{PICARD}. This applies to both the input and output token space, therefore multiple
-          approaches have been researched which focus on constraining these to the subset needed for NL2SQL tasks. Namely GRAPHIX-T5 and \textsc{Picard}
-          have proposed potential (and promising) solutions to this issue \citep{GRAPHIX, PICARD}.
-    \item \textbf{Limited Schema Awareness} — Due to being general purpose, and non-NL2SQL optimized, PLMs tend to incorporate limited amounts
-          of schema awareness when being applied out of the box for NL2SQL tasks. Multiple research efforts focused on improving this situation,
-          most notably \textsc{Resdsql} and GRAPHIX-T5 tried to improve the schema linking \& awareness of PLMs \citep{RESDSQL, GRAPHIX},
-          nonetheless the non-specialized nature of PLMs prevents NL2SQL being part of the fundamental model architecture.
+    \item \textbf{Fine-tuning Requirements} — Most PLMs require substantial domain-specific, or at least NL2SQL specific,
+          fine-tuning, limiting a straight forward adaptation to new domains or databases. Although being significantly
+          more efficient than LLM-based approaches the potential need for initial fine-tuning represent a significant
+          computational resource burden. Furthermore when not using synthetic data generation (e.g. \textsc{Grappa})
+          annotated datasets of training data are needed to achieve appropiate performance characteristics \citep{GRAPPA}.
+    \item \textbf{Wide Input \& Output Space} — Due to the general nature of PLMs their input and output space is often
+          far larger than needed 
+          NL2SQL tasks. ``Large pre-trained language models for textual data have an unconstrained output space; at each
+          decoding step, they can produce any of 10,000s of sub-word tokens'' \citep{PICARD}. This applies to both the
+          input and output token space, therefore multiple approaches have been researched which focus on constraining
+          these to the subset needed for NL2SQL tasks. Namely GRAPHIX-T5 and \textsc{Picard} have proposed potential
+          (and promising) solutions to this issue \citep{GRAPHIX, PICARD}.
+    \item \textbf{Limited Schema Awareness} — Due to being general purpose, and non-NL2SQL optimized, PLMs tend to
+          incorporate limited amounts of schema awareness when being applied out of the box for NL2SQL tasks. Multiple
+          research efforts focused on improving this situation, most notably \textsc{Resdsql} and GRAPHIX-T5 tried to
+          improve the schema linking \& awareness of PLMs \citep{RESDSQL, GRAPHIX}, nonetheless the non-specialized nature
+          of PLMs prevents NL2SQL being part of the fundamental model architecture.
 \end{enumerate}
 
-These characteristics positioned PLMs as powerful but comparatively resource-intensive solutions for NL2SQL (especially in direct comparison with neural 
-approaches), ultimately yielding the research domain to transition toward exploring Large Language Model approaches that promise even greater flexibility
-in adaptation and potentially superior handling of complex queries through advanced in-context learning approaches.
+These characteristics positioned PLMs as powerful but comparatively resource-intensive solutions for NL2SQL (especially
+in direct comparison with neural approaches), ultimately yielding the research domain to transition toward exploring
+Large Language Model approaches that promise even greater flexibility in adaptation and potentially superior handling
+of complex queries through advanced in-context learning approaches.
 
 \subsubsection{Comparison with Large Language Models}
 
-
-% https://raw.githubusercontent.com/HKUSTDial/NL2SQL_Handbook/refs/heads/main/assets/river.svg
-% https://arxiv.org/abs/2109.05093
+The research on applying pre-trained language models for NL2SQL tasks primed the field for the transition towards LLM usage. While
+PLMs like T5 and BERT range from millions to a few billion parameters, prevalent LLMs such as GPT-3 and GPT-4 operate at
+significantly larger scales, ranging from a few billions to hundred of billions parameters. The scale of LLMs enables in-context
+learning techniques that enable significantly easier and cheaper transferability of NL2SQL systems across domains \citep{DAIL-SQL}.
+The $\delta$ of deployment, inference and training requirements of these two approaches are significant due to the size difference
+in models, which transfer to hardware requirements and therefore cost. While PLMs can require extensive fine-tuning on domain-specific
+data which may aswell be resource intensive \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer the cost to the inference environment,
+where model modificants are less impactful, due to the extensive pre-training that took place. Approaches like \textsc{DinSQL} show
+that with the application of LLMs the engineering challenges around model instruction gained relevance while model training became
+less of a central problem to solve \citep{DINSQL}.
 
 \subsection{Large Language Models}
 
-% CodeS
-% GPT-X based
-% 
-% Prompt engineering and fine tuning
+The emergence of LLMs such as GPT-3, GPT-4, and Claude fundamentally transformed the landscape of NL2SQL research. Early experiments 
+with LLMs for NL2SQL tasks showed state-of-the-art capabilities in comparsion with contemporary PLM approaches \citep{DAIL-SQL}.
+\cite{T2SQL-LLM-Bench-3} demonstrated that \textsc{Codex} (a contemporary model based on GPT-3), without any fine-tuning efforts,
+could achieve competitive performance on \textsc{Spider}, outperforming many state-of-the-art approaches that required extensive
+training. This breakthrough challenged the contemporary assumption that further specialization of model architectures would yield
+increases in NL2SQL performance (e.g. \textsc{Graphix-T5}) \citep{GRAPHIX}.
 
-%\subsection{Optimization for LLM-based NL2SQL}
-% PICARD, DIN-SQL, MAGIC & CHASE
+\subsubsection{In-Context Learning}
+
+In-Context Learning (ICL) is a foundational approach for leveraging the ability of LLMs to utilize larger context windows for
+inference than traditional PLMs. Typical context windows of state-of-the-art LLMs can reach up to hundred thousands of tokens.
+This characteristic of LLMs enabled researchers to utilize this context window to provide examples of accurate NL2SQL translation
+instead of applying parameter updates. This paradigm shift has made developing NL2SQL systems significantly more accessible.
+
+The fundamental principle of few-shot learning for NL2SQL involves providing the LLM with a small number of example pairs
+of natural language and their corresponding SQL representation. These examples can benefit the model's understanding of
+mapping between natural language and SQL syntax. This essentially builds on top of prior research like \textsc{Grappa}
+and \textsc{StruG}, but applying these examples at inference time, rather than training time. Although this increases
+the inference cost of such a system, the upsides lie primarily in the flexibility of such an approach — database content
+/ prior usage of the system can be dynamically utilized, rather than requiring retraining.
+
+Example selection strategies showed to have a significant impact on ICL performance. \cite{DAIL-SQL} evaluated
+various example selection methods like \textit{Random}, \textit{Question Similarity Selection (QTS)}, 
+\textit{Masked Question Similarity Selection (MQS)}, and \textit{Query Similarity Selection (QRS)}. \citeauthor*{DAIL-SQL}
+propose a novel strategy to select, organize and present ICL examples to LLMs. DAIL-SQL utilizes both question and
+query similarity, masking domain-specific words and prioritizing examples that exceed a similarity threshold of $\tau$
+\citep[p.~5]{DAIL-SQL}. DAIL-SQL encodes examples as question-SQL-pairs without the respective schema to improve
+token efficiency. Using a Code Representation Prompt (CR) for question and schema encoding yielded DAIL-SQL to achieve
+state-of-the-art 86.6\% execution accuracy on \textsc{Spider}.
+
+The comparison between zero-shot and few-shot performance reveals the significant impact of supplying in-context examples
+to models. While LLMs demonstrate impressive zero-shot capabilities, with models like GPT-4 achieving 72.3\% execution
+accuracy on \textsc{Spider} without any examples \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning shows to substantially
+improve execution accuracy. \cite{DAIL-SQL} shows that even one-shot learning boosts GPT-4's execution accuracy to 80.2\%,
+representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-SQL}. This improvement
+in execution accuracy is particularly noticable for complex queries which involve multiple joins or nested subqueries,
+where zero-shot approaches often fail generate semantically accurate SQL queries \citep{DAIL-SQL}. Notable is the
+leap in exact match ratio measured by the \textsc{Spider} benchmark — jumping from 22.1\% for GPT-4 using zero-shot to
+71.9\% with five-shot. The results presented by \cite{DAIL-SQL} show signficant correlation between $k$ and the execution
+accuracy of $k$-shot approaches.
+
+The effectiveness of ICL approaches has established them as the standard technique applied in LLM-based NL2SQL systems.
+They provide a robust foundation which can be extended with advanced techniques such as problem-decomposition, self-correction
+and chain-of-thoughts. ICL alone is still subject to frequent limitations observed with NL2SQL systems like ambiguoity handling,
+schema linking and dealing with complex queries. This motivated further research of LLM-based NL2SQL systems.
 
 \subsection{Research Gaps}
 
@@ -821,8 +871,6 @@ in adaptation and potentially superior handling of complex queries through advan
 \subsection*{API Documentation}
 \subsection*{Code Examples}
 \subsection*{Test Data and Results}
-
-\nocite{*}
 
 \bibliographystyle{apacite}
 \bibliography{references}
