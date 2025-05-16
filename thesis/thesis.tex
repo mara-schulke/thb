@@ -817,30 +817,30 @@ significantly drive up overall system performance of NLIDBs \citep{MAGIC}.
 
 While DIN-SQL and MAGIC focus on automated self-correction in single-turn settings, \cite{CoE-SQL} introduced the concept of
 Chain-of-Editions (CoE-SQL), which addresses the unique challenges of multi-turn conversational NLIDBs. Conversational interfaces
-for NL2SQL systems offer advantages when it comes to human-in-the-loop refinement. Interactive information seeking from the user
-has showing to be an effective way to drive overall accuracy of the system and improve user satisfaction \citep{NALIR}. Rather than
-approaching each query independently, CoE-SQL recognizes that in a conversational context, successive SQL queries usuallly require
-only small and incremental modifications of the previous queries. Interactive user input is an effective measure for dealing with
+for NL2SQL systems enable human-in-the-loop refinement. Interactive information seeking from the user has shown to be an
+effective way to drive overall accuracy of the system and improve user satisfaction \citep{NALIR}. Rather than approaching
+each query independently, CoE-SQL recognizes that in a conversational context, successive SQL queries usuallly require only
+small and incremental modifications of the previous queries. Interactive user input is an effective measure for dealing with
 ambiguous natural language queries \citep{CoE-SQL, UnnaturalQueryLanguage, NALIR}.
 
 \subsubsection{Candidate Selection Frameworks}
 
-Recent approaches for NL2SQL have increasingly emphasized the generation of multiple candidates and selectiion of the most promising
-one amongst them. Candidate selection strategies have shown significant performance improvements on challenging benchmarks. This
-approach acknowledges the inherent difficulty of generating perfect SQL queries in a single attempt, even for sophisticated LLMs
-and self-correction mechanisms in place.
+Contemporary NL2SQL approaches have increasingly emphasized on the generation of query candidates and their selectiion as a
+promising architecture. Candidate selection strategies have shown significant performance improvements on challenging benchmarks.
+These approach acknowledge the inherent difficulty of generating perfect SQL queries in one attempt / using one generation mechanism,
+even with capable LLMs and modern self-correction mechanisms.
 
 \cite{CHASE} introduced CHASE-SQL in \citeyear{CHASE}, a framework that leverages multiple reasoning paths to generate multiple
 query candidates. After the initial generation phase CHASE selects the most promising solution to the natural query input.
 CHASE-SQL harnesses three different generation strategies: A divide-and-conquer approach which breaks down complex natural
 language queries into multiple sub tasks that can be individually tackled, a chain-of-thought based generation approach which
-utilizes execution plans of SQL queries and a schema-aware generation of synthetic examples that can be used for in-context
+inspects execution plans of SQL queries and a schema-aware generation of synthetic examples that can be used for in-context
 learning \citep{CHASE}. These different generation mechanisms produce a set of query candidates that each have different
-characteristics. For candidate selection CHASE utilizes a fine-tuned LLM that can do binary selection of candidates.
+characteristics. For candidate selection CHASE harnesses a fine-tuned LLM that can do binary selection of candidates.
 \citeauthor{CHASE} have demostrated that their query selection approach is more robust than apparent alternatives and yields
 state-of-the-art performance with 73\% execution accuracy on \textsc{Bird} and 87.6\% on \textsc{Spider} \citep{CHASE}.
 
-Conceptually similar work has been done by \citeauthor*{XiYan} with \textsc{XiYan-SQL} which utilizes a multi-generation
+Conceptually similar work has been done by \citeauthor*{XiYan} with \textsc{XiYan-SQL} which is architected as multi-generation
 ensemble strategy with better schema representation. \textsc{XiYan-SQL} integrated in-context learning alongside supervised
 fine-tuning approaches to generate query candidates \citep{XiYan}. A key contribution of \cite{XiYan} is their M-Schema
 representation of database schemas, which improves the models schema awareness and reduces frequent schema linking errors.
@@ -853,13 +853,71 @@ during the generation stage \citep{XiYan}. Through this sophisticated and divers
 able to achieve impressive results across contemporary NL2SQL benchmarks — achieving 89.65\% execution accuracy on
 \textsc{Spider} and 73.34\% on \textsc{Bird}, which renders \textsc{XiYan-SQL} state-of-the-art \citep{XiYan}.
 
-Both CHASE and \textsc{XiYan-SQL} show that diversifing candidate generate and training specialized models for candidate
+Both CHASE and \textsc{XiYan-SQL} show that diversifing candidate generation and training specialized models for candidate
 selection yield state-of-the-art execution accuracy which significantly outperforms single-path generation approaches.
 The success of these two approaches indicates that for increasingly complex NL2SQL tasks (such as \textsc{Spider2.0}),
 the capability to generate multiple valid interpretations of the natural language query is an important stepping stone
 to achieving meaningful execution accuracy. Both CHASE and \textsc{XiYan-SQL} rely on specialized candidate selection
 models which renders these approaches to combine the strengths of LLMs when it comes to language understanding and
 transferability with the robustness of specialized model architectures for candidate ranking and selection.
+
+\vspace{5cm}
+
+% AB HIER WEITER PLS
+%CHASE-SQL: Multi-path reasoning and candidate selection \citep{CHASE}
+%XiYan-SQL: Multi-generator ensemble framework \citep{XiYan}
+%Agent specialization and collaboration patterns
+%Voting and selection mechanisms for query ranking
+
+\subsubsection{Retrieval-Augumented Generation}
+
+Integration of retrieval systems with LLMs
+DB-GPT: RAG for database interactions \citep{DBGPT}
+Schema and documentation retrieval strategies
+Impact on handling large/complex database schemas
+
+\subsubsection{Schema Representation}
+
+Chain-of-thought reasoning for complex queries
+Schema representation in prompts
+
+
+% heute goal
+
+\subsubsection{Specialized LLMs and Fine-tuning}
+
+CodeS: Open-source LLMs optimized for SQL \citep{CodeS}
+Domain adaptation challenges and solutions \citep{ModelDomainAdaption}
+Trade-offs between general-purpose and specialized models
+Fine-tuning strategies for improved performance
+
+\subsubsection{Benchmarking}
+
+Contemporary benchmarks: BIRD, Spider 2.0 \citep{BIRD, SPIDER2}
+LLM-specific evaluation challenges \citep{LLM-SQL}
+Real-world deployment considerations \citep{NL2SQLUnsolved}
+Performance metrics beyond accuracy (efficiency, cost, latency)
+
+
+\subsubsection{Limitations and Challenges}
+Hallucination and accuracy concerns
+Computational resource requirements
+Data privacy and security implications
+Ambiguity handling in complex scenarios
+Comparison of limitations with PLM approaches
+
+
+% https://raw.githubusercontent.com/HKUSTDial/NL2SQL_Handbook/refs/heads/main/assets/river.svg
+% https://arxiv.org/abs/2109.05093
+
+
+% CodeS
+% GPT-X based
+% 
+% Prompt engineering and fine tuning
+
+%\subsection{Optimization for LLM-based NL2SQL}
+% PICARD, DIN-SQL, MAGIC & CHASE
 
 \subsection{Research Gaps}
 
