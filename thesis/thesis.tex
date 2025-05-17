@@ -861,63 +861,45 @@ to achieving meaningful execution accuracy. Both CHASE and \textsc{XiYan-SQL} re
 models which renders these approaches to combine the strengths of LLMs when it comes to language understanding and
 transferability with the robustness of specialized model architectures for candidate ranking and selection.
 
-\vspace{5cm}
-
-% AB HIER WEITER PLS
-%CHASE-SQL: Multi-path reasoning and candidate selection \citep{CHASE}
-%XiYan-SQL: Multi-generator ensemble framework \citep{XiYan}
-%Agent specialization and collaboration patterns
-%Voting and selection mechanisms for query ranking
+% Maybe: Agent specialization and collaboration patterns
+% Maybe: Voting and selection mechanisms for query ranking
 
 \subsubsection{Retrieval-Augumented Generation}
 
-Integration of retrieval systems with LLMs
-DB-GPT: RAG for database interactions \citep{DBGPT}
-Schema and documentation retrieval strategies
-Impact on handling large/complex database schemas
+Retrieval-Augmented Generation (RAG) has emerged as a powerful paradigm for enhancing NL2SQL systems by integrating
+external knowledge retrieval with the generative capabilities of LLMs. This technique is seen in all above introduced
+papers in varying forms \citep{XiYan, CHASE, CoE-SQL, MAGIC, DINSQL, DAIL-SQL}. The most prevalent form of RAG in
+NL2SQL is the encoding of the database schema into the LLM prompt for in-context-learning. This allows LLMs to be
+aware of the table structures and names, foreign key relationships, primary keys etc. \cite{XiYan} proposed the
+serialization of database schemas in the \textsc{M-Schema} format, a semi structured, text-based schema description.
+\cite{DAIL-SQL} proposed to encode the schema using a Code Representation Prompt (CR) which refers to the encoding of
+the raw SQL statements need to construct the schema. \cite{XiYan} provided an ablation study for the M-Schema which
+yielded questionable results on the optimization of this approach. While the M-Schema format yielded best results when
+\textsc{XiYan-SQL} was combined with GPT-4o or Claude 3.5 Sonnet, it performed worse than alternatives on DeepSeek
+and Gemini models \citep{XiYan}.
 
-\subsubsection{Schema Representation}
+A relevant optimization technique for RAG is the selection of a schema subset before encoding the schema for the model.
+\textsc{Resdsql} was one of the earlier approaches to explore subset-encoding of database schemas with \cite{RetAug}
+building on top of this \citep{RetAug, RESDSQL}. \cite{RetAug} introduced \textsc{ASTReS} which dynamically
+retrieves database schemas and uses abstract syntax trees (ASTs) to select optimal few-shot examples for ICL. 
+By pruning the ASTs down to the most relevant subset, \textsc{ASTReS} achieved the highest at-the-time (\citeyear{RetAug})
+execution accuracy on \textsc{Spider} with 86.6\% indicating that subset-encoding is a sensible optimization mechanism.
+\textsc{ASTReS} was combined with GRAPHIX-T5 in order to achieve this result \citep{RetAug}.
 
-Chain-of-thought reasoning for complex queries
-Schema representation in prompts
+The impact of RAG when NL2SQL systems face large and complex database schemas has been particularly significant. Traditional
+approaches struggle when database schemas contain hundreds or thousands of tables and columns, as the complete schema may not
+fit within model context windows depending on their size. RAG-based systems address this by dynamically retrieving only the most
+relevant portions of the schema based on the natural language query. The technique of subset-encoding becomes especially relevant
+in enterprise environments where database schemas can be extremely large and complex. Recent benchmarks like \textsc{Spider2.0}
+emphasize enterprise environments and show that existing solutions underperform in those scenarios, often reaching single digit
+execution accuracy.
 
-
-% heute goal
-
-\subsubsection{Specialized LLMs and Fine-tuning}
-
-CodeS: Open-source LLMs optimized for SQL \citep{CodeS}
-Domain adaptation challenges and solutions \citep{ModelDomainAdaption}
-Trade-offs between general-purpose and specialized models
-Fine-tuning strategies for improved performance
-
-\subsubsection{Benchmarking}
-
-Contemporary benchmarks: BIRD, Spider 2.0 \citep{BIRD, SPIDER2}
-LLM-specific evaluation challenges \citep{LLM-SQL}
-Real-world deployment considerations \citep{NL2SQLUnsolved}
-Performance metrics beyond accuracy (efficiency, cost, latency)
-
-
-\subsubsection{Limitations and Challenges}
-Hallucination and accuracy concerns
-Computational resource requirements
-Data privacy and security implications
-Ambiguity handling in complex scenarios
-Comparison of limitations with PLM approaches
-
-
-% https://raw.githubusercontent.com/HKUSTDial/NL2SQL_Handbook/refs/heads/main/assets/river.svg
-% https://arxiv.org/abs/2109.05093
-
-
-% CodeS
-% GPT-X based
-% 
-% Prompt engineering and fine tuning
-
-%\subsection{Optimization for LLM-based NL2SQL}
-% PICARD, DIN-SQL, MAGIC & CHASE
+The work of \citeauthor{RetAug} indicates that prefiltering of the environment of language models is an effective
+and promising technique that has the ability to reduce computational requirements of contemporary NL2SQL systems.
+As introduced above, recent state-of-the-art systems often utilize closed-source models like Gemini, GPT-4(o), Claude 3.5/3.7
+Sonnet etc which often come with massive parameter sizes (reaching hundreds of billions of parameters). \textsc{ASTReS}
+demonstrated that efficient schema retrieval mechanisms enable smaller models (e.g. GRAPHIX-T5) to achieve state-of-the-art
+performance against LLM based approaches like DAIL-SQL \citep{DAIL-SQL, RetAug}.
 
 \subsection{Research Gaps}
 
