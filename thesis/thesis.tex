@@ -901,6 +901,36 @@ Sonnet etc which often come with massive parameter sizes (reaching hundreds of b
 demonstrated that efficient schema retrieval mechanisms enable smaller models (e.g. GRAPHIX-T5) to achieve state-of-the-art
 performance against LLM based approaches like DAIL-SQL \citep{DAIL-SQL, RetAug}.
 
+\subsubsection{Specialized LLMs and Fine-tuning}
+
+While general-purpose LLMs demonstrated state-of-the-art natural language understanding capabilities, the research
+domain of NLIDBs increasingly explored the potential of fine-tuned LLMs for NL2SQL tasks, which offer a promising
+tradeof between natural language understanding (ie. breadth of the model) and concrete SQL generation capabilities
+(ie. depth of the model). Multiple research works have been done on the fine-tuning of language models which
+yielded a series of dedicated models for optimized SQL generation.
+
+A significant limitation of many LLM-based NL2SQL solutions is their dependency on proprietary and closed-source
+LLMs like GPT-4(o), Claude and Gemini. Whilst they are useful for initially proving the potential of LLMs on
+contemporary benchmarks, this dependency introduces significant concerns related to data-privacy, high-side use 
+(e.g. in classified environments), transparency of data-flow and deployment costs. To address these challenges
+\cite{CodeS} have introduced \textsc{CodeS} in \citeyear{CodeS}, a series of of open-source language models dedicated
+for NL2SQL tasks with parameter sizes ranging from 1B to 15B. The \textsc{CodeS} models were evaluated against
+contemporary benchmarks like \textsc{Spider} and \textsc{Bird} and showed promising inference results when compared
+to their closed-source counterparts. \cite{CodeS} showed that \textsc{CodeS} 7B achieves 85.4\% execution accuracy
+on the \textsc{Spider} development set, outperforming both fine-tuning approaches like RESDSQL and GRAPHIX-T5-PICARD
+aswell as prompting based methods DIN-SQL+GPT-4 and DAIL-SQL+GPT-4 \citep{CodeS}. The same tendency was observed
+on \textsc{Bird} with \textsc{CodeS}-15B achieving 60.37\% execution accuracy, compared to 57.41\% for DAIL-SQL+GPT-4
+and 55.90\% for DIN-SQL+GPT4 \citep{CodeS}. This marks a significant advancement in the open-source language model
+research area, with \textsc{CodeS} reaching new state-of-the-art performance in \citeyear{CodeS}. While more recent
+approaches like \textsc{XiYan-SQL} and CHASE both outperform \textsc{CodeS}, CHASE relies on proprietary models and
+\textsc{XiYan-SQL} doesnt provide any information on what base models where used.
+
+\cite{CodeS} addressed serveral critical research challenges in the NL2SQL domain and proved that open-source models
+could perform competitively with proprietary models whilst maintaining a significantly smaller parameter footprint
+(ie. 7B and 15B) compared to GPT-4 which is a multi-hundred-billion parameter model. This makes it feasibile to deploy
+\textsc{CodeS} locally, instead of relying on an enterprise API like OpenAI's one \citep{CodeS}, therefore making it
+highly practical for real-world deployments where computation resource are constrained.
+
 \subsection{Research Gaps}
 
 \subsubsection{Deployment Gaps}
