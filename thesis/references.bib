@@ -48,36 +48,6 @@
     bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-% Foundations - Datasets
-
-@article{SPIDER,
-    author = {Tao Yu and Rui Zhang and Kai Yang and Michihiro Yasunaga and Dongxu Wang and Zifan Li and James Ma and Irene Li and Qingning Yao and Shanelle Roman and Zilin Zhang and Dragomir R. Radev},
-    title = {Spider: {A} Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task},
-    journal = {CoRR},
-    volume = {abs/1809.08887},
-    year = {2018},
-    url = {http://arxiv.org/abs/1809.08887},
-    eprinttype = {arXiv},
-    eprint = {1809.08887},
-    abstract = {We present Spider, a large-scale, complex and cross-domain semantic parsing and text-to-SQL dataset annotated by 11 college students. It consists of 10,181 questions and 5,693 unique complex SQL queries on 200 databases with multiple tables, covering 138 different domains. We define a new complex and cross-domain semantic parsing and text-to-SQL task where different complex SQL queries and databases appear in train and test sets. In this way, the task requires the model to generalize well to both new SQL queries and new database schemas. Spider is distinct from most of the previous semantic parsing tasks because they all use a single database and the exact same programs in the train set and the test set. We experiment with various state-of-the-art models and the best model achieves only 12.4% exact matching accuracy on a database split setting. This shows that Spider presents a strong challenge for future research.},
-    timestamp = {Sun, 02 Oct 2022 15:31:53 +0200},
-    biburl = {https://dblp.org/rec/journals/corr/abs-1809-08887.bib},
-    bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-
-% Foundations - LLMs
-
-@misc{Atlas,
-    title = {Atlas: Few-shot Learning with Retrieval Augmented Language Models}, 
-    author = {Gautier Izacard and Patrick Lewis and Maria Lomeli and Lucas Hosseini and Fabio Petroni and Timo Schick and Jane Dwivedi-Yu and Armand Joulin and Sebastian Riedel and Edouard Grave},
-    year = {2022},
-    eprint = {2208.03299},
-    archivePrefix = {arXiv},
-    primaryClass = {cs.CL},
-    url = {https://arxiv.org/abs/2208.03299}, 
-    abstract = {Large language models have shown impressive few-shot results on a wide range of tasks. However, when knowledge is key for such results, as is the case for tasks such as question answering and fact checking, massive parameter counts to store knowledge seem to be needed. Retrieval augmented models are known to excel at knowledge intensive tasks without the need for as many parameters, but it is unclear whether they work in few-shot settings. In this work we present Atlas, a carefully designed and pre-trained retrieval augmented language model able to learn knowledge intensive tasks with very few training examples. We perform evaluations on a wide range of tasks, including MMLU, KILT and NaturalQuestions, and study the impact of the content of the document index, showing that it can easily be updated. Notably, Atlas reaches over 42% accuracy on Natural Questions using only 64 examples, outperforming a 540B parameters model by 3% despite having 50x fewer parameters.}
-}
-
 % Foundations - NLP
 
 @inproceedings{ILPParsing,
@@ -459,7 +429,20 @@
     abstract={Learning to capture text-table alignment is essential for tasks like text-to-SQL. A model needs to correctly recognize natural language references to columns and values and to ground them in the given database schema. In this paper, we present a novel weakly supervised Structure-Grounded pretraining framework (StruG) for text-to-SQL that can effectively learn to capture text-table alignment based on a parallel text-table corpus. We identify a set of novel prediction tasks: column grounding, value grounding and column-value mapping, and leverage them to pretrain a text-table encoder. Additionally, to evaluate different methods under more realistic text-table alignment settings, we create a new evaluation set Spider-Realistic based on Spider dev set with explicit mentions of column names removed, and adopt eight existing text-to-SQL datasets for cross-database evaluation. STRUG brings significant improvement over BERT-LARGE in all settings. Compared with existing pretraining methods such as GRAPPA, STRUG achieves similar performance on Spider, and outperforms all baselines on more realistic sets. The Spider-Realistic dataset is available at this https URL.},
 }
 
-
+@article{PICARD,
+    author = {Torsten Scholak and Nathan Schucher and Dzmitry Bahdanau},
+    title = {{PICARD:} Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models},
+    journal = {CoRR},
+    volume = {abs/2109.05093},
+    year = {2021},
+    url = {https://arxiv.org/abs/2109.05093},
+    eprinttype = {arXiv},
+    eprint = {2109.05093},
+    abstract={Large pre-trained language models for textual data have an unconstrained output space; at each decoding step, they can produce any of 10,000s of sub-word tokens. When fine-tuned to target constrained formal languages like SQL, these models often generate invalid code, rendering it unusable. We propose PICARD (code and trained models available at this https URL), a method for constraining auto-regressive decoders of language models through incremental parsing. PICARD helps to find valid output sequences by rejecting inadmissible tokens at each decoding step. On the challenging Spider and CoSQL text-to-SQL translation tasks, we show that PICARD transforms fine-tuned T5 models with passable performance into state-of-the-art solutions.},
+    timestamp = {Tue, 21 Sep 2021 17:46:04 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-2109-05093.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org},
+}
 
 
 
@@ -480,175 +463,7 @@
     abstract={Large language models (LLMs) have emerged as a new paradigm for Text-to-SQL task. However, the absence of a systematical benchmark inhibits the development of designing effective, efficient and economic LLM-based Text-to-SQL solutions. To address this challenge, in this paper, we first conduct a systematical and extensive comparison over existing prompt engineering methods, including question representation, example selection and example organization, and with these experimental results, we elaborate their pros and cons. Based on these findings, we propose a new integrated solution, named DAIL-SQL, which refreshes the Spider leaderboard with 86.6% execution accuracy and sets a new bar. To explore the potential of open-source LLM, we investigate them in various scenarios, and further enhance their performance with supervised fine-tuning. Our explorations highlight open-source LLMs' potential in Text-to-SQL, as well as the advantages and disadvantages of the supervised fine-tuning. Additionally, towards an efficient and economic LLM-based Text-to-SQL solution, we emphasize the token efficiency in prompt engineering and compare the prior studies under this metric. We hope that our work provides a deeper understanding of Text-to-SQL with LLMs, and inspires further investigations and broad applications.}
 }
 
-% LLMs - Prompting
-
-@misc{PromptingTechniques,
-    title={How to Prompt LLMs for Text-to-SQL: A Study in Zero-shot, Single-domain, and Cross-domain Settings}, 
-    author={Shuaichen Chang and Eric Fosler-Lussier},
-    year={2023},
-    eprint={2305.11853},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2305.11853},
-    abstract={Large language models (LLMs) with in-context learning have demonstrated remarkable capability in the text-to-SQL task. Previous research has prompted LLMs with various demonstration-retrieval strategies and intermediate reasoning steps to enhance the performance of LLMs. However, those works often employ varied strategies when constructing the prompt text for text-to-SQL inputs, such as databases and demonstration examples. This leads to a lack of comparability in both the prompt constructions and their primary contributions. Furthermore, selecting an effective prompt construction has emerged as a persistent problem for future research. To address this limitation, we comprehensively investigate the impact of prompt constructions across various settings and provide insights into prompt constructions for future text-to-SQL studies.},
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Recent 
-
-% Recent - Benchmarks
-
-@misc{BIRD,
-    title={Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs}, 
-    author={Jinyang Li and Binyuan Hui and Ge Qu and Jiaxi Yang and Binhua Li and Bowen Li and Bailin Wang and Bowen Qin and Rongyu Cao and Ruiying Geng and Nan Huo and Xuanhe Zhou and Chenhao Ma and Guoliang Li and Kevin C. C. Chang and Fei Huang and Reynold Cheng and Yongbin Li},
-    year={2023},
-    eprint={2305.03111},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2305.03111},
-    abstract={Text-to-SQL parsing, which aims at converting natural language instructions into executable SQLs, has gained increasing attention in recent years. In particular, Codex and ChatGPT have shown impressive results in this task. However, most of the prevalent benchmarks, i.e., Spider, and WikiSQL, focus on database schema with few rows of database contents leaving the gap between academic study and real-world applications. To mitigate this gap, we present Bird, a big benchmark for large-scale database grounded in text-to-SQL tasks, containing 12,751 pairs of text-to-SQL data and 95 databases with a total size of 33.4 GB, spanning 37 professional domains. Our emphasis on database values highlights the new challenges of dirty database contents, external knowledge between NL questions and database contents, and SQL efficiency, particularly in the context of massive databases. To solve these problems, text-to-SQL models must feature database value comprehension in addition to semantic parsing. The experimental results demonstrate the significance of database values in generating accurate text-to-SQLs for big databases. Furthermore, even the most effective text-to-SQL models, i.e. ChatGPT, only achieves 40.08% in execution accuracy, which is still far from the human result of 92.96%, proving that challenges still stand. Besides, we also provide an efficiency analysis to offer insights into generating text-to-efficient-SQLs that are beneficial to industries. We believe that BIRD will contribute to advancing real-world applications of text-to-SQL research.}
-}
-
-
-@misc{T2SQL-LLM-Bench-2,
-    title={Benchmarking the Text-to-SQL Capability of Large Language Models: A Comprehensive Evaluation}, 
-    author={Bin Zhang and Yuxiao Ye and Guoqing Du and Xiaoru Hu and Zhishuai Li and Sun Yang and Chi Harold Liu and Rui Zhao and Ziyue Li and Hangyu Mao},
-    year={2024},
-    eprint={2403.02951},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2403.02951},
-    abstract={Large Language Models (LLMs) have emerged as a powerful tool in advancing the Text-to-SQL task, significantly outperforming traditional methods. Nevertheless, as a nascent research field, there is still no consensus on the optimal prompt templates and design frameworks. Additionally, existing benchmarks inadequately explore the performance of LLMs across the various sub-tasks of the Text-to-SQL process, which hinders the assessment of LLMs' cognitive capabilities and the optimization of LLM-based solutions. To address the aforementioned issues, we firstly construct a new dataset designed to mitigate the risk of overfitting in LLMs. Then we formulate five evaluation tasks to comprehensively assess the performance of diverse methods across various LLMs throughout the Text-to-SQL this http URL study highlights the performance disparities among LLMs and proposes optimal in-context learning solutions tailored to each task. These findings offer valuable insights for enhancing the development of LLM-based Text-to-SQL systems.}
-}
-
-@misc{T2SQL-LLM-Bench-3,
-    title={Evaluating the Text-to-SQL Capabilities of Large Language Models}, 
-    author={Nitarshan Rajkumar and Raymond Li and Dzmitry Bahdanau},
-    year={2022},
-    eprint={2204.00498},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2204.00498},
-    abstract={We perform an empirical evaluation of Text-to-SQL capabilities of the Codex language model. We find that, without any finetuning, Codex is a strong baseline on the Spider benchmark; we also analyze the failure modes of Codex in this setting. Furthermore, we demonstrate on the GeoQuery and Scholar benchmarks that a small number of in-domain examples provided in the prompt enables Codex to perform better than state-of-the-art models finetuned on such few-shot examples.}
-}
-
-@misc{LLM-SQL,
-    title={Evaluating SQL Understanding in Large Language Models}, 
-    author={Ananya Rahaman and Anny Zheng and Mostafa Milani and Fei Chiang and Rachel Pottinger},
-    year={2024},
-    eprint={2410.10680},
-    archivePrefix={arXiv},
-    primaryClass={cs.DB},
-    url={https://arxiv.org/abs/2410.10680},
-    abstract={The rise of large language models (LLMs) has significantly impacted various domains, including natural language processing (NLP) and image generation, by making complex computational tasks more accessible. While LLMs demonstrate impressive generative capabilities, there is an ongoing debate about their level of "understanding," particularly in structured domains like SQL. In this paper, we evaluate the extent to which LLMs "understand" SQL by testing them on a series of key SQL tasks. These tasks, such as syntax error detection, missing token identification, query performance prediction, query equivalence checking, and query explanation, assess the models' proficiency in recognition, context awareness, semantics, and coherence, which are essential skills for SQL understanding. We generate labeled datasets from well-known workloads, and evaluate the latest LLMs, focusing on how query complexity and syntactic features influence performance. Our results indicate that while GPT4 excels at tasks requiring recognition and context, all models struggle with deeper semantic understanding and coherence, especially in query equivalence and performance estimation, revealing the limitations of current LLMs in achieving full SQL comprehension.},
-}
-
-@misc{SPIDER2,
-    title={Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows}, 
-    author={Fangyu Lei and Jixuan Chen and Yuxiao Ye and Ruisheng Cao and Dongchan Shin and Hongjin Su and Zhaoqing Suo and Hongcheng Gao and Wenjing Hu and Pengcheng Yin and Victor Zhong and Caiming Xiong and Ruoxi Sun and Qian Liu and Sida Wang and Tao Yu},
-    year={2025},
-    eprint={2411.07763},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2411.07763},
-    abstract={Real-world enterprise text-to-SQL workflows often involve complex cloud or local data across various database systems, multiple SQL queries in various dialects, and diverse operations from data transformation to analytics. We introduce Spider 2.0, an evaluation framework comprising 632 real-world text-to-SQL workflow problems derived from enterprise-level database use cases. The databases in Spider 2.0 are sourced from real data applications, often containing over 1,000 columns and stored in local or cloud database systems such as BigQuery and Snowflake. We show that solving problems in Spider 2.0 frequently requires understanding and searching through database metadata, dialect documentation, and even project-level codebases. This challenge calls for models to interact with complex SQL workflow environments, process extremely long contexts, perform intricate reasoning, and generate multiple SQL queries with diverse operations, often exceeding 100 lines, which goes far beyond traditional text-to-SQL challenges. Our evaluations indicate that based on o1-preview, our code agent framework successfully solves only 21.3% of the tasks, compared with 91.2% on Spider 1.0 and 73.0% on BIRD. Our results on Spider 2.0 show that while language models have demonstrated remarkable performance in code generation -- especially in prior text-to-SQL benchmarks -- they require significant improvement in order to achieve adequate performance for real-world enterprise usage. Progress on Spider 2.0 represents crucial steps towards developing intelligent, autonomous, code agents for real-world enterprise settings.},
-}
-
-@inproceedings{NL2SQLUnsolved,
-    author={Avrilia Floratou and Fotis Psallidas and Fuheng Zhao and Shaleen Deep and Gunther Hagleither and Wangda Tan and Joyce Cahoon and Rana Alotaibi and Jordan Henkel and Abhik Singla and Alex Van Grootel and Brandon Chow and Kai Deng and Katherine Lin and Marcos Campos and K. Venkatesh Emani and Vivek Pandit and Victor Shnayder and Wenjing Wang and Carlo Curino},
-    title={NL2SQL is a solved problem... Not!},
-    year={2024},
-    cdate={1704067200000},
-    url={https://www.cidrdb.org/cidr2024/papers/p74-floratou.pdf},
-    booktitle={CIDR},
-    crossref={conf/cidr/2024},
-    abstract={The development of natural language (NL) interfaces for databases has been notably shaped by the rise of Large Language Models (LLMs), which provide an easy way to automate the translation of NL queries into structured SQL queries. While LLMs bring valuable technical advancements, this paper stresses that achieving Enterprise-Grade NL2SQL is still far from being resolved, necessitating extensive novel research in various domains. We present insights from two competing teams dedicated to delivering reliable enterprise-grade NL2SQL technology, shedding light on challenges faced in real-world applications, including handling complex schemata, dealing with ambiguity in natural language statements, and incorporating it in our benchmarking methodologies and responsible AI considerations. While this paper may raise more questions than it answers, its aim is to act as a catalyst for a fruitful discussion on the topic. Additionally, it provides a practical pathway for the community to develop enterprise-grade NL2SQL solutions.}
-}
-
-% Recent - LLM - Models
-
-@misc{ModelDomainAdaption,
-    title={Domain Adaptation of a State of the Art Text-to-SQL Model: Lessons Learned and Challenges Found}, 
-    author={Irene Manotas and Octavian Popescu and Ngoc Phuoc An Vo and Vadim Sheinin},
-    year={2023},
-    eprint={2312.05448},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2312.05448},
-    abstract={There are many recent advanced developments for the Text-to-SQL task, where the Picard model is one of the the top performing models as measured by the Spider dataset competition. However, bringing Text-to-SQL systems to realistic use-cases through domain adaptation remains a tough challenge. We analyze how well the base T5 Language Model and Picard perform on query structures different from the Spider dataset, we fine-tuned the base model on the Spider data and on independent databases (DB). To avoid accessing the DB content online during inference, we also present an alternative way to disambiguate the values in an input question using a rule-based approach that relies on an intermediate representation of the semantic concepts of an input question. In our results we show in what cases T5 and Picard can deliver good performance, we share the lessons learned, and discuss current domain adaptation challenges.},
-}
-
-@misc{CodeS,
-    title={CodeS: Towards Building Open-source Language Models for Text-to-SQL}, 
-    author={Haoyang Li and Jing Zhang and Hanbing Liu and Ju Fan and Xiaokang Zhang and Jun Zhu and Renjie Wei and Hongyan Pan and Cuiping Li and Hong Chen},
-    year={2024},
-    eprint={2402.16347},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2402.16347},
-    abstract={Language models have shown promising performance on the task of translating natural language questions into SQL queries (Text-to-SQL). However, most of the state-of-the-art (SOTA) approaches rely on powerful yet closed-source large language models (LLMs), such as ChatGPT and GPT-4, which may have the limitations of unclear model architectures, data privacy risks, and expensive inference overheads. To address the limitations, we introduce CodeS, a series of pre-trained language models with parameters ranging from 1B to 15B, specifically designed for the text-to-SQL task. CodeS is a fully open-source language model, which achieves superior accuracy with much smaller parameter sizes. This paper studies the research challenges in building CodeS. To enhance the SQL generation abilities of CodeS, we adopt an incremental pre-training approach using a specifically curated SQL-centric corpus. Based on this, we address the challenges of schema linking and rapid domain adaptation through strategic prompt construction and a bi-directional data augmentation technique. We conduct comprehensive evaluations on multiple datasets, including the widely used Spider benchmark, the newly released BIRD benchmark, robustness-diagnostic benchmarks such as Spider-DK, Spider-Syn, Spider-Realistic, and this http URL, as well as two real-world datasets created for financial and academic applications. The experimental results show that our CodeS achieves new SOTA accuracy and robustness on nearly all challenging text-to-SQL benchmarks.},
-}
-
-% Recent - LLM
-
-@article{PICARD,
-    author = {Torsten Scholak and Nathan Schucher and Dzmitry Bahdanau},
-    title = {{PICARD:} Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models},
-    journal = {CoRR},
-    volume = {abs/2109.05093},
-    year = {2021},
-    url = {https://arxiv.org/abs/2109.05093},
-    eprinttype = {arXiv},
-    eprint = {2109.05093},
-    abstract={Large pre-trained language models for textual data have an unconstrained output space; at each decoding step, they can produce any of 10,000s of sub-word tokens. When fine-tuned to target constrained formal languages like SQL, these models often generate invalid code, rendering it unusable. We propose PICARD (code and trained models available at this https URL), a method for constraining auto-regressive decoders of language models through incremental parsing. PICARD helps to find valid output sequences by rejecting inadmissible tokens at each decoding step. On the challenging Spider and CoSQL text-to-SQL translation tasks, we show that PICARD transforms fine-tuned T5 models with passable performance into state-of-the-art solutions.},
-    timestamp = {Tue, 21 Sep 2021 17:46:04 +0200},
-    biburl = {https://dblp.org/rec/journals/corr/abs-2109-05093.bib},
-    bibsource = {dblp computer science bibliography, https://dblp.org},
-}
-
-
-
-@misc{DBGPT,
-    title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
-    author={Siqiao Xue and Caigao Jiang and Wenhui Shi and Fangyin Cheng and Keting Chen and Hongjun Yang and Zhiping Zhang and Jianshan He and Hongyang Zhang and Ganglin Wei and Wang Zhao and Fan Zhou and Danrui Qi and Hong Yi and Shaodong Liu and Faqiang Chen},
-    year={2024},
-    eprint={2312.17449},
-    archivePrefix={arXiv},
-    primaryClass={cs.DB},
-    url={https://arxiv.org/abs/2312.17449},
-    abstract={The recent breakthroughs in large language models (LLMs) are positioned to transition many areas of software. Database technologies particularly have an important entanglement with LLMs as efficient and intuitive database interactions are paramount. In this paper, we present DB-GPT, a revolutionary and production-ready project that integrates LLMs with traditional database systems to enhance user experience and accessibility. DB-GPT is designed to understand natural language queries, provide context-aware responses, and generate complex SQL queries with high accuracy, making it an indispensable tool for users ranging from novice to expert. The core innovation in DB-GPT lies in its private LLM technology, which is fine-tuned on domain-specific corpora to maintain user privacy and ensure data security while offering the benefits of state-of-the-art LLMs. We detail the architecture of DB-GPT, which includes a novel retrieval augmented generation (RAG) knowledge system, an adaptive learning mechanism to continuously improve performance based on user feedback and a service-oriented multi-model framework (SMMF) with powerful data-driven agents. Our extensive experiments and user studies confirm that DB-GPT represents a paradigm shift in database interactions, offering a more natural, efficient, and secure way to engage with data repositories. The paper concludes with a discussion of the implications of DB-GPT framework on the future of human-database interaction and outlines potential avenues for further enhancements and applications in the field. The project code is available at this https URL. Experience DB-GPT for yourself by installing it with the instructions this https URL and view a concise 10-minute video at this https URL.},
-}
-
-
-
-% Recent - Techniques
-
-@misc{RetAug,
-      title={Improving Retrieval-augmented Text-to-SQL with AST-based Ranking and Schema Pruning}, 
-      author={Zhili Shen and Pavlos Vougiouklis and Chenxin Diao and Kaustubh Vyas and Yuanyi Ji and Jeff Z. Pan},
-      year={2024},
-      eprint={2407.03227},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2407.03227},
-      abstract={We focus on Text-to-SQL semantic parsing from the perspective of retrieval-augmented generation. Motivated by challenges related to the size of commercial database schemata and the deployability of business intelligence solutions, we propose ASTReS that dynamically retrieves input database information and uses abstract syntax trees to select few-shot examples for in-context learning.
-Furthermore, we investigate the extent to which an in-parallel semantic parser can be leveraged for generating approximated versions of the expected SQL queries, to support our retrieval. We take this approach to the extreme--we adapt a model consisting of less than 500M parameters, to act as an extremely efficient approximator, enhancing it with the ability to process schemata in a parallelised manner. We apply ASTReS to monolingual and cross-lingual benchmarks for semantic parsing, showing improvements over state-of-the-art baselines. Comprehensive experiments highlight the contribution of modules involved in this retrieval-augmented generation setting, revealing interesting directions for future work.},
-}
-
-@inproceedings{PAL,
-    author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
-    title = {PAL: program-aided language models},
-    year = {2023},
-    publisher = {JMLR.org},
-    abstract = {Large language models (LLMs) have demonstrated an impressive ability to perform arithmetic and symbolic reasoning tasks, when provided with a few examples at test time ("few-shot prompting"). Much of this success can be attributed to prompting methods such as "chain-of-thought", which employ LLMs for both understanding the problem description by decomposing it into steps, as well as solving each step of the problem. While LLMs seem to be adept at this sort of step-by-step decomposition, LLMs often make logical and arithmetic mistakes in the solution part, even when the problem is decomposed correctly. In this paper, we present Program-Aided Language models (PAL): a novel approach that uses the LLM to read natural language problems and generate programs as the intermediate reasoning steps, but offloads the solution step to a runtime such as a Python interpreter. With PAL, decomposing the natural language problem into runnable steps remains the only learning task for the LLM, while solving is delegated to the interpreter. We demonstrate this synergy between a neural LLM and a symbolic interpreter across 13 mathematical, symbolic, and algorithmic reasoning tasks from BIG-Bench Hard and others. In all these natural language reasoning tasks, generating code using an LLM and reasoning using a Python interpreter leads to more accurate results than much larger models. For example, PAL using CODEX achieves state-of-the-art few-shot accuracy on GSM8K, surpassing PaLM-540B which uses chain-of-thought by absolute 15\% top-1.},
-    booktitle = {Proceedings of the 40th International Conference on Machine Learning},
-    articleno = {435},
-    numpages = {36},
-    location = {Honolulu, Hawaii, USA},
-    series = {ICML'23}
-}
+% LLMs - Self Correction
 
 @inproceedings{DINSQL,
     author = {Pourreza, Mohammadreza and Rafiei, Davood},
@@ -686,6 +501,8 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     abstract={Self-correction in text-to-SQL is the process of prompting large language model (LLM) to revise its previously incorrectly generated SQL, and commonly relies on manually crafted self-correction guidelines by human experts that are not only labor-intensive to produce but also limited by the human ability in identifying all potential error patterns in LLM responses. We introduce MAGIC, a novel multi-agent method that automates the creation of the self-correction guideline. MAGIC uses three specialized agents: a manager, a correction, and a feedback agent. These agents collaborate on the failures of an LLM-based method on the training set to iteratively generate and refine a self-correction guideline tailored to LLM mistakes, mirroring human processes but without human involvement. Our extensive experiments show that MAGIC's guideline outperforms expert human's created ones. We empirically find out that the guideline produced by MAGIC enhances the interpretability of the corrections made, providing insights in analyzing the reason behind the failures and successes of LLMs in self-correction. All agent interactions are publicly available at this https URL.},
 }
 
+% LLMs - Candidate Selection
+
 @misc{CHASE,
     title={CHASE-SQL: Multi-Path Reasoning and Preference Optimized Candidate Selection in Text-to-SQL}, 
     author={Mohammadreza Pourreza and Hailong Li and Ruoxi Sun and Yeounoh Chung and Shayan Talaei and Gaurav Tarlok Kakkar and Yu Gan and Amin Saberi and Fatma Ozcan and Sercan O. Arik},
@@ -706,4 +523,194 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     primaryClass={cs.AI},
     url={https://arxiv.org/abs/2411.08599},
     abstract={To tackle the challenges of large language model performance in natural language to SQL tasks, we introduce XiYan-SQL, an innovative framework that employs a multi-generator ensemble strategy to improve candidate generation. We introduce M-Schema, a semi-structured schema representation method designed to enhance the understanding of database structures. To enhance the quality and diversity of generated candidate SQL queries, XiYan-SQL integrates the significant potential of in-context learning (ICL) with the precise control of supervised fine-tuning. On one hand, we propose a series of training strategies to fine-tune models to generate high-quality candidates with diverse preferences. On the other hand, we implement the ICL approach with an example selection method based on named entity recognition to prevent overemphasis on entities. The refiner optimizes each candidate by correcting logical or syntactical errors. To address the challenge of identifying the best candidate, we fine-tune a selection model to distinguish nuances of candidate SQL queries. The experimental results on multiple dialect datasets demonstrate the robustness of XiYan-SQL in addressing challenges across different scenarios. Overall, our proposed XiYan-SQL achieves the state-of-the-art execution accuracy of 75.63% on Bird benchmark, 89.65% on the Spider test set, 69.86% on SQL-Eval, 41.20% on NL2GQL. The proposed framework not only enhances the quality and diversity of SQL queries but also outperforms previous methods.},
+}
+
+% LLMs - RAG
+
+@misc{RetAug,
+      title={Improving Retrieval-augmented Text-to-SQL with AST-based Ranking and Schema Pruning}, 
+      author={Zhili Shen and Pavlos Vougiouklis and Chenxin Diao and Kaustubh Vyas and Yuanyi Ji and Jeff Z. Pan},
+      year={2024},
+      eprint={2407.03227},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.03227},
+      abstract={We focus on Text-to-SQL semantic parsing from the perspective of retrieval-augmented generation. Motivated by challenges related to the size of commercial database schemata and the deployability of business intelligence solutions, we propose ASTReS that dynamically retrieves input database information and uses abstract syntax trees to select few-shot examples for in-context learning.
+Furthermore, we investigate the extent to which an in-parallel semantic parser can be leveraged for generating approximated versions of the expected SQL queries, to support our retrieval. We take this approach to the extreme--we adapt a model consisting of less than 500M parameters, to act as an extremely efficient approximator, enhancing it with the ability to process schemata in a parallelised manner. We apply ASTReS to monolingual and cross-lingual benchmarks for semantic parsing, showing improvements over state-of-the-art baselines. Comprehensive experiments highlight the contribution of modules involved in this retrieval-augmented generation setting, revealing interesting directions for future work.},
+}
+
+% LLMs - Models
+
+@misc{CodeS,
+    title={CodeS: Towards Building Open-source Language Models for Text-to-SQL}, 
+    author={Haoyang Li and Jing Zhang and Hanbing Liu and Ju Fan and Xiaokang Zhang and Jun Zhu and Renjie Wei and Hongyan Pan and Cuiping Li and Hong Chen},
+    year={2024},
+    eprint={2402.16347},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2402.16347},
+    abstract={Language models have shown promising performance on the task of translating natural language questions into SQL queries (Text-to-SQL). However, most of the state-of-the-art (SOTA) approaches rely on powerful yet closed-source large language models (LLMs), such as ChatGPT and GPT-4, which may have the limitations of unclear model architectures, data privacy risks, and expensive inference overheads. To address the limitations, we introduce CodeS, a series of pre-trained language models with parameters ranging from 1B to 15B, specifically designed for the text-to-SQL task. CodeS is a fully open-source language model, which achieves superior accuracy with much smaller parameter sizes. This paper studies the research challenges in building CodeS. To enhance the SQL generation abilities of CodeS, we adopt an incremental pre-training approach using a specifically curated SQL-centric corpus. Based on this, we address the challenges of schema linking and rapid domain adaptation through strategic prompt construction and a bi-directional data augmentation technique. We conduct comprehensive evaluations on multiple datasets, including the widely used Spider benchmark, the newly released BIRD benchmark, robustness-diagnostic benchmarks such as Spider-DK, Spider-Syn, Spider-Realistic, and this http URL, as well as two real-world datasets created for financial and academic applications. The experimental results show that our CodeS achieves new SOTA accuracy and robustness on nearly all challenging text-to-SQL benchmarks.},
+}
+
+@misc{OmniSQL,
+    title={OmniSQL: Synthesizing High-quality Text-to-SQL Data at Scale}, 
+    author={Haoyang Li and Shang Wu and Xiaokang Zhang and Xinmei Huang and Jing Zhang and Fuxin Jiang and Shuai Wang and Tieying Zhang and Jianjun Chen and Rui Shi and Hong Chen and Cuiping Li},
+    year={2025},
+    eprint={2503.02240},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2503.02240},
+    abstract={
+    Text-to-SQL, the task of translating natural language questions into SQL queries, plays a crucial role in enabling non-experts to interact with databases. While recent advancements in large language models (LLMs) have significantly enhanced text-to-SQL performance, existing approaches face notable limitations in real-world text-to-SQL applications. Prompting-based methods often depend on closed-source LLMs, which are expensive, raise privacy concerns, and lack customization. Fine-tuning-based methods, on the other hand, suffer from poor generalizability due to the limited coverage of publicly available training data. To overcome these challenges, we propose a novel and scalable text-to-SQL data synthesis framework for automatically synthesizing large-scale, high-quality, and diverse datasets without extensive human intervention. Using this framework, we introduce SynSQL-2.5M, the first million-scale text-to-SQL dataset, containing 2.5 million samples spanning over 16,000 synthetic databases. Each sample includes a database, SQL query, natural language question, and chain-of-thought (CoT) solution. Leveraging SynSQL-2.5M, we develop OmniSQL, a powerful open-source text-to-SQL model available in three sizes: 7B, 14B, and 32B. Extensive evaluations across nine datasets demonstrate that OmniSQL achieves state-of-the-art performance, matching or surpassing leading closed-source and open-source LLMs, including GPT-4o and DeepSeek-V3, despite its smaller size. We release all code, datasets, and models to support further research.}
+}
+
+
+
+
+
+
+% Benchmarks
+
+@misc{BIRD,
+    title={Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs}, 
+    author={Jinyang Li and Binyuan Hui and Ge Qu and Jiaxi Yang and Binhua Li and Bowen Li and Bailin Wang and Bowen Qin and Rongyu Cao and Ruiying Geng and Nan Huo and Xuanhe Zhou and Chenhao Ma and Guoliang Li and Kevin C. C. Chang and Fei Huang and Reynold Cheng and Yongbin Li},
+    year={2023},
+    eprint={2305.03111},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2305.03111},
+    abstract={Text-to-SQL parsing, which aims at converting natural language instructions into executable SQLs, has gained increasing attention in recent years. In particular, Codex and ChatGPT have shown impressive results in this task. However, most of the prevalent benchmarks, i.e., Spider, and WikiSQL, focus on database schema with few rows of database contents leaving the gap between academic study and real-world applications. To mitigate this gap, we present Bird, a big benchmark for large-scale database grounded in text-to-SQL tasks, containing 12,751 pairs of text-to-SQL data and 95 databases with a total size of 33.4 GB, spanning 37 professional domains. Our emphasis on database values highlights the new challenges of dirty database contents, external knowledge between NL questions and database contents, and SQL efficiency, particularly in the context of massive databases. To solve these problems, text-to-SQL models must feature database value comprehension in addition to semantic parsing. The experimental results demonstrate the significance of database values in generating accurate text-to-SQLs for big databases. Furthermore, even the most effective text-to-SQL models, i.e. ChatGPT, only achieves 40.08% in execution accuracy, which is still far from the human result of 92.96%, proving that challenges still stand. Besides, we also provide an efficiency analysis to offer insights into generating text-to-efficient-SQLs that are beneficial to industries. We believe that BIRD will contribute to advancing real-world applications of text-to-SQL research.}
+}
+
+@article{SPIDER,
+    author = {Tao Yu and Rui Zhang and Kai Yang and Michihiro Yasunaga and Dongxu Wang and Zifan Li and James Ma and Irene Li and Qingning Yao and Shanelle Roman and Zilin Zhang and Dragomir R. Radev},
+    title = {Spider: {A} Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task},
+    journal = {CoRR},
+    volume = {abs/1809.08887},
+    year = {2018},
+    url = {http://arxiv.org/abs/1809.08887},
+    eprinttype = {arXiv},
+    eprint = {1809.08887},
+    abstract = {We present Spider, a large-scale, complex and cross-domain semantic parsing and text-to-SQL dataset annotated by 11 college students. It consists of 10,181 questions and 5,693 unique complex SQL queries on 200 databases with multiple tables, covering 138 different domains. We define a new complex and cross-domain semantic parsing and text-to-SQL task where different complex SQL queries and databases appear in train and test sets. In this way, the task requires the model to generalize well to both new SQL queries and new database schemas. Spider is distinct from most of the previous semantic parsing tasks because they all use a single database and the exact same programs in the train set and the test set. We experiment with various state-of-the-art models and the best model achieves only 12.4% exact matching accuracy on a database split setting. This shows that Spider presents a strong challenge for future research.},
+    timestamp = {Sun, 02 Oct 2022 15:31:53 +0200},
+    biburl = {https://dblp.org/rec/journals/corr/abs-1809-08887.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{SPIDER2,
+    title={Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows}, 
+    author={Fangyu Lei and Jixuan Chen and Yuxiao Ye and Ruisheng Cao and Dongchan Shin and Hongjin Su and Zhaoqing Suo and Hongcheng Gao and Wenjing Hu and Pengcheng Yin and Victor Zhong and Caiming Xiong and Ruoxi Sun and Qian Liu and Sida Wang and Tao Yu},
+    year={2025},
+    eprint={2411.07763},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2411.07763},
+    abstract={Real-world enterprise text-to-SQL workflows often involve complex cloud or local data across various database systems, multiple SQL queries in various dialects, and diverse operations from data transformation to analytics. We introduce Spider 2.0, an evaluation framework comprising 632 real-world text-to-SQL workflow problems derived from enterprise-level database use cases. The databases in Spider 2.0 are sourced from real data applications, often containing over 1,000 columns and stored in local or cloud database systems such as BigQuery and Snowflake. We show that solving problems in Spider 2.0 frequently requires understanding and searching through database metadata, dialect documentation, and even project-level codebases. This challenge calls for models to interact with complex SQL workflow environments, process extremely long contexts, perform intricate reasoning, and generate multiple SQL queries with diverse operations, often exceeding 100 lines, which goes far beyond traditional text-to-SQL challenges. Our evaluations indicate that based on o1-preview, our code agent framework successfully solves only 21.3% of the tasks, compared with 91.2% on Spider 1.0 and 73.0% on BIRD. Our results on Spider 2.0 show that while language models have demonstrated remarkable performance in code generation -- especially in prior text-to-SQL benchmarks -- they require significant improvement in order to achieve adequate performance for real-world enterprise usage. Progress on Spider 2.0 represents crucial steps towards developing intelligent, autonomous, code agents for real-world enterprise settings.},
+}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Recent 
+
+
+
+@misc{T2SQL-LLM-Bench-2,
+    title={Benchmarking the Text-to-SQL Capability of Large Language Models: A Comprehensive Evaluation}, 
+    author={Bin Zhang and Yuxiao Ye and Guoqing Du and Xiaoru Hu and Zhishuai Li and Sun Yang and Chi Harold Liu and Rui Zhao and Ziyue Li and Hangyu Mao},
+    year={2024},
+    eprint={2403.02951},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2403.02951},
+    abstract={Large Language Models (LLMs) have emerged as a powerful tool in advancing the Text-to-SQL task, significantly outperforming traditional methods. Nevertheless, as a nascent research field, there is still no consensus on the optimal prompt templates and design frameworks. Additionally, existing benchmarks inadequately explore the performance of LLMs across the various sub-tasks of the Text-to-SQL process, which hinders the assessment of LLMs' cognitive capabilities and the optimization of LLM-based solutions. To address the aforementioned issues, we firstly construct a new dataset designed to mitigate the risk of overfitting in LLMs. Then we formulate five evaluation tasks to comprehensively assess the performance of diverse methods across various LLMs throughout the Text-to-SQL this http URL study highlights the performance disparities among LLMs and proposes optimal in-context learning solutions tailored to each task. These findings offer valuable insights for enhancing the development of LLM-based Text-to-SQL systems.}
+}
+
+@misc{T2SQL-LLM-Bench-3,
+    title={Evaluating the Text-to-SQL Capabilities of Large Language Models}, 
+    author={Nitarshan Rajkumar and Raymond Li and Dzmitry Bahdanau},
+    year={2022},
+    eprint={2204.00498},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2204.00498},
+    abstract={We perform an empirical evaluation of Text-to-SQL capabilities of the Codex language model. We find that, without any finetuning, Codex is a strong baseline on the Spider benchmark; we also analyze the failure modes of Codex in this setting. Furthermore, we demonstrate on the GeoQuery and Scholar benchmarks that a small number of in-domain examples provided in the prompt enables Codex to perform better than state-of-the-art models finetuned on such few-shot examples.}
+}
+
+@misc{LLM-SQL,
+    title={Evaluating SQL Understanding in Large Language Models}, 
+    author={Ananya Rahaman and Anny Zheng and Mostafa Milani and Fei Chiang and Rachel Pottinger},
+    year={2024},
+    eprint={2410.10680},
+    archivePrefix={arXiv},
+    primaryClass={cs.DB},
+    url={https://arxiv.org/abs/2410.10680},
+    abstract={The rise of large language models (LLMs) has significantly impacted various domains, including natural language processing (NLP) and image generation, by making complex computational tasks more accessible. While LLMs demonstrate impressive generative capabilities, there is an ongoing debate about their level of "understanding," particularly in structured domains like SQL. In this paper, we evaluate the extent to which LLMs "understand" SQL by testing them on a series of key SQL tasks. These tasks, such as syntax error detection, missing token identification, query performance prediction, query equivalence checking, and query explanation, assess the models' proficiency in recognition, context awareness, semantics, and coherence, which are essential skills for SQL understanding. We generate labeled datasets from well-known workloads, and evaluate the latest LLMs, focusing on how query complexity and syntactic features influence performance. Our results indicate that while GPT4 excels at tasks requiring recognition and context, all models struggle with deeper semantic understanding and coherence, especially in query equivalence and performance estimation, revealing the limitations of current LLMs in achieving full SQL comprehension.},
+}
+
+@inproceedings{NL2SQLUnsolved,
+    author={Avrilia Floratou and Fotis Psallidas and Fuheng Zhao and Shaleen Deep and Gunther Hagleither and Wangda Tan and Joyce Cahoon and Rana Alotaibi and Jordan Henkel and Abhik Singla and Alex Van Grootel and Brandon Chow and Kai Deng and Katherine Lin and Marcos Campos and K. Venkatesh Emani and Vivek Pandit and Victor Shnayder and Wenjing Wang and Carlo Curino},
+    title={NL2SQL is a solved problem... Not!},
+    year={2024},
+    cdate={1704067200000},
+    url={https://www.cidrdb.org/cidr2024/papers/p74-floratou.pdf},
+    booktitle={CIDR},
+    crossref={conf/cidr/2024},
+    abstract={The development of natural language (NL) interfaces for databases has been notably shaped by the rise of Large Language Models (LLMs), which provide an easy way to automate the translation of NL queries into structured SQL queries. While LLMs bring valuable technical advancements, this paper stresses that achieving Enterprise-Grade NL2SQL is still far from being resolved, necessitating extensive novel research in various domains. We present insights from two competing teams dedicated to delivering reliable enterprise-grade NL2SQL technology, shedding light on challenges faced in real-world applications, including handling complex schemata, dealing with ambiguity in natural language statements, and incorporating it in our benchmarking methodologies and responsible AI considerations. While this paper may raise more questions than it answers, its aim is to act as a catalyst for a fruitful discussion on the topic. Additionally, it provides a practical pathway for the community to develop enterprise-grade NL2SQL solutions.}
+}
+
+% Recent - LLM - Models
+
+@misc{ModelDomainAdaption,
+    title={Domain Adaptation of a State of the Art Text-to-SQL Model: Lessons Learned and Challenges Found}, 
+    author={Irene Manotas and Octavian Popescu and Ngoc Phuoc An Vo and Vadim Sheinin},
+    year={2023},
+    eprint={2312.05448},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2312.05448},
+    abstract={There are many recent advanced developments for the Text-to-SQL task, where the Picard model is one of the the top performing models as measured by the Spider dataset competition. However, bringing Text-to-SQL systems to realistic use-cases through domain adaptation remains a tough challenge. We analyze how well the base T5 Language Model and Picard perform on query structures different from the Spider dataset, we fine-tuned the base model on the Spider data and on independent databases (DB). To avoid accessing the DB content online during inference, we also present an alternative way to disambiguate the values in an input question using a rule-based approach that relies on an intermediate representation of the semantic concepts of an input question. In our results we show in what cases T5 and Picard can deliver good performance, we share the lessons learned, and discuss current domain adaptation challenges.},
+}
+
+% Recent - LLM
+
+
+
+
+@misc{DBGPT,
+    title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
+    author={Siqiao Xue and Caigao Jiang and Wenhui Shi and Fangyin Cheng and Keting Chen and Hongjun Yang and Zhiping Zhang and Jianshan He and Hongyang Zhang and Ganglin Wei and Wang Zhao and Fan Zhou and Danrui Qi and Hong Yi and Shaodong Liu and Faqiang Chen},
+    year={2024},
+    eprint={2312.17449},
+    archivePrefix={arXiv},
+    primaryClass={cs.DB},
+    url={https://arxiv.org/abs/2312.17449},
+    abstract={The recent breakthroughs in large language models (LLMs) are positioned to transition many areas of software. Database technologies particularly have an important entanglement with LLMs as efficient and intuitive database interactions are paramount. In this paper, we present DB-GPT, a revolutionary and production-ready project that integrates LLMs with traditional database systems to enhance user experience and accessibility. DB-GPT is designed to understand natural language queries, provide context-aware responses, and generate complex SQL queries with high accuracy, making it an indispensable tool for users ranging from novice to expert. The core innovation in DB-GPT lies in its private LLM technology, which is fine-tuned on domain-specific corpora to maintain user privacy and ensure data security while offering the benefits of state-of-the-art LLMs. We detail the architecture of DB-GPT, which includes a novel retrieval augmented generation (RAG) knowledge system, an adaptive learning mechanism to continuously improve performance based on user feedback and a service-oriented multi-model framework (SMMF) with powerful data-driven agents. Our extensive experiments and user studies confirm that DB-GPT represents a paradigm shift in database interactions, offering a more natural, efficient, and secure way to engage with data repositories. The paper concludes with a discussion of the implications of DB-GPT framework on the future of human-database interaction and outlines potential avenues for further enhancements and applications in the field. The project code is available at this https URL. Experience DB-GPT for yourself by installing it with the instructions this https URL and view a concise 10-minute video at this https URL.},
+}
+
+
+
+% Recent - Techniques
+
+@inproceedings{PAL,
+    author = {Gao, Luyu and Madaan, Aman and Zhou, Shuyan and Alon, Uri and Liu, Pengfei and Yang, Yiming and Callan, Jamie and Neubig, Graham},
+    title = {PAL: program-aided language models},
+    year = {2023},
+    publisher = {JMLR.org},
+    abstract = {Large language models (LLMs) have demonstrated an impressive ability to perform arithmetic and symbolic reasoning tasks, when provided with a few examples at test time ("few-shot prompting"). Much of this success can be attributed to prompting methods such as "chain-of-thought", which employ LLMs for both understanding the problem description by decomposing it into steps, as well as solving each step of the problem. While LLMs seem to be adept at this sort of step-by-step decomposition, LLMs often make logical and arithmetic mistakes in the solution part, even when the problem is decomposed correctly. In this paper, we present Program-Aided Language models (PAL): a novel approach that uses the LLM to read natural language problems and generate programs as the intermediate reasoning steps, but offloads the solution step to a runtime such as a Python interpreter. With PAL, decomposing the natural language problem into runnable steps remains the only learning task for the LLM, while solving is delegated to the interpreter. We demonstrate this synergy between a neural LLM and a symbolic interpreter across 13 mathematical, symbolic, and algorithmic reasoning tasks from BIG-Bench Hard and others. In all these natural language reasoning tasks, generating code using an LLM and reasoning using a Python interpreter leads to more accurate results than much larger models. For example, PAL using CODEX achieves state-of-the-art few-shot accuracy on GSM8K, surpassing PaLM-540B which uses chain-of-thought by absolute 15\% top-1.},
+    booktitle = {Proceedings of the 40th International Conference on Machine Learning},
+    articleno = {435},
+    numpages = {36},
+    location = {Honolulu, Hawaii, USA},
+    series = {ICML'23}
 }
