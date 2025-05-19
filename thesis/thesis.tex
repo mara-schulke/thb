@@ -929,7 +929,63 @@ approaches like \textsc{XiYan-SQL} and CHASE both outperform \textsc{CodeS}, CHA
 could perform competitively with proprietary models whilst maintaining a significantly smaller parameter footprint
 (ie. 7B and 15B) compared to GPT-4 which is a multi-hundred-billion parameter model. This makes it feasibile to deploy
 \textsc{CodeS} locally, instead of relying on an enterprise API like OpenAI's one \citep{CodeS}, therefore making it
-highly practical for real-world deployments where computation resource are constrained.
+highly practical for real-world deployments where computation resource are constrained. 
+
+\citeauthor*{OmniSQL} published a follow-up paper in \citeyear{OmniSQL} which introduced the next-generation \textsc{OmniSQL}
+models with 7B, 14B and 32B sizes, trained using synthetic data generation. \textsc{OmniSQL} achieves state-of-the-art
+performance when compared to alternative LLMs - including both open-source and closed-source competitors. The models
+achieve significant execution accuracy improvements on both \textsc{Spider} and \textsc{Bird}, the 7B model reaches 88.9\%
+on \textsc{Spider} and 66.1\% execution accuracy on \textsc{Bird} which represents a significant (5\%+) improvement over
+comparable alternatives \citep{OmniSQL}. These results were achieved without combining \textsc{OmniSQL} with advanced
+in-context-learning, self-correction, retrieval-augumented-generation or candidate-selection techniques, which indicates
+that even higher accuracy scores are possible.
+
+\subsection{Benchmarking}
+
+In order to evaluate NL2SQL systems standardized benchmarks like \textsc{Spider} and \textsc{Bird} have emerged. These
+benchmarks can measure performance across different approaches and models, enable meaningful ablation studies and are a
+useful indicator for the state of the research field. In the past decade significant advancements have been made with
+\textsc{Spider} being released in \citeyear{Spider} the first major, widely adopted, benchmark emerged in this field
+\citep{Spider}.
+
+\subsubsection{Spider}
+
+\textsc{Spider}, introduced by \citeauthor{Spider} in \citeyear{Spider}, has become the de facto standard benchmark for
+evaluating complex and cross-domain Text-to-SQL systems. It consists of 10,181 questions and 5,693 unique SQL queries
+spanning 200 databases across 138 domains. Previous benchmarks like lacked complexity and cross-domain distrubtion of
+datapoints which prevented the \textit{transferability} of approaches or models to be accounted for in benchmarks.
+With \textsc{Spider} the capability to be database agnostic was required to achieve meaningful accuracy scores. Furthermore
+\textsc{Spider} was split in training and test sets which contain different database in order to prevent overfitting
+models from succeeding. This design specifically tests a model's ability to handle schema linking and generalization
+challenges rather than memorizing specific database patterns. \textsc{Spider} evaluates both \textit{exact matching
+accuracy} and \textit{execution accuracy}, with contemporary state-of-the-art systems achieving approximately 85-90\%
+\textit{execution accuracy} (as of 2025) \citep{Spider, OmniSQL, XiYan, CHASE}.
+
+\subsubsection{Bird}
+
+The \textsc{Bird} benchmark (BIg bench for large-scale database gRounded Text-to-SQLs), released in \citeyear{BIRD},
+and addresses the gap between academic benchmarks and real-world applications by focusing on large-scale databases
+with actual data content \citep{BIRD}. \textsc{Bird} contains 12,751 text-to-SQL pairs and 95 databases with a total
+size of 33.4 GB across 37 professional domains. Unlike \textsc{Spider}, which primarily evaluates against database
+schemas with minimal content, \textsc{Bird} emphasizes challenges related to dirty database contents, external
+knowledge between natural language questions and database values, and SQL efficiency in massive databases. This
+places \textsc{Bird} as a relevant benchmark for real world feasibility of approaches and models. Even state-of-the-art
+LLMs like GPT-4 achieve only 54.89\% execution accuracy on \textsc{Bird}, compared to human performance of 92.96\%,
+highlighting the significant challenges posed by real-world database scenarios on NLIDBs \citep{BIRD}.
+
+\subsubsection{Spider 2.0}
+
+\textsc{Spider 2.0} which was introduced by \citeauthor*{SPIDER2} in \citeyear{SPIDER2} represents the most recent
+advancements of benchmarks for NL2SQL systems. It represents a significant evolution in NL2SQL benchmarking and focuses
+primarily on enterprise level database challenges. \textsc{Spider 2.0} is much smaller with only 632 real-world problems
+which were derived from enterprise database usecases, but yet represents a meaningful indicator for the complexity of
+databases that approaches and models can handle. \textsc{Spider 2.0} goes beyond simple query generation tasks and moves
+towards testing the deep understanding of the database, requiring models to understand metadata, SQL dialect documentation
+and project-level codebases \citep{SPIDER2}. The tasks contained in \textsc{Spider 2.0} often demand multiple complex SQL
+queries often exceeding the 100-line mark and require incorporating a diverse set of database operation from transformation
+to analytics. \citeauthor{SPIDER2} further highlights the gap between academic research and enterprise-level environments
+with even advanced approaches achieving only 21.3\% on \textsc{Spider2.0} compared to 91.2\% on \textsc{Spider 1.0}
+\citep{SPIDER, SPIDER2}.
 
 \subsection{Research Gaps}
 
