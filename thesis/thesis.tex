@@ -1039,7 +1039,95 @@ with even advanced approaches achieving only 21.3\% on \textsc{Spider2.0} compar
 
 \subsection{Research Gaps}
 
-\subsubsection{Deployment Gaps}
+This literature review highlights that significant progress was made in the development of real world feasible NL2SQL systems
+and that the research domain has undergone multiple large paradigm shifts from rule-based to neural-network-based to PLM-based
+and most recently to LLM-based approaches. Despite these advancement several critical research gaps remained open or emerged
+which limit the practical deployment of NL2SQL systems and their widespread adoption as natural language database interfaces
+in real world scenarios.
+
+\subsubsection{Advanced Open-Source Approaches}
+
+While recent research papers have made remarkable progress on both open-source model development (\textsc{CodeS} and
+\textsc{OmniSQL}) aswell as advanced architecture development like CHASE and \textsc{XiYan-SQL} (which utilize multi-path
+generation and candidate selection, self-correction and RAG), a significant research gap evolved around state-of-the-art
+approaches that dont rely on proprietary LLMs and only utilize open-source models. Most contemporary research proposes
+solutions which (partially) rely on the baseline proprietary LLM in order to achieve state-of-the-art results. Whilst
+these efforts give meaningful signal to the effect that specific prompt engineering techniques, self-correction mechanisms
+and candidate selection models have, they are not yet feasible for real world scenarios due to the cost and data privacy
+concerns they introduce.
+
+\begin{enumerate}
+    \item \textbf{Limited Exploration of Technique Synergies} — Contemporary research primarily focuses on techniques like
+          candidate selection, RAG, and self-correction in isolation or with specific closed-source LLMs. A gap remains
+          in understanding how these techniques can be optimally combined, especially with emerging open-source models.
+          For instance, the potential of synergy of specialized open-source LLM like \textsc{OmniSQL} with candidate-selection,
+          advanced self-correction and subset-encoding of database schemas has yet to be researched.
+    \item \textbf{Efficiency-Accuracy Tradeoffs} — Whilst recent research efforts focus primarily on achieving a new
+          state-of-the-art execution accuracy metric on prevalent benchmarks, the relationship of computational requirements and
+          performance gains achieved remains unclear. Some research papers present ablation studies indicating the relevance
+          of certain architecture components but the overall relationship between state-of-the-art performance and cost
+          is still underexplored. 
+     \item \textbf{Cross-Technique Optimization} — There is limited research on how to optimize the interplay between the various
+          NL2SQL techniques. For example, it is yet unclear how subset-encoding of database schemas might impact the effectiveness
+          of multi-path generation and candidate selection, or whether synthetic example generation for in-context-learning is effective
+          when working with specialized models versus general-purpose LLMs.
+\end{enumerate}
+
+\subsubsection{Deployment and Performance Gaps}
+
+Despite impressive academic results, significant gaps remain in transitioning NL2SQL systems from research environments
+to real-world, enterprise-feasible, deployments:
+
+\begin{enumerate}
+    \item \textbf{Database Integration} — While existing research has often focused on standalone systems, little attention
+          has been given to the integration complexities between NL2SQL capabilities and database management systems like PostgreSQL.
+          Having two standalone systems imposes a significant data transfer need between the two systems when infact, natural language
+          queries can be treated as an extension to most existing databases. This implementation gap prevents seamless adoption into
+          existing databases as it requires additional software layers which in turn increase the overall complexity and cost.
+    \item \textbf{Hardware Requirement Optimization} — As mentioned above, current LLM-based approaches often require significant
+          compute resources in order to achieve state-of-the-art results. There is limited research available on performance optimization
+          of NLIDBs in order to achieve practical and industry-viable hardware constraints.
+    \item \textbf{Real-time Performance Considerations} — Most research papers evaluate models based on their accuracy metrics alone
+          without factoring in the latency and throughput characteristics of their solutions. This imposes a possibly significant $\delta$
+          between academic research and production environments. Responsiveness is an important metric for user experience and should
+          therefore play a role in NLIDB research when it comes to evaluating different NL2SQL architectures.
+    \item \textbf{Privacy and Security} — While open-source models address some privacy concerns by enabling a local deployment of LLMs,
+          research gaps remain in ensuring that NL2SQL systems respect database access controls and security policies. This is especially
+          important for enterprise and government environments where data access is strictly regulated.
+\end{enumerate}
+
+\subsubsection{Ambiguity Resolution and Semantic Accuracy}
+
+Despite the long existance of the research field, fundamental questions remain open with regards to handling ambiguity effectively in natural
+language queries. Current, especially language model based, systems struggle to correctly identify when natural language queries contain ambiguities
+that they cant confidently resolve. Although some approaches like multi-path generation and candidate selection are a promising way
+to work around ambiguous language, early systems like \textsc{NaLIR} showed that the most effective way to deal with inherently ambiguous language
+is asking clarifying questions, instead of trying to interpret the query best-effort \citep{NALIR}. Ambiguous language is an inherent source of
+inaccuracy and therefore a cause for misleading query results. Contemporary research and benchmarks dont focus ambiguity detection and
+strategies resolution which therefore leaves open questions to be further researched.
+          
+\subsubsection{Evaluation and Benchmarking Gaps}
+
+\begin{enumerate}
+    \item \textbf{Enterprise-grade Evaluation} — As highlighted by \textsc{Spider 2.0}, there is a gap between academic benchmarks
+          and enterprise realities. Further research is needed to create evaluation frameworks that better represent real-world enterprise
+          environments with thousands of tables and complex relationships. \cite{Spider2} is a promising first step is this direction.
+    \item \textbf{Performance Metrics} — As mentioned above, current benchmarks often dont capture latency or throughput of NL2SQL systems
+          at all, allowing for solutions to achieve state-of-the-art scores that require significantly more resources than their predecessors.
+          Having meaningful performance metrics and benchmarking would allow to further analyze the proposed solutions for their real world
+          feasibility.
+    \item \textbf{User Experience Metrics} — Contemporary benchmarks focus on execution accuracy without assessing potential user satisfaction,
+          trust, and overall experience. Metrics that capture these aspects are necessary for understanding the actual utility of NL2SQL
+          systems in practice. Although execution accuracy is a big factor for the trustworthiness of a NLIDB, it is not the only component
+          as indicated by \citeauthor*{NALIR} in \citeyear{NALIR}.
+\end{enumerate}
+
+\subsubsection{Thesis Placement}
+
+This thesis addresses several of the above outlined research gaps. The primary focus of this work is the integration of open-source
+NL2SQL models with advanced techniques like candidate selection, subset-encoding of database schemas, and synthetic example generation
+for in-context learning. Through the implementation of a PostgreSQL extension this work will bridge multiple critical gaps between
+theoretical advancements and their practical deployability into real world systems whilst exploring performance characteristics. 
 
 \newpage
 
