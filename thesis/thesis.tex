@@ -252,7 +252,7 @@ In this section a comprehensive literature review is performed to asses the rese
 the late 1990s and early 2000s \citep{NLIDBs, NLIDBTheory, ILPParsing, ILPParsing2} until now, observing multiple 
 larger paradigm shifts happening over time \citep{GRAPPA, STRUG, Seq2SQL, NALIR, SQLizer}. In particular this 
 research focuses on the recent advancements when it comes to language models and how they can be harnessed for
-effective NL2SQL systems \citep{LLM-Sql, DAIL-SQL, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, SPIDER2, BIRD}.
+effective NL2SQL systems \citep{LLM-Sql, DAIL-SQL, T2SQL-LLM-Bench-2, T2SQL-LLM-Bench-3, Spider2, BIRD}.
 
 This literature review is covering the foundational concepts, challenges, key advancements and research gaps
 associated with using natural language instead of SQL. It lays the foundation for this thesis and helps to set
@@ -485,7 +485,7 @@ of 46.7\% \citep{IRNet}.
 Following IRNet, graph neural networks (GNN) have been explored as alternative architecture by \cite{GNN}, representing the
 database schema as a graph and using message passing to model relationships between tables, columns and natural language input.
 This approach demonstrated the capability to improve reasoning and query generation capability. \citeauthor{GNN} showed that when 
-evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLNet (and therefore \textsc{SQLNet} \&
+evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLNet (and therefore \textsc{SQLNet} and
 \textsc{TypeSQL}). Although presenting a signficiant advancement over previous state-of-the-art approaches, GNN falls behind in
 performance against IRNet by 6\% \citep{IRNet, GNN}.
 
@@ -524,7 +524,7 @@ neural NL2SQL approaches in different dimensions:
           schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the \textsc{Spider} benchmark). With
           standard benchmarks emerging it became easier to verify and quantify which approach had the highest transferability as
           \textsc{Spider} specifically had independent development and test datasets, preventing approaches from over-optimizing on
-          training data \citep{Spider, RATSQL}.
+          training data \citep{, RATSQL}.
     \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation (Seq2SQL)
           their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized structured decoding,
           \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges around \textit{schema linking}
@@ -573,7 +573,7 @@ language models for NLIDBs. Models like BERT or T5 offer noticable performance i
 comes to language understanding) over specialized NL2SQL networks due to training happening on unrestrained amounts
 of natural language data, instead of pure NL2SQL datasets which are often fairly limited in size and therfore natural
 language use — \textsc{Spider2.0} which is a contemprary NL2SQL benchmark consists of just 632 real-world questions 
-\citep{SPIDER2}. Thus PLM-based (or at least augumented) NL2SQL systems can observe dramatic performance improvements
+\citep{Spider2}. Thus PLM-based (or at least augumented) NL2SQL systems can observe dramatic performance improvements
 through the language models's ability to understand patterns and identify semantic relationships of natural language
 query elements. 
 
@@ -940,6 +940,56 @@ comparable alternatives \citep{OmniSQL}. These results were achieved without com
 in-context-learning, self-correction, retrieval-augumented-generation or candidate-selection techniques, which indicates
 that even higher accuracy scores are possible.
 
+\subsubsection{Limitations and Challenges}
+
+Despite the impressive advancements of LLM-based approaches for NL2SQL, several significant limitations and challenges
+are apparent that impact their practical implementation and real-world deployability.
+
+\begin{enumerate}
+    \item \textbf{Hallucination and Accuracy Concerns} — Since LLMs demonstrate a tendency to hallucinate, LLM-based
+           NL2SQL systems face the challenge of detecting when LLMs generate plausible but incorrect SQL queries.
+           The breadth of possible errors ranges from detectable errors like invalid table or columns references,
+           invalid SQL syntax etc. to undetectable, slight errors in semantics, like reversing the order of
+           aggregations or using the wrong aggregation method. Contrary to traditional approaches which fail visibly with
+           unknown structures, LLM-based approaches might produce semantically flawed queries that execute without
+           errors and yet return semantically incorrect data. As noted by \citeauthor{NL2SQLUnsolved}, ``achieving
+           Enterprise-Grade NL2SQL is still far from being resolved'' even with state-of-the-art models, particularly
+           when handling complex real-world database schemas and ambiguous queries \citep{NL2SQLUnsolved, Spider2}.
+    \item \textbf{Computational Resource Requriements} — The resource intensity of LLM-based systems presents barriers
+           to widespread adoption. High-performance state-of-the-art models require substantial computational resources
+           during inference, making them expensive to deploy at scale. While smaller models exist, they typically show
+           reduced performance on complex queries, creating a challenging trade-off between accuracy and resource
+           efficiency. Studies like DAIL-SQL demonstrate a direct correlation between model size and performance,
+           where the most accurate systems are also the most challenging to deploy economically \citep{DAIL-SQL}.
+           Even state-of-the-art specialized LLMs like \textsc{OmniSQL} degrade in performance as parameter sizes
+           shrink, although they maintain a significantly higher parameter efficiency, outperforming enterprise-level
+           closed-source competitors. 
+    \item \textbf{Data Privacy and Security Implications} — Using LLMs particularly through proprietary APIs brings
+           along considerable concerns with regards to data privacy and security as sensitive data may be transferred
+           to respective model vendors. Potential senstive data aswell as database schemas alongside user questions
+           needs to be communicated to external parties in order to form a usable system if closed source models are
+           used. Recent open-source model developments like \textsc{CodeS} and \textsc{OmniSQL} seem to mitigate this
+           problem partially, but as mentioned above using local inference with LLMs brings along stark computational
+           requirements.
+    \item \textbf{Ambiguity Handling in Complex Scenarios} — Following previous paradigms LLMs also continue to struggle
+           with effective ambiguity resolution in natural language queries over complex database schemas. These challenges
+           are particularly prominent in large scale enterprise environments where similar column names exist across multiple
+           tables, or domain-specific terminology has multiple potential interpretations that can result in different queries.
+           Though approaches like multi-path reasoning and candidate selection show promising improvements in execution
+           accuracy, they often increase inference time and complexity as they run multiple parallel inference steps and
+           rank their results \citep{CHASE, XiYan}.
+    \item \textbf{Competitive PLM Approaches} — Prevalent PLM-based approaches like RESDSQL and GRAPHIX-T5 achieved 
+           impressive execution accuracy while using significantly fewer parameters than LLMs, making them more computationally
+           efficient \citep{RESDSQL}. Despite reducing inference-time requirements, these approaches typically utilize
+           re-training and domain specific fine-tuning which both limits their flexibility and introduces training costs.
+           Yet for certain scenarios PLM-based approaches offer an interesting tradeoffs: Frontloading the computational effort
+           can be interesting in compute-constrained environments and help to reduce ongoing costs. LLMs dont require the upfront
+           cost of fine-tuning and adaption but require significantly more resource for their deployment. This indicates
+           that certain systems and environments might benefit more from PLM approaches than LLM ones. Contemporary research,
+           which typically focuses around state-of-the-art-performance on benchmarks, shifted primarily towards LLMs due to
+           their transferability and natural language coverage.
+\end{enumerate}
+
 \subsection{Benchmarking}
 
 In order to evaluate NL2SQL systems standardized benchmarks like \textsc{Spider} and \textsc{Bird} have emerged. These
@@ -975,17 +1025,17 @@ highlighting the significant challenges posed by real-world database scenarios o
 
 \subsubsection{Spider 2.0}
 
-\textsc{Spider 2.0} which was introduced by \citeauthor*{SPIDER2} in \citeyear{SPIDER2} represents the most recent
+\textsc{Spider 2.0} which was introduced by \citeauthor*{Spider2} in \citeyear{Spider2} represents the most recent
 advancements of benchmarks for NL2SQL systems. It represents a significant evolution in NL2SQL benchmarking and focuses
 primarily on enterprise level database challenges. \textsc{Spider 2.0} is much smaller with only 632 real-world problems
 which were derived from enterprise database usecases, but yet represents a meaningful indicator for the complexity of
 databases that approaches and models can handle. \textsc{Spider 2.0} goes beyond simple query generation tasks and moves
 towards testing the deep understanding of the database, requiring models to understand metadata, SQL dialect documentation
-and project-level codebases \citep{SPIDER2}. The tasks contained in \textsc{Spider 2.0} often demand multiple complex SQL
+and project-level codebases \citep{Spider2}. The tasks contained in \textsc{Spider 2.0} often demand multiple complex SQL
 queries often exceeding the 100-line mark and require incorporating a diverse set of database operation from transformation
-to analytics. \citeauthor{SPIDER2} further highlights the gap between academic research and enterprise-level environments
+to analytics. \citeauthor{Spider2} further highlights the gap between academic research and enterprise-level environments
 with even advanced approaches achieving only 21.3\% on \textsc{Spider2.0} compared to 91.2\% on \textsc{Spider 1.0}
-\citep{SPIDER, SPIDER2}.
+\citep{Spider, Spider2}.
 
 \subsection{Research Gaps}
 
