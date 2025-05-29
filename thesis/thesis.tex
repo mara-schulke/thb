@@ -20,9 +20,9 @@
 \lhead{\fancyplain{}{Mara Schulke} }
 \rhead{\fancyplain{}{\today}}
 \cfoot{\fancyplain{}{\thepage}}
-
+  
 \newcommand{\figuresource}[1]{
-	\begin{center}Quelle: {#1}\end{center}
+	\begin{center}Source: {#1}\end{center}
 }
 
 \titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter.}{20pt}{\Large}
@@ -504,8 +504,8 @@ This architecture yielded a 57.2\% in exact match accuracy when being evaluated 
 outperforming comparative approaches like GNN, IRNet and IRNet V2 by 10.5\%, 9.8\% and 8.7\% respectively. Although overall
 accuracy improved across all approaches when being paired with BERT (Bidirectional Encoder Representations from Transformers, a 
 popular pre-trained lanugage model from Google) the $\delta$ between the indivudual approaches remained relatively steady, leaving
-RAT-SQL outperforming state-of-the-art approaches by 5\% to 12.2\% further demonstrating the capability advancement yielded by this 
-system \citep{RATSQL}.
+RAT-SQL outperforming state-of-the-art approaches by 5\% to 12.2\% further demonstrating the capability advancement yielded by 
+this system \citep{RATSQL}.
 
 \subsubsection{Comparative Analysis of Neural Approaches}
 
@@ -515,55 +515,60 @@ neural NL2SQL approaches in different dimensions:
 \begin{enumerate}
     \item \textbf{Model Complexity} — Given the research progression from early sequence to sequence translation approaches 
           (\textsc{Seq2SQL}) towards sketch based and type augumented and graph based approaches (\textsc{TypeSQL, SQLNet, GNN})
-          and syntax tree decoding emphasized by \textsc{SyntaxSQLNet}, neural approaches continously advanced in the complexity of 
-          approaches that is required to beat state-of-the-art approaches in contemprorary benchmarks like \textsc{Spider}. RAT-SQL 
-          presents one of the late and most complex advancements in the field of neural NL2SQL approaches with its adapted self 
-          attention mechanism \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
-    \item \textbf{Transferability} — Each of the approaches introduced above represents a succession in terms of their transferability.
-          The field of neural NL2SQL approaches significantly improved the ability for NLIDBs to generalize over the underlying database
-          schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the \textsc{Spider} benchmark). With
-          standard benchmarks emerging it became easier to verify and quantify which approach had the highest transferability as
-          \textsc{Spider} specifically had independent development and test datasets, preventing approaches from over-optimizing on
-          training data \citep{, RATSQL}.
-    \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation (Seq2SQL)
-          their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized structured decoding,
-          \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges around \textit{schema linking}
-          outlined by \cite{RATSQL} have increasilingly led to more robust systems that can handle rephrasings, spelling mistakes and
-          variations in natural language usage far beyond what traditional NL2SQL approaches could accomplish \cite{SyntaxSQLNet, IRNet, RATSQL}.
-    \item \textbf{Query Complexity} — The performance on complex queries involving multiple tables, relying on complex aggregations,
-          nested structures and joins dramatically improved over the course of the research that happened in this field. Whilst 
-          \textsc{IRNet} reresents one of the first singificant advancements when it comes to the ability of neural approaches to handle
-          complex queries, \textsc{RAT-SQL} still showed to outperform the intermediate representation approach introduced by \textsc{IRNet}
-          by up to 10.5\% \citep{IRNet, RATSQL}.
-    \item \textbf{Schema Understanding} — Whilst early approaches like Seq2SQL primarily applied reinforcement learning for end to end
-          query generation \citep{Seq2SQL}, later approaches like \textsc{TypeSQL, GNN} and specifically \textsc{RAT-SQL} showed novel and state-of-
-          the-art \textit{schema understanding / schema linking} capabilities, yielding the ability to accurately reason about user intent and
-          traverse the database schema while generating queries \citep{TypeSQL, GNN, RATSQL}. 
+          and syntax tree decoding emphasized by \textsc{SyntaxSQLNet}, neural approaches continously advanced in the complexity
+          of approaches that is required to beat state-of-the-art approaches in contemprorary benchmarks like \textsc{Spider}. RAT-
+          SQL presents one of the late and most complex advancements in the field of neural NL2SQL approaches with its adapted 
+          self attention mechanism \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
+    \item \textbf{Transferability} — Each of the approaches introduced above represents a succession in terms of their 
+          transferability. The field of neural NL2SQL approaches significantly improved the ability for NLIDBs to generalize over 
+          the underlying database schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the 
+          \textsc{Spider} benchmark). With standard benchmarks emerging it became easier to verify and quantify which approach had 
+          the highest transferability as \textsc{Spider} specifically had independent development and test datasets, preventing 
+          approaches from over-optimizing on training data \citep{, RATSQL}.
+    \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation
+          (Seq2SQL) their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized 
+          structured decoding, \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges 
+          around \textit{schema linking} outlined by \cite{RATSQL} have increasilingly led to more robust systems that can handle 
+          rephrasings, spelling mistakes and variations in natural language usage far beyond what traditional NL2SQL approaches 
+          could accomplish \cite{SyntaxSQLNet, IRNet, RATSQL}.
+    \item \textbf{Query Complexity} — The performance on complex queries involving multiple tables, relying on complex 
+          aggregations, nested structures and joins dramatically improved over the course of the research that happened in this 
+          field. Whilst \textsc{IRNet} reresents one of the first singificant advancements when it comes to the ability of neural 
+          approaches to handle complex queries, \textsc{RAT-SQL} still showed to outperform the intermediate representation 
+          approach introduced by \textsc{IRNet} by up to 10.5\% \citep{IRNet, RATSQL}.
+    \item \textbf{Schema Understanding} — Whilst early approaches like Seq2SQL primarily applied reinforcement learning for end to 
+          end query generation \citep{Seq2SQL}, later approaches like \textsc{TypeSQL, GNN} and specifically \textsc{RAT-SQL} 
+          showed novel and state-of-the-art \textit{schema understanding / schema linking} capabilities, yielding the ability to 
+          accurately reason about user intent and traverse the database schema while generating queries \citep{TypeSQL, GNN, 
+          RATSQL}. 
 \end{enumerate}
 
 \subsubsection{Limitations of Neural Approaches}
 
-Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late neural
-approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
+Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late
+neural approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
 
 \begin{enumerate}
-    \item \textbf{Training Data} — Utilizing neural networks these approaches required susbtantially more training data (ie. natural language
-          paired with output SQL queries) than traditional systems which required serious efforts of data collection \citep{Spider}.
-    \item \textbf{Correctness} — The inherent mismatch between neural networks and formal languages yielded cases where models produced
-          invalid SQL code. Approaches like \textsc{SyntaxSQLNet} improved the tried to solve this circumstance by utilizing syntax trees
-          during decoding but nonetheless syntactic correctness remained a challenge across future iterations of neural systems. \citep{SyntaxSQLNet}
-    \item \textbf{Domain Language} — Despite increased \textit{transferability} characteristics neural approaches still suffered from a
-          limited vocabulary and inter-domain understanding of terminology and relation between concepts which made highly domain
-          specific natural language queries challenging.
-    \item \textbf{Observability} — The black-box nature of neural networks made approaches relying on them, particularly the ones with complex
-          architectures, hard do understand / explain in case when neural systems yielded undesirable output. 
+    \item \textbf{Training Data} — Utilizing neural networks these approaches required susbtantially more training data 
+          (ie. natural language paired with output SQL queries) than traditional systems which required serious efforts of data 
+          collection \citep{Spider}.
+    \item \textbf{Correctness} — The inherent mismatch between neural networks and formal languages yielded cases where models 
+          produced invalid SQL code. Approaches like \textsc{SyntaxSQLNet} improved the tried to solve this circumstance by 
+          utilizing syntax trees during decoding but nonetheless syntactic correctness remained a challenge across future
+          iterations of neural systems. \citep{SyntaxSQLNet}
+    \item \textbf{Domain Language} — Despite increased \textit{transferability} characteristics neural approaches still suffered
+          from a limited vocabulary and inter-domain understanding of terminology and relation between concepts which made highly 
+          domain specific natural language queries challenging.
+    \item \textbf{Observability} — The black-box nature of neural networks made approaches relying on them, particularly the ones 
+          with complex architectures, hard do understand / explain in case when neural systems yielded undesirable output. 
 \end{enumerate}
 
 
-The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility of
-NLIDBs. The research shift started in this era established the foundations for further and more advanced machine learning approaches
-(specifically language model oriented approaches )being researched. Neural approaches showed to significant improvements in performance
-when being paired with pre-trained language models \citep{RATSQL} which led to further research on their applicability.
+The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility
+of NLIDBs. The research shift started in this era established the foundations for further and more advanced machine learning 
+approaches (specifically language model oriented approaches )being researched. Neural approaches showed to significant 
+improvements in performance when being paired with pre-trained language models \citep{RATSQL} which led to further research on 
+their applicability.
 
 \subsection{Pre-trained Language Models}
 
@@ -619,8 +624,8 @@ transformed nested statements into a set of top-level statements using the State
 flattening of structure allowed \textsc{Ryansql} to limit the complexity of the query generation problem whilst maintaining
 its ability to answer complex questions by recomposing complex queries from their parts. This approach allowed \textsc{Ryansql}
 to achieve 58.2\% accuracy on the \textsc{Spider} benchmark, representing a 3.2\% improvement over contemporary state-of-the-art
-approaches at the time \citep{RYANSQL}. The sketch-based approach makes \textsc{Ryansql} a PLM-augumented successor of \textsc{SQLNet}
-which was a early neural approach to employ sketch-based query generation \citep{RYANSQL, SQLNet}.
+approaches at the time \citep{RYANSQL}. The sketch-based approach makes \textsc{Ryansql} a PLM-augumented successor of 
+\textsc{SQLNet} which was a early neural approach to employ sketch-based query generation \citep{RYANSQL, SQLNet}.
 
 A significant advancement in terms of execution accuracy was reached with the application of T5-Models for NL2SQL tasks. T5
 (Text-to-Text Transfer Transformer) Models have proven themselves as well-suited for for query generation — T5-3B for NL2SQL
@@ -686,12 +691,13 @@ large language models in the following years. Namely PLM approaches brought a se
     \item \textbf{Compute Efficiency} — PLMs like \textsc{RESDSQL} achieve high accuracy (up to 84.1\% on \textsc{Spider}
         depending on variants) wilst using far fewer parameters than conteporary LLMs, making them significantly more efficient
         and therefore reduce hardware requirements for their deployment \citep{RESDSQL}.
-    \item \textbf{Transferability} — Approaches like \textsc{Grappa} and \textsc{StruG} can incorporate domain-specific understanding
-        of natural language, table structures and SQL syntax during pre-training which addressed one of the primary issues with neural
-        approaches \citep{GRAPPA, STRUG}.
-    \item \textbf{Vocabulary} — PLMs offer a larger vocabulary due to the vast amounts of training data available. This enables them to
-        handle a wide variety of natural language patterns which addresses the benchmark-overfitting tendency of neural approaches which
-        primarily trained on the development sets of contemporary benchmarks.
+    \item \textbf{Transferability} — Approaches like \textsc{Grappa} and \textsc{StruG} can incorporate domain-specific
+        understanding
+        of natural language, table structures and SQL syntax during pre-training which addressed one of the primary issues with
+        neural approaches \citep{GRAPPA, STRUG}.
+    \item \textbf{Vocabulary} — PLMs offer a larger vocabulary due to the vast amounts of training data available. This enables
+        them to handle a wide variety of natural language patterns which addresses the benchmark-overfitting tendency of neural 
+        approaches which primarily trained on the development sets of contemporary benchmarks.
 \end{enumerate}
 
 \subsubsection{Limitations of PLM Approaches}
@@ -733,20 +739,20 @@ PLMs like T5 and BERT range from millions to a few billion parameters, prevalent
 significantly larger scales, ranging from a few billions to hundred of billions parameters. The scale of LLMs enables in-context
 learning techniques that enable significantly easier and cheaper transferability of NL2SQL systems across domains \citep{DAIL-SQL}.
 The $\delta$ of deployment, inference and training requirements of these two approaches are significant due to the size difference
-in models, which transfer to hardware requirements and therefore cost. While PLMs can require extensive fine-tuning on domain-specific
-data which may aswell be resource intensive \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer the cost to the inference environment,
-where model modificants are less impactful, due to the extensive pre-training that took place. Approaches like \textsc{DinSQL} show
-that with the application of LLMs the engineering challenges around model instruction gained relevance while model training became
-less of a central problem to solve \citep{DINSQL}.
+in models, which transfer to hardware requirements and therefore cost. While PLMs can require extensive fine-tuning on
+domain-specific data which may aswell be resource intensive \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer the cost to the 
+inference environment, where model modificants are less impactful, due to the extensive pre-training that took place. Approaches 
+like \textsc{DinSQL} show that with the application of LLMs the engineering challenges around model instruction gained relevance 
+while model training became less of a central problem to solve \citep{DINSQL}.
 
 \subsection{Large Language Models}
 
-The emergence of LLMs such as GPT-3, GPT-4, and Claude fundamentally transformed the landscape of NL2SQL research. Early experiments 
-with LLMs for NL2SQL tasks showed state-of-the-art capabilities in comparsion with contemporary PLM approaches \citep{DAIL-SQL}.
-\cite{T2SQL-LLM-Bench-3} demonstrated that \textsc{Codex} (a contemporary model based on GPT-3), without any fine-tuning efforts,
-could achieve competitive performance on \textsc{Spider}, outperforming many state-of-the-art approaches that required extensive
-training. This breakthrough challenged the contemporary assumption that further specialization of model architectures would yield
-increases in NL2SQL performance (e.g. \textsc{Graphix-T5}) \citep{GRAPHIX}.
+The emergence of LLMs such as GPT-3, GPT-4, and Claude fundamentally transformed the landscape of NL2SQL research. Early 
+experiments with LLMs for NL2SQL tasks showed state-of-the-art capabilities in comparsion with contemporary PLM approaches 
+\citep{DAIL-SQL}. \cite{T2SQL-LLM-Bench-3} demonstrated that \textsc{Codex} (a contemporary model based on GPT-3), without any 
+fine-tuning efforts, could achieve competitive performance on \textsc{Spider}, outperforming many state-of-the-art approaches that 
+required extensive training. This breakthrough challenged the contemporary assumption that further specialization of model 
+architectures would yield increases in NL2SQL performance (e.g. \textsc{Graphix-T5}) \citep{GRAPHIX}.
 
 \subsubsection{In-Context Learning}
 
@@ -775,7 +781,8 @@ The comparison between zero-shot and few-shot performance reveals the accuracy g
 to models in the inference context. While contemporary LLMs (such as GPT-4) have demonstrate impressive zero-shot performance
 (achieving 72.3\% execution accuarcy on benchmarks like \textsc{Spider}) \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning 
 still shows to substantially improve model performance. \cite{DAIL-SQL} shows that even one-shot learning boosts GPT-4's
-execution accuracy to 80.2\%, representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-SQL}. 
+execution accuracy to 80.2\%, representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-
+SQL}. 
 
 Especially with complex queryies which can involve multiple tables, nested queries and complex joins, zero-shot approaches
 often dramatically underperform $k$-shot ones. NL2SQL approaches that dont supply examples to the model during inference time
@@ -827,8 +834,8 @@ ambiguous natural language queries \citep{CoE-SQL, UnnaturalQueryLanguage, NALIR
 
 Contemporary NL2SQL approaches have increasingly emphasized on the generation of query candidates and their selectiion as a
 promising architecture. Candidate selection strategies have shown significant performance improvements on challenging benchmarks.
-These approach acknowledge the inherent difficulty of generating perfect SQL queries in one attempt / using one generation mechanism,
-even with capable LLMs and modern self-correction mechanisms.
+These approach acknowledge the inherent difficulty of generating perfect SQL queries in one attempt / using one generation
+mechanism, even with capable LLMs and modern self-correction mechanisms.
 
 \cite{CHASE} introduced CHASE-SQL in \citeyear{CHASE}, a framework that leverages multiple reasoning paths to generate multiple
 query candidates. After the initial generation phase CHASE selects the most promising solution to the natural query input.
@@ -1069,8 +1076,8 @@ concerns they introduce.
           is still underexplored. 
      \item \textbf{Cross-Technique Optimization} — There is limited research on how to optimize the interplay between the various
           NL2SQL techniques. For example, it is yet unclear how subset-encoding of database schemas might impact the effectiveness
-          of multi-path generation and candidate selection, or whether synthetic example generation for in-context-learning is effective
-          when working with specialized models versus general-purpose LLMs.
+          of multi-path generation and candidate selection, or whether synthetic example generation for in-context-learning is 
+          effective when working with specialized models versus general-purpose LLMs.
 \end{enumerate}
 
 \subsubsection{Deployment and Performance Gaps}
@@ -1080,58 +1087,192 @@ to real-world, enterprise-feasible, deployments:
 
 \begin{enumerate}
     \item \textbf{Database Integration} — While existing research has often focused on standalone systems, little attention
-          has been given to the integration complexities between NL2SQL capabilities and database management systems like PostgreSQL.
-          Having two standalone systems imposes a significant data transfer need between the two systems when infact, natural language
-          queries can be treated as an extension to most existing databases. This implementation gap prevents seamless adoption into
-          existing databases as it requires additional software layers which in turn increase the overall complexity and cost.
+          has been given to the integration complexities between NL2SQL capabilities and database management systems like 
+          PostgreSQL. Having two standalone systems imposes a significant data transfer need between the two systems when infact, 
+          natural language queries can be treated as an extension to most existing databases. This implementation gap prevents 
+          seamless adoption into existing databases as it requires additional software layers which in turn increase the overall 
+          complexity and cost.
     \item \textbf{Hardware Requirement Optimization} — As mentioned above, current LLM-based approaches often require significant
-          compute resources in order to achieve state-of-the-art results. There is limited research available on performance optimization
-          of NLIDBs in order to achieve practical and industry-viable hardware constraints.
-    \item \textbf{Real-time Performance Considerations} — Most research papers evaluate models based on their accuracy metrics alone
-          without factoring in the latency and throughput characteristics of their solutions. This imposes a possibly significant $\delta$
-          between academic research and production environments. Responsiveness is an important metric for user experience and should
-          therefore play a role in NLIDB research when it comes to evaluating different NL2SQL architectures.
-    \item \textbf{Privacy and Security} — While open-source models address some privacy concerns by enabling a local deployment of LLMs,
-          research gaps remain in ensuring that NL2SQL systems respect database access controls and security policies. This is especially
-          important for enterprise and government environments where data access is strictly regulated.
+          compute resources in order to achieve state-of-the-art results. There is limited research available on performance 
+          optimization of NLIDBs in order to achieve practical and industry-viable hardware constraints.
+    \item \textbf{Real-time Performance Considerations} — Most research papers evaluate models based on their accuracy metrics 
+          alone without factoring in the latency and throughput characteristics of their solutions. This imposes a possibly 
+          significant $\delta$ between academic research and production environments. Responsiveness is an important metric for 
+          user experience and should therefore play a role in NLIDB research when it comes to evaluating different NL2SQL 
+          architectures.
+    \item \textbf{Privacy and Security} — While open-source models address some privacy concerns by enabling a local deployment of 
+          LLMs, research gaps remain in ensuring that NL2SQL systems respect database access controls and security policies. This 
+          is especially important for enterprise and government environments where data access is strictly regulated.
 \end{enumerate}
 
 \subsubsection{Ambiguity Resolution and Semantic Accuracy}
 
-Despite the long existance of the research field, fundamental questions remain open with regards to handling ambiguity effectively in natural
-language queries. Current, especially language model based, systems struggle to correctly identify when natural language queries contain ambiguities
-that they cant confidently resolve. Although some approaches like multi-path generation and candidate selection are a promising way
-to work around ambiguous language, early systems like \textsc{NaLIR} showed that the most effective way to deal with inherently ambiguous language
-is asking clarifying questions, instead of trying to interpret the query best-effort \citep{NALIR}. Ambiguous language is an inherent source of
-inaccuracy and therefore a cause for misleading query results. Contemporary research and benchmarks dont focus ambiguity detection and
-strategies resolution which therefore leaves open questions to be further researched.
-          
+Despite the long existance of the research field, fundamental questions remain open with regards to handling ambiguity effectively
+in natural language queries. Current, especially language model based, systems struggle to correctly identify when natural language
+queries contain ambiguities that they cant confidently resolve. Although some approaches like multi-path generation and candidate 
+selection are a promising way to work around ambiguous language, early systems like \textsc{NaLIR} showed that the most effective 
+way to deal with inherently ambiguous language is asking clarifying questions, instead of trying to interpret the query best-effort
+\citep{NALIR}. Ambiguous language is an inherent source of inaccuracy and therefore a cause for misleading query results. 
+Contemporary research and benchmarks dont focus ambiguity detection and strategies resolution which therefore leaves open
+questions to be further researched.
+
 \subsubsection{Evaluation and Benchmarking Gaps}
 
 \begin{enumerate}
-    \item \textbf{Enterprise-grade Evaluation} — As highlighted by \textsc{Spider 2.0}, there is a gap between academic benchmarks
-          and enterprise realities. Further research is needed to create evaluation frameworks that better represent real-world enterprise
-          environments with thousands of tables and complex relationships. \cite{Spider2} is a promising first step is this direction.
-    \item \textbf{Performance Metrics} — As mentioned above, current benchmarks often dont capture latency or throughput of NL2SQL systems
-          at all, allowing for solutions to achieve state-of-the-art scores that require significantly more resources than their predecessors.
-          Having meaningful performance metrics and benchmarking would allow to further analyze the proposed solutions for their real world
-          feasibility.
-    \item \textbf{User Experience Metrics} — Contemporary benchmarks focus on execution accuracy without assessing potential user satisfaction,
-          trust, and overall experience. Metrics that capture these aspects are necessary for understanding the actual utility of NL2SQL
-          systems in practice. Although execution accuracy is a big factor for the trustworthiness of a NLIDB, it is not the only component
-          as indicated by \citeauthor*{NALIR} in \citeyear{NALIR}.
+    \item \textbf{Enterprise-grade Evaluation} — As highlighted by \textsc{Spider 2.0}, there is a gap between academic 
+          benchmarks and enterprise realities. Further research is needed to create evaluation frameworks that better represent 
+          real-world enterprise environments with thousands of tables and complex relationships. \cite{Spider2} is a promising 
+          first step is this direction.
+    \item \textbf{Performance Metrics} — As mentioned above, current benchmarks often dont capture latency or throughput of NL2SQL 
+          systems at all, allowing for solutions to achieve state-of-the-art scores that require significantly more resources than 
+          their predecessors. Having meaningful performance metrics and benchmarking would allow to further analyze the proposed 
+          solutions for their real world feasibility.
+    \item \textbf{User Experience Metrics} — Contemporary benchmarks focus on execution accuracy without assessing potential
+          user satisfaction, trust, and overall experience. Metrics that capture these aspects are necessary for understanding the 
+          actual utility of NL2SQL systems in practice. Although execution accuracy is a big factor for the trustworthiness of a 
+          NLIDB, it is not the only component as indicated by \citeauthor*{NALIR} in \citeyear{NALIR}.
 \end{enumerate}
 
 \subsubsection{Thesis Placement}
 
 This thesis addresses several of the above outlined research gaps. The primary focus of this work is the integration of open-source
-NL2SQL models with advanced techniques like candidate selection, subset-encoding of database schemas, and synthetic example generation
-for in-context learning. Through the implementation of a PostgreSQL extension this work will bridge multiple critical gaps between
-theoretical advancements and their practical deployability into real world systems whilst exploring performance characteristics. 
+NL2SQL models with advanced techniques like candidate selection, subset-encoding of database schemas, and synthetic example 
+generation for in-context learning. Through the implementation of a PostgreSQL extension this work will bridge multiple critical 
+gaps between theoretical advancements and their practical deployability into real world systems whilst exploring performance 
+characteristics. 
 
 \newpage
 
 \section{Theoretical Foundations}
+
+This section serves as an introduction to the theoretical concepts utilized in this thesis. It is meant to establish a
+baseline of understanding for the design, implementation and evaluation phases. This section briefly covers relational
+database theory (incl. SQL), machine learning fundamentals and their subsequent application for large language models
+and the inner workings of PostgreSQL and its extension architecture at a high level.
+
+\subsection{Relational Database Theory}
+
+The relational database theory provides a mathematical framework for formalizing data layout in database management
+systems (DBMS), enabling efficient storage and retrieval mechanisms. This theory is helps to understand the way in
+which natural language queries need to be translated into database operations and what challenges arise during this
+translation.
+
+\subsubsection{Relational Model Fundamentals}
+
+The relational model was introduced by \citeauthor{RelationalModel} in \citeyear{RelationalModel} and essentially forms
+the theoretical foundation for most modern database systems \citep{RelationalModel, Rendezvous}. A relational database
+organizes data in relations (ie. tables), where each relation consists of tuples (ie. rows) containing attributes
+(ie. columns) of specific domains (ie. data types and constraints). The mathematical origins of this model root in
+set theory and first-order predicate logic \citep{RelationalModel, DatabaseSystemIntro}.
+
+Furthermore the relational model abstracts data storage and respective physical implementation details by design,
+allowing interactions with data through respective logical structures (relations, tuples, attributes etc.) rather than
+exposing the underlying storage mechanism. This abstraction is fundamental for NL2SQL systems, as natural language
+queries can be mapped into queries on these structures regardless of underlying physical storage implementation,
+allowing for better transferability of NL2SQL systems (e.g. across different database deployments).
+
+\subsubsection{Core Concepts}
+
+The core concepts of the relational model that are relevant for this thesis include:
+
+\begin{itemize}
+    \item \textbf{Relations} — Mathematical sets of tuples representing entities (e.g. employees, products) or
+          relationships (e.g. enrollment, purchases). Each relation has a fixed structure.
+    \item \textbf{Tuples} — Tuples represent rows of data, by grouping a several attributes into one logical unit
+          (e.g. one specific purchase, containing the amount, date and shop). All tuples in the same relation share
+          the same structure.
+    \item \textbf{Attributes} — Attributes are frequently referred to as columns, representing a specific dimension
+          of a tuple (e.g. customers have names). Attributes are represented in a fixed domain.
+    \item \textbf{Domains} — Domains are sets of allowed values for attributes, including mathematically formalizing
+          data types and constraints.
+    \item \textbf{Schemas} — Structural definitions specifying relations, their attribute names, domains, and integrity
+          constraints.
+    \item \textbf{Primary Keys} — Attributes that uniquely identify tuples within a relation. These
+          ensure entity integrity and ensure referential relationships.
+    \item \textbf{Foreign Keys} — Attributes referencing primary keys in other relations, allowing databases to maintain
+          referential integrity and enabling semantically correct complex queries across multiple tables through joins.
+\end{itemize}
+
+These concepts form the semantic foundation that natural language interfaces must navigate when translating user queries
+into formal database operations. As shown in the literature review \textit{schema-linking} is a crucial problem of
+NLIDBs — establishing an understanding of which relations a natural language query refers to is the first step of
+formalizing a database operation for retrieval.
+
+\subsubsection{SQL as a Declarative Query Language}
+
+Structured Query Language (SQL) is a defacto standard for interfacing with relational databases. It is a declarative
+language to describe database operations like selection, insertion, updating and deletion of database contents. SQL's
+design is strongly influenced by relational algebra and tuple relational calculus. It enables complex data retrieval
+through a readable query syntax incorporating relational algebra operations like:
+
+\begin{itemize}
+    \item \textbf{Selection} ($\sigma$) — Filtering tuples based on specified conditions
+    \item \textbf{Projection} ($\pi$) — Extracting specific attributes from relations
+    \item \textbf{Joins} ($\bowtie$) — Combining data from multiple relations based on common attributes
+    \item \textbf{Aggregation} — Computing summary statistics over groups of tuples
+\end{itemize}
+
+The basic syntax of SQL queries follows a logical pattern that reflects these theoretical operations:
+
+\begin{verbatim}
+SELECT attributes      -- Project attributes
+FROM relations         -- Specify relations to use
+WHERE conditions       -- Selection of tuples
+GROUP BY attributes    -- Grouping for aggregation
+HAVING conditions      -- Group-level filtering
+ORDER BY attributes    -- Ordering of results
+\end{verbatim}
+
+There are further operations like various types of \texttt{JOIN}s, \texttt{OFFSET}, \texttt{LIMIT}, \texttt{WITH}
+that are heavily used in SQL which are excluded for readability and simplicity.
+
+The nature of SQL creates a fundamental challenge for NL2SQL systems; natural language queries express (often fuzzy) user
+intent in terms of desired output (e.g., ``Give me 5 great movies'') while SQL formalizes an explicit and discrete way
+of how to retrieve this information from the database:
+
+\begin{verbatim}
+SELECT m.title, AVG(r.score) as rating
+FROM movies m
+JOIN ratings r ON m.movie_id = r.movie_id
+GROUP BY m.movie_id, m.title
+HAVING AVG(r.score) >= 8
+ORDER BY rating DESC
+LIMIT 5
+\end{verbatim}
+
+This semantic gap between natural language and formal queries represents the core challenge that this thesis addresses.
+
+Furthermore, SQL's compositional nature allows complex queries to be built from simpler components through nesting and
+combination of operations. NL2SQL systems must therefore not only fill in the individual query components but also how
+to compose these to semantically accurate and syntactically correct query statements. This is particularly important when
+dealing with complex natural language queries that may require multi-clause SQL statements involving subqueries, multiple
+joins, and aggregation functions to answer.
+
+\subsubsection{Normalization and Schema Design}
+
+Database schemas typically follow normalization principles to eliminate redundancy and maintain data integrity. The normal forms
+(1NF, 2NF, 3NF, BCNF) provide a set of design guidelines and rules for relational database design to reduce duplication,
+inconsistencies and anomalies \citep{DatabaseSystemIntro}. Understanding normalization forms is crucial for NL2SQL systems to handle:
+
+\begin{itemize}
+    \item \textbf{Schema complexity} — Normalized schemas often distribute logically related information across multiple tables,
+          requiring natural language interfaces to understand implicit relationships and generate appropriate joins.
+    \item \textbf{Semantic mapping} — Humans typically think about data in denormalized, conceptual terms, while relational databases
+          store data in its normalized form. NL2SQL systems must overcome this layout difference (e.g. there is no 1:1 mapping
+          of concepts to tables).
+    \item \textbf{Query complexity} — Retrieving simple information from relational databases may require multiple joins in normalized schemas,
+          challenging NL2SQL systems to generate potentially complex SQL statements from simple user requests.
+\end{itemize}
+
+The tension between normalized database design and intuitive natural language use represents a key challenge that influences
+the architecture and design decisions explored in subsequent sections of this thesis.
+
+\subsection{Machine Learning Fundamentals}
+
+
+
+
+
 
 \subsection{Problem Decomposition}
 
