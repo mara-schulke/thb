@@ -564,11 +564,6 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     Text-to-SQL, the task of translating natural language questions into SQL queries, plays a crucial role in enabling non-experts to interact with databases. While recent advancements in large language models (LLMs) have significantly enhanced text-to-SQL performance, existing approaches face notable limitations in real-world text-to-SQL applications. Prompting-based methods often depend on closed-source LLMs, which are expensive, raise privacy concerns, and lack customization. Fine-tuning-based methods, on the other hand, suffer from poor generalizability due to the limited coverage of publicly available training data. To overcome these challenges, we propose a novel and scalable text-to-SQL data synthesis framework for automatically synthesizing large-scale, high-quality, and diverse datasets without extensive human intervention. Using this framework, we introduce SynSQL-2.5M, the first million-scale text-to-SQL dataset, containing 2.5 million samples spanning over 16,000 synthetic databases. Each sample includes a database, SQL query, natural language question, and chain-of-thought (CoT) solution. Leveraging SynSQL-2.5M, we develop OmniSQL, a powerful open-source text-to-SQL model available in three sizes: 7B, 14B, and 32B. Extensive evaluations across nine datasets demonstrate that OmniSQL achieves state-of-the-art performance, matching or surpassing leading closed-source and open-source LLMs, including GPT-4o and DeepSeek-V3, despite its smaller size. We release all code, datasets, and models to support further research.}
 }
 
-
-
-
-
-
 % Benchmarks
 
 @misc{BIRD,
@@ -610,9 +605,40 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Theory
 
+@article{RelationalModel,
+    author = {Codd, E. F.},
+    title = {A relational model of data for large shared data banks},
+    year = {1970},
+    issue_date = {June 1970},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {13},
+    number = {6},
+    issn = {0001-0782},
+    url = {https://doi.org/10.1145/362384.362685},
+    doi = {10.1145/362384.362685},
+    journal = {Commun. ACM},
+    month = jun,
+    pages = {377–387},
+    numpages = {11},
+    keywords = {composition, consistency, data bank, data base, data integrity, data organization, data structure, derivability, hierarchies of data, join, networks of data, predicate calculus, redundancy, relations, retrieval language, security},
+    abstract = {Future users of large data banks must be protected from having to know how the data is organized in the machine (the internal representation). A prompting service which supplies such information is not a satisfactory solution. Activities of users at terminals and most application programs should remain unaffected when the internal representation of data is changed and even when some aspects of the external representation are changed. Changes in data representation will often be needed as a result of changes in query, update, and report traffic and natural growth in the types of stored information.Existing noninferential, formatted data systems provide users with tree-structured files or slightly more general network models of the data. In Section 1, inadequacies of these models are discussed. A model based on n-ary relations, a normal form for data base relations, and the concept of a universal data sublanguage are introduced. In Section 2, certain operations on relations (other than logical inference) are discussed and applied to the problems of redundancy and consistency in the user's model.},
+}
 
+@book{DatabaseSystemIntro,
+    author = {Date, C.J.},
+    title = {An Introduction to Database Systems},
+    year = {2003},
+    isbn = {0321197844},
+    publisher = {Addison-Wesley Longman Publishing Co., Inc.},
+    address = {USA},
+    edition = {8},
+    abstract = {For over 25 years, C. J. Date's An Introduction to Database Systems has been the authoritative resource for readers interested in gaining insight into and understanding of the principles of database systems. This revision continues to provide a solid grounding in the foundations of database technology and to provide some ideas as to how the field is likely to develop in the future.. "Readers of this book will gain a strong working knowledge of the overall structure, concepts, and objectives of database systems and will become familiar with the theoretical principles underlying the construction of such systems.}
+}
 
 
 
