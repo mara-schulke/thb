@@ -1269,6 +1269,34 @@ the architecture and design decisions explored in subsequent sections of this th
 
 \subsection{Machine Learning Fundamentals}
 
+\subsubsection{Neural Networks}
+
+% already wrote about NNs and their foundations
+
+\subsubsection{Sequence to Sequence Architecture}
+
+\subsubsection{Transformer Architecture}
+
+The transformer architecture advanced the sequence processing capabilities of neural networks and enabled parallelized inference
+which was a critical limitation in efficiency of RNNs and LSTMs. Namely the introduction of attention (sometimes referenced as self-
+attention) allow transformers led to this leap in capability \citep{Attention}. The core architectural characteristics of transformers
+include:
+
+\begin{enumerate}
+	\item \textbf{Input Embedding} — Techniques like \textsc{Word2Vec} allow the semantic representation of words and tokens in 
+		embeddings (ie. vectors in a N-dimensional space).
+	\item \textbf{Positional Encoding} — Allows transformers to keep track of each tokens position in a sequence by adding the
+	 	output of an offset function onto the original embedding.
+	\item \textbf{Self-Attention} — Essentially weighting the relationship between tokens and the semantic importance of tokens.
+	    Attention allows for both parallelized encoding, as well as semantic aware decoding, by calculating encoder-decoder attention 
+	    prior to decoding.              
+\end{enumerate}
+
+Due to these architectural properties, transformers are better positioned to capture long-range dependencies in input sequences,
+and preserving them into the decoding phase – rendering them as the state-of-the-art model architecture for NL2SQL.
+
+
+
 
 
 
@@ -1279,6 +1307,7 @@ the architecture and design decisions explored in subsequent sections of this th
 \subsection{Requirements}
 
 % Conceptual Design
+
 \subsection{System Design}
 
 \subsubsection{Architecture Design}
@@ -1288,6 +1317,7 @@ the architecture and design decisions explored in subsequent sections of this th
 \newpage
 
 % Implementation
+
 \section{Implementation}
 
 \subsection{Development Environment and Tools}
