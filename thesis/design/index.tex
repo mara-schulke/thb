@@ -34,6 +34,7 @@ example selection ($\sigma$), query preprocessing, schema subsetting ($\phi$),
 model inference ($\pi$), self-correction ($\rho$) and majority voting ($\nu$)
 in order to convert a natural language query $q$ into a corresponding SQL query $\omega$.
 
+% TODO: Revisit
 % NOTE Draw diagram of nq
 <pipeline-diagram>
 %
@@ -43,7 +44,7 @@ The most notable characteristics of \textsc{Natural} lie in it's capabilities fo
 learning, example selection and portability which allow the system to iteratively
 adapt to unseen database schemas.
 
-
+% TODO: Revisit
 \subsection{Definitions}
 
 The following sets are subsequently used to describe the systems capabilities: 
@@ -78,6 +79,7 @@ $$
 
 where $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$, and $\omega \in \Omega_{\mathcal{S}}$.
 
+% TODO: Revisit
 \subsection{Selection Function – $\sigma$}
 
 The selection function $\sigma$ retrieves the most relevant examples from the
@@ -115,6 +117,7 @@ This approach ensures that examples are weighted by the following properties:
 \end{enumerate}
 
 
+% TODO: Revisit
 \subsection{Subsetting Function – $\phi$}
 
 The subsetting function $\phi$ intelligently reduces the database schema to only include
@@ -146,6 +149,7 @@ This analysis enables the system to steer the model's attention on the most rele
 portions of potentially large and complex database schemas, thereby improving both accuracy
 and computational efficiency.
 
+% TODO: Revisit
 \subsection{Projection Function – $\pi$}
 
 The projection function $\pi$ represents the core translation mechanism that converts
@@ -177,7 +181,7 @@ optimized for large language model inference. The model then generates a SQL que
 that attempts to capture the semantic intent of the natural language input while
 adhering to the constraints imposed by the database schema.
 
-
+% TODO: Revisit
 \subsection{Refinement Function – $\rho$}
 
 The refinement function $\rho$ implements a self-correction mechanism that iteratively
@@ -211,6 +215,8 @@ an improved version based on the identified issues. This iterative refinement
 process continues until a valid, executable query is produced or a maximum number
 of refinement attempts is reached.
 
+
+% TODO: Revisit
 \subsection{Voting Function – $\nu$}
 
 The voting function $\nu$ implements a consensus mechanism that selects the most
