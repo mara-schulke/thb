@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage[natbibapa]{apacite}
+
+\graphicspath{{./images/}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{\fancyplain{}{Mara Schulke} }
+\rhead{\fancyplain{}{\today}}
+\cfoot{\fancyplain{}{\thepage}}
+  
+\newcommand{\figuresource}[1]{
+	\begin{center}Source: {#1}\end{center}
+}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\small\bfseries}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+\import{front-matter}{index}
+
+% 1/3 Vorarbeit, Literature Review
+
+\import{chapters/01-introduction}{index}
+\import{chapters/02-literature-review}{index}
+
+% 1/3 Theory, Decomp und System Design
+\import{chapters/03-theoretical-foundations}{index}
+\import{chapters/04-design}{index}
+
+% 1/3 Implementation und Evaluation
+\import{chapters/05-implementation}{index}
+\import{chapters/06-evaluation}{index}
+\import{chapters/07-discussion}{index}
+\import{chapters/08-conclusion}{index}
+
+\import{back-matter}{index}
+
+\end{document}

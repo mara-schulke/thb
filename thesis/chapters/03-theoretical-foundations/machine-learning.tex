@@ -1,0 +1,53 @@
+\subsection{Machine Learning Fundamentals}
+
+Machine learning represents the algorithmic foundation for state-of-the-art NL2SQL systems, enabling systems to learn how natural
+language queries translate into SQL. Understanding these foundations is essential for implementing and optimizing large language
+model-based NL2SQL approaches.
+
+\subsubsection{Neural Network Architecture}
+
+Neural networks are the computational concept behind contemporary NL2SQL approaches, representing complex capabilities through
+compositions of simpler operations. A neural network consists of interconnected computational units (called neurons) organized
+in layers, where each connection has an associated (and learnable) weight and bias parameters.
+
+The fundamental computation paradigm of neural network outputs is called forward propagation, which is applying the respective weights ($W$)
+and biases ($b$) to the input parameter ($a$) and transforming it using a (non-linear) activation function $f$:
+
+\begin{equation}
+a^{l+1} = f(Wa^l + b)
+\end{equation}
+
+where $W \in \mathbb{R}^{m \times n}$ is the weight matrix, $a \in \mathbb{R}^{n}$ is the input vector, $b \in \mathbb{R}^{m}$ is
+the bias vector, and $f$ is an activiation function (e.g. ReLU, sigmoid, or tanh). Using this function repeatedly, propagates information
+through the neural network.
+
+The most important architectural components for language processing models include:
+
+\begin{itemize}
+    \item \textbf{Feedforward Networks} — Which can process fixed-size inputs through successive linear transformations and activations,
+          this architecture is particularly suitable for classification and regression problems within NL2SQL systems.
+    \item \textbf{Recurrent Networks (RNNs/LSTMs)} — Which can handle sequential data of variable-length by maintaining hidden states
+          that capture dependencies, enabling processing of natural language sequences of arbitrary length.
+    \item \textbf{Embedding Layers} — Which map discrete tokens (e.g. words, characters, or subwords) to a dense vector representation,
+          thus providing the foundation for subsequent neural language processing.
+\end{itemize}
+
+The ability of neural networks to learn hierarchical representations through multiple layers makes them particularly well-suited for
+the complex translation required in NL2SQL systems.
+
+\subsubsection{Sequence-to-Sequence Models}
+
+Sequence-to-sequence (Seq2Seq) models established the foundational architecture for neural NL2SQL approaches \citep{Seq2SQL, SQLNet}.
+These models which rely on RNNs and LSTMs addressed the fundamental challenge of mapping variable-length input sequences (natural
+language queries) to variable-length output sequences (SQL statements).
+
+The Seq2Seq model architecture is composed out of three essential components:
+
+\begin{enumerate}
+    \item \textbf{Encoder} — Process the input natural language sequence $x_1, x_2, \ldots, x_n$ into a sequence of hidden
+          representations $h_1, h_2, \ldots, h_n$, capturing the semantic content of the query.
+    \item \textbf{Decoder} — Generates the output SQL sequence $y_1, y_2, \ldots, y_m$ autoregressively, where each token is
+          predicted based on previous outputs and encoder representations.
+    \item \textbf{Attention} — Allows the decoder to selectively focus on relevant portions of the input sequence, addressing
+          the information bottleneck of fixed-size context vectors.
+\end{enumerate}

@@ -1,0 +1,116 @@
+\subsection{Relational Database Theory}
+
+The relational database theory provides a mathematical framework for formalizing data layout in database management
+systems (DBMS), enabling efficient storage and retrieval mechanisms. This theory is helps to understand the way in
+which natural language queries need to be translated into database operations and what challenges arise during this
+translation.
+
+\subsubsection{Relational Model Fundamentals}
+
+The relational model was introduced by \citeauthor{RelationalModel} in \citeyear{RelationalModel} and essentially forms
+the theoretical foundation for most modern database systems \citep{RelationalModel, Rendezvous}. A relational database
+organizes data in relations (ie. tables), where each relation consists of tuples (ie. rows) containing attributes
+(ie. columns) of specific domains (ie. data types and constraints). The mathematical origins of this model root in
+set theory and first-order predicate logic \citep{RelationalModel, DatabaseSystemIntro}.
+
+Furthermore the relational model abstracts data storage and respective physical implementation details by design,
+allowing interactions with data through respective logical structures (relations, tuples, attributes etc.) rather than
+exposing the underlying storage mechanism. This abstraction is fundamental for NL2SQL systems, as natural language
+queries can be mapped into queries on these structures regardless of underlying physical storage implementation,
+allowing for better transferability of NL2SQL systems (e.g. across different database deployments).
+
+\subsubsection{Core Concepts}
+
+The core concepts of the relational model that are relevant for this thesis include:
+
+\begin{itemize}
+    \item \textbf{Relations} — Mathematical sets of tuples representing entities (e.g. employees, products) or
+          relationships (e.g. enrollment, purchases). Each relation has a fixed structure.
+    \item \textbf{Tuples} — Tuples represent rows of data, by grouping a several attributes into one logical unit
+          (e.g. one specific purchase, containing the amount, date and shop). All tuples in the same relation share
+          the same structure.
+    \item \textbf{Attributes} — Attributes are frequently referred to as columns, representing a specific dimension
+          of a tuple (e.g. customers have names). Attributes are represented in a fixed domain.
+    \item \textbf{Domains} — Domains are sets of allowed values for attributes, including mathematically formalizing
+          data types and constraints.
+    \item \textbf{Schemas} — Structural definitions specifying relations, their attribute names, domains, and integrity
+          constraints.
+    \item \textbf{Primary Keys} — Attributes that uniquely identify tuples within a relation. These
+          ensure entity integrity and ensure referential relationships.
+    \item \textbf{Foreign Keys} — Attributes referencing primary keys in other relations, allowing databases to maintain
+          referential integrity and enabling semantically correct complex queries across multiple tables through joins.
+\end{itemize}
+
+These concepts form the semantic foundation that natural language interfaces must navigate when translating user queries
+into formal database operations. As shown in the literature review \textit{schema-linking} is a crucial problem of
+NLIDBs — establishing an understanding of which relations a natural language query refers to is the first step of
+formalizing a database operation for retrieval.
+
+\subsubsection{SQL as a Declarative Query Language}
+
+Structured Query Language (SQL) is a defacto standard for interfacing with relational databases. It is a declarative
+language to describe database operations like selection, insertion, updating and deletion of database conte/home/mara/Workspace/thb/thesis/main.texnts. SQL's
+design is strongly influenced by relational algebra and tuple relational calculus. It enables complex data retrieval
+through a readable query syntax incorporating relational algebra operations like:
+
+\begin{itemize}
+    \item \textbf{Selection} ($\sigma$) — Filtering tuples based on specified conditions
+    \item \textbf{Projection} ($\pi$) — Extracting specific attributes from relations
+    \item \textbf{Joins} ($\bowtie$) — Combining data from multiple relations based on common attributes
+    \item \textbf{Aggregation} — Computing summary statistics over groups of tuples
+\end{itemize}
+
+The basic syntax of SQL queries follows a logical pattern that reflects these theoretical operations:
+
+\begin{verbatim}
+SELECT attributes      -- Project attributes
+FROM relations         -- Specify relations to use
+WHERE conditions       -- Selection of tuples
+GROUP BY attributes    -- Grouping for aggregation
+HAVING conditions      -- Group-level filtering
+ORDER BY attributes    -- Ordering of results
+\end{verbatim}
+
+There are further operations like various types of \texttt{JOIN}s, \texttt{OFFSET}, \texttt{LIMIT}, \texttt{WITH}
+that are heavily used in SQL which are excluded for readability and simplicity.
+
+The nature of SQL creates a fundamental challenge for NL2SQL systems; natural language queries express (often fuzzy) user
+intent in terms of desired output (e.g., ``Give me 5 great movies'') while SQL formalizes an explicit and discrete way
+of how to retrieve this information from the database:
+
+\begin{verbatim}
+SELECT m.title, AVG(r.score) as rating
+FROM movies m
+JOIN ratings r ON m.movie_id = r.movie_id
+GROUP BY m.movie_id, m.title
+HAVING AVG(r.score) >= 8
+ORDER BY rating DESC
+LIMIT 5
+\end{verbatim}
+
+This semantic gap between natural language and formal queries represents the core challenge that this thesis addresses.
+
+Furthermore, SQL's compositional nature allows complex queries to be built from simpler components through nesting and
+combination of operations. NL2SQL systems must therefore not only fill in the individual query components but also how
+to compose these to semantically accurate and syntactically correct query statements. This is particularly important when
+dealing with complex natural language queries that may require multi-clause SQL statements involving subqueries, multiple
+joins, and aggregation functions to answer.
+
+\subsubsection{Normalization and Schema Design}
+
+Database schemas typically follow normalization principles to eliminate redundancy and maintain data integrity. The normal forms
+(1NF, 2NF, 3NF, BCNF) provide a set of design guidelines and rules for relational database design to reduce duplication,
+inconsistencies and anomalies \citep{DatabaseSystemIntro}. Understanding normalization forms is crucial for NL2SQL systems to handle:
+
+\begin{itemize}
+    \item \textbf{Schema complexity} — Normalized schemas often distribute logically related information across multiple tables,
+          requiring natural language interfaces to understand implicit relationships and generate appropriate joins.
+    \item \textbf{Semantic mapping} — Humans typically think about data in denormalized, conceptual terms, while relational databases
+          store data in its normalized form. NL2SQL systems must overcome this layout difference (e.g. there is no 1:1 mapping
+          of concepts to tables).
+    \item \textbf{Query complexity} — Retrieving simple information from relational databases may require multiple joins in normalized schemas,
+          challenging NL2SQL systems to generate potentially complex SQL statements from simple user requests.
+\end{itemize}
+
+The tension between normalized database design and intuitive natural language use represents a key challenge that influences
+the architecture and design decisions explored in subsequent sections of this thesis.

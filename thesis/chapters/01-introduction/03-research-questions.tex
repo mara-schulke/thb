@@ -1,0 +1,58 @@
+\subsection{Research Questions}
+
+% \subsubsection{Primary Research Questions}
+
+\subsubsection*{RQ1 — Are natural language database interfaces feasible for real world application?}
+
+The primary research questions when it comes to natural language database interfaces evolve around their
+semantic accuracy and reliability, therefore questioning their feasibility for real world usage.
+LLMs have notoriously been known for their ability to hallucinate / produce false, but promising outputs.
+This behaviour can be especially  dangerous when opting for data driven decisions that rely on false data
+due to a mistranslation from natural language to SQL. LLMs could cause hard to understand and debug behaviour,
+like false computation of distributions when the intermediate format is not being shown to the user. This
+thesis tries to determine whether such hallucinations could be reasonably prevented and whether the associated
+performance and hardware requirements are suitable for a real world deployment, outside of research situations.
+
+Specifically the two big underlying questions are:
+
+\begin{enumerate}
+    \item Is the semantic accuracy of natural language database interfaces high enough to yield a noticable
+          benefit to users?
+    \item Is it possible to run such an interface on reasonable, mass available hardware (e.g. excluding high end research GPUs).
+\end{enumerate}
+
+\subsubsection*{RQ2 — What approaches are most effective in resolving ambiguity when translating natural language queries into SQL?}
+
+To provide semantically correct results ambiguity in the user-provided natural language queries must be 
+adequately addressed. This thesis investigates various approaches to ambiguity management and
+resolution. Natural language queries can demonstrate ambiguity even at low levels of complexity —
+e.g. there are two different types of "sales" in a database schema, and the user asks to retireve
+"all sales".
+
+Such situations present the second major challenge associated with the practical implementation of natural
+language database interfaces. The success of this concept will significantly depend on whether suitable 
+designs and mitigation techniques can be implemented without creating problems with regards to the 
+aforementioned performance and hardware requirements. The research focus lies on both preventative measures
+through optimized pre-processing stages and prompt engineering techniques as well as reactive strategies
+that post process LLM output, either on the basis of further user input or context inference.
+
+\subsubsection*{RQ3 — Which strategies are increasing semantic accuracy of queries?}
+
+In order to enhance the semantic accuracy a series of improvements may be applied to the pipeline.
+Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
+interactive contextual reasoning through a conversational interface which would allow for user
+refinement, the implementation of a robust SQL parsing and validation mechanism and a hybrid approach
+partly relying on traditional NLP preprocessing techniques. This research will quantify semantic accuracy
+using popular NL2SQL benchmarks and empirically evaluate the impact each approach has on the benchmark
+performance. Furthermore this research will take a look at the optimal combination of the aforementioned
+solutions in order to develop a system that strikes the right balance between accuracy and performance.
+
+% \subsubsection{Secondary Research Questions}
+
+% \subsubsection*{RQ4 — What use cases are most suitable for natural language database interfaces?}
+
+% \subsubsection*{RQ5 — Where are the limitations of natural language database interfaces?}
+
+% \subsubsection*{RQ6 — How is NL2SQL model performance impacted through model selection, fine tuning and pre/post processing?}
+
+\newpage

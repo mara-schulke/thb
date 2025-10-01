@@ -1,0 +1,48 @@
+\subsection{Foundations of Natural Language Interfaces to Databases}
+
+Earlier papers in the research landscape on Natural Language Database Interfaces (NLIDBs) date over half
+a century back, into the early 1970s. Two decades after the first major research systems where developed
+in this domain, \citeauthor*{NLIDBs} have published an introduction and an overview over NLIDBs where an overview of
+state-of-the-art approaches were provided. \citep{NLIDBs} Their work outlined multiple key issues and challenges
+associated with NLIDBs, and compared them against existing / competing solutions like formal query languages,
+form-based interfaces and graphical interfaces. These challenges (like unobvious limits, linguistic ambiguities,
+semantic inaccuracy, tedious configuration etc.) have shaped this field of research and are still considered relevant
+metrics today.
+
+Early NLIDBs primarily relied on traditional natural language processing (NLP) techniques in order to achieve
+natural language understanding capabilities. With \textsc{Chill} an inductive logic programming (ILP) approach
+was first introduced for NL2SQL systems, marking one of the key events when it comes to machine learning usage.
+\citep{ILPParsing} In \citeyear{ILPParsing2} \citeauthor*{ILPParsing2} have extended the approach of ILP
+parsing for natural language database queries with multi clause construction, yielding promising results
+in the field of NLIDBs. \citep{ILPParsing2}
+
+Building on the systematic overview of \citeauthor*{NLIDBs} and the first machine learning approaches from
+\citeauthor*{ILPParsing} aswell as \citeauthor*{ILPParsing2}, \citeauthor{NLIDBTheory} have proposed a novel 
+approach for implementing NLIDBs and outperformed at the time state-of-the-art solutions from \cite{ILPParsing} 
+\cite{ILPParsing2} — achieving 80\% semantic accuracy. \citep{NLIDBTheory} The novelty of the \textsc{Percise}
+system lies in its natural language processing approach, specifically its lexical mapping strategy, allowing 
+\textsc{Percise} to identify questions it can, and can't answer (introducing the concept of \textit{semantically 
+tractable questions}) which therefore results in a better and interactive end user experience. Their experiements 
+also showed that this approach is \textit{transferrable} and \textit{unbiased} — it is possible to feed in new, 
+unknown questions into the system and maintain performance characteristics, whereas it was shown that 
+\cite{ILPParsing} were suffering from a distribution drift of the questions asked. \citep{NLIDBTheory}
+
+The theoretical foundations and research questions highlighted by the aforementioned works, shaped the research
+field and highlighted the following, ongoing research:
+
+\begin{enumerate}
+    \item The trade-off characteristics derived from choosing a machine learning vs. traditional NLP approach (e.g. 
+          \textsc{Chill} versus \textsc{Percise}). E.g. coverage versus correctness. \citep{ILPParsing, NLIDBTheory}
+    \item The linguistic challenges associated with bringing NLIDBs into use (e.g. semantic inaccuracy, linguistic 
+          ambiguity, unclear language coverage etc.) \citep{NLIDBs}
+    \item The value of systems and approaches which double down on reliability and semantic accuracy rather than giving
+          promising but incorrect answers. \citep{NLIDBs, NLIDBTheory}
+\end{enumerate}
+
+Fundamentally this highlights the tension and mismatch between the characteristics of natural language, which is 
+able to be ambiguous, \textit{semantically untractable} or able to be incomplete in meaning and formal languages
+like SQL which always have on deterministic and \textit{semantically tractable} meaning they convey in each statement. 
+As Schneiderman and Norman have pointed out according to \citeauthor*{NLIDBTheory}, users are ``unwilling to trade 
+reliable and predictable user interfaces for intelligent but unreliable ones'' which induces performance expectations
+on NLIDB implementations to be highly certain about the questions it can, and can't answer, whilst maintaing as high
+as possible natural language coverage. \citep{NLIDBTheory}

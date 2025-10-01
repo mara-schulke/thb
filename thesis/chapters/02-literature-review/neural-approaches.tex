@@ -1,0 +1,135 @@
+\subsection{Neural NL2SQL Approaches}
+
+The previously outlined limitations of traditional approaches to solving NL2SQL / implementing NLIDBs pushed the research
+branch around neural network application forward to step in and propose new solutions which address the brittleness, 
+transferability and scalability concerns addressed with logical programming approaches. Neural approaches showed to yield
+significant improvements in terms of transferability and overall accuracy which led to a paradigm shift in this research
+field.
+
+\subsubsection{Early Neural Approaches}
+
+In \citeyear{Seq2SQL} \citeauthor*{Seq2SQL} released Seq2SQL which represents a significant breakthrough and leap in NLIDB 
+research. Seq2SQL was an early research system that in the field of neural network application and as one of the first papers
+to frame the implementation of NLIDBs / NL2SQL Systems as a reinforement learning problem. The system utilized iterative query 
+execution in the reward function to improve its accuracy \citep{Seq2SQL}. In the same paper \citeauthor*{Seq2SQL} introduced 
+WikiSQL, a training dataset, which enables large scale (in \citeyear{Seq2SQL}) model training.
+
+SQLNet \citep{SQLNet} addressed primarily the order-sensitivitiy trait of Seq2SQL \citep{Seq2SQL} that was prevalent due to being
+a derivative approach from sequence-to-sequence approaches. SQLNet diverges from sequence-to-sequence and joins multiple research 
+threads, employing a sketch-based query generation. SQLNet breaks down complex queries into smaller (hence more manageable)
+sub-queries which can then be individually sketched and refined, yielding a system that outperformed state-of-the-art by 9\% 
+to 13\% \citep{SQLNet}.
+
+\citeauthor*{TypeSQL} have introduced \textsc{TypeSQL}, a variation of the SQLNet-approach, in \citeyear{TypeSQL}.
+\textsc{TypeSQL}'s primary difference to SQLNet is the encoding of type information for SQL generation. The approach scanned
+for entity references and values in natural language and was able to improve performance by 5.5\% over SOTA-Models like
+SQLNet whilst requiring significantly less training time, indicating that type information was a useful information for deriving 
+accurate SQL queries from user input \citep{TypeSQL}.
+
+\subsubsection{Intermediate Neural Developments}
+
+Later in \citeyear{SyntaxSQLNet} \citeauthor*{SyntaxSQLNet} released SyntaxSQLNet, a followup research to \textsc{TypeSQL},
+which represented a slight change in approach and research focus. In direct comparison SyntaxSQLNet focused primarily around
+complex query generation using a syntax tree decoder, allowing for longer and more cohesive query generation \citep{SyntaxSQLNet}.
+This advancement over \textsc{TypeSQL} allowed more complex queries to be reliably generated, enabling multiple clauses aswell as
+nested queries. SyntaxSQLNet was one of the earlier research efforts which utilized Spider instead of WikiSQL (introduced by 
+\cite{Seq2SQL}), a large-scale NL2SQL dataset, incorperating 10.181 hand annotated natural language question and alongside
+5.693 unique SQL examples that spread across 138 different domains \citep{Spider}. This research led the transition of
+comparatively simple, research-grade, neural systems for NLIDBs towards systems which are feasible in the real world.
+
+Building on the above approaches, \citeauthor*{IRNet} have introduced IRNet, a neural network approach using intermediate
+representation as a bridge between natural language and SQL in which semantic queries could be expressed. The intermediate
+format SemQL (or semantic query language) was utilized to transform and synthesize queries on the actual database schema more
+accurately than Seq2SQL. IRNet followed a three phase approach: schema linking between the natural language query and database
+layout, synthesis of SemQL as intermediate representation and deterministic conversion of SemQL to SQL. This approach allowed
+IRNet to outperform state-of-the-art approaches on the \textsc{Spider} benchmark by 19.5\%, placing IRNet at an overall accuracy
+of 46.7\% \citep{IRNet}.
+
+Following IRNet, graph neural networks (GNN) have been explored as alternative architecture by \cite{GNN}, representing the
+database schema as a graph and using message passing to model relationships between tables, columns and natural language input.
+This approach demonstrated the capability to improve reasoning and query generation capability. \citeauthor{GNN} showed that when 
+evaluating against the \textsc{Spider} benchmark GNN outperforms both SyntaxSQLNet (and therefore \textsc{SQLNet} and
+\textsc{TypeSQL}). Although presenting a signficiant advancement over previous state-of-the-art approaches, GNN falls behind in
+performance against IRNet by 6\% \citep{IRNet, GNN}.
+
+\subsubsection{Relation-Aware Transformer Approaches}
+
+The release of RAT-SQL (Relation-Aware Transformer for SQL) \cite{RATSQL} represents the most significant leap in research of
+neural NL2SQL approaches. RAT-SQL diverged from earlier research through emphasizing the relationship between natural language
+and the database schema elements using relation-aware self-attention representing a novel approach for solving \textit{schema 
+linking} \citep{RATSQL}.
+
+RAT-SQL's primary innovations was the ability to infer, understand and utilize the relationship between individual tokens in the 
+natural language query and link it to the database schema. Thus allowing for reasoning capabilities on the actual database schema
+while generating the query.
+
+This architecture yielded a 57.2\% in exact match accuracy when being evaluated on the \textsc{Spider} benchmark, substantially
+outperforming comparative approaches like GNN, IRNet and IRNet V2 by 10.5\%, 9.8\% and 8.7\% respectively. Although overall
+accuracy improved across all approaches when being paired with BERT (Bidirectional Encoder Representations from Transformers, a 
+popular pre-trained lanugage model from Google) the $\delta$ between the indivudual approaches remained relatively steady, leaving
+RAT-SQL outperforming state-of-the-art approaches by 5\% to 12.2\% further demonstrating the capability advancement yielded by 
+this system \citep{RATSQL}.
+
+\subsubsection{Comparative Analysis of Neural Approaches}
+
+The evolution from early neural approaches to RAT-SQL emphasized the rapid advancements that happened in the research field of 
+neural NL2SQL approaches in different dimensions:
+
+\begin{enumerate}
+    \item \textbf{Model Complexity} — Given the research progression from early sequence to sequence translation approaches 
+          (\textsc{Seq2SQL}) towards sketch based and type augumented and graph based approaches (\textsc{TypeSQL, SQLNet, GNN})
+          and syntax tree decoding emphasized by \textsc{SyntaxSQLNet}, neural approaches continously advanced in the complexity
+          of approaches that is required to beat state-of-the-art approaches in contemprorary benchmarks like \textsc{Spider}. RAT-
+          SQL presents one of the late and most complex advancements in the field of neural NL2SQL approaches with its adapted 
+          self attention mechanism \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
+    \item \textbf{Transferability} — Each of the approaches introduced above represents a succession in terms of their 
+          transferability. The field of neural NL2SQL approaches significantly improved the ability for NLIDBs to generalize over 
+          the underlying database schemas. RAT-SQL showed the strongest cross-domain accuracy (that is benchmarked by the 
+          \textsc{Spider} benchmark). With standard benchmarks emerging it became easier to verify and quantify which approach had 
+          the highest transferability as \textsc{Spider} specifically had independent development and test datasets, preventing 
+          approaches from over-optimizing on training data \citep{, RATSQL}.
+    \item \textbf{Robustness} — As research systems advanced in complexity and shifted from raw input to output translation
+          (Seq2SQL) their robustness steadily increased. Through more approaches like \textsc{SyntaxSQLNet} which utilized 
+          structured decoding, \textsc{IRNet} which relied on an intermediate representation and \textsc{RAT-SQL} the challenges 
+          around \textit{schema linking} outlined by \cite{RATSQL} have increasilingly led to more robust systems that can handle 
+          rephrasings, spelling mistakes and variations in natural language usage far beyond what traditional NL2SQL approaches 
+          could accomplish \cite{SyntaxSQLNet, IRNet, RATSQL}.
+    \item \textbf{Query Complexity} — The performance on complex queries involving multiple tables, relying on complex 
+          aggregations, nested structures and joins dramatically improved over the course of the research that happened in this 
+          field. Whilst \textsc{IRNet} reresents one of the first singificant advancements when it comes to the ability of neural 
+          approaches to handle complex queries, \textsc{RAT-SQL} still showed to outperform the intermediate representation 
+          approach introduced by \textsc{IRNet} by up to 10.5\% \citep{IRNet, RATSQL}.
+    \item \textbf{Schema Understanding} — Whilst early approaches like Seq2SQL primarily applied reinforcement learning for end to 
+          end query generation \citep{Seq2SQL}, later approaches like \textsc{TypeSQL, GNN} and specifically \textsc{RAT-SQL} 
+          showed novel and state-of-the-art \textit{schema understanding / schema linking} capabilities, yielding the ability to 
+          accurately reason about user intent and traverse the database schema while generating queries \citep{TypeSQL, GNN, 
+          RATSQL}. 
+\end{enumerate}
+
+\subsubsection{Limitations of Neural Approaches}
+
+Despite the dramatic \textit{accuracy, transferability} and \textit{robustness} improvements that could be observed with late
+neural approaches \citep{IRNet, RATSQL}, neural approaches still suffered from serious shortcommings / unsolved challenges:
+
+\begin{enumerate}
+    \item \textbf{Training Data} — Utilizing neural networks these approaches required susbtantially more training data 
+          (ie. natural language paired with output SQL queries) than traditional systems which required serious efforts of data 
+          collection \citep{Spider}.
+    \item \textbf{Correctness} — The inherent mismatch between neural networks and formal languages yielded cases where models 
+          produced invalid SQL code. Approaches like \textsc{SyntaxSQLNet} improved the tried to solve this circumstance by 
+          utilizing syntax trees during decoding but nonetheless syntactic correctness remained a challenge across future
+          iterations of neural systems. \citep{SyntaxSQLNet}
+    \item \textbf{Domain Language} — Despite increased \textit{transferability} characteristics neural approaches still suffered
+          from a limited vocabulary and inter-domain understanding of terminology and relation between concepts which made highly 
+          domain specific natural language queries challenging.
+    \item \textbf{Observability} — The black-box nature of neural networks made approaches relying on them, particularly the ones 
+          with complex architectures, hard do understand / explain in case when neural systems yielded undesirable output. 
+\end{enumerate}
+
+
+The introduction and advancement of early neural NL2SQL approaches led to significant advancements in the research and feasibility
+of NLIDBs. The research shift started in this era established the foundations for further and more advanced machine learning 
+approaches (specifically language model oriented approaches )being researched. Neural approaches showed to significant 
+improvements in performance when being paired with pre-trained language models \citep{RATSQL} which led to further research on 
+their applicability.
+
