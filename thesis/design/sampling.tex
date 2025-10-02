@@ -7,20 +7,19 @@ cosine distance to search through historically observed question answer pairs;
 eg, from previous user interactions or prevalent training datasets like
 \textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
 
-%Masked Embedding Space – $\mathcal{V}$
-
 \subsubsection{Natural Language Masking}
 
 The natural language masking process replaces all words which are not deemed
 \textit{structurally relevant} with the \texttt{<mask>} token. All words $w$
 in a predefined whitelist $\mathcal{W}$ are determined structually relevant.
-Choosing a sound set $\mathcal{W}$ is described in chapter 5.
+% TODO: Fix reference
+Choosing a sound set $\mathcal{W}$ is described in section~\ref{implementation:whitelisting}.
 
-This process enables the embedding space to capture semantic patterns independent
+This process enables the embedding space to capture semantic patterns independently
 of specific database artifacts and domain terminology, improving the generalizability
-of example selection across different schemas.
+across different schemas and domains.
 
-This abstraction allows the system to recognize that queries like:
+This masking allows \textsc{Natural} to recognize that queries like:
 
 \begin{verbatim}
 Show all customers with the firstname John
@@ -28,7 +27,7 @@ List all products with the name iPhone
 \end{verbatim}
 
 in fact share similar semantic structures, even though they operate on different entities.
-Given $\mathcal{W} = \{\text{List}\, \text{Show}\, \text{all}\, \text{the}\, \text{with}\, \text{name}\}$
+Given $\mathcal{W} = \{\text{List}, \text{Show}, \text{all}, \text{the}, \text{with}, \text{name}\}$
 
 the masking would result in:
 
@@ -41,12 +40,11 @@ Embeddings can now be computed for the masked versions of the natural language q
 
 \subsubsection{Query Masking}
 
-Query masking applies similar abstraction principles to the SQL queries themselves.
-This enables the system to identify SQL patterns and structures rather than
-memorizing specific database schemas.
+Query masking applies similar abstraction principles to the corresponding SQL queries.
+This enables \textsc{Natural} to identify SQL patterns and structures.
 
-The SQL masking process transforms all identifiers to \texttt{<mask>} and all literals
-to \texttt{<value>}. For example, the query:
+The SQL masking process transforms all identifiers to \texttt{<mask>} and all
+literals to \texttt{<value>}. Thus, the query:
 
 \begin{verbatim}
 SELECT name FROM customers WHERE age > 25
@@ -59,4 +57,42 @@ SELECT <mask> FROM <mask> WHERE <mask> > <value>
 \end{verbatim}
 
 This abstraction enables pattern recognition across different domains while
-preserving the essential logical structure of the original SQL statements.
+preserving the essential logical structure of the original SQL statements,
+thus focusing on the kind of query, rather than the specific instance.
+
+\subsubsection{Sample Embedding Space – $\mathcal{V}$}
+
+
+\subsubsection{Schema Distance Index – $\mathcal{D}$}
+
+The schema distance index is a set of id and distance tuples $\{(s_1, d_1), ..., (s_i,d_i)\}$
+where $s$ is the database schema name and $d$ is the distance to the
+\textit{current} schema. Thus a schema distance index has to be computed for each database schema
+\textsc{Natural} is running on.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

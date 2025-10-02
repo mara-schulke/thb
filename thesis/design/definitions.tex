@@ -5,9 +5,9 @@ The following sets are subsequently used to introduce the functions
 \begin{enumerate}
     \item $\mathcal{Q}$ – The set of all possible natural language queries
     \item $\mathcal{S}$ – The set of all possible database schemas
-    \item $\mathcal{E}$ – The set of execution functions for SQL validation
-    \item $\mathcal{V}$ – The embedding space of historically observed samples
-    \item $\mathcal{D}$ – The space of distance indices over historically observed databases
+    \item $\mathcal{E}$ – The set of all possible execution functions for SQL validation
+    \item $\mathcal{V}$ – The set of all possible embedding spaces
+    \item $\mathcal{D}$ – The set of all possible distance indices over historically observed databases
     \item $\mathcal{C}$ – The set of all possible candidate sets $\mathcal{C}'$
     \item $\mathcal{Q}_{\mathcal{S}}$ – The set of all valid queries over the database schema $S$.
 \end{enumerate}
@@ -53,7 +53,12 @@ $$
 
 \vspace{0.5em}
 
-where $q \in \mathcal{Q}$ is the input natural language query, $z \in \Omega_{\mathcal{S}}$ is the zero-shot inference result, $s \in \mathcal{S}$ is the database schema, $v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index, and the result is a candidate set $\mathcal{C}' \in \mathcal{C}$ containing $k$ tuples of natural language queries, schemas, corresponding SQL queries and their combined similarity distances.
+where $q \in \mathcal{Q}$ is the input natural language query, $z \in \Omega_{\mathcal{S}}$
+is the zero-shot inference result, $s \in \mathcal{S}$ is the database schema,
+$v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
+and the result is a candidate set $\mathcal{C}' \in \mathcal{C}$ containing $k$
+tuples of natural language queries, schemas, corresponding SQL queries and their
+combined distance.
 
 The function utilizes cosine similarity in the embedding space to identify examples
 that are semantically closest to the input query $q$, considering both masked natural
@@ -61,17 +66,26 @@ language representations and schema distance as described in Section~\ref{design
 This approach ensures that examples are weighted by the following properties:
 
 \begin{enumerate}
-    \item \textbf{Question similarity} – Semantic similarity between the masked input query and historically observed natural language queries in the embedding space $\mathcal{V}$, measured using cosine distance between their respective embeddings
-    \item \textbf{Query similarity} – Structural similarity between the zero-shot inference result $z$ and candidate SQL queries using masked SQL representations, enabling pattern recognition across different database domains
-    \item \textbf{Database similarity} – Schema compatibility measured through the distance index $\mathcal{D}$, ensuring selected examples operate on analogous database structures with similar table relationships and column types
+    \item \textbf{Question similarity} – Semantic similarity between the masked input
+        query and historically observed natural language queries in the embedding space
+        $\mathcal{V}$, measured using cosine distance between their respective embeddings.
+    \item \textbf{SQL similarity} – Structural similarity between the zero-shot inference
+        result $z$ and candidate SQL queries using masked SQL representations, enabling
+        pattern recognition across different database domains.
+    \item \textbf{Database similarity} – Schema compatibility measured through the distance
+        index $\mathcal{D}$, ensuring selected examples operate on analogous database
+        structures with similar table relationships and column types.
 \end{enumerate}
+
+The exact weighting of these can be adjusted through three constants, $w_q}$,
+$w_s}$, and $w_d}$.
 
 \subsubsection{Subsetting Function – $\phi$}\label{design:subsetting-function}
 
-The subsetting function $\phi$ intelligently reduces the database schema to only include
-tables, columns, and relationships that are relevant to the current query context.
-This schema pruning mechanism reduces the complexity of the SQL generation task and
-improves model performance by focusing on pertinent schema elements.
+The subsetting function $\phi$ reduces the database schema to only include
+tables, columns, and relationships that are relevant to the current set of candidates
+$C$. This schema pruning mechanism reduces the complexity of the SQL generation task
+and token efficiency by focusing on the most relevant schema elements.
 
 $$
 \phi: \mathcal{C}' \times \mathcal{S} \rightarrow \mathcal{S}'
@@ -95,17 +109,17 @@ The function analyzes the selected examples in $c$ to identify which schema elem
 (tables, columns, foreign key relationships) are commonly referenced in similar queries.
 This analysis enables the system to steer the model's attention on the most relevant
 portions of potentially large and complex database schemas, thereby improving both accuracy
-and computational efficiency.
+and computational efficiency and prevents exceeding limited context windows.
 
 \subsubsection{Projection Function – $\pi$}\label{design:projection-function}
 
 The projection function $\pi$ represents the core translation mechanism that converts
-natural language queries into SQL statements using the selected examples and reduced schema.
-This function encapsulates the language model inference process that generates candidate
-SQL queries based on the provided context.
+natural language queries into SQL statements using the selected examples and database
+schema. This function encapsulates the large language model inference that generates
+candidate SQL queries based on the provided context.
 
 $$
-\pi: \mathcal{Q} \times \mathcal{S}' \times \mathcal{C}' \rightarrow \Omega_{\mathcal{S}'}
+\pi: \mathcal{Q} \times \mathcal{S} \times \mathcal{C}' \rightarrow \Omega_{\mathcal{S}}
 $$
 
 \vspace{0.5em}
@@ -113,14 +127,14 @@ $$
 For a specific input instance, we write:
 
 $$
-\pi(q, s', c) = \omega
+\pi(q, s, c) = \omega
 $$
 
 \vspace{0.5em}
 
-where $q \in \mathcal{Q}$ is the input natural language query, $s' \in \mathcal{S}'$ is
+where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$ is
 the reduced schema subset, $c \in \mathcal{C}'$ is the set of selected examples,
-and $\omega \in \Omega_{\mathcal{S}'}$ is the generated SQL query.
+and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query.
 
 The function operates by constructing a prompt that combines the natural language
 query, the relevant schema information, and the selected examples in a format
@@ -137,7 +151,7 @@ to learn from its mistakes and produce higher-quality outputs through automated
 feedback loops.
 
 $$
-\rho: \mathcal{Q} \times \mathcal{S}' \times \mathcal{E} \times \Omega_{\mathcal{S}'} \rightarrow \Omega_{\mathcal{S}'}
+\rho: \mathcal{Q} \times \mathcal{S} \times \mathcal{E} \times \Omega_{\mathcal{S}} \rightarrow \Omega_{\mathcal{S}}
 $$
 
 \vspace{0.5em}
@@ -145,15 +159,15 @@ $$
 For a specific input instance, we write:
 
 $$
-\rho(q, s', e, \omega_{prev}) = \omega_{refined}
+\rho(q, s, e, \omega_{raw}) = \omega_{refined}
 $$
 
 \vspace{0.5em}
 
-where $q \in \mathcal{Q}$ is the original natural language query, $s' \in \mathcal{S}'$
-is the relevant schema subset, $e \in \mathcal{E}$ is the execution environment for
-validation, $\omega_{prev} \in \Omega_{\mathcal{S}'}$ is the previously generated SQL
-query, and $\omega_{refined} \in \Omega_{\mathcal{S}'}$ is the improved SQL query.
+where $q \in \mathcal{Q}$ is the original natural language query, $s \in \mathcal{S}$
+is the database schema, $e \in \mathcal{E}$ is the execution function for
+validation, $\omega_{raw} \in \Omega_{\mathcal{S}}$ is the previously generated SQL
+query and $\omega_{refined} \in \Omega_{\mathcal{S}}$ is the improved SQL query.
 
 The function operates by executing the candidate query against the database, analyzing
 any errors or unexpected results, and then prompting the language model to generate
@@ -161,16 +175,15 @@ an improved version based on the identified issues. This iterative refinement
 process continues until a valid, executable query is produced or a maximum number
 of refinement attempts is reached.
 
-
 \subsubsection{Voting Function – $\nu$}\label{design:voting-function}
 
 The voting function $\nu$ implements a consensus mechanism that selects the most
 reliable SQL query from multiple candidate solutions generated through the pipeline.
-This function enhances robustness by leveraging the wisdom of multiple generation
-attempts to identify the most likely correct answer.
+This function enhances robustness by leveraging the result distribution of multiple
+generation attempts to identify the most likely correct answer.
 
 $$
-\nu: \mathcal{C} \times \mathcal{E} \rightarrow \Omega_{\mathcal{S}'}
+\nu: \mathcal{C} \times \mathcal{E} \rightarrow \Omega_{\mathcal{S}}
 $$
 
 \vspace{0.5em}
@@ -182,7 +195,7 @@ $$
 $$
 
 where $C \in \mathcal{C}$ is a set of candidate SQL queries, $e \in \mathcal{E}$ is
-the execution environment for validation, and $\omega_{consensus} \in \Omega_{\mathcal{S}'}$
+the execution function for validation, and $\omega_{consensus} \in \Omega_{\mathcal{S}}$
 is the selected consensus query.
 
 \vspace{0.5em}
@@ -190,7 +203,6 @@ is the selected consensus query.
 The voting function $\nu$ implements a majority voting algorithm similar to that
 described by OmniSQL \citep{OmniSQL}, where the result that appears most frequently
 across multiple generation attempts is deemed to be the most likely correct answer.
-The function first validates all candidates for syntactic correctness and executability,
-then applies frequency-based selection among the valid candidates. In cases where
+The function applies frequency-based selection among the valid candidates. In cases where
 no clear majority exists, the function may apply additional heuristics such as query
-complexity or execution performance to determine the final selection.
+complexity or execution performance to determine the final proposed query candidate $w_{consensus}$.

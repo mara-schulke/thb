@@ -22,7 +22,7 @@ Query -> Zero-Shot -> Selection -> Generation [ Subsetting -> Few-Shot -> Refine
 
 \begin{algorithm}
 
-\caption{The $nq$ function}\label{alg:cap}
+\caption{The $nq$ function}\label{algorithms:nq}
 
 \begin{algorithmic}[1]
 \Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
@@ -49,15 +49,16 @@ Query -> Zero-Shot -> Selection -> Generation [ Subsetting -> Few-Shot -> Refine
 
 \end{algorithm}
 
-
 This design expands on concepts from DAIL-SQL \citep{DAIL}, X, Y and Z \textcolor{red}{look up}.
 The most notable characteristics of \textsc{Natural} lie in it's capabilities for continuous
 learning, example selection and portability which allow the system to iteratively
 adapt to unseen database schemas.
 
-Prior to using $nq$ sample and database indexing must be done to supply a relevant 
-embedding space $\mathcal{V}$ and distance index $\mathcal{D}$.
+Prior to using $nq$ to answer natural language questions, historical datasets must be sampled
+such that an embedding space $\mathcal{V}$ and distance index $\mathcal{D}$ can be supplied
+to $nq$.
 
 \subimport{}{sampling}
+
 \subimport{}{definitions}
 
