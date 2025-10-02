@@ -1,23 +1,25 @@
 \subsection{Function Definitions}\label{design:function-definitions}
 
-The following sets are subsequently used to introduce the functions
+The following sets are subsequently used to introduce the functions $nq$, $\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$.
 
 \begin{enumerate}
-    \item $\mathcal{Q}$ – The set of all possible natural language queries
-    \item $\mathcal{S}$ – The set of all possible database schemas
-    \item $\mathcal{E}$ – The set of all possible execution functions for SQL validation
-    \item $\mathcal{V}$ – The set of all possible embedding spaces
-    \item $\mathcal{D}$ – The set of all possible distance indices over historically observed databases
-    \item $\mathcal{C}$ – The set of all possible candidate sets $\mathcal{C}'$
+    \item $\mathcal{Q}$ – The set of all possible natural language queries.
+    \item $\mathcal{S}$ – The set of all possible database schemas.
+    \item $\mathcal{E}$ – The set of all possible execution functions for SQL validation.
+    \item $\mathcal{V}$ – The set of all possible embedding spaces.
+    \item $\mathcal{D}$ – The set of all possible distance indices over historically observed databases.
+    \item $\mathcal{C}$ – The set of all possible candidate sets $\mathcal{C}'$.
     \item $\mathcal{Q}_{\mathcal{S}}$ – The set of all valid queries over the database schema $S$.
 \end{enumerate}
 
 \subsubsection{Query Function – $nq$}
 
-\vspace{0.5em}
+We define the query function $nq$ is collapsing a natural language question $q$,
+the database schema $s$ and a indices over historically observed examples and
+databases $v$ and $d$ into one SQL query candidate $\omega$.
 
 $$
-nq: \mathcal{Q} \times \mathcal{S} \times E \times \mathcal{V} \times \mathcal{D} \rightarrow \Omega_{\mathcal{S}}
+nq: \mathcal{Q} \times \mathcal{S} \times \mathcal{E} \times \mathcal{V} \times \mathcal{D} \rightarrow \Omega_{\mathcal{S}}
 $$
 
 \vspace{0.5em}
@@ -30,7 +32,11 @@ $$
 
 \vspace{0.5em}
 
-where $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$, and $\omega \in \Omega_{\mathcal{S}}$.
+where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$
+is the database schema, $e \in \mathcal{E}$ is the execution function for validation,
+$v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
+and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query. The function is comprised
+out of the subsequently defined function and follows the algorithm described in Algorithm~\ref{algorithms:nq}.
 
 \subsubsection{Selection Function – $\sigma$}\label{design:selection-function}
 
@@ -133,7 +139,7 @@ $$
 \vspace{0.5em}
 
 where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$ is
-the reduced schema subset, $c \in \mathcal{C}'$ is the set of selected examples,
+the database schema, $c \in \mathcal{C}'$ is the set of selected examples,
 and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query.
 
 The function operates by constructing a prompt that combines the natural language
