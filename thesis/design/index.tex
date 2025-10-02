@@ -1,24 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\newpage
-
 \section{System Design}
 
 This chapter describes the design of \textsc{Natural}, the proposed NL2SQL system, 
@@ -27,7 +6,7 @@ The design follows a modular architecture that leverages both traditional comput
 science algorithms and machine learning models to achieve robust, portable and
 extensible natural language to SQL translation capabilities.
 
-\subsection{System Architecture Overview}
+\subsection{Overview}
 
 The core of the proposed design is the query function $nq$ which utilizes
 example selection ($\sigma$), query preprocessing, schema subsetting ($\phi$),
@@ -35,317 +14,50 @@ model inference ($\pi$), self-correction ($\rho$) and majority voting ($\nu$)
 in order to convert a natural language query $q$ into a corresponding SQL query $\omega$.
 
 % TODO: Revisit
-% NOTE Draw diagram of nq
-<pipeline-diagram>
-%
+% TODO: Draw diagram of nq, this is an itermediate placeholder
+\begin{verbatim}
+Query -> Zero-Shot -> Selection -> Generation [ Subsetting -> Few-Shot -> Refinement ] -> Voting
+\end{verbatim}
+% TODO: Reference figure correctly
+
+\begin{algorithm}
+
+\caption{The $nq$ function}\label{alg:cap}
+
+\begin{algorithmic}[1]
+\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
+\Require $k \in \{ n \in N\ |\ 2n + 1 \}, k \geq 1$
+\State $z \gets \pi(\emptyset,q, s)$       \Comment{Zero shot inference}
+\State $S \gets \sigma(q,z,s,v,d)$         \Comment{Example selection is performed}
+\State $C \gets \emptyset$                 \Comment{The set of query candidates}
+\While{$|C| < k$}                          \Comment{While not enough candidates exist}
+    \State $s' \gets \phi(C, s)$           \Comment{Identify relevant schema subset}
+    \State $c \gets \pi(S, q, s')$         \Comment{Prompt model for next candidate}
+
+    \If{$e(nc)$}                           \Comment{Evaluate the next candidate}
+        \State $C \gets \{c\} \cup C$      \Comment{Extend the candidates}
+    \EndIf
+
+    \State $c' \gets \rho(q, s', e, v)$  \Comment{Refine via self correction}
+
+    \If{$e(c')$}                          \Comment{Evaluate the refined candidate}
+        \State $C \gets \{c'\} \cup C$    \Comment{Extend the candidates}
+    \EndIf
+\EndWhile
+\State \Return $\nu(C, e)$               \Comment{Return most prevalent result}
+\end{algorithmic}
+
+\end{algorithm}
+
 
 This design expands on concepts from DAIL-SQL \citep{DAIL}, X, Y and Z \textcolor{red}{look up}.
 The most notable characteristics of \textsc{Natural} lie in it's capabilities for continuous
 learning, example selection and portability which allow the system to iteratively
 adapt to unseen database schemas.
 
-% TODO: Revisit
-\subsection{Definitions}
-
-The following sets are subsequently used to describe the systems capabilities: 
-
-\begin{enumerate}
-    \item $\mathcal{Q}$ – The set of all possible natural language queries
-    \item $\mathcal{S}$ – The set of all possible database schemas
-    \item $\mathcal{E}$ – The set of execution functions for SQL validation
-    \item $\mathcal{V}$ – The embedding space of historically observed samples
-    \item $\mathcal{D}$ – The space of distance indices over historically observed databases
-    \item $\mathcal{C}$ – The set of all possible candidate sets $\mathcal{C}'$
-    \item $\mathcal{Q}_{\mathcal{S}}$ – The set of all valid queries over the database schema $S$.
-\end{enumerate}
-
-\subsection{Query Function – $nq$}
-
-\vspace{0.5em}
-
-$$
-nq: \mathcal{Q} \times \mathcal{S} \times E \times \mathcal{V} \times \mathcal{D} \rightarrow \Omega_{\mathcal{S}}
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-nq(q, s, e, v, d) = \omega
-$$
-
-\vspace{0.5em}
-
-where $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$, and $\omega \in \Omega_{\mathcal{S}}$.
-
-% TODO: Revisit
-\subsection{Selection Function – $\sigma$}
-
-The selection function $\sigma$ retrieves the most relevant examples from the
-historical embedding space $\mathcal{V}$ based on semantic similarity to the
-input query. This function implements the core example selection mechanism 
-that subsequently enables few-shot learning for SQL generation.
-
-$$
-\sigma: \mathcal{Q} \times \mathcal{S} \times \mathcal{E} \times \mathcal{V} \rightarrow \mathcal{C}'
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-\sigma(q, s, e, v) = \{(q_1, s_1, \omega_1, d_k), ..., (q_k, s_k, \omega_k, d_k)\}
-$$
-
-\vspace{0.5em}
-
-where $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$,
-and the result is a candidate set $\mathcal{C}' \in \mathcal{C}$ containing $k$ tuples of
-natural language queries, schemas, corresponding SQL queries and their combined \textit{distance}.
-
-The function utilizes cosine similarity in the embedding space to identify examples
-that are semantically closest to the input query $q$, considering both masked natural
-language representations and schema distance (\textcolor{red}{Described in section XYZ}).
-This approach ensures that examples are weighted by the following properties:
-
-\begin{enumerate}
-    \item \textbf{Question similarity} – 
-    \item \textbf{Query similarity} –
-    \item \textbf{Database similarity} –
-\end{enumerate}
-
-
-% TODO: Revisit
-\subsection{Subsetting Function – $\phi$}
-
-The subsetting function $\phi$ intelligently reduces the database schema to only include
-tables, columns, and relationships that are relevant to the current query context.
-This schema pruning mechanism reduces the complexity of the SQL generation task and
-improves model performance by focusing on pertinent schema elements.
-
-$$
-\phi: \mathcal{C}' \times \mathcal{S} \rightarrow \mathcal{S}'
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-\phi(c, s) = s'
-$$
-
-\vspace{0.5em}
-
-where $c \in \mathcal{C}'$ is a candidate set containing selected examples, $s \in \mathcal{S}$
-is the full database schema, and $s' \subseteq s$ is the reduced schema subset containing
-only relevant tables and columns.
-
-The function analyzes the selected examples in $c$ to identify which schema elements
-(tables, columns, foreign key relationships) are commonly referenced in similar queries.
-This analysis enables the system to steer the model's attention on the most relevant
-portions of potentially large and complex database schemas, thereby improving both accuracy
-and computational efficiency.
-
-% TODO: Revisit
-\subsection{Projection Function – $\pi$}
-
-The projection function $\pi$ represents the core translation mechanism that converts
-natural language queries into SQL statements using the selected examples and reduced schema.
-This function encapsulates the language model inference process that generates candidate
-SQL queries based on the provided context.
-
-$$
-\pi: \mathcal{Q} \times \mathcal{S}' \times \mathcal{C}' \rightarrow \Omega_{\mathcal{S}'}
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-\pi(q, s', c) = \omega
-$$
-
-\vspace{0.5em}
-
-where $q \in \mathcal{Q}$ is the input natural language query, $s' \in \mathcal{S}'$ is
-the reduced schema subset, $c \in \mathcal{C}'$ is the set of selected examples,
-and $\omega \in \Omega_{\mathcal{S}'}$ is the generated SQL query.
-
-The function operates by constructing a prompt that combines the natural language
-query, the relevant schema information, and the selected examples in a format
-optimized for large language model inference. The model then generates a SQL query
-that attempts to capture the semantic intent of the natural language input while
-adhering to the constraints imposed by the database schema.
-
-% TODO: Revisit
-\subsection{Refinement Function – $\rho$}
-
-The refinement function $\rho$ implements a self-correction mechanism that iteratively
-improves generated SQL queries by identifying and correcting syntax errors,
-semantic inconsistencies, and execution failures. This function enables the system
-to learn from its mistakes and produce higher-quality outputs through automated
-feedback loops.
-
-$$
-\rho: \mathcal{Q} \times \mathcal{S}' \times \mathcal{E} \times \Omega_{\mathcal{S}'} \rightarrow \Omega_{\mathcal{S}'}
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-\rho(q, s', e, \omega_{prev}) = \omega_{refined}
-$$
-
-\vspace{0.5em}
-
-where $q \in \mathcal{Q}$ is the original natural language query, $s' \in \mathcal{S}'$
-is the relevant schema subset, $e \in \mathcal{E}$ is the execution environment for
-validation, $\omega_{prev} \in \Omega_{\mathcal{S}'}$ is the previously generated SQL
-query, and $\omega_{refined} \in \Omega_{\mathcal{S}'}$ is the improved SQL query.
-
-The function operates by executing the candidate query against the database, analyzing
-any errors or unexpected results, and then prompting the language model to generate
-an improved version based on the identified issues. This iterative refinement
-process continues until a valid, executable query is produced or a maximum number
-of refinement attempts is reached.
-
-
-% TODO: Revisit
-\subsection{Voting Function – $\nu$}
-
-The voting function $\nu$ implements a consensus mechanism that selects the most
-reliable SQL query from multiple candidate solutions generated through the pipeline.
-This function enhances robustness by leveraging the wisdom of multiple generation
-attempts to identify the most likely correct answer.
-
-$$
-\nu: \mathcal{C} \times \mathcal{E} \rightarrow \Omega_{\mathcal{S}'}
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-\nu(C, e) = \omega_{consensus}
-$$
-
-where $C \in \mathcal{C}$ is a set of candidate SQL queries, $e \in \mathcal{E}$ is
-the execution environment for validation, and $\omega_{consensus} \in \Omega_{\mathcal{S}'}$
-is the selected consensus query.
-
-\vspace{0.5em}
-
-The voting function $\nu$ implements a majority voting algorithm similar to that
-described by OmniSQL \citep{OmniSQL}, where the result that appears most frequently
-across multiple generation attempts is deemed to be the most likely correct answer.
-The function first validates all candidates for syntactic correctness and executability,
-then applies frequency-based selection among the valid candidates. In cases where
-no clear majority exists, the function may apply additional heuristics such as query
-complexity or execution performance to determine the final selection.
-
-\subsection{Masked Embedding Space – $\mathcal{V}$}
-
-Building upon DAIL-SQL's masked example selection, \textsc{Natural} utilizes an
-embedding space to both traverse the masked natural language query $q'$
-and the respective masked SQL query $\omega'$. This allows $\sigma$ to use
-cosine distance to search through historically observed question answer pairs;
-eg, from previous user interactions or prevalent training datasets like
-\textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
-
-\subsubsection{Natural Language Masking}
-
-The natural language masking process replaces all words which are not deemed
-\textit{structurally relevant} with the \texttt{<mask>} token. All words $w$
-in a predefined whitelist $\mathcal{W}$ are determined structually relevant.
-Choosing a sound set $\mathcal{W}$ is described in chapter 5.
-
-This process enables the embedding space to capture semantic patterns independent
-of specific database artifacts and domain terminology, improving the generalizability
-of example selection across different schemas.
-
-This abstraction allows the system to recognize that queries like:
-
-\begin{verbatim}
-Show all customers with the firstname John
-List all products with the name iPhone
-\end{verbatim}
-
-in fact share similar semantic structures, even though they operate on different entities.
-Given $\mathcal{W} = \{\text{List}\, \text{Show}\, \text{all}\, \text{the}\, \text{with}\, \text{name}\}$
-
-the masking would result in:
-
-\begin{verbatim}
-Show all <mask> with the <mask> <mask>
-List all <mask> with the name <mask>
-\end{verbatim}
-
-Embeddings can now be computed for the masked versions of the natural language queries.
-
-\subsubsection{Query Masking}
-
-Query masking applies similar abstraction principles to the SQL queries themselves.
-This enables the system to identify SQL patterns and structures rather than
-memorizing specific database schemas.
-
-The SQL masking process transforms all identifiers to \texttt{<mask>} and all literals
-to \texttt{<value>}. For example, the query:
-
-\begin{verbatim}
-SELECT name FROM customers WHERE age > 25
-\end{verbatim}
-
-gets masked to:
-
-\begin{verbatim}
-SELECT <mask> FROM <mask> WHERE <mask> > <value>
-\end{verbatim}
-
-This abstraction enables pattern recognition across different domains while
-preserving the essential logical structure of the original SQL statements.
-
-
-
-
-
-
-
-
-
-\subsection{Algorithm Design}
-
-\begin{algorithm}
-
-\caption{The $nq$ function}\label{alg:cap}
-\begin{algorithmic}[1]
-\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
-\Require $k \in \{ n \in N\ |\ 2n + 1 \}, k \geq 1$
-\State $S \gets nsel(q,s,e,v)$             \Comment{Example selection is performed}
-\State $C \gets \emptyset$                 \Comment{The set of query candidates}
-\While{$|C| < k$}                          \Comment{While not enough candidates exist}
-    \State $sub \gets nsub(C, s)$          \Comment{Identify relevant schema subset}
-    \State $nc \gets nprompt(S, q, sub)$   \Comment{Prompt model for next candidate}
-
-    \If{$e(nc)$}                           \Comment{Evaluate the next candidate}
-        \State $c \gets \{nc\} \cup c$     \Comment{Extend the candidates}
-    \EndIf
-
-    \State $ref \gets nref(q, sub, e, v)$  \Comment{Refine via self correction}
-
-    \If{$e(ref)$}                          \Comment{Evaluate the refined candidate}
-        \State $c \gets \{ref\} \cup c$    \Comment{Extend the candidates}
-    \EndIf
-\EndWhile
-\State \Return $nvote(C, e)$               \Comment{Return most prevalent result}
-\end{algorithmic}
-
-\end{algorithm}
-
+Prior to using $nq$ sample and database indexing must be done to supply a relevant 
+embedding space $\mathcal{V}$ and distance index $\mathcal{D}$.
+
+\subimport{}{sampling}
+\subimport{}{definitions}
 

@@ -1,0 +1,62 @@
+\subsection{Sampling}\label{design:sampling}
+
+Building upon DAIL-SQL's masked example selection, \textsc{Natural} utilizes an
+embedding space to both traverse the masked natural language query $q'$
+and the respective masked SQL query $\omega'$. This allows $\sigma$ to use
+cosine distance to search through historically observed question answer pairs;
+eg, from previous user interactions or prevalent training datasets like
+\textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
+
+%Masked Embedding Space – $\mathcal{V}$
+
+\subsubsection{Natural Language Masking}
+
+The natural language masking process replaces all words which are not deemed
+\textit{structurally relevant} with the \texttt{<mask>} token. All words $w$
+in a predefined whitelist $\mathcal{W}$ are determined structually relevant.
+Choosing a sound set $\mathcal{W}$ is described in chapter 5.
+
+This process enables the embedding space to capture semantic patterns independent
+of specific database artifacts and domain terminology, improving the generalizability
+of example selection across different schemas.
+
+This abstraction allows the system to recognize that queries like:
+
+\begin{verbatim}
+Show all customers with the firstname John
+List all products with the name iPhone
+\end{verbatim}
+
+in fact share similar semantic structures, even though they operate on different entities.
+Given $\mathcal{W} = \{\text{List}\, \text{Show}\, \text{all}\, \text{the}\, \text{with}\, \text{name}\}$
+
+the masking would result in:
+
+\begin{verbatim}
+Show all <mask> with the <mask> <mask>
+List all <mask> with the name <mask>
+\end{verbatim}
+
+Embeddings can now be computed for the masked versions of the natural language queries.
+
+\subsubsection{Query Masking}
+
+Query masking applies similar abstraction principles to the SQL queries themselves.
+This enables the system to identify SQL patterns and structures rather than
+memorizing specific database schemas.
+
+The SQL masking process transforms all identifiers to \texttt{<mask>} and all literals
+to \texttt{<value>}. For example, the query:
+
+\begin{verbatim}
+SELECT name FROM customers WHERE age > 25
+\end{verbatim}
+
+gets masked to:
+
+\begin{verbatim}
+SELECT <mask> FROM <mask> WHERE <mask> > <value>
+\end{verbatim}
+
+This abstraction enables pattern recognition across different domains while
+preserving the essential logical structure of the original SQL statements.
