@@ -17,32 +17,30 @@ Choosing a sound set $\mathcal{W}$ is described in section~\ref{implementation:w
 
 This process enables the embedding space to capture semantic patterns independently
 of specific database artifacts and domain terminology, improving the generalizability
-across different schemas and domains.
-
-This masking allows \textsc{Natural} to recognize that queries like:
+across different schemas and domains. Thus given $\mathcal{W} = \{\text{List},
+\text{Show}, \text{all}, \text{the}, \text{with}, \text{name}\}$ the natural language
+questions:
 
 \begin{verbatim}
 Show all customers with the firstname John
 List all products with the name iPhone
 \end{verbatim}
 
-in fact share similar semantic structures, even though they operate on different entities.
-Given $\mathcal{W} = \{\text{List}, \text{Show}, \text{all}, \text{the}, \text{with}, \text{name}\}$
-
-the masking would result in:
+Will get masked, such that the semantic words are maintained, but domain specific
+terminology is discarded:
 
 \begin{verbatim}
 Show all <mask> with the <mask> <mask>
 List all <mask> with the name <mask>
 \end{verbatim}
 
-Embeddings can now be computed for the masked versions of the natural language queries.
+Now latent space embeddings can be computed for the masked versions of the natural
+language questions.
 
 \subsubsection{Query Masking}
 
 Query masking applies similar abstraction principles to the corresponding SQL queries.
 This enables \textsc{Natural} to identify SQL patterns and structures.
-
 The SQL masking process transforms all identifiers to \texttt{<mask>} and all
 literals to \texttt{<value>}. Thus, the query:
 
@@ -57,42 +55,14 @@ SELECT <mask> FROM <mask> WHERE <mask> > <value>
 \end{verbatim}
 
 This abstraction enables pattern recognition across different domains while
-preserving the essential logical structure of the original SQL statements,
-thus focusing on the kind of query, rather than the specific instance.
+preserving the essential logical structure of the original SQL statements.
 
-\subsubsection{Sample Embedding Space – $\mathcal{V}$}
+\subsubsection{Embedding Space}
 
+To construct an embedding space $\mathcal{V}_{\mathcal{S}}$ over a set of samples $\mathcal{S} = \{(q_1, s_1), ..., (q_i, s_i)\}$
+where $q$ is the natural language question and $s$ is the corresponding SQL query, we need to compute
+the embeddings of $mask(q)$ and $mask(s)$ respectively through an embedding function $\iota$.
 
-\subsubsection{Schema Distance Index – $\mathcal{D}$}
+Thus the embedding space $\mathcal{V}_{\mathcal{S}}$ can be defined as:
 
-The schema distance index is a set of id and distance tuples $\{(s_1, d_1), ..., (s_i,d_i)\}$
-where $s$ is the database schema name and $d$ is the distance to the
-\textit{current} schema. Thus a schema distance index has to be computed for each database schema
-\textsc{Natural} is running on.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$$\mathcal{V}_{\mathcal{S}} = \{~(q, \iota(mask(q)), s, \iota(mask(s)))~|~(q, s) \in \mathcal{S}~\}$$

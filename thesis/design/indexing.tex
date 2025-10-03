@@ -1,0 +1,55 @@
+\subsection{Schema Indexing}
+
+To choose the most relevant subset of samples from $\mathcal{S}$ for $k$-shot learning,
+it is important that the SQL queries we supply are written for structurally similar SQL schemas
+in order to minimize the structural difference between the supplied samples $\mathcal{S}_k$ and
+the ground truth query $\omega_{ground}$ for a given natural language question.
+
+For example $\omega_{ground}$ the question ``Give me all contacts for the user with the id 10''
+might look very different depending on the database schema at hand, thus only taking into
+account the similarity of the natural language question will yield inferior results.
+
+\vspace{1em}
+
+\begin{figure}[ht]
+\hfill
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+\begin{verbatim}
+CREATE TABLE users (
+  id TEXT PRiMARY KEY
+);
+
+CREATE TABLE contacts (
+  user_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  FOREIGN KEY (user_id) ON users(id),
+  PRIMARY KEY (user_id, name)
+);
+\end{verbatim}
+\caption{Normalized schema}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.35\linewidth}
+\centering
+\begin{verbatim}
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  contacts TEXT[]
+);
+\end{verbatim}
+\caption{Denormalized schema}
+\end{minipage}
+\hfill
+\end{figure}
+
+\vspace{1em}
+
+% TODO: Finish this section on WWL graph kernels and distance calculation..
+
+%is a set of id and distance tuples $\{(s_1, d_1), ..., (s_i,d_i)\}$
+%where $s$ is the database schema name and $d$ is the distance to the
+%\textit{current} schema. Thus a schema distance index has to be computed for each database schema
+%\textsc{Natural} is running on.
+
+%Thus.. $\mathcal{D}$
