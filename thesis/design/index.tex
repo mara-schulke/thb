@@ -9,9 +9,9 @@ extensible natural language to SQL translation capabilities.
 \subsection{Overview}
 
 The core of the proposed design is the query function $nq$ which utilizes
-example selection ($\sigma$), query preprocessing, schema subsetting ($\phi$),
-model inference ($\pi$), self-correction ($\rho$) and majority voting ($\nu$)
-in order to convert a natural language query $q$ into a corresponding SQL query $\omega$.
+example selection ($\sigma$), schema subsetting ($\phi$), model inference ($\pi$),
+self-correction ($\rho$) and majority voting ($\nu$) in order to convert a natural
+language query $q$ into a corresponding SQL query $\omega$.
 
 % TODO: Revisit
 % TODO: Draw diagram of nq, this is an itermediate placeholder
@@ -55,8 +55,7 @@ learning, example selection and portability which allow the system to iterativel
 adapt to unseen database schemas.
 
 Prior to using $nq$ to answer natural language questions, historical datasets must be sampled
-such that an embedding space $\mathcal{V}$ and distance index $\mathcal{D}$ can be supplied
-to $nq$.
+and indexed such that an embedding space $v$ and distance index $d$ can be supplied to $nq$.
 
 \subimport{}{sampling}
 \subimport{}{indexing}

@@ -1,11 +1,11 @@
 \subsection{Sampling}\label{design:sampling}
 
-Building upon DAIL-SQL's masked example selection, \textsc{Natural} utilizes an
-embedding space to both traverse the masked natural language query $q'$
-and the respective masked SQL query $\omega'$. This allows $\sigma$ to use
-cosine distance to search through historically observed question answer pairs;
-eg, from previous user interactions or prevalent training datasets like
-\textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
+Building upon DAIL-SQL's masked example selection, \textsc{Natural} utilizes 
+cosine similarity in an embedding space $v$ to search for examples based on the
+masked natural language query $q'$ and the respective masked SQL query $\omega'$.
+This allows $\sigma$ to use cosine distance to search through historically observed
+question answer pairs; eg, from previous user interactions or prevalent training
+datasets like \textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
 
 \subsubsection{Natural Language Masking}
 
