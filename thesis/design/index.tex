@@ -14,19 +14,17 @@ schema subsetting, and iterative refinement. The proposed architecture consists
 of five core components:
 
 \begin{enumerate}
-    \item \textbf{Example Selection} – Identifies semantically and structurally similar
-        historical examples using masked embeddings and schema distances.
-    \item \textbf{Schema Subsetting} – Reduces database schema complexity by focusing
-        on relevant tables and relationships
-    \item \textbf{Query Generation} – Few-shot learning with fine tuned models translate natural language queries to SQL
-    \item \textbf{Self-Correction} – Iteratively refines queries through execution feedback and error analysis
-    \item \textbf{Consensus Voting} – Selects the most reliable result from multiple
-        generation attempts
+    \item \textbf{Example Selection} $\sigma$ – Identifies semantically and structurally similar examples using cosine similarity and schema distance.
+    \item \textbf{Schema Subsetting} $\phi$ – Reducing schema complexity by subsetting the schema to the relevant subset of tables and relationships.
+    \item \textbf{Query Projection} $\pi$ – Few-shot learning with a finetuned model to project natural language queries to SQL statements.
+    \item \textbf{Self Refinement} $\rho$ – Self refinement of generated SQL statements through execution feedback and error analysis.
+    \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the most likely result from multiple generation attempts.
 \end{enumerate}
 
 The system processes queries through the following pipeline:
 
 % TODO: Make a nice diagram for this
+
 \begin{verbatim}
   Natural Language Query 
 → Sketch Generation
@@ -40,11 +38,9 @@ The system processes queries through the following pipeline:
 → SQL Query
 \end{verbatim}
 
-This design builds upon concepts from DAIL-SQL \citep{DAIL} and incorporates novel
-contributions in schema-aware example selection and graph-based structural similarity.
+This design largely builds upon in context learning concepts from DAIL-SQL \citep{DAIL-SQL}
+and OmniSQL \citep{OmniSQL} but incorporates novel contributions in schema-aware example
+selection by harnessing a graph-based structural similarity metric.
 
 \subimport{}{initialization}
-
-\subimport{}{components}
-
-\subimport{}{composition}
+\subimport{}{functions}

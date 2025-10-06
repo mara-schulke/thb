@@ -12,7 +12,7 @@ The following sets are subsequently used to introduce the functions $nq$, $\sigm
     \item $\mathcal{Q}_{\mathcal{S}}$ – The set of all valid queries over the database schema $S$.
 \end{enumerate}
 
-\subsubsection{Query Function – $nq$}
+\subsubsection{Query – $nq$}
 
 We define the query function $nq$ is collapsing a natural language question $q$,
 the database schema $s$ and a indices over historically observed examples and
@@ -38,10 +38,10 @@ $v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance 
 and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query. The function is comprised
 out of the subsequently defined function and follows the algorithm described in Algorithm~\ref{algorithms:nq}.
 
-\subsubsection{Selection Function – $\sigma$}\label{design:selection-function}
+\subsubsection{Example Selection – $\sigma$}\label{design:selection-function}
 
 The selection function $\sigma$ retrieves the most relevant examples from the
-historical embedding space $\mathcal{V}$ based on semantic similarity to the
+historical embedding space $v$ based on semantic similarity to the
 input query. This function implements the core example selection mechanism 
 that subsequently enables few-shot learning for SQL generation.
 
@@ -74,18 +74,18 @@ This approach ensures that examples are weighted by the following properties:
 \begin{enumerate}
     \item \textbf{Question similarity} – Semantic similarity between the masked input
         query and historically observed natural language queries in the embedding space
-        $\mathcal{V}$, measured using cosine distance between their respective embeddings.
+        $v$, measured using cosine distance between their respective embeddings.
     \item \textbf{SQL similarity} – Structural similarity between the zero-shot inference
         result $z$ and candidate SQL queries using masked SQL representations, enabling
         pattern recognition across different database domains.
     \item \textbf{Database similarity} – Schema compatibility measured through the distance
-        index $\mathcal{D}$, ensuring selected examples operate on analogous database
+        index $d$, ensuring selected examples operate on analogous database
         structures with similar table relationships and column types.
 \end{enumerate}
 
 The exact weighting of these can be adjusted through three constants, $w_q$, $w_s$, and $w_d$.
 
-\subsubsection{Subsetting Function – $\phi$}\label{design:subsetting-function}
+\subsubsection{Schema Subsetting – $\phi$}\label{design:subsetting-function}
 
 The subsetting function $\phi$ reduces the database schema to only include
 tables, columns, and relationships that are relevant to the current set of candidates
@@ -116,11 +116,11 @@ This analysis enables the system to steer the model's attention on the most rele
 portions of potentially large and complex database schemas, thereby improving both accuracy
 and computational efficiency and prevents exceeding limited context windows.
 
-\subsubsection{Projection Function – $\pi$}\label{design:projection-function}
+\subsubsection{Query Projection – $\pi$}\label{design:projection-function}
 
 The projection function $\pi$ represents the core translation mechanism that converts
 natural language queries into SQL statements using the selected examples and database
-schema. This function encapsulates the large language model inference that generates
+schema. This function encapsulates the inference using LLMs that generates
 candidate SQL queries based on the provided context.
 
 $$
@@ -147,7 +147,7 @@ optimized for large language model inference. The model then generates a SQL que
 that attempts to capture the semantic intent of the natural language input while
 adhering to the constraints imposed by the database schema.
 
-\subsubsection{Refinement Function – $\rho$}\label{design:refinement-function}
+\subsubsection{Self Refinement – $\rho$}\label{design:refinement-function}
 
 The refinement function $\rho$ implements a self-correction mechanism that iteratively
 improves generated SQL queries by identifying and correcting syntax errors,
@@ -180,7 +180,7 @@ an improved version based on the identified issues. This iterative refinement
 process continues until a valid, executable query is produced or a maximum number
 of refinement attempts is reached.
 
-\subsubsection{Voting Function – $\nu$}\label{design:voting-function}
+\subsubsection{Voting – $\nu$}\label{design:voting-function}
 
 The voting function $\nu$ implements a consensus mechanism that selects the most
 reliable SQL query from multiple candidate solutions generated through the pipeline.
