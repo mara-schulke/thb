@@ -30,9 +30,14 @@
 	\begin{center}Source: {#1}\end{center}
 }
 
+\setcounter{secnumdepth}{4}
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\normalfont\small\bfseries}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\normalfont\small\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\newcommand{\cir}[1]{\begin{tikzpicture}\node[draw,scale=0.7,circle,{#1}] at (0,0) {};\end{tikzpicture}}
 
 \begin{document}
 

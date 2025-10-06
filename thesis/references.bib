@@ -721,10 +721,10 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     abstract={There are many recent advanced developments for the Text-to-SQL task, where the Picard model is one of the the top performing models as measured by the Spider dataset competition. However, bringing Text-to-SQL systems to realistic use-cases through domain adaptation remains a tough challenge. We analyze how well the base T5 Language Model and Picard perform on query structures different from the Spider dataset, we fine-tuned the base model on the Spider data and on independent databases (DB). To avoid accessing the DB content online during inference, we also present an alternative way to disambiguate the values in an input question using a rule-based approach that relies on an intermediate representation of the semantic concepts of an input question. In our results we show in what cases T5 and Picard can deliver good performance, we share the lessons learned, and discuss current domain adaptation challenges.},
 }
 
+
+
+
 % Recent - LLM
-
-
-
 
 @misc{DBGPT,
     title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -736,8 +736,6 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     url={https://arxiv.org/abs/2312.17449},
     abstract={The recent breakthroughs in large language models (LLMs) are positioned to transition many areas of software. Database technologies particularly have an important entanglement with LLMs as efficient and intuitive database interactions are paramount. In this paper, we present DB-GPT, a revolutionary and production-ready project that integrates LLMs with traditional database systems to enhance user experience and accessibility. DB-GPT is designed to understand natural language queries, provide context-aware responses, and generate complex SQL queries with high accuracy, making it an indispensable tool for users ranging from novice to expert. The core innovation in DB-GPT lies in its private LLM technology, which is fine-tuned on domain-specific corpora to maintain user privacy and ensure data security while offering the benefits of state-of-the-art LLMs. We detail the architecture of DB-GPT, which includes a novel retrieval augmented generation (RAG) knowledge system, an adaptive learning mechanism to continuously improve performance based on user feedback and a service-oriented multi-model framework (SMMF) with powerful data-driven agents. Our extensive experiments and user studies confirm that DB-GPT represents a paradigm shift in database interactions, offering a more natural, efficient, and secure way to engage with data repositories. The paper concludes with a discussion of the implications of DB-GPT framework on the future of human-database interaction and outlines potential avenues for further enhancements and applications in the field. The project code is available at this https URL. Experience DB-GPT for yourself by installing it with the instructions this https URL and view a concise 10-minute video at this https URL.},
 }
-
-
 
 % Recent - Techniques
 
@@ -752,4 +750,20 @@ Furthermore, we investigate the extent to which an in-parallel semantic parser c
     numpages = {36},
     location = {Honolulu, Hawaii, USA},
     series = {ICML'23}
+}
+
+% Graphs
+
+@article{WWL,
+  author = {Matteo Togninalli and M. Elisabetta Ghisu and Felipe Llinares{-}L{\'{o}}pez and Bastian Rieck and Karsten M. Borgwardt},
+  title = {Wasserstein Weisfeiler-Lehman Graph Kernels},
+  journal = {CoRR},
+  volume = {abs/1906.01277},
+  year = {2019},
+  url = {http://arxiv.org/abs/1906.01277},
+  eprinttype = {arXiv},
+  eprint = {1906.01277},
+  timestamp = {Sat, 23 Jan 2021 01:11:22 +0100},
+  biburl = {https://dblp.org/rec/journals/corr/abs-1906-01277.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
