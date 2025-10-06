@@ -1,40 +1,39 @@
-\subsection{Initialization} % TODO: FIX THIS SECTION
+\subsection{Initialization}
 
 Before the \textsc{Natural} system can process queries, it requires initialization
 with historical data to construct a specific embedding space $v \in \mathcal{V}$ and
-schema distance index $d \in \mathcal{D}$. This phase analyzes and samples existing
-datasets and previous user interactions to build 
-advanced example selection.
+schema distance index $d \in \mathcal{D}$. This preprocessing phase analyzes existing
+datasets and previous user interactions to enable semantically-aware example selection.
+
+The initialization process consists of two main components: (1) embedding generation
+for semantic similarity computation, and (2) schema indexing for structural similarity
+measurement. These components work together to support the example selection function $\sigma$.
 
 \subsubsection{Embedding}\label{design:embedding}
 
-Building upon DAIL-SQL's masked example selection, \textsc{Natural} utilizes 
-cosine similarity in an embedding space $v$ to search for examples based on the
-masked natural language query $q'$ and the respective masked SQL query $\omega'$.
-This allows $\sigma$ to use cosine distance to search through historically observed
-question answer pairs; eg, from previous user interactions or prevalent training
-datasets like \textsc{Spider}, \textsc{Bird} or \textsc{SynSQL-2.5m}.
+Building upon DAIL-SQL's masked example selection approach, \textsc{Natural} constructs
+an embedding space $v$ to enable semantic similarity search. The system uses cosine
+similarity to identify relevant examples based on masked representations of both
+natural language queries and SQL statements, allowing efficient retrieval from
+large collections of question-answer pairs.
 
-We therefore embedd a set of masked samples $\mathcal{S}$ into an embedding space $v_{\mathcal{S}}$,
-where $\mathcal{S} = \{(q_1, s_1), ..., (q_i, s_i)\}$, $q$ is the natural language
-question and $s$ is the corresponding SQL query.
+We therefore embed a set of training samples $\mathcal{T} = \{(q_1, \omega_1), ..., (q_n, \omega_n)\}$
+into an embedding space $v$, where each $q_i$ is a natural language question and $\omega_i$
+is the corresponding SQL query.
 
-The embedding space $v_{\mathcal{S}}$ can be defined as:
+The embedding space $v$ can be formally defined as:
 
-$$v_{\mathcal{S}} = \{~(q, \iota(mask(q)), s, \iota(mask(s)))~|~(q, s) \in \mathcal{S}~\}$$
+$$v = \{~(q, \iota(mask(q)), \omega, \iota(mask(\omega)))~|~(q, \omega) \in \mathcal{T}~\}$$
 
-Where the masking function $mask$ is defined as described in the sections~\ref{design:nl-masking}
-and~\ref{design:sql-masking} and the embedding function is defined as $\iota$.
-% TODO: Specify embedding model
+where $mask$ represents the masking function described in sections~\ref{design:nl-masking}
+and~\ref{design:sql-masking}, and $\iota$ is the embedding function that maps text to vector representations.
 
 \paragraph{Natural Language Masking}\label{design:nl-masking}
 
 Masking of natural language is the process of replacing all words which are not
 deemed \textit{structurally relevant} with the \texttt{<mask>} token. All words
 $w$ in a constant whitelist $\mathcal{W}$ are determined structurally relevant.
-% TODO: Fix typo
-Estimating a constant $\mathcal{W}$ is described in section~\ref{implementation:whitelisting}.
-% TODO: Fix reference to implementation section
+The constant $\mathcal{W}$ contains common structural SQL keywords and is determined empirically.
 
 Working with masked language enables the system to capture semantic patterns
 independently of domain terminology, improving the generalizability across
@@ -74,17 +73,7 @@ get masked to:
 SELECT * FROM <mask> WHERE <mask> = <value>
 \end{verbatim}
 
-% TODO: Discuss potential limitations of masked embedding approach
 
-% ALIGNMENT IMPROVEMENTS NEEDED:
-% TODO: Add formal mathematical definition using enumerate style like indexing section
-% TODO: Use consistent tuple notation (q,s,ω,d) matching definitions section  
-% TODO: Add cross-references to Section~\ref{design:indexing} for schema distances
-% TODO: Include similarity scoring methodology with weights w_q, w_s, w_sql
-% TODO: Add subsection on "Distance Calculation" parallel to indexing section
-% TODO: Use consistent variable naming (mathcal{V} vs V vs v)
-% TODO: Add example showing multi-dimensional scoring like indexing graphs
-% TODO: Include legend/explanation of masking tokens like indexing legend
 
 \subsubsection{Schema Indexing}
 
@@ -180,8 +169,7 @@ To determine structural similarity of database schemas systematically, we propos
 using graph representation of database schemas as a data definition language (DDL)
 independent representation of the database structure. Choosing a graph
 representation allows us to leverage established methods for measuring graph similarity
-such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. % TODO: Add proper WWL citation
-
+such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. 
 Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell, w)$ as:
 
 \begin{enumerate}
@@ -308,8 +296,6 @@ and the loss of relational structure (elimination of foreign key relationships),
 resulting in a substantial distance value reflecting their structural dissimilarity
 despite representing equivalent logical data with $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
 
-% TODO: Clarify relationship between edge weights and WWL computation
-% TODO: Add example showing how label priority affects similarity scores
 
 \paragraph{Distance Index}
 
@@ -319,5 +305,3 @@ databases during sample selection. This index is constructed as a set of
 schema-distance tuples $\{(sm_1, di_1), \ldots, (sm_i, di_i)\}$ where $sm_i$ is
 a database schema name and $di_i$ denotes its WWL distance to the current schema.
 
-% TODO: Fix inconsistent notation: use consistent variable names (G_s vs Natural-graphs)
-% TODO: Improve transition between graph definition and distance measurement sections
