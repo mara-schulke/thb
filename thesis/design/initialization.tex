@@ -182,7 +182,7 @@ independent representation of the database structure. Choosing a graph
 representation allows us to leverage established methods for measuring graph similarity
 such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. % TODO: Add proper WWL citation
 
-Given a database schema $s$, the corresponding graph $G_s = (V, E, \ell, w)$ is defined as:
+Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell, w)$ as:
 
 \begin{enumerate}
     \item $V = V_t \cup V_c$ where $V_t$ represents table nodes and $V_c$ represents column nodes
@@ -204,7 +204,7 @@ Given a database schema $s$, the corresponding graph $G_s = (V, E, \ell, w)$ is 
             \item $\ell(v) = 8$ for boolean columns
             \item $\ell(v) = 9$ for other/unknown data types
         \end{itemize}
-    \item Each edge $e \in E$ has a weight $w(e) \in \{0.5, 0.9, 1.0\}$ reflecting structural importance:
+    \item Each edge $e \in E$ has a weight $w(e) \in \{0.5, 0.9, 1.0\}$ reflecting its structural importance:
         \begin{itemize}
             \item $w(e) = 1.0$ for foreign key relationships (highest importance)
             \item $w(e) = 0.9$ for column foreign key reference edges
@@ -219,7 +219,7 @@ types: primary key columns receive label 3 regardless of their underlying data
 type, foreign key columns receive label 4, and only then are remaining columns
 categorized by data type (text=5, numeric=6, datetime=7, boolean=8, other=9).
 This hierarchical labeling ensures that structural relationships take
-precedence over semantic content, while omitting table names, column names and
+precedence over exact content, while omitting table names, column names and
 domain terminology to achieve schema-agnostic comparison.
 
 The graph representation of the database schemas introduced in~\ref{figure:schema-normalized}
@@ -299,10 +299,10 @@ D^{f}_{W}(G, G') = W_1(f(G), f(G'))
 
 as introduced by \citeauthor{WWL} in \citeyear{WWL}.
 
-
-
-For the database schemas above, the normalized schema (5 nodes, 5 edges) and
-denormalized schema (3 nodes, 2 edges) show significant topological differences.
+For the database schemas above, the graph representation of the normalized
+schema $G_{norm}$ (see figure~\ref{figure:normalized-graph-representation})
+with 5 nodes and 5 edges and denormalized schema $G_{denorm}$ (see figure~\ref{figure:denormalized-graph-representation})
+with 3 nodes and 2 edges show significant topological differences.
 The WWL distance captures both the reduction in graph complexity (fewer nodes and edges)
 and the loss of relational structure (elimination of foreign key relationships),
 resulting in a substantial distance value reflecting their structural dissimilarity

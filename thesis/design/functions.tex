@@ -12,32 +12,6 @@ The following sets are subsequently used to introduce the functions $nq$, $\sigm
     \item $\mathcal{Q}_{\mathcal{S}}$ – The set of all valid queries over the database schema $S$.
 \end{enumerate}
 
-\subsubsection{Query – $nq$}
-
-We define the query function $nq$ is collapsing a natural language question $q$,
-the database schema $s$ and a indices over historically observed examples and
-databases $v$ and $d$ into one SQL query candidate $\omega$.
-
-$$
-nq: \mathcal{Q} \times \mathcal{S} \times \mathcal{E} \times \mathcal{V} \times \mathcal{D} \rightarrow \Omega_{\mathcal{S}}
-$$
-
-\vspace{0.5em}
-
-For a specific input instance, we write:
-
-$$
-nq(q, s, e, v, d) = \omega
-$$
-
-\vspace{0.5em}
-
-where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$
-is the database schema, $e \in \mathcal{E}$ is the execution function for validation,
-$v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
-and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query. The function is comprised
-out of the subsequently defined function and follows the algorithm described in Algorithm~\ref{algorithms:nq}.
-
 \subsubsection{Example Selection – $\sigma$}\label{design:selection-function}
 
 The selection function $\sigma$ retrieves the most relevant examples from the

@@ -1,17 +1,12 @@
 \section{System Design}
 
-This chapter describes the design of \textsc{Natural}, the proposed NL2SQL system, 
+This chapter describes the design of \textsc{Natural}, our proposed NL2SQL system, 
 addressing limitations and research gaps identified in the literature review.
-The design follows a modular architecture that leverages both traditional computer
-science algorithms and machine learning models to achieve robust, portable and
-extensible natural language to SQL translation capabilities.
 
-\subsection{Overview}
-
-The \textsc{Natural} system implements a multi-stage pipeline that transforms natural
-language questions into executable SQL queries through example selection,
-schema subsetting, and iterative refinement. The proposed architecture consists
-of five core components:
+\textsc{Natural} is architected as a pipeline that transforms natural
+language questions into SQL queries using example selection ($\sigma$),
+schema subsetting ($\phi$), and self refinement ($\rho$) and voting ($\nu$).
+The proposed system consists of five components:
 
 \begin{enumerate}
     \item \textbf{Example Selection} $\sigma$ – Identifies semantically and structurally similar examples using cosine similarity and schema distance.
@@ -21,7 +16,7 @@ of five core components:
     \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the most likely result from multiple generation attempts.
 \end{enumerate}
 
-The system processes queries through the following pipeline:
+The system processes queries using the following algorithm:
 
 % TODO: Make a nice diagram for this
 
@@ -38,9 +33,10 @@ The system processes queries through the following pipeline:
 → SQL Query
 \end{verbatim}
 
-This design largely builds upon in context learning concepts from DAIL-SQL \citep{DAIL-SQL}
+This design largely builds upon few-shot learning concepts from DAIL-SQL \citep{DAIL-SQL}
 and OmniSQL \citep{OmniSQL} but incorporates novel contributions in schema-aware example
 selection by harnessing a graph-based structural similarity metric.
 
 \subimport{}{initialization}
 \subimport{}{functions}
+\subimport{}{composition}

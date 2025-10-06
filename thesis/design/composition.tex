@@ -1,0 +1,52 @@
+\subsection{Composition – $nq$}
+
+The $nq$ function composes the system by first establishing a
+zero-shot baseline, then using the precomputed embedding space $v$ and distance
+index $d$ from the initialization phase to guide few-shot generation while
+self refining results through execution feedback and finally yield the most likely
+candidate $\omega$ through majority voting.
+
+$$
+nq: \mathcal{Q} \times \mathcal{S} \times \mathcal{E} \times \mathcal{V} \times \mathcal{D} \rightarrow \Omega_{\mathcal{S}}
+$$
+
+\vspace{0.5em}
+
+For a specific input instance, we write:
+
+$$
+nq(q, s, e, v, d) = \omega
+$$
+
+\vspace{0.5em}
+
+where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$
+is the database schema, $e \in \mathcal{E}$ is the execution function for validation,
+$v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
+and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query.
+
+The $nq$ function follows the algorithm~\ref{algorithms:nq} definition.
+
+\begin{algorithm}
+\caption{$nq$}\label{algorithms:nq}
+\begin{algorithmic}[1]
+\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
+\Require $k \in \mathbb{N}$, $k \geq 1$             \Comment{Number of candidates to generate}
+\State $z \gets \pi(\emptyset, q, s)$               \Comment{Generate zero-shot baseline}
+\State $\mathcal{C}' \gets \sigma(q, z, s, v, d)$   \Comment{Select relevant examples}
+\State $C \gets \emptyset$                          \Comment{Initialize candidate set}
+\While{$|C| < k$}                                   \Comment{Generate k candidates}
+    \State $s' \gets \phi(\mathcal{C}', s)$         \Comment{Subset schema to relevant elements}
+    \State $\omega \gets \pi(\mathcal{C}', q, s')$  \Comment{Generate candidate query}
+    \If{$e(\omega, s')$}                            \Comment{Validate syntactic correctness}
+        \State $C \gets C \cup \{\omega\}$          \Comment{Add valid candidate}
+    \EndIf
+
+    \State $\omega' \gets \rho(q, s', e, \omega)$   \Comment{Attempt self-correction}
+    \If{$e(\omega', s')$}                           \Comment{Validate corrected query}
+        \State $C \gets C \cup \{\omega'\}$         \Comment{Add corrected candidate}
+    \EndIf
+\EndWhile
+\State \Return $\nu(C, e)$                          \Comment{Select consensus result}
+\end{algorithmic}
+\end{algorithm}
