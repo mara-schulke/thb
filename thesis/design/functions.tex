@@ -1,6 +1,6 @@
 \subsection{Functions}\label{design:components}
 
-The following sets are subsequently used to introduce the functions $nq$, $\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$.
+The following sets are subsequently used to introduce the functions $\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$.
 
 \begin{enumerate}
     \item $\mathcal{Q}$ – The set of all possible natural language queries.
@@ -59,6 +59,25 @@ This approach ensures that examples are weighted by the following properties:
 
 The exact weighting of these can be adjusted through three constants, $w_q$, $w_s$, and $w_d$.
 
+\begin{algorithm}
+\caption{$\sigma$ - Example Selection}\label{algorithms:sigma}
+\begin{algorithmic}[1]
+%\Require $q \in \mathcal{Q}$, $z \in \Omega_{\mathcal{S}}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
+%\Require $k \in \mathbb{N}$, $k \geq 1$             \Comment{Number of examples to select}
+%\State $q' \gets mask(q)$                           \Comment{Mask input query}
+%\State $z' \gets mask(z)$                           \Comment{Mask zero-shot result}
+%\State $candidates \gets \emptyset$                 \Comment{Initialize candidate set}
+%\For{each $(q_i, s_i, \omega_i) \in v$}            \Comment{Iterate through embedding space}
+    %\State $sim_q \gets cosine(\iota(q'), \iota(mask(q_i)))$  \Comment{Query similarity}
+    %\State $sim_s \gets cosine(\iota(z'), \iota(mask(\omega_i)))$  \Comment{SQL similarity}
+    %\State $sim_d \gets d(s, s_i)$                  \Comment{Schema distance}
+    %\State $score \gets w_q \cdot sim_q + w_s \cdot sim_s + w_d \cdot sim_d$
+    %\State $candidates \gets candidates \cup \{(q_i, s_i, \omega_i, score)\}$
+%\EndFor
+%\State \Return $top\_k(candidates, k)$              \Comment{Return k highest scoring examples}
+\end{algorithmic}
+\end{algorithm}
+
 \subsubsection{Schema Subsetting – $\phi$}\label{design:subsetting-function}
 
 The subsetting function $\phi$ reduces the database schema to only include
@@ -90,6 +109,22 @@ This analysis enables the system to steer the model's attention on the most rele
 portions of potentially large and complex database schemas, thereby improving both accuracy
 and computational efficiency and prevents exceeding limited context windows.
 
+\begin{algorithm}
+\caption{$\phi$ - Schema Subsetting}\label{algorithms:phi}
+\begin{algorithmic}[1]
+%\Require $c \in \mathcal{C}'$, $s \in \mathcal{S}$
+%\State $tables \gets \emptyset$, $columns \gets \emptyset$, $relations \gets \emptyset$
+%\For{each $(q_i, s_i, \omega_i, d_i) \in c$}       \Comment{Analyze selected examples}
+    %\State $parsed \gets parse\_sql(\omega_i)$      \Comment{Extract schema elements from SQL}
+    %\State $tables \gets tables \cup tables(parsed)$
+    %\State $columns \gets columns \cup columns(parsed)$
+    %\State $relations \gets relations \cup foreign\_keys(parsed)$
+%\EndFor
+%\State $s' \gets construct\_schema(tables, columns, relations)$  \Comment{Build reduced schema}
+%\State \Return $s'$                                 \Comment{Return schema subset}
+\end{algorithmic}
+\end{algorithm}
+
 \subsubsection{Query Projection – $\pi$}\label{design:projection-function}
 
 The projection function $\pi$ represents the core translation mechanism that converts
@@ -120,6 +155,12 @@ query, the relevant schema information, and the selected examples in a format
 optimized for large language model inference. The model then generates a SQL query
 that attempts to capture the semantic intent of the natural language input while
 adhering to the constraints imposed by the database schema.
+
+\begin{algorithm}
+\caption{$\pi$ - Query Projection}\label{algorithms:pi}
+\begin{algorithmic}[1]
+\end{algorithmic}
+\end{algorithm}
 
 \subsubsection{Self Refinement – $\rho$}\label{design:refinement-function}
 
@@ -154,6 +195,26 @@ an improved version based on the identified issues. This iterative refinement
 process continues until a valid, executable query is produced or a maximum number
 of refinement attempts is reached.
 
+\begin{algorithm}
+\caption{$\rho$ - Self Refinement}\label{algorithms:rho}
+\begin{algorithmic}[1]
+%\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $\omega_{raw} \in \Omega_{\mathcal{S}}$
+%\Require $max\_attempts \in \mathbb{N}$             \Comment{Maximum refinement attempts}
+%\State $\omega_{current} \gets \omega_{raw}$
+%\State $attempts \gets 0$
+%\While{$attempts < max\_attempts$}
+    %\If{$e(\omega_{current}, s)$}                   \Comment{Check if query is valid}
+        %\State \Return $\omega_{current}$           \Comment{Return if valid}
+    %\EndIf
+    %\State $error \gets get\_error(e, \omega_{current}, s)$  \Comment{Extract error details}
+    %\State $prompt \gets construct\_refinement\_prompt(q, s, \omega_{current}, error)$
+    %\State $\omega_{current} \gets \pi(prompt, s, \emptyset)$  \Comment{Generate refined query}
+    %\State $attempts \gets attempts + 1$
+%\EndWhile
+%\State \Return $\omega_{current}$                   \Comment{Return best attempt}
+\end{algorithmic}
+\end{algorithm}
+
 \subsubsection{Voting – $\nu$}\label{design:voting-function}
 
 The voting function $\nu$ implements a consensus mechanism that selects the most
@@ -184,4 +245,27 @@ described by OmniSQL \citep{OmniSQL}, where the result that appears most frequen
 across multiple generation attempts is deemed to be the most likely correct answer.
 The function applies frequency-based selection among the valid candidates. In cases where
 no clear majority exists, the function may apply additional heuristics such as query
-complexity or execution performance to determine the final proposed query candidate $w_{consensus}$.
+complexity or execution performance to determine the final proposed query candidate $\omega_{consensus}$.
+
+\begin{algorithm}
+\caption{$\nu$ - Consensus Voting}\label{algorithms:nu}
+\begin{algorithmic}[1]
+%\Require $C \in \mathcal{C}$, $e \in \mathcal{E}$
+%\State $valid\_queries \gets \{\omega \in C : e(\omega, s)\}$  \Comment{Filter valid queries}
+%\If{$|valid\_queries| = 0$}
+    %\State \Return $null$                           \Comment{No valid candidates}
+%\EndIf
+%\State $frequency\_map \gets \{\}$                  \Comment{Count query frequencies}
+%\For{each $\omega \in valid\_queries$}
+    %\State $result \gets execute(\omega, s)$        \Comment{Execute query to get result}
+    %\State $frequency\_map[result] \gets frequency\_map[result] + 1$
+%\EndFor
+%\State $max\_freq \gets max(frequency\_map.values())$
+%\State $consensus\_result \gets argmax(frequency\_map, max\_freq)$
+%\For{each $\omega \in valid\_queries$}             \Comment{Find query producing consensus result}
+    %\If{$execute(\omega, s) = consensus\_result$}
+        %\State \Return $\omega$                     \Comment{Return consensus query}
+    %\EndIf
+%\EndFor
+\end{algorithmic}
+\end{algorithm}
