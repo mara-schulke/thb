@@ -62,19 +62,19 @@ The exact weighting of these can be adjusted through three constants, $w_q$, $w_
 \begin{algorithm}
 \caption{$\sigma$ - Example Selection}\label{algorithms:sigma}
 \begin{algorithmic}[1]
-%\Require $q \in \mathcal{Q}$, $z \in \Omega_{\mathcal{S}}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
-%\Require $k \in \mathbb{N}$, $k \geq 1$             \Comment{Number of examples to select}
-%\State $q' \gets mask(q)$                           \Comment{Mask input query}
-%\State $z' \gets mask(z)$                           \Comment{Mask zero-shot result}
-%\State $candidates \gets \emptyset$                 \Comment{Initialize candidate set}
-%\For{each $(q_i, s_i, \omega_i) \in v$}            \Comment{Iterate through embedding space}
-    %\State $sim_q \gets cosine(\iota(q'), \iota(mask(q_i)))$  \Comment{Query similarity}
-    %\State $sim_s \gets cosine(\iota(z'), \iota(mask(\omega_i)))$  \Comment{SQL similarity}
-    %\State $sim_d \gets d(s, s_i)$                  \Comment{Schema distance}
-    %\State $score \gets w_q \cdot sim_q + w_s \cdot sim_s + w_d \cdot sim_d$
-    %\State $candidates \gets candidates \cup \{(q_i, s_i, \omega_i, score)\}$
-%\EndFor
-%\State \Return $top\_k(candidates, k)$              \Comment{Return k highest scoring examples}
+\Require $q \in \mathcal{Q}$, $z \in \Omega_{\mathcal{S}}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
+\Require $k \in \mathbb{N}$, $k \geq 1$                            \Comment{Number of examples to select}
+\State $q' \gets mask(q)$                                          \Comment{Mask input question}
+\State $z' \gets mask(z)$                                          \Comment{Mask zero-shot result}
+\State $candidates  \gets \emptyset$                               \Comment{Initialize candidate set}
+\For{$(q_i, s_i, \omega_i) \in v$}                            \Comment{For each sample}
+    \State $sim_q \gets cosine(\iota(q'), \iota(mask(q_i)))$       \Comment{Calculate question similarity}
+    \State $sim_s \gets cosine(\iota(z'), \iota(mask(\omega_i)))$  \Comment{Calculate SQL similarity}
+    \State $sim_d \gets d(s, s_i)$                                 \Comment{Calculate schema distance}
+    \State $score \gets w_q \cdot sim_q + w_s \cdot sim_s + w_d \cdot sim_d$
+    \State $candidates \gets candidates \cup \{(q_i, s_i, \omega_i, score)\}$
+\EndFor
+\State \Return $top_{k}(candidates)$                             \Comment{Return k highest scoring examples}
 \end{algorithmic}
 \end{algorithm}
 
@@ -104,24 +104,22 @@ is the full database schema, and $s' \subseteq s$ is the reduced schema subset c
 only relevant tables and columns.
 
 The function analyzes the selected examples in $c$ to identify which schema elements
-(tables, columns, foreign key relationships) are commonly referenced in similar queries.
-This analysis enables the system to steer the model's attention on the most relevant
-portions of potentially large and complex database schemas, thereby improving both accuracy
-and computational efficiency and prevents exceeding limited context windows.
+are commonly referenced in similar queries. This analysis enables the system to
+steer the model's attention on the most relevant portions of potentially large
+and complex database schemas, thereby improving both accuracy and computational
+efficiency and prevents exceeding limited context windows.
 
 \begin{algorithm}
 \caption{$\phi$ - Schema Subsetting}\label{algorithms:phi}
 \begin{algorithmic}[1]
-%\Require $c \in \mathcal{C}'$, $s \in \mathcal{S}$
-%\State $tables \gets \emptyset$, $columns \gets \emptyset$, $relations \gets \emptyset$
-%\For{each $(q_i, s_i, \omega_i, d_i) \in c$}       \Comment{Analyze selected examples}
-    %\State $parsed \gets parse\_sql(\omega_i)$      \Comment{Extract schema elements from SQL}
-    %\State $tables \gets tables \cup tables(parsed)$
-    %\State $columns \gets columns \cup columns(parsed)$
-    %\State $relations \gets relations \cup foreign\_keys(parsed)$
-%\EndFor
-%\State $s' \gets construct\_schema(tables, columns, relations)$  \Comment{Build reduced schema}
-%\State \Return $s'$                                 \Comment{Return schema subset}
+\Require $c \in \mathcal{C}'$, $s \in \mathcal{S}$
+\State $s' \gets \emptyset$                          \Comment{Empty schema subset}
+\For{$table \in s$}
+    \If{$\exists~r \in references(c, table)$}        \Comment{Any candidates reference the table}
+        \State $s' \gets s' \cup \{table\}$          \Comment{Extend subsetted schema}
+    \EndIf
+\EndFor
+\State \Return $s'$                                  \Comment{Return subsetted schema}
 \end{algorithmic}
 \end{algorithm}
 
@@ -159,6 +157,18 @@ adhering to the constraints imposed by the database schema.
 \begin{algorithm}
 \caption{$\pi$ - Query Projection}\label{algorithms:pi}
 \begin{algorithmic}[1]
+\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $c \in \mathcal{C}'$
+\Require $\tau \in \mathbb{R}$, $\tau > 0$                     \Comment{Relevance threshold}
+\State $c_{rel} \gets \{~(q_i, s_i, \omega_i, d_i) \in c : d_i < \tau~\}$  \Comment{Filter by relevance}
+\State $ex \gets \{~fmt(q_i, \omega_i, d_i)~|~(q_i, s_i, \omega_i, d_i) \in c_{rel}~\}$  \Comment{Format examples}
+\State $prompt \gets prompt(q, s, ex)$                         \Comment{Construct prompt}
+\State $out \gets model(prompt)$                               \Comment{Model inference}
+\State $\Omega_{cand} \gets extract_{sql}(out)$                \Comment{Extract SQL candidates}
+\For{$\omega_{raw} \in \Omega_{cand}$}                         \Comment{Validate candidates}
+    \If{$\omega_{raw} \in \Omega_{\mathcal{S}}$}               \Comment{Check syntactic validity}
+        \State \Return $\omega_{raw}$                          \Comment{Return first valid query}
+    \EndIf
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
@@ -198,20 +208,16 @@ of refinement attempts is reached.
 \begin{algorithm}
 \caption{$\rho$ - Self Refinement}\label{algorithms:rho}
 \begin{algorithmic}[1]
-%\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $\omega_{raw} \in \Omega_{\mathcal{S}}$
-%\Require $max\_attempts \in \mathbb{N}$             \Comment{Maximum refinement attempts}
-%\State $\omega_{current} \gets \omega_{raw}$
-%\State $attempts \gets 0$
-%\While{$attempts < max\_attempts$}
-    %\If{$e(\omega_{current}, s)$}                   \Comment{Check if query is valid}
-        %\State \Return $\omega_{current}$           \Comment{Return if valid}
-    %\EndIf
-    %\State $error \gets get\_error(e, \omega_{current}, s)$  \Comment{Extract error details}
-    %\State $prompt \gets construct\_refinement\_prompt(q, s, \omega_{current}, error)$
-    %\State $\omega_{current} \gets \pi(prompt, s, \emptyset)$  \Comment{Generate refined query}
-    %\State $attempts \gets attempts + 1$
-%\EndWhile
-%\State \Return $\omega_{current}$                   \Comment{Return best attempt}
+\Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $\omega_{raw} \in \Omega_{\mathcal{S}}$
+\State $exec \gets e(s, \omega_{raw})$                          \Comment{Verify execution output}
+\State $prompt \gets prompt_{refine}(q, s, \omega_{raw}, exec)$ \Comment{Construct refinement prompt}
+\State $out \gets model(prompt)$                                \Comment{Generate refinement output}
+\State $\Omega_{ref} \gets extract_{sql}(out)$                  \Comment{Extract refined candidates}
+\For{$\omega_{ref} \in \Omega_{ref}$}                           \Comment{Validate refined queries}
+    \If{$\omega_{ref} \in \Omega_{\mathcal{S}}$}                \Comment{Check syntactic validity}
+        \State \Return $\omega_{ref}$                           \Comment{Return first valid refinement}
+    \EndIf
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
@@ -250,22 +256,14 @@ complexity or execution performance to determine the final proposed query candid
 \begin{algorithm}
 \caption{$\nu$ - Consensus Voting}\label{algorithms:nu}
 \begin{algorithmic}[1]
-%\Require $C \in \mathcal{C}$, $e \in \mathcal{E}$
-%\State $valid\_queries \gets \{\omega \in C : e(\omega, s)\}$  \Comment{Filter valid queries}
-%\If{$|valid\_queries| = 0$}
-    %\State \Return $null$                           \Comment{No valid candidates}
-%\EndIf
-%\State $frequency\_map \gets \{\}$                  \Comment{Count query frequencies}
-%\For{each $\omega \in valid\_queries$}
-    %\State $result \gets execute(\omega, s)$        \Comment{Execute query to get result}
-    %\State $frequency\_map[result] \gets frequency\_map[result] + 1$
-%\EndFor
-%\State $max\_freq \gets max(frequency\_map.values())$
-%\State $consensus\_result \gets argmax(frequency\_map, max\_freq)$
-%\For{each $\omega \in valid\_queries$}             \Comment{Find query producing consensus result}
-    %\If{$execute(\omega, s) = consensus\_result$}
-        %\State \Return $\omega$                     \Comment{Return consensus query}
-    %\EndIf
-%\EndFor
+\Require $C \in \mathcal{C}$, $e \in \mathcal{E}$
+\State $results \gets \{\}$                               \Comment{Map from result sets to candidate lists}
+\For{$\omega \in C$}                                      \Comment{Execute each candidate}
+    \State $result \gets e(\omega)$                       \Comment{Execute query}
+    \State $results[result] \gets results[result] \cup \{\omega\}$
+\EndFor
+\State $dist \gets \{results[r] : r \in results\}$        \Comment{Get all result groups}
+\State $dist \gets sort(dist, |group| \mapsto |group|)$   \Comment{Sort by group size (largest first)}
+\State \Return $top_1(top_1(dist))$                       \Comment{Return largest group}
 \end{algorithmic}
 \end{algorithm}
