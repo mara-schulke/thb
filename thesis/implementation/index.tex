@@ -1,88 +1,163 @@
-\newpage
-
 \section{Implementation}
 
-This chapter describes the practical implementation of \textsc{Natural},
-translating the formal design specifications into a working NL2SQL system.
+% ??????/
 
-\subsection{System Architecture}
-% - Overall system design and component interaction
-% - Pipeline implementation mapping to design functions (σ, φ, π, ρ, ν)
-% - Data flow and processing stages
-% - API design and interfaces
+\subsection{Architecture and Infrastructure}
 
-\subsection{Development Environment and Tools}
-% - Programming languages and frameworks chosen
-% - LLM infrastructure (OpenAI API, local models, etc.)
-% - Database systems and connectors
-% - Development tools and testing frameworks
+The implementation of the system design phase is split into inference, sampling
+and evaluation code. The runtime code focuses on the actual algorithm
+implementations outlined in section \ref{section:design}, sampling code focuses on
+indexing samples and computing distance indices and the evaluation code runs
+the \textsc{Natural} pipeline on prevalent benchmarks.
 
-\subsection{Embedding Space Construction}
-% - Implementation of embedding function ι
-% - Masking algorithm implementation for NL and SQL
-% - Vector database setup and indexing
-% - Training data preprocessing pipeline
+This subsection focuses on outlining the scope of each technological component,
+the design rationale behind them and and discusses the technology stack
+decisions.
 
-\subsection{Schema Distance Indexing}
-% - Graph representation implementation for database schemas
-% - WWL kernel computation algorithms
-% - Distance index construction and storage
-% - Efficient similarity search implementation
+\subsubsection{Software Architecture}
 
-\subsection{Core System Components}
+\textsc{Natural} consists of five software components:
 
-\subsubsection{Example Selection ($\sigma$)}
-% - Cosine similarity computation implementation
-% - Multi-dimensional scoring (question, SQL, schema similarity)
-% - Top-k retrieval algorithms
-% - Performance optimization strategies
+\begin{enumerate}
+    \item \texttt{natural-models} – For handling the actual model
+        execution on GPUs for inference and embedding.
+    \item \texttt{natural-graphs} – Graph library for representing
+        database schemas in graphs as well as computing graph similarities and
+        distances.
+    \item \texttt{natural-inference} – The core pipeline implementation using
+        other software components during inference time.
+    \item \texttt{natural-sampling} – The sampling setup that focuses on
+        indexing samples and computing graph distance indices.
+    \item \texttt{natural-benchmark} – The benchmarking setup used to run
+        experiments, continuously evaluate the accuracy of the system and
+        compile statistics.
+\end{enumerate}
 
-\subsubsection{Schema Subsetting ($\phi$)}
-% - SQL parsing for schema element extraction
-% - Schema graph construction and pruning
-% - Context window management
-% - Schema serialization for LLM consumption
+% Inter-crate communication patterns and shared data structures
+\begin{verbatim}
+    THIS NEEDS A DIAGRAM TO UNDERSTAND THE SOFTWARE ARCH.
+\end{verbatim}
 
-\subsubsection{Query Projection ($\pi$)}
-% - LLM integration and prompt engineering
-% - Few-shot prompt construction
-% - Model selection and configuration
-% - Response parsing and validation
+This separation of concerns emerged as the split between inference, sampling
+and evaluation code required shared fundamentals like model execution and graph
+representation which in turn improves testability and maintainability. Furthermore
+separating the inference, sampling and evaluation code yields a smaller
+footprint when embedding the inference code into databases.
 
-\subsubsection{Self Refinement ($\rho$)}
-% - Error detection and analysis systems
-% - Iterative refinement loop implementation
-% - Feedback integration mechanisms
-% - Convergence criteria and stopping conditions
+Challenges associated with this multi component architecture are mostly tied to
+dependency management and increased build complexity although these can be
+mitiaged through \texttt{cargo}'s workspace support.
 
-\subsubsection{Voting System ($\nu$)}
-% - Result comparison and frequency analysis
-% - Consensus algorithms implementation
-% - Tie-breaking strategies
-% - Quality scoring mechanisms
+\subsubsection{Resource Management Strategy}
 
-\subsection{Whitelisting}\label{implementation:whitelisting}
-% - Natural language keyword whitelist construction
-% - Domain-specific vs. generic term handling
-% - Empirical whitelist optimization
-% - Cross-domain transferability considerations
+Given the constrained 24 gigabytes of VRAM capacity of the RTX 3090 not all
+available model sizes can be used. While 14B model variants theoretically work,
+the need for an embedding model typically exhausts the VRAM unless using
+steep quantization formats. The \textsc{OmniSQL} 7B models where shown to have
+an average performance degredation of only 0.3\% compared to their larger 14B
+counterparts by \citeauthor{OmniSQL} in \citeyear{OmniSQL}. On the spider test
+dataset the 7B model surprisingly outperformed it's 14B counterpart by 0.6\%.
+Due to the unclear performance gains of the 14B model, the significant increase
+in inference time and the limited VRAM available, this thesis focuses on the 7B
+variant of \textsc{OmniSQL}.
 
-\subsection{Performance Optimization}
-% - Caching strategies for embeddings and distances
-% - Parallel processing for candidate generation
-% - Memory management for large schemas
-% - Latency optimization techniques
+As an embedding model is required for doing semantic search of samples in the
+pipeline a small companion model is required to embedd both the sample datasets
+(\textsc{SynSQL}, \textsc{Bird} and \textsc{Spider}) during sampling time and
+the user provided natural language question during inference. The Qwen3 series
+embedding models ranked first place on the MTEB multilingual leaderboard. With
+the Q8\_0 quantized version of the 8B model consumes 8 gigabytes of VRAM which
+is not possible to fit into 24 gigabytes of VRAM when accounting for KV-Cache
+requirements. Therefore, instead of choosing a heavily quantized version of the
+8B variant (ie, Q4\_K\_M or below), the 4B model with Q8\_0 shows similar
+performance characteristics on simple usecase while offering a significantly
+smaller memory footprint at 2 gigabytes.
+\textcolor{red}{https://huggingface.co/Qwen/Qwen3-Embedding-8B cite}.
 
-\subsection{Error Handling and Robustness}
-% - Input validation and sanitization
-% - Graceful degradation strategies
-% - Logging and monitoring implementation
-% - Edge case handling
+As models have significant loading times, the system loads models gloablly and 
+at startup and hands around references using atomic reference counting
+(\texttt{std::sync::Arc}) to ensure that models are not loaded twice, can be
+reused between different inference calls and GPU memory is not exhausted which
+would lead to a program crash.
 
-\subsection{Testing and Validation}
-% - Unit testing for individual components
-% - Integration testing for end-to-end pipeline
-% - Performance benchmarking setup
-% - Correctness validation frameworks
+\subsubsection{Technology Stack Decisions}
 
-\newpage
+\paragraph{Language and Ecosystem}
+
+The most apparent and impactful decision is likely the language and ecosystem
+choice made. Viable languages for implementing natural language processing and
+machine learning heavy systems are Python, R, Julia, Rust, C / C++ and Java as
+well as other general purpose languages.
+
+While interpreted languages like Python, R and Julia tend to be significantly
+easier to use for rapid prototyping and approach validation due to their loose
+type systems and great scientific ecosystem, they come with serious drawbacks
+with regards to deployability, speed and robustness compared to compiled and
+strongly typed languages.
+
+Languages like Java, C / C++ and Rust offer greater stability at runtime,
+better interoperability into other programs (eg, database extensions) and better
+resource utilization they represent an interesting tradeoff between performance
+optimization and portability vs. speed of iteration and research ecosystems.
+
+R and Julia are inferior to Python when it comes to adoption, machine learning
+frameworks and natural language processing. Java requires a Java Virtual
+Machine (JVM) at runtime which yields worse portability than C / C++ and Rust
+while offering little advantage over interpreted languages like Python. Thus
+Python, C / C++ and Rust emerge as strong contenders for the implementation of
+\textsc{Natural}. C and C++ have the primary downside that they are prone to
+program crashes and memory safety issues whereas Rust resolves most of these
+downsides while maintaining similar performance, memory management and
+portability characteristics.
+
+Given that performance plays a critical role when developing machine learning
+systems with limited access to hardware, the path to a potential production
+deployments of NL2SQL is easier and the language ecosystem offers bindings
+for the most notable scientific libraries, Rust offers a great value
+proposition for ML systems at the cost of development speed.
+
+\paragraph{Inference Framework}
+
+For local model inference, two primary frameworks emerged: llama.cpp (FFI), 
+Candle (Rust-native). While Rust-native frameworks generally offer better 
+portability, llama.cpp provided a better balance between performance, ecosystem 
+maturity, and implementation simplicity.
+
+llama.cpp provides out-of-the-box optimizations with comprehensive GGUF 
+quantization support, yielding \textcolor{red}{25-30 tokens per second} on
+consumer grade RTX 3090 hardware. It offers high-level abstractions for model
+loading and tokenization and sampling. The mature GGML ecosystem and advanced
+quantization schemes (like \texttt{Q4\_K\_M}, \texttt{Q8\_0}) justified the FFI
+complexity.
+
+Candle, even though it offered comparable raw inference speeds, required
+rather extensive low-level implementation work and proved incompatiblity with
+scenarios where the resulting binary is embedded into a database (e.g. PostgreSQL).
+The combination of manual tensor management, more convoluted quantization support,
+and deployment constraints made llama.cpp a better alternative for
+production-ready systems.
+
+\paragraph{Similarity Search Framework}
+
+For lightweight similarity search SQLite in combination with it's
+\texttt{sqlite-vec} extension is a sensible option. Especially for smaller data
+loads introducing the complexity of \texttt{faiss} and comparable vector search
+solutions like \texttt{qdrant} outweighs their speed benefits.
+
+The \texttt{sqlite-vec} extension advertises to be a ``fast enough'' vector
+search solution, allowing for reduced complexity and compatibility with
+graphical database interfaces that support SQLite to inspect the embedding
+space.
+
+\paragraph{Trade-offs}
+
+Overall the development overhead of choosing Rust over Python for the
+implementation phase was noticable; Rust's machine learning and natural
+language processing frameworks are less advanced, porting research code written
+in python from other papers (like \cite{OmniSQL}) turned out to be non trivial.
+This decision likely doubled the time needed for the implementation, but in
+turn provides a clear path for the algorithms in this thesis to be
+productionized. The outcome of the implementation has significantly better
+performance and portability characteristics than using Python would have
+allowed for.
+
