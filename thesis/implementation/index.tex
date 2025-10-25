@@ -1,6 +1,14 @@
 \section{Implementation}
 
-% ??????/
+This chapter presents the practical implementation of the \textsc{Natural}
+system, translating the theoretical framework outlined in Chapter
+\ref{section:design} into a working NL2SQL system.
+
+Primary attention is given to the engineering challenges encountered,
+performance bottlenecks identified, and optimization strategies implemented to
+achieve practical deployment viability on consumer hardware.
+The chapter is comprised of a software architecture and infrastructure
+discussion as well as implementation outlines of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
 
@@ -11,7 +19,7 @@ indexing samples and computing distance indices and the evaluation code runs
 the \textsc{Natural} pipeline on prevalent benchmarks.
 
 This subsection focuses on outlining the scope of each technological component,
-the design rationale behind them and and discusses the technology stack
+the design rationale behind them and discusses the technology stack
 decisions.
 
 \subsubsection{Software Architecture}
@@ -46,23 +54,23 @@ footprint when embedding the inference code into databases.
 
 Challenges associated with this multi component architecture are mostly tied to
 dependency management and increased build complexity although these can be
-mitiaged through \texttt{cargo}'s workspace support.
+mitigated through \texttt{cargo}'s workspace support.
 
 \subsubsection{Resource Management Strategy}
 
 Given the constrained 24 gigabytes of VRAM capacity of the RTX 3090 not all
 available model sizes can be used. While 14B model variants theoretically work,
 the need for an embedding model typically exhausts the VRAM unless using
-steep quantization formats. The \textsc{OmniSQL} 7B models where shown to have
-an average performance degredation of only 0.3\% compared to their larger 14B
+steep quantization formats. The \textsc{OmniSQL} 7B models were shown to have
+an average performance degradation of only 0.3\% compared to their larger 14B
 counterparts by \citeauthor{OmniSQL} in \citeyear{OmniSQL}. On the spider test
-dataset the 7B model surprisingly outperformed it's 14B counterpart by 0.6\%.
+dataset the 7B model surprisingly outperformed its 14B counterpart by 0.6\%.
 Due to the unclear performance gains of the 14B model, the significant increase
 in inference time and the limited VRAM available, this thesis focuses on the 7B
 variant of \textsc{OmniSQL}.
 
 As an embedding model is required for doing semantic search of samples in the
-pipeline a small companion model is required to embedd both the sample datasets
+pipeline a small companion model is required to embed both the sample datasets
 (\textsc{SynSQL}, \textsc{Bird} and \textsc{Spider}) during sampling time and
 the user provided natural language question during inference. The Qwen3 series
 embedding models ranked first place on the MTEB multilingual leaderboard. With
@@ -70,17 +78,30 @@ the Q8\_0 quantized version of the 8B model consumes 8 gigabytes of VRAM which
 is not possible to fit into 24 gigabytes of VRAM when accounting for KV-Cache
 requirements. Therefore, instead of choosing a heavily quantized version of the
 8B variant (ie, Q4\_K\_M or below), the 4B model with Q8\_0 shows similar
-performance characteristics on simple usecase while offering a significantly
+performance characteristics on simple use cases while offering a significantly
 smaller memory footprint at 2 gigabytes.
 \textcolor{red}{https://huggingface.co/Qwen/Qwen3-Embedding-8B cite}.
 
-As models have significant loading times, the system loads models gloablly and 
+As models have significant loading times, the system loads models globally and 
 at startup and hands around references using atomic reference counting
 (\texttt{std::sync::Arc}) to ensure that models are not loaded twice, can be
 reused between different inference calls and GPU memory is not exhausted which
 would lead to a program crash.
 
 \subsubsection{Technology Stack Decisions}
+
+The choice of programming language, inference frameworks, and supporting
+libraries implies the system's performance and deployment characteristics,
+as well as development velocity. This section analyzes the key decisions
+made for \textsc{Natural}, discussing their trade-offs between research
+flexibility and production readiness, performance optimization and development
+speed, and ecosystem maturity versus cutting-edge capabilities.
+
+The critical decisions are the programming language, the model
+inference framework, and the vector similarity search solution. Each
+decision was evaluated against the constraints of limited hardware resources
+(24GB VRAM), the need for database integration capabilities, and the
+requirement for reproducible research outcomes.
 
 \paragraph{Language and Ecosystem}
 
@@ -97,7 +118,7 @@ strongly typed languages.
 
 Languages like Java, C / C++ and Rust offer greater stability at runtime,
 better interoperability into other programs (eg, database extensions) and better
-resource utilization they represent an interesting tradeoff between performance
+resource utilization they represent an interesting trade-off between performance
 optimization and portability vs. speed of iteration and research ecosystems.
 
 R and Julia are inferior to Python when it comes to adoption, machine learning
@@ -131,7 +152,7 @@ quantization schemes (like \texttt{Q4\_K\_M}, \texttt{Q8\_0}) justified the FFI
 complexity.
 
 Candle, even though it offered comparable raw inference speeds, required
-rather extensive low-level implementation work and proved incompatiblity with
+rather extensive low-level implementation work and proved incompatibility with
 scenarios where the resulting binary is embedded into a database (e.g. PostgreSQL).
 The combination of manual tensor management, more convoluted quantization support,
 and deployment constraints made llama.cpp a better alternative for
@@ -152,7 +173,7 @@ space.
 \paragraph{Trade-offs}
 
 Overall the development overhead of choosing Rust over Python for the
-implementation phase was noticable; Rust's machine learning and natural
+implementation phase was noticeable; Rust's machine learning and natural
 language processing frameworks are less advanced, porting research code written
 in python from other papers (like \cite{OmniSQL}) turned out to be non trivial.
 This decision likely doubled the time needed for the implementation, but in
@@ -160,4 +181,56 @@ turn provides a clear path for the algorithms in this thesis to be
 productionized. The outcome of the implementation has significantly better
 performance and portability characteristics than using Python would have
 allowed for.
+
+\subsection{Pipeline Implementation}
+
+This subsection describes the system design realisation of each core pipeline
+component ($\sigma$, $\phi$, $\pi$, $\rho$, $\nu$) into working code, their
+algorithmic details, performance characteristics and trade-offs made.
+
+\subsubsection{Example Selection Engine ($\sigma$)}
+
+The example selection is implemented using a multi-dimensional similarity
+scoring system that identifies the most relevant samples that were previously
+indexed for subsequent in-context learning. The component addresses the
+fundamental challenge of selecting contextually appropriate examples from large
+training corpus while balancing semantic relevance and structural compatibility.
+
+\paragraph{Similarity Computation}
+
+The selection mechanism combines three distinct similarity measures implemented
+in the selection module in \texttt{natural-sampling::selection}. The 
+\texttt{selection} algorithm computes semantic similarity through cosine
+distance of the masked question embedding. Structural SQL similarity is
+computed via measuring the cosine distance of the masked SQL embedding, and
+schema compatibility using WWL kernel distance from the \texttt{natural-graphs}
+component. The embeddings are computed using the Qwen3-Embedding model (4B)
+using the query masking algorithm in \texttt{natural-sampling::masking}.
+
+\paragraph{Weighting Strategy and Performance Characteristics}
+
+As this algorithm is aware of three distinct ways to measure sample similarity
+(masked question, masked query, structural). The implementation uses
+empirically optimized weights defined as constants: 70\% for semantic question
+similarity and 30\% for SQL structural similarity. Additionally, the final
+scoring combines 70\% sample-level similarity with 30\% schema-level
+compatibility.
+
+The selection algorithm yields a maximum of 32 candidates (\texttt{TOP\_K =
+32}) to limit computational overhead while maintaining selection quality.
+Vector similarity queries are performed using SQLite with the sqlite-vec
+extension, achieving sub-second retrieval times for vector databases exceeding
+2,000,000 samples.
+
+\paragraph{Implementation Architecture}
+
+Using the \texttt{Selector} struct the embedding computation and representation
+is encapsulated from the actual selection algorithm. Thus via
+\texttt{Selector::new} the consuming code can compute the masked embeddings and
+use them subsequently to run example selection.
+
+The \texttt{selection} algorithm implementation follows a two-stage approach,
+split into initial candidate retrieval through vector search and subsequent
+reweighting using the above described weights and a precomputed WWL distance
+index from \texttt{natural-graphs}.
 
