@@ -339,8 +339,7 @@ identify whether a SQL query is syntactically valid.
 
 To extract possible candidates all generated responses are post-processed
 through a markdown parser (\texttt{pulldown-cmark}) which parses the model
-output and looks for the code-block fence characters \texttt{\`\`\` }.
-
+output and looks for the code-block fence characters \texttt{```}.
 Subsequently all candidates are processed in reversed order and the first full
 valid query is returned as potential candidate. The reversing of processing
 order is needed as the model outputs it's thoughts top-to-bottom as a markdown
@@ -350,3 +349,62 @@ ensured to contain valid SQL. Thus \textsc{Natural} can aid the
 difficulty of generating perfect SQL queries by acknowledging
 limitations from large language models and implementing recovery and refinement
 mechanisms in the subsequent pipeline flow.
+
+\subsubsection{Self-Refinement Mechanism ($\rho$)}
+
+The self-refinement algorithm described in~\ref{design:refinement-function}
+is implemented in \texttt{natural-inference::pipeline::refinement}.
+This implementation corresponds to the $\rho$ function, providing
+automated error correction through execution feedback and iterative
+improvement of generated SQL queries.
+
+\paragraph{Error Correction Through Execution Feedback}
+
+The \texttt{Refinement::optimize} method takes a \texttt{RawQueryCandidate} and
+attempts to improve it through targeted prompting. The refinement prompt
+explicitly instructs the model to ``spot any errors in the SQL query, correct
+them'' and provides the original question, schema context, and the candidate
+query that needs improvement.
+
+Contrary to the ICL generation which uses few-shot examples, the
+refinement process focuses on single-query self-correction with explicit
+error-fixing instructions.
+
+\paragraph{Prompt Engineering for Correction}
+
+The refinement prompt uses a structured format similar to ICL generation but
+with key differences: it includes the original question as context, provides
+the candidate query that needs fixing, and uses explicit correction language.
+
+\begin{verbatim}
+    SHOW PROMPT LAYOUT
+\end{verbatim}
+
+\paragraph{Model Resource Management}
+
+As both the ICL implementation and the refinement are ultimately generating
+SQL, they reuse the same underlying \texttt{SqlModel} from the shared pipeline
+context rather than loading separate models. This design choice
+significantly reduces memory requirements but potentially impacts refinement
+quality compared to having dedicated refinement models with different prompt
+conditioning. Due to the limited available hardware the effects of having a
+separate, distinc refinement model could not be verified. \citeauthor{XiYan}
+have implemented multi model generation pipelines in \citeyear{XiYan} and
+achieved promising results which.
+
+\paragraph{Output Processing and Validation}
+
+Similar to ICL generation, refined responses are processed through the same
+\texttt{Markdown} parser to extract the predicted SQL. The system validates each
+extracted candidate using \texttt{QueryCandidate::try_from} and returns the first
+syntactically valid refinement starting from the bottom. This ensures that
+refinement produces executable SQL whilst falling back gracefully if refinement
+fails.
+
+\paragraph{Integration with Pipeline}
+
+The refinement module is integrated into the main pipeline after the ICL
+generator. It processes the \texttt{RawQueryCandidate} and provides a
+self-correction mechanism that improves overall pipeline robustness. Notably both
+the unrefined and the refined query candidates are kept in the candidate set
+for majority voting.
