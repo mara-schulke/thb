@@ -190,11 +190,11 @@ algorithmic details, performance characteristics and trade-offs made.
 
 \subsubsection{Example Selection Engine ($\sigma$)}
 
-The example selection is implemented using a multi-dimensional similarity
+The example selection system is implemented using a multi-dimensional similarity
 scoring system that identifies the most relevant samples that were previously
 indexed for subsequent in-context learning. The component addresses the
 fundamental challenge of selecting contextually appropriate examples from large
-training corpus while balancing semantic relevance and structural compatibility.
+training corpora whilst balancing semantic relevance and structural compatibility.
 
 \paragraph{Similarity Computation}
 
@@ -210,15 +210,15 @@ using the query masking algorithm in \texttt{natural-sampling::masking}.
 \paragraph{Weighting Strategy and Performance Characteristics}
 
 As this algorithm is aware of three distinct ways to measure sample similarity
-(masked question, masked query, structural). The implementation uses
+(masked question, masked query, structural). The implementation employs
 empirically optimized weights defined as constants: 70\% for semantic question
 similarity and 30\% for SQL structural similarity. Additionally, the final
 scoring combines 70\% sample-level similarity with 30\% schema-level
 compatibility.
 
 The selection algorithm yields a maximum of 32 candidates (\texttt{TOP\_K =
-32}) to limit computational overhead while maintaining selection quality.
-Vector similarity queries are performed using SQLite with the sqlite-vec
+32}) to limit computational overhead whilst maintaining selection quality.
+Vector similarity queries are performed using SQLite with the \texttt{sqlite-vec}
 extension, achieving sub-second retrieval times for vector databases exceeding
 2,000,000 samples.
 
@@ -237,50 +237,115 @@ described weights and a precomputed WWL distance index from
 
 \subsubsection{Schema Subsetting System ($\phi$)}
 
-% - Execution-based validation vs heuristic approaches
-% - Dynamic pruning: 500-800ms for 20+ table schemas vs 10-15ms heuristic
-% - In-memory database creation and testing for candidate queries
-% - Schema dependency analysis challenges (nested subqueries, CTEs)
-% - Correctness vs performance trade-off: eliminates pipeline failures
-
 The schema subsetting system is implemented in
 \texttt{natural-inference::pipeline::subsetting} as
 \texttt{SchemaSubsetter} struct. The core algorithm is the \texttt{optimize}
-method (lines 21-47) which performs execution-based validation to determine
+method (lines 21-47) which performs query validation to determine
 which tables are crucial for the query candidates provided.
 
-\paragraph{Execution-based Validation}
+\paragraph{Query Validation}
 
-The implementation uses a trial-and-error approach where for each query
-candidate and each table in the schema, it creates an in-memory SQLite database
-using \texttt{Connection::open\_in\_memory()} and populates it's schema with all
-tables except the current one being tested. It then attempts to prepare every
-query candidate against this reduced schema.
+Query validation employs a trial-and-error approach where for each query
+candidate and table in the schema, an in-memory SQLite database
+is created using \texttt{Connection::open\_in\_memory()}. Subsequently the
+connection is initialized using the schema with all tables in the schema except
+the current one.
 
-If the query preparation fails, this indicates the removed table is crucial
-for the query, and it gets added to the list of crucial tables.
-This process is repeated for all query-table combinations to build a minimal
-schema containing only essential tables for the provided set of query candidates.
+Once the connection is ready, the \texttt{SchemaSubsetter} prepares every
+query candidate against this reduced schema. If preparation fails, this
+indicates the table removed is crucial for the query, thus it gets added to the
+list of crucial tables. This process is repeated for all query-table
+combinations to build a minimal schema containing only essential tables for the
+execution of the set of query candidates provided to the subsetting algorithm.
 
 \paragraph{Performance and Trade-off Characteristics}
 
-The algorithm creates a new in-memory database for each table-query
-combination, leading to $O(queries \times tables)$ complexity. 
+As a new in-memory database for each table-query combination is created, this
+leads to $O(queries \times tables)$ complexity. \textcolor{red}{For schemas
+with XXX+ tables and multiple query candidates, this results in XXX-XXXms
+processing time compared to 10-15ms for heuristic approaches.}
 
-\textcolor{red}{For schemas with XXX+ tables and multiple query candidates, this results in XXX-XXXms processing time
-compared to 10-15ms for heuristic approaches.}
-
-However, this execution-based approach provides correctness guarantees by
-eliminating pipeline failures caused by missing table dependencies. The
-method handles complex SQL dependencies including nested subqueries, CTEs,
-and foreign key relationships that heuristic approaches often miss.
+However, this execution-based approach provides superior correctness guarantees since heuristic
+approaches cannot determine whether candidates will execute successfully in real
+database environments. Using a real SQLite in memory instance both the correctness of
+query candidates and the actually referenced set of tables can be known prior
+to actual query execution.
 
 \paragraph{Pipeline Integration}
 
-The \texttt{SchemaSubsetter} is used prior to prompting the model using
-in-context learning to ensure that the model context is used optimally.
-The \texttt{optimize} method returns a \texttt{Schema} object
-containing only the tables identified as crucial through execution testing
-which is in turn processed by the subsequent pipeline stages like generation
-and refinement.
+The \texttt{SchemaSubsetter} is used prior to prompting the model using ICL to
+ensure that the model context is used efficiently and attention is given to the
+relevant parts of the schema. The \texttt{optimize} method returns a
+\texttt{Schema} object containing only the tables identified as crucial through
+execution testing which is in turn processed by the subsequent pipeline stages
+like generation and refinement.
 
+\subsubsection{Query Projection ($\pi$)}
+
+The ICL module is implementing the query projection algorithm described in
+section~\ref{design:projection-function}. It is implemented in the
+\texttt{ICLGenerator} struct and wraps the \texttt{SqlModel} struct from
+\texttt{natural-models}. Using llama.cpp it runs model inference using a
+prompt optimized for in-context-learning with \textsc{OmniSQL}.
+
+\paragraph{In-Context Learning}
+
+The \texttt{ICLGenerator::generate} method implements few-shot prompting
+with relevance filtering. Relevance filtering refers to removing all selected
+samples with a similarity of less than 0.5 (this value was emperically derived
+from evaluations). Thus only semantically or structurally similar samples are
+actually provided to the model.
+
+The prompt is constructed based on an adapted version of the \textsc{OmniSQL}
+format \citep{OmniSQL}: task overview, sql schema, filtered examples with
+similarity scores, explicit instructions, and the target question.
+The biggest differentiation to the prompt of \citeauthor{OmniSQL} is the
+example section including similarity. For the actual SQL query presentation the
+code representation prompt format is used, inspired by DAIL-SQL
+\citep{DAIL-SQL}. Every example includes the masked question, similarity score,
+and formatted SQL query for clarity.
+
+\begin{verbatim}
+EXAMPLE OF THE PROMPT
+\end{verbatim}
+
+\paragraph{Prompt Engineering Strategy}
+
+As outlined above the \textsc{OmniSQL} prompt was used as base for
+\textsc{Natural}'s prompt together with a . \textsc{Natural} uses more explicit instructions
+compared to DAIL-SQL. Key differentiations include the inclusion of similarity
+scores to give the model the ability to weight the samples itself and 
+
+The prompt emphasizes precision and chain-of-thought reasoning. 
+This aims to address common LLM issues with over-generating information or missing
+query constraints, as well as the hallucination and accuracy concerns
+identified in literature review section where LLMs generate plausible but
+incorrect SQL queries.
+
+\paragraph{Model Integration and Performance}
+
+The \texttt{SqlModel} is wrapped around \texttt{llama-cpp-2} bindings and
+loaded globally at startup to avoid a 30-60 second initialization times per
+query. Using the \texttt{prompt} method from \texttt{natural-models}
+tokenization, inference, and decoding with configurable PromptParams for
+context size and generation limits is handled automatically.
+
+\paragraph{Output Processing and Validation}
+
+As \textsc{OmniSQL} was finetuned to output its thoughts and predictions using
+markdown a markdown postprocessing module is needed, as well as a module to
+identify whether a SQL query is syntactically valid.
+
+To extract possible candidates all generated responses are post-processed
+through a markdown parser (\texttt{pulldown-cmark}) which parses the model
+output and looks for the code-block fence characters \texttt{\`\`\` }.
+
+Subsequently all candidates are processed in reversed order and the first full
+valid query is returned as potential candidate. The reversing of processing
+order is needed as the model outputs it's thoughts top-to-bottom as a markdown
+document with the most likely answer usually being output at the end. This
+approach ensures that a returned query candidates are executable and
+ensured to contain valid SQL. Thus \textsc{Natural} can aid the
+difficulty of generating perfect SQL queries by acknowledging
+limitations from large language models and implementing recovery and refinement
+mechanisms in the subsequent pipeline flow.
