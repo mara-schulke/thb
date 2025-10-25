@@ -230,7 +230,57 @@ is encapsulated from the actual selection algorithm. Thus via
 use them subsequently to run example selection.
 
 The \texttt{selection} algorithm implementation follows a two-stage approach,
-split into initial candidate retrieval through vector search and subsequent
-reweighting using the above described weights and a precomputed WWL distance
-index from \texttt{natural-graphs}.
+split into initial candidate retrieval through vector search (using the
+\texttt{Vector} struct and SQLite) and subsequent reweighting using the above
+described weights and a precomputed WWL distance index from
+\texttt{natural-graphs}.
+
+\subsubsection{Schema Subsetting System ($\phi$)}
+
+% - Execution-based validation vs heuristic approaches
+% - Dynamic pruning: 500-800ms for 20+ table schemas vs 10-15ms heuristic
+% - In-memory database creation and testing for candidate queries
+% - Schema dependency analysis challenges (nested subqueries, CTEs)
+% - Correctness vs performance trade-off: eliminates pipeline failures
+
+The schema subsetting system is implemented in
+\texttt{natural-inference::pipeline::subsetting} as
+\texttt{SchemaSubsetter} struct. The core algorithm is the \texttt{optimize}
+method (lines 21-47) which performs execution-based validation to determine
+which tables are crucial for the query candidates provided.
+
+\paragraph{Execution-based Validation}
+
+The implementation uses a trial-and-error approach where for each query
+candidate and each table in the schema, it creates an in-memory SQLite database
+using \texttt{Connection::open\_in\_memory()} and populates it's schema with all
+tables except the current one being tested. It then attempts to prepare every
+query candidate against this reduced schema.
+
+If the query preparation fails, this indicates the removed table is crucial
+for the query, and it gets added to the list of crucial tables.
+This process is repeated for all query-table combinations to build a minimal
+schema containing only essential tables for the provided set of query candidates.
+
+\paragraph{Performance and Trade-off Characteristics}
+
+The algorithm creates a new in-memory database for each table-query
+combination, leading to $O(queries \times tables)$ complexity. 
+
+\textcolor{red}{For schemas with XXX+ tables and multiple query candidates, this results in XXX-XXXms processing time
+compared to 10-15ms for heuristic approaches.}
+
+However, this execution-based approach provides correctness guarantees by
+eliminating pipeline failures caused by missing table dependencies. The
+method handles complex SQL dependencies including nested subqueries, CTEs,
+and foreign key relationships that heuristic approaches often miss.
+
+\paragraph{Pipeline Integration}
+
+The \texttt{SchemaSubsetter} is used prior to prompting the model using
+in-context learning to ensure that the model context is used optimally.
+The \texttt{optimize} method returns a \texttt{Schema} object
+containing only the tables identified as crucial through execution testing
+which is in turn processed by the subsequent pipeline stages like generation
+and refinement.
 
