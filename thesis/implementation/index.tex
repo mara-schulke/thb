@@ -305,22 +305,23 @@ code representation prompt format is used, inspired by DAIL-SQL
 \citep{DAIL-SQL}. Every example includes the masked question, similarity score,
 and formatted SQL query for clarity.
 
-\begin{verbatim}
-EXAMPLE OF THE PROMPT
-\end{verbatim}
-
 \paragraph{Prompt Engineering Strategy}
 
 As outlined above the \textsc{OmniSQL} prompt was used as base for
-\textsc{Natural}'s prompt together with a . \textsc{Natural} uses more explicit instructions
-compared to DAIL-SQL. Key differentiations include the inclusion of similarity
-scores to give the model the ability to weight the samples itself and 
+\textsc{Natural}'s prompt together with a code representation prompt.
+\textsc{Natural} uses more explicit instructions compared to DAIL-SQL. Key
+differentiations include the inclusion of similarity scores to give the model
+the ability to weight the samples itself.
 
-The prompt emphasizes precision and chain-of-thought reasoning. 
-This aims to address common LLM issues with over-generating information or missing
+This prompt steers the model towards precision and chain-of-thought reasoning. 
+It addresses apparent LLM issues like verbosity, over complexity or missing
 query constraints, as well as the hallucination and accuracy concerns
 identified in literature review section where LLMs generate plausible but
 incorrect SQL queries.
+
+\begin{verbatim}
+EXAMPLE OF THE PROMPT
+\end{verbatim}
 
 \paragraph{Model Integration and Performance}
 
