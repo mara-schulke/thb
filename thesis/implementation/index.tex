@@ -396,10 +396,10 @@ achieved promising results which.
 
 Similar to ICL generation, refined responses are processed through the same
 \texttt{Markdown} parser to extract the predicted SQL. The system validates each
-extracted candidate using \texttt{QueryCandidate::try_from} and returns the first
-syntactically valid refinement starting from the bottom. This ensures that
-refinement produces executable SQL whilst falling back gracefully if refinement
-fails.
+extracted candidate by trying to parse it using \texttt{QueryCandidate::try\_from}
+and returns the first syntactically valid refinement starting from the bottom.
+This ensures that refinement produces executable SQL whilst falling back
+gracefully if refinement fails.
 
 \paragraph{Integration with Pipeline}
 
@@ -408,3 +408,62 @@ generator. It processes the \texttt{RawQueryCandidate} and provides a
 self-correction mechanism that improves overall pipeline robustness. Notably both
 the unrefined and the refined query candidates are kept in the candidate set
 for majority voting.
+
+\subsubsection{Consensus Voting System ($\nu$)}
+
+The \texttt{natural-inference::pipeline::voting} implements the majority
+function $\nu$ – this implementation closely follows the design and algorithm
+outlined in the section~\ref{design:voting-function}. The function \texttt{voting}
+providing a result-based self-consensus mechanism which takes in the set of
+candidates that were predicted during the generation phase and returns the most
+likely query.
+
+\paragraph{Result-Based Self-Consensus}
+
+\citeauthor{OmniSQL} have shown in \citeyear{OmniSQL} that self-consensus can 
+significantly improve the accuracy of models that are already showing 
+state-of-the-art performance. The result-based self-consensus mechanism is
+executing every query candidate, verifies that it works on the database, and
+loads it's results. By partitioning the available candidates into buckets based
+on their hashed result, queries can be deemed semantically equivalent if they
+end up in the same bucket. After every query has been exeuted and partitioned,
+the algorithm groups the buckets in a hash map \texttt{buckets} with the result
+hash as key and bucket as value.
+
+\paragraph{Largest Group Selection Heuristic}
+
+The heuristic method employed by the voting algorithm is to steer the pipeline
+to agree with itself – if multiple generation attempts yielded the same result,
+these generation attempts are more likely than outliers.
+
+\paragraph{Error Handling and Fallback}
+
+Queries that voting function fails with execution are that contains in an
+\texttt{errors} hash set to provide than being included the calling side all
+candidates fail execution, the voting function fails with an error that
+contains all collected execution errors to provide diagnostic information for
+the calling side.
+
+\paragraph{Limitations and Trade-offs}
+
+The result-based partitioning approach has limitations with subtle errors that
+differ by few rows, as these would be treated as completely different result
+groups. Furthermore executing every query candidate against the real database
+comes along with a significant performance penalty for expensive queries where
+the voting step might incur load onto the database, use significant amounts of
+memory for loading in all data into memory and slow down the voting as the
+entire result needs to be hashed. This system lacks model uncertainty
+calibration for SQL task confidence scoring which could be used as one
+dimension for partitioning.
+
+Another more advanced optimization could be to group by result-schema and row
+count, which still needs to execute the candidate queries partially but does
+not load the actual data from the database into memory. For the scope of this
+thesis and small real-world application scenarios the cost of this stage is
+negligible compared to the llm inference done in previous steps. 
+
+\paragraph{Integration with Pipeline}
+
+The voting mechanism represents the last step of the pipeline function 
+and selects the final consensus from all generated and refined candidates, 
+and ultimately returns the output of the \textsc{Natural} system.
