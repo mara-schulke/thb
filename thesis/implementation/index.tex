@@ -430,9 +430,9 @@ end up in the same bucket. After every query has been exeuted and partitioned,
 the algorithm groups the buckets in a hash map \texttt{buckets} with the result
 hash as key and bucket as value.
 
-\paragraph{Largest Group Selection Heuristic}
+\paragraph{Bucket Selection Heuristic}
 
-The heuristic method employed by the voting algorithm is to steer the pipeline
+The heuristic method employed by the voting algorithm is steering the pipeline
 to agree with itself – if multiple generation attempts yielded the same result,
 these generation attempts are more likely than outliers.
 
@@ -446,15 +446,15 @@ the calling side.
 
 \paragraph{Limitations and Trade-offs}
 
-The result-based partitioning approach has limitations with subtle errors that
-differ by few rows, as these would be treated as completely different result
-groups. Furthermore executing every query candidate against the real database
-comes along with a significant performance penalty for expensive queries where
-the voting step might incur load onto the database, use significant amounts of
-memory for loading in all data into memory and slow down the voting as the
-entire result needs to be hashed. This system lacks model uncertainty
-calibration for SQL task confidence scoring which could be used as one
-dimension for partitioning.
+The result-based partitioning approach has limitations with regards to subtle
+errors that differ by few rows, as these would be treated as completely
+different result buckets. Furthermore executing every query candidate against
+the real database comes along with a significant performance penalty for
+expensive queries where the voting step might incur load onto the database, use
+significant amounts of memory for loading in all data into memory and slow down
+the voting as the entire result needs to be hashed. This system lacks model
+uncertainty calibration for SQL confidence scoring which could be used as
+another dimension for partitioning.
 
 Another more advanced optimization could be to group by result-schema and row
 count, which still needs to execute the candidate queries partially but does
@@ -467,3 +467,106 @@ negligible compared to the llm inference done in previous steps.
 The voting mechanism represents the last step of the pipeline function 
 and selects the final consensus from all generated and refined candidates, 
 and ultimately returns the output of the \textsc{Natural} system.
+
+\subsection{Supporting Systems and Optimizations}
+
+The supporting systems of \textsc{Natural} are important tools to simplify the 
+actual pipeline development, employing performance optimizations and enable
+rapid development of new approaches and hypotheses. The primary support systems
+are \texttt{Vector} – a vector database abstraction on top of SQLite,
+\texttt{wwl} – a library that implements Wasserstein-Weisfeiler-Leman kernels
+\citep{WWL} and the \texttt{embedding} and \texttt{masking} modules to compare
+and semantically search the embedding space.
+
+\subsubsection{Vector Database}
+
+The vector database implementation \texttt{Vector} is used both during
+sampling to construct the vector db and runtime to run the sample selection
+algorithm. Using SQLite and \texttt{sqlite-vec} to implement cosine search in
+text corpora of up to a few million samples dramatically simplified the
+development of \textsc{Natural} as no manual performance optimizations had to
+be implemnented. SQLite has a second architectural benefit besides relatively
+good performance, which is the portability characteristics of having all
+samples indexed in a single file on disk. This enables swapping out the
+respectively used samples by using another \texttt{.vector} file on disk.
+
+\begin{verbatim}
+let question = "How many ..";
+
+// Initialize vector database for similarity search
+let vector = Vector::infer();
+let model = EmbeddingModel::from_env().expect("failed to load embedding model");
+
+// Query distance indices
+let index = DistanceIndexRow::get("test_db", &vector)?;
+
+// Embed question and perform similarity search
+let selector = Selector::new(&question, None, &model, &vector)?;
+let samples = selection::<4>(
+    &Selector::new(
+        question.as_ref(),
+        None,
+        &model,
+        &vector,
+    )?,
+    &index.into(),
+    &vector,
+)?;
+
+\end{verbatim}
+
+\paragraph{Database Schema}
+
+As the \texttt{.vector} file is still a regular SQLite database, alongside
+indexing tables using embeddings (\texttt{float[4096]} or \texttt{float[2048]})
+regular database tables can be maintained to save data derived at sampling
+time. \texttt{Vector} hosts the following database schema:
+
+\begin{verbatim}
+CREATE TABLE IF NOT EXISTS whitelist (
+  word             text not null primary key,
+  frequency        integer not null,
+  domain_count     integer not null
+);
+
+CREATE TABLE IF NOT EXISTS databases (
+  id               text not null,
+  name             text not null,
+  graph            text not null
+);
+
+CREATE TABLE IF NOT EXISTS distance_indices (
+  db_id            text not null,
+  distances        text not null
+);
+
+CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
+  id                 text not null,
+  db_id              text not null,
+
+  question           text not null,
+  question_masked    text not null,
+  question_embedding float[2048],
+
+  sql                text not null,
+  sql_masked         text not null,
+  sql_embedding      float[2048]
+);
+\end{verbatim}
+
+Which maintains the word whitelist for query masking, the database graphs of
+the sample databases and the precomputed database indices. Thus at pipeline
+runtime the database indices and whitelists can be reconstructed through a
+cheap selection from \texttt{Vector} even though they are not indexed through
+embeddings.
+
+The schema of the \texttt{samples} table largely drives the capabilities for
+example selection at runtime, it maintains embeddings of the masked sql query
+and natural language question respectively. Thus after cosine similarity search
+the original query or question can be reconstructed as well as the graph layout
+of the underlying database can be accessed through the \texttt{database} table.
+
+The \texttt{database} and \texttt{database\_indices} table contain \texttt{JSON}
+columns respectively for serializing complex graph and graph index structures
+to the database.
+
