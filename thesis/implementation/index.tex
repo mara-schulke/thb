@@ -621,6 +621,92 @@ using \texttt{embed\_chunked} and finally combined into
 
 \subsubsection{Wasserstein-Weisfeiler-Leman Kernels}
 
+WWL kernels are used to construct the distance index $d \in \mathcal{D}$
+for the $\sigma$ function (see section~\ref{design:selection-function})
+by computing schema distance through graph-based distance metrics. The
+underlying WWL implementation used by \textsc{Natural} is the reference
+implementation of WWL kernels from \citeauthor{WWL}, which is implemented in
+Python. Thus \textsc{Natural} can't directly use the WWL implementation
+as Rust and Python FFI is not directly possible. In order to buy into the
+Python libraries and ecosystem (eg, optimal transport) and utilize the existing
+implementation of the WWL kernels, writing a thin layer of Rust bindings around
+\citeauthor{WWL}'s implementation was deemed most sensible. Using \texttt{pyo3}
+calling Python code is made possible and let's \textsc{Natural} hook into
+existing ecosystems where needed. Due to the design laid out in
+section~\ref{section:design} the WWL implementation is only needed during
+sampling time and not required at runtime as all distances are precomputed and
+stored in a distance index, keeping the runtime portability characteristics of
+using Rust that were discussed above.
+
+% - Schema similarity using Weisfeiler-Leman graph kernel
+% - O(n²) computational complexity for 100+ database schemas
+% - Precomputation during initialization vs dynamic updates
+% - Node labeling strategy: constraints vs data types hierarchy
+% - Distance index caching: initialization time vs query performance
+
+
+\paragraph{Rust-Python Integration Architecture}
+
+The WWL kernel library used by \textsc{Natural} is implemented using
+\texttt{pyo3} around the existing Python \texttt{wwl} library. The Rust
+bindings are usable through the \texttt{wwl} crate. The \texttt{WWLKernel}
+struct encapsulates the Python module reference and provides type-safe interfaces for
+both categorical and continuous propagation modes through respective methods.
+Using an existing graph library (\texttt{petgraph}) the complexity of the Rust
+bindings could be kept minimal, but required conversion from Rust's
+\texttt{petgraph} graph representation to Python's \texttt{igraph} graph
+representation. 
+
+\paragraph{Schema Graph Representation}
+
+The \texttt{natural-graphs} library implements the schema graph representation
+discussed in section~\ref{design:graph-repr} by parsing SQL statements using the
+\texttt{sqlparser} library and constructing an undirected \texttt{petgraph}
+graph instance. Nodes represent tables and columns and edges capture foreign
+key relationships and column ownership. Node labeling is used to encode schema
+constraints hierarchically as outlined in section~\ref{design:graph-repr}.
+
+\paragraph{Propagation Mechanisms}
+
+The \texttt{wwl} crate supports both categorical and continuous Weisfeiler-Leman
+propagation schemes. Categorical propagation operates on discrete node labels
+through iterative label refinement, suitable for constraint-based schema
+comparison. Continuous propagation utilizes node features encoded in matrices,
+enabling similarity computation based on quantitative schema properties like
+column cardinalities or data type frequencies \citep{WWL}. As \textsc{Natural}
+projects the database schema into a graph representation with categorical node
+labels, the categorical propagation scheme is used in \texttt{natural-graphs}
+to determine schema distance. The \texttt{wwl} bindings allow configuration of
+the kernel through the \texttt{KernelConfig} and \texttt{DistanceConfig}
+structs, which provide control over the iteration count (which defaults to 3),
+sinkhorn approximation settings etc. 
+
+\paragraph{Distance Computation and Caching}
+
+The pairwise Wasserstein distance is computed between the current database
+schema and each sample database during sampling phase. The distance index is
+a \texttt{HashMap} of a sample database name to it's distance to the current
+database \textsc{Natural} is running on. Caching of this computation is an
+efficient strategy to minimise runtime inference time as the distance index is
+static as long as database schemas are not mutated. \textsc{Natural} is storing
+JSON-serialized distance indices in \texttt{Vector} for fast distance lookups
+at runtime. This design prevents the computational cost of WWL distance
+computations from affecting inference, reducing runtime schema comparison to
+constant-time lookups for all previously indexed database combinations that
+were known during sampling time. Given that the set of sample database and
+target databases are usually fixed, the distance lookup becomes negligible in
+terms of computational cost.
+
+\paragraph{Integration with Example Selection}
+
+The WWL kernel is integrated in the sampling phase, where distance indices are
+computed and cached. Furthermore during example selection ($\sigma$) the
+cached distance index is loaded from \texttt{Vector} for distance lookups.
+
+The distance index is used for weighting the schema compatibility in the
+selection algorithm (see section~\ref{design:selection-function}) to balance
+structural similarity against question-level semantic relevance for improved
+in-context learning effectiveness.
 
 \subsection{Benchmarking Infrastructure}
 
@@ -635,4 +721,3 @@ Whilst the benchmarking infrastructure is not part of the core pipeline, they
 help to develop and test hypotheses for extensions or design changes
 confidently, compare performance across pipeline versions, models and
 understand the benchmarking data.
-
