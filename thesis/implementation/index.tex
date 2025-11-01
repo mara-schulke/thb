@@ -570,3 +570,69 @@ The \texttt{database} and \texttt{database\_indices} table contain \texttt{JSON}
 columns respectively for serializing complex graph and graph index structures
 to the database.
 
+\subsubsection{Embedding and Masking}
+
+The embedding and masking functionalities in \texttt{natural-sampling} abstract
+batch embedding of masked question and SQL queries using the GPU so that the
+runtime and sampling code can efficiently compute masked embeddings.
+
+\paragraph{Architecture}
+
+The two primary types for embedding plain and masked text are the
+\texttt{SemanticString} and \texttt{MaskedSemanticString} structs which
+encapsulate strings alognside their embedding vectors. The
+\texttt{MaskedSemanticString} version additionally contains the masked and
+unmasked versions of the embedded string. Furthermore they offer
+\texttt{embed\_seq} and \texttt{embed\_chunked} methods which can be used for
+batch computation of embeddings.
+
+\paragraph{Batch Computation}
+
+During sampling, offloading data to the GPUs memory is an expensive operation.
+When sampling hundred thousands or millions of samples, incurring the IO
+roundtrip from CPU to GPU for computing a single embedding is a
+performance bottleneck that increases the sampling time to an order of days
+(eg, when sampling the \textsc{SynSQL}) dataset. Thus batch processing can help to
+minimise the IO roundtrips needed between the CPU and GPU before computing
+embeddings and better utilise the available computing power.
+
+Using the \texttt{embed\_seq} method, a sequence of strings can be embedded and
+a sequence of \texttt{SemanticStrings} is returned. Furthermore through the
+\texttt{embed\_chunked} method, chunks of unrelated data can be embedded in a
+single operation. The method maintains the original chunk layout which makes it
+possible to reconstruct the input semantic seamlessly. This optimization is
+used to embed the questions and sql queries alongside while maintaining clear
+separation in the embedding output.
+
+\begin{verbatim}
+    INSERT DIAGRAM
+\end{verbatim}
+
+% NOTE: Batch embedding computation time down from 200ms per item to
+% approximately 2ms per item when processing 1000-item batches.
+% PUT INTO TEXT/diagram description
+
+\paragraph{Integration}
+
+The \texttt{masking} module tightly integrates wiuth the embedding pipeline.
+During sampling, questions and queries are first masked, then embedded together
+using \texttt{embed\_chunked} and finally combined into
+\texttt{MaskedSemanticString} instances for storage in \texttt{Vector}.
+
+\subsubsection{Wasserstein-Weisfeiler-Leman Kernels}
+
+
+\subsection{Benchmarking Infrastructure}
+
+\textsc{Natural}'s benchmarking infrastructure is implemented in
+\texttt{natural-benchmark}. This benchmarking infrastructure is enabling the
+development, verification and ultimately deployment of \textsc{Natural}
+pipeline. This section focuses on the respective benchmarking infrastructure
+development, performance optimizations that were required and engineering
+challenges encountered. 
+
+Whilst the benchmarking infrastructure is not part of the core pipeline, they
+help to develop and test hypotheses for extensions or design changes
+confidently, compare performance across pipeline versions, models and
+understand the benchmarking data.
+
