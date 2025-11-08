@@ -309,7 +309,8 @@ and formatted SQL query for clarity.
 
 As outlined above the \textsc{OmniSQL} prompt was used as base for
 \textsc{Natural}'s prompt together with a code representation prompt.
-\textsc{Natural} uses more explicit instructions compared to DAIL-SQL. Key
+\textsc{Natural} uses more explicit instructions
+(see~\ref{appendix:inference-prompt}) compared to DAIL-SQL. Key
 differentiations include the inclusion of similarity scores to give the model
 the ability to weight the samples itself.
 
@@ -318,10 +319,6 @@ It addresses apparent LLM issues like verbosity, over complexity or missing
 query constraints, as well as the hallucination and accuracy concerns
 identified in literature review section where LLMs generate plausible but
 incorrect SQL queries.
-
-\begin{verbatim}
-EXAMPLE OF THE PROMPT
-\end{verbatim}
 
 \paragraph{Model Integration and Performance}
 
@@ -374,11 +371,8 @@ error-fixing instructions.
 
 The refinement prompt uses a structured format similar to ICL generation but
 with key differences: it includes the original question as context, provides
-the candidate query that needs fixing, and uses explicit correction language.
-
-\begin{verbatim}
-    SHOW PROMPT LAYOUT
-\end{verbatim}
+the candidate query that needs fixing, and uses explicit correction language
+(see \ref{appendix:refinement-prompt}).
 
 \paragraph{Model Resource Management}
 
@@ -489,70 +483,15 @@ be implemnented. SQLite has a second architectural benefit besides relatively
 good performance, which is the portability characteristics of having all
 samples indexed in a single file on disk. This enables swapping out the
 respectively used samples by using another \texttt{.vector} file on disk.
-
-\begin{verbatim}
-let question = "How many ..";
-
-// Initialize vector database for similarity search
-let vector = Vector::infer();
-let model = EmbeddingModel::from_env().expect("failed to load embedding model");
-
-// Query distance indices
-let index = DistanceIndexRow::get("test_db", &vector)?;
-
-// Embed question and perform similarity search
-let selector = Selector::new(&question, None, &model, &vector)?;
-let samples = selection::<4>(
-    &Selector::new(
-        question.as_ref(),
-        None,
-        &model,
-        &vector,
-    )?,
-    &index.into(),
-    &vector,
-)?;
-
-\end{verbatim}
+See \ref{appendix:vector-db-api} for reference.
 
 \paragraph{Database Schema}
 
 As the \texttt{.vector} file is still a regular SQLite database, alongside
 indexing tables using embeddings (\texttt{float[4096]} or \texttt{float[2048]})
 regular database tables can be maintained to save data derived at sampling
-time. \texttt{Vector} hosts the following database schema:
-
-\begin{verbatim}
-CREATE TABLE IF NOT EXISTS whitelist (
-  word             text not null primary key,
-  frequency        integer not null,
-  domain_count     integer not null
-);
-
-CREATE TABLE IF NOT EXISTS databases (
-  id               text not null,
-  name             text not null,
-  graph            text not null
-);
-
-CREATE TABLE IF NOT EXISTS distance_indices (
-  db_id            text not null,
-  distances        text not null
-);
-
-CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
-  id                 text not null,
-  db_id              text not null,
-
-  question           text not null,
-  question_masked    text not null,
-  question_embedding float[2048],
-
-  sql                text not null,
-  sql_masked         text not null,
-  sql_embedding      float[2048]
-);
-\end{verbatim}
+time. \texttt{Vector} hosts the database schema described
+in \ref{appendix:vector-schema}.
 
 Which maintains the word whitelist for query masking, the database graphs of
 the sample databases and the precomputed database indices. Thus at pipeline
