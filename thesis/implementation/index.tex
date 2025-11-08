@@ -428,14 +428,14 @@ hash as key and bucket as value.
 
 The heuristic method employed by the voting algorithm is steering the pipeline
 to agree with itself – if multiple generation attempts yielded the same result,
-these generation attempts are more likely than outliers.
+these generation attempts are more likely to be accurate the others.
 
 \paragraph{Error Handling and Fallback}
 
-Queries that voting function fails with execution are that contains in an
-\texttt{errors} hash set to provide than being included the calling side all
-candidates fail execution, the voting function fails with an error that
-contains all collected execution errors to provide diagnostic information for
+Queries that fail execution are contained in an                                                                                                                                                   │ │
+\texttt{errors} hash set rather than being included in voting buckets. If all                                                                                                                     │ │
+candidates fail execution, the voting function fails with an error that                                                                                                                           │ │
+contains all collected execution errors to provide diagnostic information to                                                                                                                      │ │
 the calling side.
 
 \paragraph{Limitations and Trade-offs}
