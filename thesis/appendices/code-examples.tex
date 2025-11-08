@@ -1,0 +1,102 @@
+\subsection{Code Examples}
+
+\subsection{Vector Database API}\label{appendix:vector-db-api}
+
+\begin{verbatim}
+let question = "How many ..";
+
+// Initialize vector database for similarity search
+let vector = Vector::infer();
+let model = EmbeddingModel::from_env().expect("failed to load embedding model");
+
+// Query distance indices
+let index = DistanceIndexRow::get("test_db", &vector)?;
+
+// Embed question and perform similarity search
+let selector = Selector::new(&question, None, &model, &vector)?;
+let samples = selection::<4>(
+    &Selector::new(
+        question.as_ref(),
+        None,
+        &model,
+        &vector,
+    )?,
+    &index.into(),
+    &vector,
+)?;
+\end{verbatim}
+
+\subsubsection{Vector Database Schema}\label{appendix:vector-schema}
+
+\begin{verbatim}
+CREATE TABLE IF NOT EXISTS whitelist (
+  word             text not null primary key,
+  frequency        integer not null,
+  domain_count     integer not null
+);
+
+CREATE TABLE IF NOT EXISTS databases (
+  id               text not null,
+  name             text not null,
+  graph            text not null
+);
+
+CREATE TABLE IF NOT EXISTS distance_indices (
+  db_id            text not null,
+  distances        text not null
+);
+
+CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
+  id                 text not null,
+  db_id              text not null,
+
+  question           text not null,
+  question_masked    text not null,
+  question_embedding float[2048],
+
+  sql                text not null,
+  sql_masked         text not null,
+  sql_embedding      float[2048]
+);
+\end{verbatim}
+
+\subsubsection{Benchmark Traits}\label{appendix:benchmark-traits}
+
+\begin{verbatim}
+pub trait Benchmark {
+    type Error: From<eyre::Report> + Debug;
+    type Database: BenchmarkDatabase<Error = Self::Error>;
+
+    fn name() -> &'static str;
+
+    fn databases(&self) -> impl Iterator<Item = &Self::Database>;
+    fn database(&self, id: impl AsRef<str>) -> Option<&Self::Database>;
+
+    fn tests(&self) -> impl Iterator<
+      Item = &<Self::Database as BenchmarkDatabase>::Test
+    >;
+
+    fn test(&self, id: impl AsRef<str>) -> Option<
+      &<Self::Database as BenchmarkDatabase>::Test
+    >;
+}
+
+pub trait BenchmarkDatabase {
+    type Error: From<eyre::Report> + Debug;
+    type Test: BenchmarkTest;
+
+    fn id(&self) -> &str;
+    fn connect(&self) -> Result<Database, Self::Error>;
+    fn tests(&self) -> impl Iterator<Item = &Self::Test>;
+    fn test(&self, id: impl AsRef<str>) -> Option<&Self::Test>;
+}
+
+pub trait BenchmarkTest {
+    fn id(&self) -> &str;
+    fn db_id(&self) -> &str;
+
+    fn name(&self) -> &str;
+    fn question(&self) -> &str;
+    fn query(&self) -> &str;
+}
+\end{verbatim}
