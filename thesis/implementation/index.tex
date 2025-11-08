@@ -656,7 +656,76 @@ pipeline. This section focuses on the respective benchmarking infrastructure
 development, performance optimizations that were required and engineering
 challenges encountered. 
 
-Whilst the benchmarking infrastructure is not part of the core pipeline, they
-help to develop and test hypotheses for extensions or design changes
-confidently, compare performance across pipeline versions, models and
-understand the benchmarking data.
+Whilst \textsc{Natural}'s benchmarking infrastructure is not part of the core
+pipeline, it helps to develop and test hypotheses for extensions or design
+changes confidently, compare performance across pipeline versions, models and
+understand the benchmark performance.
+
+\subsubsection{Execution-Based Evaluation System}
+
+The \texttt{natural-benchmark} CLI evovles around the concept of executions
+which are single benchmark runs against a specific benchmark dataset
+(defaulting to \textsc{Spider}). An execution is the set of tests that have
+been executed using a version of \textsc{Natural} against a benchmark. The
+interface of \texttt{natural-benchmark} offers multiple options to create
+executions and subsequentlty understand \textsc{Natural}'s performance:
+
+\begin{enumerate}
+    \item Running new benchmarks via: \\ \texttt{natural-benchmark new}
+    \item Continuing a halted execution via: \\ \texttt{natural-benchmark continue --execution <id>}
+    \item Comparing performance on previous (partial) executions via: \\ \texttt{natural-benchmark compare-to --previous <id>}
+    \item Computing statistics on past executions via: \\ \texttt{natural-benchmark stats --execution <id>}
+\end{enumerate}
+
+While benchmarking \texttt{natural-benchmark} maintains a local SQLite database
+maintaining a history of past performance, pipeline failures etc. for future
+introspection as well as comparison of approaches.
+
+\subsubsection{Cross-Dataset Validation}
+
+In order to measure the performance of \textsc{Natural} against multiple
+benchmarking datasets, the benchmarking and execution system in
+\texttt{natural-benchmark} must be generalize across one dataset. The
+benchmarking setup achieves this through a set of rust traits (eg, type
+characteristics) to model benchmarking datasets. 
+
+The traits \texttt{Benchmark}, \texttt{BenchmarkDatabase} and
+\texttt{BenchmarkTest} allow to abstract the file system layout of different
+evaluation datasets. Thus when implementing benchmark support against
+\textsc{Spider} the implementation absatracts the fact that \textsc{Spider} is
+using SQLite for test databases, and uses a JSON file to store the questions.
+The file system layout of \textsc{Spider} and \textsc{Bird} is largely similar.
+
+This abstracted benchmarking system (see \ref{appendix:benchmark-traits})
+allows integrating further benchmarks in the future (eg, \textsc{Spider2} which
+relies on cloud databases like Snowflake) while maintaining the same ergonomics
+and tooling across benchmark datasets (eg, recording and indexing all test
+executions in a local database, recording pipeline logs etc). 
+
+\subsubsection{Metric Computation}
+
+The benchmarking infrastructure computes the two metrics \textsc{Execution
+Accuracy} and \textsc{Exact Match} found in prevalent benchmark leaderboards
+(eg, \textsc{Spider} and \textsc{Bird}) through a Rust port of the Python
+reference implementation found in \textsc{Spider}. \textsc{Spider} determines
+the \textsc{Execution Accuracy} by comparing the result sets of two queries
+based on possible row and column permutations as well as optional order
+sensitivity. The \textsc{Exact Match} metric is determined by exact equivalence
+of the ground truth query $\omega_{ground}$ and the candidate query $\omega$.
+
+\subsubsection{Benchmarking Challenges}
+
+Two primary issues emerged while developing the benchmarking infrastructure for
+\textsc{Natural}:
+
+While loading result sets from the provided test database, a faulty
+code path failed to parse query result with types other than
+\texttt{Text}. This casued empty result sets to be returned as query results
+from both the ground truth query and the candidate query, resulting in a false
+positive, skewing the \textsc{EA} metric significantly upwards.
+
+Furthermore frequent pipeline failures of \textsc{Natural} made it hard to get
+compute reliable performance metrics as context window constraints, out
+of memory issues and CUDA issues caused a signficiant number of test
+cases to fail, making subsequently computed metrics unreliable as only
+a subset of the dataset was included in the results.
