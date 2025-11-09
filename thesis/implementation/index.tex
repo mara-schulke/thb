@@ -779,17 +779,17 @@ carefully considered before committing to multiple days of benchmarking.
 \paragraph{Memory Management and CUDA Issues}
 
 Frequent CUDA out-of-memory (OOM) errors made the evaluation interpretation non
-trivial as accuracy scores became inaccurate due to pipeline failures. This persistet as a 
-
-second development challenge throughout the implementation phase. These memory exhaustion issues
-occurred rather unpredictable during both development and benchmarking,
-depending on the database schema and question asked. As \textsc{Natural} uses a
-code representation prompt, the database schema is inlined into the prompt
-during inference. If \textsc{Natural} is executed against large databases, even
-with schema subsetting, the context window can be exceeded or the KV-Cache can
-exhaust the rest of the available GPU memory (typically around 2-4 gigabytes)
-after models have been loaded. This required extensive trial-and-error
-debugging to identify the root causes and implement workarounds. 
+trivial as accuracy scores became inaccurate due to pipeline failures. This
+persistet as a second development challenge throughout the implementation
+phase. These memory exhaustion issues occurred rather unpredictable during both
+development and benchmarking, depending on the database schema and question
+asked. As \textsc{Natural} uses a code representation prompt, the database
+schema is inlined into the prompt during inference. If \textsc{Natural} is
+executed against large databases, even with schema subsetting, the context
+window can be exceeded or the KV-Cache can exhaust the rest of the available
+GPU memory (typically around 2-4 gigabytes) after models have been loaded. This
+required extensive trial-and-error debugging to identify the root causes and
+implement workarounds. 
 
 \subsubsection{Technology Stack Trade-offs}
 
@@ -809,15 +809,12 @@ research system into production environments soon after, but came at the cost
 of having to port existing benchmarking infrastructure and not being able to
 exactly reuse the inference code used by \textsc{OmniSQL}. This decision
 significantly increased implementation time, likely doubling the development
-effort compared to what would have been required in Python.
-
-Using Python would have provided immediate access to existing machine
-learning infrastructure and could have leveraged existing implementations by
-previous researchers directly in the implementation of \textsc{Natural}.
-
-The rather mature Python ecosystem for NLP and ML would have eliminated the
-need to develop abstractions for model inference, vector database operations,
-and benchmark evaluation.
+effort compared to what would have been required in Python. Using Python would
+have provided immediate access to existing machine learning infrastructure and
+could have leveraged existing implementations by previous researchers directly
+in the implementation of \textsc{Natural}. The rather mature Python ecosystem
+for NLP and ML would have eliminated the need to develop abstractions for model
+inference, vector database operations, and benchmark evaluation.
 
 However, the Rust implementation as is provides significant benefits for production
 deployment and system integration. The resulting system can be embedded
@@ -850,3 +847,93 @@ requirements. The Python integration was isolated to the sampling phase,
 preserving the runtime portability characteristics of the core Rust
 implementation while still leveraging existing, specialized libraries where
 appropriate.
+
+\subsubsection{Lessons Learned and Future Recommendations}
+
+The implementation of \textsc{Natural} showed multiple practical challenges
+associated with researching and implementing NL2SQL systems. The approach used
+in this thesis highlights several areas of consideration for future reserch
+projects in this field.
+
+\paragraph{Hardware Infrastructure Requirements}
+
+Research of modern NL2SQL systems induces steep hardware requirements onto
+researchers. Priority should be given to securing access to significantly
+powerful hardware and computing infrastructure for faster iteration cycles.
+
+While the 24GB VRAM constraint of the RTX 3090, may be reasonable for most
+consumer grade applications, it proved insufficient for efficient iteration in
+this field, especially given the involement of large language models.
+Systems with 48GB+ of VRAM would have enabled the usage of larger, more capable
+models without the quantization compromises that may impact system accuracy.
+More modern hardware (even on the consumer grade level) would allow for a
+tremendous benchmarking speed up (eg, using a 5090 would have resulted in
+nearly 200\% increase in speed).
+
+More critically, the availability of multiple GPUs would have enabled parallel
+experimentation and benchmarking, which could transform multi-day iteration
+cycles into more manageable timeframes. The ability to run concurrent
+experiments with different configurations, models, or algorithmic approaches
+would dramatically accelerate the research and development process and enable
+more thorough experimental validation.
+
+\paragraph{Technology Stack}
+
+The implications of choosing between Rust and Python underlines the importance
+of technology choices with research goals and time constraints. For pure
+research projects focused on algorithmic development and experimentation,
+Python's ecosystem and extensive existing implementations provide clear
+advantages that likely outweigh the deployment benefits of compiled languages
+like Rust.
+
+However, for projects with a clear path to production deployments or those
+intended to bridge academic research with real-world applications, the
+additional development overhead of systems programming languages like Rust can
+be justified. Overall, hardware availability weighs significantly more than
+language choices when it comes to the implementation timeline.
+
+Future implementations in this field should likely consider a two-staged
+approach: prototyping and algorithm validation in Python to leverage existing
+tools and accelerate iteration, followed by a production port in a systems
+language like Rust once the algorithmic approach is validated and stable.
+
+\paragraph{Development Methodology Recommendations}
+
+The challenges encountered suggest several methodological improvements for
+future projects:
+
+Implementing benchmarking and validation infrastructure early in the
+development process is crucial when doing algorithmic development to gain an
+understanding of the relative improvement or setback of different approaches.
+
+Establishing performance baselines and using incremental validation procedures
+can help ensure that development effort is focused on improvements that in fact
+improve performance.
+
+The long running benchmarks made it difficult to validate whether
+individual changes were beneficial, leading to uncertainty about the
+effectiveness of specific optimizations. In situations with highly constrained
+compute resources, a representative subset of prevalent benchmarking datasets
+like \textsc{Spider} and \textsc{Bird} may be defined to determine the relative
+improvement between approaches before executing a full benchmark run.
+
+Finally, maintaining detailed logs and metrics throughout the development
+process showed to be crucial when unexpected errors occur. Identifying root
+causes of pipeline failures was rather trivial due to having an advanced
+benchmarking setup with log collection.
+
+\paragraph{Research Impact and Production Readiness}
+
+Despite all challenges encountered in the implementation phase, the Rust
+implementation of \textsc{Natural} demonstrate that it is possible to port
+research algorithms from academic environments into production-ready systems.
+The resulting implementation provides a strong foundation for real-world
+deployments in database environments, which would be significantly more
+challenging with a Python-based research prototype.
+
+This production readiness ensures that all algorithmic contributions can have
+practical impact beyond pure academic evaluation, potentially influencing how
+NL2SQL systems are deployed in real database environments. A simple
+recommendation between research velocity and production readiness can not be
+given as it ultimately depends on the intended impact and longevity of the
+research contributions and implementation.
