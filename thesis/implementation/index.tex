@@ -729,3 +729,124 @@ compute reliable performance metrics as context window constraints, out
 of memory issues and CUDA issues caused a signficiant number of test
 cases to fail, making subsequently computed metrics unreliable as only
 a subset of the dataset was included in the results.
+
+\subsection{Engineering Challenges and Lessons Learned}
+
+The implementation approach of \textsc{Natural} highlighted significant
+challenges in terms of practicability that were independent of the algorithmic
+design and theoretical problems. While \textsc{Natural} turned out to
+demonstrate the approaches recommended in the system design section, the
+development process was significantly slowed down due to constrained hardware
+availability, technology stack decisions and research methodology. The overall
+system architecture turned out positive, but the timeline was noticably expanded.
+
+This section reflects on the most impactful challenges that were encountered
+during the implementation of \textsc{Natural} and analyzes how hardware
+limitations influenced design decisions, confidence in the performance of
+\textsc{Natural} and the overall impact on development velocity. These insights
+are transferrable beyond \textsc{Natural} and are applicable to any
+production-grade implementation of research algorithms.
+
+\subsubsection{Hardware Constraints and Development Velocity}
+
+Likely the most significant circumstance that affected development velocity was
+the constrained access to high performance hardware. The hardware available
+during development time was the RTX 3090 with 24GB of VRAM. This limitation
+fundamentally shaped the development process and research methodology as the
+iteration speed was severly slowed down.
+
+
+\paragraph{Benchmarking and Evaluation Bottlenecks}
+
+A full benchmark execution of \textsc{Natural} against the \textsc{Spider} test
+dataset required around \textcolor{red}{12-36 hours} depending on the number of
+candidates generated and refinement algorithm used during the benchmark. 
+This made continuous validation during development a non trivial task,
+requiring extensive evaluation phases between times of active development.
+
+Testing new hypotheses, validating algorithmic changes, experimenting with the
+implementation approaches, comparing different configurations and sampling
+strategies therefore became a multi-week processes rather than the rapid
+iteration typically desired in research environments.
+
+The prolonged evaluation cycles created a cascading effect on development
+velocity. Rather simple adjustments that would normally be validated within
+hours required days of computational time, effectively preventing what should
+have been normal experimentation. The hardware constraints forced a rather
+conservative approach to experimentation, where each change needed to be
+carefully considered before committing to multiple days of benchmarking.
+
+\paragraph{Memory Management and CUDA Issues}
+
+Frequent CUDA out-of-memory (OOM) errors made the evaluation interpretation non
+trivial as accuracy scores became inaccurate due to pipeline failures. This persistet as a 
+
+second development challenge throughout the implementation phase. These memory exhaustion issues
+occurred rather unpredictable during both development and benchmarking,
+depending on the database schema and question asked. As \textsc{Natural} uses a
+code representation prompt, the database schema is inlined into the prompt
+during inference. If \textsc{Natural} is executed against large databases, even
+with schema subsetting, the context window can be exceeded or the KV-Cache can
+exhaust the rest of the available GPU memory (typically around 2-4 gigabytes)
+after models have been loaded. This required extensive trial-and-error
+debugging to identify the root causes and implement workarounds. 
+
+\subsubsection{Technology Stack Trade-offs}
+
+During the implementation of \textsc{Natural}, several critical technology
+stack decisions fundamentally impacted both development velocity and the
+final system characteristics. The two most consequential decisions were the
+choice of programming language and the model deployment strategy, each
+presenting distinct trade-offs between research efficiency and production
+readiness.
+
+\paragraph{Programming Language: Rust vs Python}
+
+The decision to implement \textsc{Natural} in Rust rather than Python
+represents perhaps the most impactful architectural choice made during the
+implementation phase. Choosing Rust presented the opportunity to port the
+research system into production environments soon after, but came at the cost
+of having to port existing benchmarking infrastructure and not being able to
+exactly reuse the inference code used by \textsc{OmniSQL}. This decision
+significantly increased implementation time, likely doubling the development
+effort compared to what would have been required in Python.
+
+Using Python would have provided immediate access to existing machine
+learning infrastructure and could have leveraged existing implementations by
+previous researchers directly in the implementation of \textsc{Natural}.
+
+The rather mature Python ecosystem for NLP and ML would have eliminated the
+need to develop abstractions for model inference, vector database operations,
+and benchmark evaluation.
+
+However, the Rust implementation as is provides significant benefits for production
+deployment and system integration. The resulting system can be embedded
+directly into database systems such as PostgreSQL through extensions,
+providing a path toward true production deployment that would be impractical
+with Python. The ability to compile an entire NL2SQL system into a single,
+standalone binary offers superior portability characteristics.
+
+\paragraph{Model Deployment: Local vs Cloud-Based Inference}
+
+Using local and open source models reemphasized the limited local hardware
+access as using a cloud provider like OpenAI or Anthropic for inference would
+have singificantly speeded up the benchmarking time. As a primary research goal
+of this thesis is to explore the open source capabilities of NL2SQL systems,
+choosing a proprietary inference service was deeemed unviable.
+
+\paragraph{Integration Complexity and Ecosystem Maturity}
+
+The machine learning ecosystem of Rust proved to be singificantly less mature
+than anticipated, requiring extensive custom development and research for
+functionality that would be available off-the-shelf in prevalent Python packages.
+The integration with Python libraries for specialized components like the
+Wasserstein-Weisfeiler-Leman kernels required rather complex FFI code using
+\texttt{pyo3}, further adding architectural complexity and potential stability
+concerns.
+
+Despite these challenges, the resulting architecture demonstrates that multi
+language approaches can be viable when different components have distinct
+requirements. The Python integration was isolated to the sampling phase,
+preserving the runtime portability characteristics of the core Rust
+implementation while still leveraging existing, specialized libraries where
+appropriate.
