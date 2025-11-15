@@ -432,11 +432,10 @@ these generation attempts are more likely to be accurate the others.
 
 \paragraph{Error Handling and Fallback}
 
-Queries that fail execution are contained in an                                                                                                                                                   │ │
-\texttt{errors} hash set rather than being included in voting buckets. If all                                                                                                                     │ │
-candidates fail execution, the voting function fails with an error that                                                                                                                           │ │
-contains all collected execution errors to provide diagnostic information to                                                                                                                      │ │
-the calling side.
+Queries that fail execution are contained in an \texttt{errors} hash set rather
+than being included in voting buckets. If all candidates fail execution, the
+voting function fails with an error that contains all collected execution
+errors to provide diagnostic information to the calling side.
 
 \paragraph{Limitations and Trade-offs}
 
