@@ -1,41 +1,16 @@
 \section{Theoretical Foundations}
 
-This section serves as an introduction to the theoretical concepts utilized in this thesis. It is meant to establish a
-baseline of understanding for the design, implementation and evaluation phases. It briefly covers relational database theory
-(incl. SQL), machine learning fundamentals and their subsequent application for large language models.
+This section introduces the theoretical concepts needed for understanding
+\textsc{Natural}'s design and implementation sections. It covers relational
+database theory, machine learning fundamentals, large language models, natural
+language processing, embeddings and graph theory.
+
+These foundations directly support the system's core functions: example
+selection ($\sigma$), schema subsetting ($\phi$), query projection ($\pi$),
+self-refinement ($\rho$), and voting ($\nu$).
 
 \subimport{}{relational-theory.tex}
 \subimport{}{machine-learning.tex}
-\subimport{}{nlp.tex}
 \subimport{}{llms.tex}
+\subimport{}{nlp.tex}
 \subimport{}{graphs.tex}
-\subimport{}{gpu-computing.tex}
-
-% TODO: Improve integration between theoretical sections
-% - Add cross-references between related concepts
-% - Show how machine learning enables LLMs
-% - Connect graph theory to database schema representation
-% - Link NLP techniques to practical system components
-
-% TODO: Add forward connections to design section throughout theory
-% - Reference specific design functions (σ, φ, π, ρ, ν) where relevant
-% - Connect theoretical concepts to algorithmic implementations
-% - Bridge gap between formal foundations and practical system design
-
-
-
-
-
-
-%\subsection{Problem Decomposition}
-
-%\subsection{Requirements}
-
-% Conceptual Design
-
-%\subsection{System Design}
-
-%\subsubsection{Architecture Design}
-
-%\subsection{Technical Implementation Strategies}
-
