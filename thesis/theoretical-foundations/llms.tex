@@ -1,16 +1,17 @@
 \subsection{Large Language Models}
 
-Large language models (LLMs) represented a paradigm shift in natural language
-processing, demonstrating state of the art capabilities in understanding, reasoning and
-text generation. These models form the core of most modern NL2SQL systems
-like \textsc{XiYan-SQL}, \textsc{DAIL} and others. They have a wide language understanding as they have been trained on large text corpora,
-are exposed to different domains of traning data and have an inherent
-understanding of the SQL syntax as they have been exposed to it during
-pre-training. This shifted the approach while developing NL2SQL systems to
-focus on in-context learning methods instead of training dedicated models from
-scratch.
+Large language models (LLMs) are a recent advancement built on top of the
+transformer architecture for natural language processing, demonstrating state
+of the art capabilities in understanding, reasoning and text generation. These
+models form the core of most modern NL2SQL systems like \textsc{XiYan-SQL},
+\textsc{DAIL} and others. They have a wide language understanding as they have
+been trained on large text corpora, are exposed to different domains of traning
+data and have an inherent understanding of the SQL syntax as they have been
+exposed to it during pre-training. This shifted the approach while developing
+NL2SQL systems to focus on in-context learning methods instead of training
+dedicated models from scratch.
 
-\paragraph{Feedforward and Residual Connections}
+\subsubsection{Feedforward and Residual Connections}
 
 Every layer in a transformer combines a multi-head attention with position-wise
 feedforward networks:
@@ -29,7 +30,7 @@ where $\text{Sublayer}$ represents either multi-head attention or the
 feedforward network. These components enable transformers to scale to billions
 of parameters while maintaining training stability.
 
-\paragraph{Positional Encoding}
+\subsubsection{Positional Encoding}
 
 Since transformers are able to process sequences in parallel, positional
 encodings inject information about token positions. Original transformers use
@@ -41,7 +42,7 @@ significant semantic meaning.
 
 \subsubsection{Pre-training and Fine-tuning}
 
-Large language models are trained in a two-stage process that separates the
+Large language models are trained in a two-fold process that separates the
 training of general language understanding from from task-specific
 capabilities.
 
@@ -66,16 +67,10 @@ continuations of text sequences.
 \paragraph{Fine-tuning}
 
 Fine-tuning is the process of adapting a pre-trained model, for example for
-solving NL2SQL tasks, by continuing model training on a labeled dataset of
-question-answer pairs (eg, natural language to sql). During fine-tuning, the
-model can learn to:
-
-\begin{itemize}
-    \item Map natural language to database schema elements (also known as schema-linking)
-    \item Generate SQL queries following proper grammar
-    \item Compose more complex SQL queries involving joins, aggregations, and subqueries
-    \item Understand domain-specific terminology (depending on the dataset)
-\end{itemize}
+solving NL2SQL tasks, by continuing model training on a labeled dataset
+(eg, natural language question to expected sql query). During fine-tuning, the
+model can learn to map natural language questions to expected SQL queries when
+being presented with a question and a database schema.
 
 Fine-tuning usualy require significantly smaller datasets (thousands to
 hundreds of thousands of examples) compared to pre-training (billions to
@@ -99,3 +94,46 @@ improving the performance of general purpose LLMs as well as fine-tuned LLMs
 when being presented with relevant examples \citep{DAIL}. The combination of
 fine-tuned models like \textsc{OmniSQL} with ICL is therefore a promising
 research for NL2SQL systems.
+
+\subsubsection{Prompt Engineering}
+
+Prompt engineering is the process of structuring the input to LLMs in a way
+where they adhere to desired behaviours. For NL2SQL systems previous research
+has found diverging effectiveness between different example, schema and
+question presentation mechanisms \citep{DAIL, OmniSQL}.
+
+\subsubsection{Chain-of-Thought Reasoning}
+
+Prompting or training models to output their chain-of-thought encourages models 
+to generate reasoning traces before producing their final answer to a question
+or input. For NL2SQL, this usually involves generating explanations of query
+logic, analysing the input database schema, and planning the query structure
+before generating a query.
+
+Fine-tuned models like \textsc{OmniSQL} are fine-tuned to produce
+chain-of-thought output during generation in markdown which enables debugging
+model behaviour and understanding the query generation approach. 
+
+\subsubsection{Model Limitations}
+
+Understanding the limitations of large language models is essential for
+designing robust NL2SQL systems.
+
+\paragraph{Hallucination}
+
+As LLMs are just predicting a sequence of output tokens, they have no inherent
+understanding of the actual problem domain and solution space they are
+presented with. Thus in NL2SQL systems, LLMs might generate invalid SQL queries
+which might reference non existent tables, columns or relationships, output
+invalid syntax or generate promising but semantically invalid queries.
+
+These flaws are inherent to a text based representation and are non
+recoverable, although through candidate validation and self-refinement
+approaches most obviously invalid queries can be recovered. Detecting semantic
+invalidity is a hard research problem on its own.
+
+\paragraph{Context Window Limitations}
+
+As the underlying transformer architecture is still bound to finite context
+windows, extensive database schemas or long lists of examples can exceed the
+window, thus causing the query generation to fail.
