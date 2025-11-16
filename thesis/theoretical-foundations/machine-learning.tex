@@ -1,53 +1,154 @@
 \subsection{Machine Learning Fundamentals}
 
-Machine learning represents the algorithmic foundation for state-of-the-art NL2SQL systems, enabling systems to learn how natural
-language queries translate into SQL. Understanding these foundations is essential for implementing and optimizing large language
-model-based NL2SQL approaches.
+Machine learning represents the algorithmic foundation for state-of-the-art
+NL2SQL systems, enabling systems to learn how natural language queries
+translate into SQL. Understanding these foundations is essential for
+implementing and optimizing large language model-based NL2SQL approaches.
 
 \subsubsection{Neural Network Architecture}
 
-Neural networks are the computational concept behind contemporary NL2SQL approaches, representing complex capabilities through
-compositions of simpler operations. A neural network consists of interconnected computational units (called neurons) organized
-in layers, where each connection has an associated (and learnable) weight and bias parameters.
+Neural networks are the computational concept behind contemporary NL2SQL
+approaches, representing complex capabilities through compositions of simpler
+operations. A neural network is comprised of interconnected computational units
+(called neurons) organized in layers, where each connection has an associated
+(and learnable) weight and bias parameters.
 
-The fundamental computation paradigm of neural network outputs is called forward propagation, which is applying the respective weights ($W$)
-and biases ($b$) to the input parameter ($a$) and transforming it using a (non-linear) activation function $f$:
+The fundamental computation paradigm of neural network outputs is called
+forward propagation, which is applying the respective weights ($W$) and biases
+($b$) to the input parameter ($a$) and transforming it using a (non-linear)
+activation function $f$:
 
 \begin{equation}
 a^{l+1} = f(Wa^l + b)
 \end{equation}
 
-where $W \in \mathbb{R}^{m \times n}$ is the weight matrix, $a \in \mathbb{R}^{n}$ is the input vector, $b \in \mathbb{R}^{m}$ is
-the bias vector, and $f$ is an activiation function (e.g. ReLU, sigmoid, or tanh). Using this function repeatedly, propagates information
-through the neural network.
+where $W \in \mathbb{R}^{m \times n}$ is the weight matrix, $a \in
+\mathbb{R}^{n}$ is the input vector, $b \in \mathbb{R}^{m}$ is the bias vector,
+and $f$ is an activiation function (e.g. ReLU, sigmoid, or tanh). Using this
+function repeatedly, propagates information through the neural network.
 
-The most important architectural components for language processing models include:
+The most important architectures for simple natural language
+processing networks include:
 
 \begin{itemize}
-    \item \textbf{Feedforward Networks} — Which can process fixed-size inputs through successive linear transformations and activations,
-          this architecture is particularly suitable for classification and regression problems within NL2SQL systems.
-    \item \textbf{Recurrent Networks (RNNs/LSTMs)} — Which can handle sequential data of variable-length by maintaining hidden states
-          that capture dependencies, enabling processing of natural language sequences of arbitrary length.
-    \item \textbf{Embedding Layers} — Which map discrete tokens (e.g. words, characters, or subwords) to a dense vector representation,
-          thus providing the foundation for subsequent neural language processing.
+    \item \textbf{Feedforward Networks} — Which can process fixed-size inputs
+        through successive linear transformations and activations, this
+        architecture is particularly suitable for classification and regression
+        problems within NL2SQL systems.
+    \item \textbf{Recurrent Networks (RNNs/LSTMs)} — Which can handle
+        sequential data of variable-length by maintaining hidden states that
+        capture dependencies, enabling processing of natural language sequences
+        of arbitrary length.
+    \item \textbf{Embedding Layers} — Which map discrete tokens (e.g. words,
+        characters, or subwords) to a dense vector representation, thus
+        providing the foundation for subsequent neural language processing.
 \end{itemize}
 
-The ability of neural networks to learn hierarchical representations through multiple layers makes them particularly well-suited for
-the complex translation required in NL2SQL systems.
+The ability of neural networks to learn hierarchical representations through
+multiple layers makes them particularly well-suited for the complex translation
+required in NL2SQL systems.
 
-\subsubsection{Sequence-to-Sequence Models}
+\subsubsection{Learning Approaches}
 
-Sequence-to-sequence (Seq2Seq) models established the foundational architecture for neural NL2SQL approaches \citep{Seq2SQL, SQLNet}.
-These models which rely on RNNs and LSTMs addressed the fundamental challenge of mapping variable-length input sequences (natural
-language queries) to variable-length output sequences (SQL statements).
-
-The Seq2Seq model architecture is composed out of three essential components:
+Broadly speaking, there are three fundamental approaches to training a machine
+learning model, also known as the process of ``learning'':
 
 \begin{enumerate}
-    \item \textbf{Encoder} — Process the input natural language sequence $x_1, x_2, \ldots, x_n$ into a sequence of hidden
-          representations $h_1, h_2, \ldots, h_n$, capturing the semantic content of the query.
-    \item \textbf{Decoder} — Generates the output SQL sequence $y_1, y_2, \ldots, y_m$ autoregressively, where each token is
-          predicted based on previous outputs and encoder representations.
-    \item \textbf{Attention} — Allows the decoder to selectively focus on relevant portions of the input sequence, addressing
-          the information bottleneck of fixed-size context vectors.
+    \item \textbf{Supervised Learning} – The process of training a model
+        using a labeled dataset of input and output pairs. This learning
+        approach is quite commonly used in models used for NL2SQL which were
+        trained on question and answer pairs (natural language question and
+        corresponding SQL query). This learning approach aims to minimise the
+        loss between predicitions and ground truth.
+    \item \textbf{Unsupervised Learning} – Includes learning patterns that work
+        with unlabeled datasets and use approaches like clustering, language
+        modeling and heuristics to infer structure and yield predictions.
+        Unsupervised learning is most appropriate when there is no clear,
+        singular answer and the domain provides large datasets that are not
+        feasible to label manually (eg, dataset gathered through webscraping
+        the internet).
+    \item \textbf{Reinforcement Learning} – The process of learning through
+        reward signals, commonly known as the reward function. Applied to
+        NL2SQL systems this could transfer to training a model's SQL generation
+        capabilities based on execution feedback. Historically this learning
+        pattern is not widely used in NL2SQL approaches.
 \end{enumerate}
+
+\subsubsection{Attention Mechanisms}
+
+Attention mechanisms allow machine learning models to selectively focus on
+relevant parts of their input by learning to weight different sections of the
+input sequence based on its relevance to the current computation. While RNNs
+processed sequences sequentially, attention enables direct modeling of
+relationships between any positions in a sequence, which enabled the
+transformer architecture to become prevalent for natural language processing
+\citep{AttentionIsAllYouNeed}.
+
+Attention can be computed by retrieving the weighted sum of values $V$
+based on the compatibility between queries $Q$ and keys $K$:
+
+\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+where $d_k$ is the dimensionality of the key vectors, used for scaling to
+prevent softmax saturation which would incurr small gradients. The softmax
+operation converts compatibility scores into a probability distribution,
+determining how much attention to pay to each value.
+
+This concept proved to be a foundational advancement to transformer
+architectures seen in natural language processing and subsequently recent
+NL2SQL research. Transformers extended the concept of attention into
+self-attention and multi-head attention patterns that underpin todays large
+language models.
+
+\subsubsection{Transformer Architecture}
+
+The transformer architecture, introduced by \citeauthor{AttentionIsAllYouNeed}
+in \citeyear{AttentionIsAllYouNeed}, introduced the model architecture found in 
+modern large language models \citep{AttentionIsAllYouNeed}. Unlike earlier
+sequence to sequence models, transformers process are capable of processing
+entire sequences of inputs in parallel by using a self-attention mechanism.
+This enabled more efficient training on massive datasets and superior
+representation of of complex dependencies in input sequences.
+
+\paragraph{Self-Attention Mechanism}
+
+Self-attention allows each position in a sequence to be weighted to all other
+positions in the sequence, thus resulting in a representations that can capture
+contextual relationships between input tokens. For an input sequence of tokens
+$x_1, \ldots, x_n$, the self-attention mechanism computes:
+
+\begin{equation}
+\text{SelfAttention}(X) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+where $Q = XW_Q$, $K = XW_K$, and $V = XW_V$ are learned linear projections of
+$X$ into the query, key and value representations. This mechanism enables
+transformers to weigh the importance of different tokens while encoding each
+position. This maintains semantic and syntactic relationships which are crucial
+for understanding natural language queries in NL2SQL systems.
+
+\paragraph{Multi-Head Attention}
+
+Multi-head attention extended the self-attention concept by computing multiple
+attention operations in parallel, allowing the model to put focus to different
+aspects of the input at the same time:
+
+\begin{equation}
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O
+\end{equation}
+
+where each $head$ computes:
+
+\begin{equation}
+\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+\end{equation}
+
+Each attention head can specialize in capturing a different type of semantic
+relationship. For example one head might focus on syntactic structure (e.g., linking SQL
+keywords to their arguments), while others might capture semantic relationships
+between works (e.g., List all x where y). This multi-attention mechanism is
+essential for the complex tasks which require capturing multiple different
+semantic relationships between words. 
+
