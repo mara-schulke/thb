@@ -1,23 +1,295 @@
-% Evaluation
+% Reference: https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
+
 \section{Evaluation}
 
-% https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
+The evaluation phase of \textsc{Natural} builds upon the benchmarking
+infrastructure outlined in section~\ref{impl:benchmark}. This section is
+evaluating benchmarking data gathered while running \textsc{Natural} in
+different configurations on two prevalent benchmarking datasets:
+\textsc{Spider} and \textsc{Bird}. A representative baseline is introduced,
+aiming to mirror the base-model performance. Subsequently an ablation study is
+performed to understand the performance impact of individual pipeline components.
 
-\subsection{Test Environment and Methodology}
+\subsection{Experimental Methodology}
 
-\subsection{Performance Tests}
-\subsubsection{Latency}
-\subsubsection{Throughput}
-\subsubsection{Scalability}
+% TODO: Introduction paragraph explaining the systematic evaluation approach
 
-\subsection{Use Cases}
-\subsubsection{Natural Language Queries}
-\subsubsection{Text Generation Within the Database}
-\subsubsection{Semantic Search and Text Classification}
+\subsubsection{Test Environment}
 
-\subsection{Ablation Study}
+The tests are performed on a consumer-grade linux system, as research- or
+enterprise-grade hardware was not available. Thus only a subset of datasets and
+configurations have been measured, as a single benchmark executions on prevalent
+datasets takes 12-36 hours.
 
-\subsection{Comparison with Alternative Approaches}
+\paragraph{Hardware Configuration}
+
+The system used for benchmarking has a NVIDIA RTX 3090 GPU with 24GB VRAM
+available, an AMD 9990X3D CPU with 12-cores up to 5.5GHz, 64GB of RAM at
+6400mt/s and 1TB of SSD storage at a read speed of 7450 MB/s and a write speed
+of 6900 MB/s.
+
+\paragraph{Software Stack}
+
+The software stack running on the system used for benchmarking is NixOS (25.05)
+with a recent linux kernel version (6.17.7). CUDA 13.0 is being used for
+inference on GPUs and a rust compiler version is 1.91 for compiling
+\textsc{Natural}. The models used during benchmarking are \textsc{OmniSQL 7B
+Q8\_0} and \textsc{Qwen3 Embedding 8B Q4\_K\_M} for generation and embedding
+respectively.
+
+\paragraph{System Configuration}
+
+% TODO: Describe configuration parameters
+% - Model loading settings
+% - Batch sizes
+% - Timeout configurations
+% - Any other relevant parameters
+
+\subsubsection{Benchmark Datasets}
+
+The benchmarking datasets used are the \textsc{Spider} and \textsc{Bird}
+testdatasets that are prevalently used for evaluation of NL2SQL systems.
+Comparable research has frequently published performance metrics
+(\textsc{Execution Accuracy} and \textsc{Exact Match}) on these benchmarks
+which makes the performance of \textsc{Natural} comparable to other works.
+
+\paragraph{Spider Test Set}
+
+The \textsc{Spider}
+
+% TODO: Describe Spider benchmark
+% - Dataset size: 10,181 questions, 5,693 SQL queries
+% - 200 databases across 138 domains
+% - Difficulty distribution (Easy/Medium/Hard/Extra Hard)
+% - Why Spider was chosen
+% - Train/dev/test split strategy
+
+\paragraph{Bird Benchmark}
+% TODO: Describe Bird benchmark
+% - Dataset size: 12,751 pairs across 95 databases (33.4 GB)
+% - 37 domains
+% - Real-world characteristics (dirty data, external knowledge requirements)
+% - Why Bird was chosen as complementary to Spider
+
+\paragraph{Dataset Preprocessing}
+% TODO: Describe any preprocessing steps
+% - Database preparation
+% - Schema extraction
+% - Gold standard SQL formatting
+
+\subsubsection{Evaluation Metrics}
+
+\paragraph{Execution Accuracy (EA)}
+% TODO: Define execution accuracy
+% - Definition: whether query results match ground truth
+% - Calculation method
+% - Why EA is the primary metric
+% - Reference to natural-benchmark implementation
+
+\paragraph{Exact Match (EM)}
+% TODO: Define exact match
+% - Definition: whether SQL query exactly matches ground truth
+% - Calculation method
+% - Limitations and interpretation
+
+\paragraph{Performance Metrics}
+% TODO: Define performance metrics
+% - End-to-end latency (time from NL query to SQL result)
+% - Per-component latency (σ, φ, π, ρ, ν timings)
+% - Throughput (queries per second)
+% - Resource utilization (GPU memory, CPU usage)
+
+\paragraph{Statistical Significance}
+% TODO: Describe statistical testing approach
+% - Test selection (e.g., paired t-test, McNemar's test)
+% - Significance threshold (p < 0.05)
+% - Confidence intervals
+
+\subsubsection{Baseline Systems and Comparisons}
+
+\paragraph{Internal Baselines}
+% TODO: Describe ablated baselines
+% - Zero-shot baseline (π only, no σ, φ, ρ, ν)
+% - Partial system variants for ablation studies
+
+\paragraph{State-of-the-Art Comparisons}
+% TODO: List SOTA systems for comparison
+% - GPT-4 results from literature
+% - DIN-SQL, DAIL-SQL, C3 results
+% - Other relevant open-source approaches
+% - Note: Direct comparison constraints (different models, hardware)
+
+\subsection{Benchmark Performance Analysis}
+
+% TODO: Introduction paragraph presenting overall findings
+
+\subsubsection{Spider Results}
+
+\paragraph{Overall Performance}
+% TODO: Present overall EA and EM scores
+% - Table: Overall Spider dev set results
+% - Comparison to baseline
+% - Comparison to SOTA from literature
+
+\paragraph{Performance by Difficulty Level}
+% TODO: Break down results by Spider difficulty classification
+% - Table: EA/EM by Easy/Medium/Hard/Extra Hard
+% - Analysis of performance degradation with difficulty
+% - Discussion of which difficulty levels benefit most from system components
+
+\paragraph{Performance by Database}
+% TODO: Present per-database analysis
+% - Identify databases where system excels
+% - Identify databases where system struggles
+% - Analyze characteristics that correlate with performance
+
+\paragraph{Performance by SQL Complexity}
+% TODO: Analyze results by SQL pattern complexity
+% - Simple SELECT queries
+% - JOIN operations
+% - Nested subqueries
+% - Aggregations and GROUP BY
+% - Set operations (UNION, INTERSECT, EXCEPT)
+% - Complex predicates
+
+\paragraph{Learning Curve Analysis}
+% TODO: Analyze impact of training example quantity
+% - How does performance change with k-shot examples?
+% - Diminishing returns analysis
+% - Optimal k value determination
+
+\subsubsection{Bird Results}
+
+\paragraph{Overall Performance}
+% TODO: Present overall Bird results
+% - Table: Overall Bird dev set results
+% - Comparison to baseline
+% - Comparison to SOTA from literature (GPT-4: 54.89%, human: 92.96%)
+
+\paragraph{Domain-Specific Performance}
+% TODO: Break down by Bird's 37 domains
+% - Best-performing domains
+% - Worst-performing domains
+% - Domain characteristics that impact performance
+
+\paragraph{Dirty Data Handling}
+% TODO: Analyze performance on Bird's dirty data cases
+% - How does system handle real-world data quality issues?
+% - Error patterns related to data quality
+% - Comparison to clean data performance
+
+\paragraph{External Knowledge Requirements}
+% TODO: Analyze cases requiring external knowledge
+% - Identify queries needing domain knowledge
+% - System performance on these cases
+% - Limitations of pure schema-based approaches
+
+\subsubsection{Comparison with State-of-the-Art}
+
+\paragraph{Quantitative Comparison}
+% TODO: Create comprehensive comparison table
+% - Table: System vs GPT-4, DIN-SQL, DAIL-SQL, C3, etc.
+% - Both Spider and Bird results
+% - Note differences in model architecture and hardware
+
+\paragraph{Open-Source vs Proprietary Models}
+% TODO: Discuss open-source (OmniSQL 7B) vs proprietary (GPT-4) trade-offs
+% - Performance gap analysis
+% - Cost and accessibility advantages
+% - Privacy and control benefits
+% - Deployment feasibility differences
+
+\paragraph{Qualitative Comparison}
+% TODO: Beyond metrics, discuss systemic differences
+% - System architecture differences
+% - Component strategies (how others handle schema subsetting, refinement, etc.)
+% - Integration and deployment characteristics
+
+\subsection{Performance Characteristics}
+
+% TODO: Introduction paragraph on performance evaluation methodology
+
+\subsubsection{Latency Analysis}
+
+\paragraph{Per-Component Timing Breakdown}
+% TODO: Present timing for each pipeline component
+% - Table: Average latency for σ, φ, π, ρ, ν
+% - Distribution statistics (median, p50, p95, p99)
+% - Identify bottlenecks
+
+\paragraph{End-to-End Query Response Time}
+% TODO: Present total pipeline latency
+% - Distribution of total response times
+% - Comparison to acceptable thresholds (what's "interactive"?)
+% - Impact of query complexity on latency
+
+\paragraph{Latency vs Accuracy Trade-offs}
+% TODO: Analyze speed-accuracy Pareto frontier
+% - Can we reduce latency by limiting refinement iterations?
+% - Can we reduce latency by using fewer candidates for voting?
+% - Configurable performance profiles (fast mode vs accurate mode)
+
+\paragraph{Bottleneck Identification and Optimization Opportunities}
+% TODO: Identify where time is spent
+% - Model inference time (largest component?)
+% - Embedding search time
+% - Graph kernel computation time
+% - Database execution time (for refinement)
+% - Recommendations for optimization
+
+\subsubsection{Resource Utilization}
+
+\paragraph{GPU Memory Usage}
+% TODO: Analyze VRAM consumption
+% - Peak memory usage during inference
+% - Memory required for model loading
+% - Impact of schema size on memory (large schemas → CUDA OOM)
+% - Memory optimization strategies employed
+
+\paragraph{CPU and System Memory}
+% TODO: Analyze CPU usage patterns
+% - CPU utilization during pipeline execution
+% - RAM consumption for embeddings, candidate storage
+% - I/O patterns (database access, vector index reads)
+
+\paragraph{Disk I/O and Vector Index Performance}
+% TODO: Analyze storage subsystem impact
+% - SQLite-vec index size
+% - Read performance for similarity search
+% - Impact of index size on query latency
+
+\paragraph{Power Consumption and Thermal Characteristics}
+% TODO: If measured, discuss energy efficiency
+% - GPU power draw during inference
+% - Comparison to CPU-only approaches
+% - Sustainability considerations
+
+\subsection{Qualitative Analysis}
+
+% TODO: Introduction paragraph explaining value of qualitative evaluation beyond metrics
+
+\subsubsection{Case Studies}
+
+\paragraph{Success Cases}
+% TODO: Present 3-5 exemplar success cases
+% - Full trace: NL query → schema → examples → generated SQL → execution results
+% - Analysis of what made these queries succeed
+% - Demonstrate system capabilities at their best
+% - Show component contributions in action
+
+\paragraph{Failure Cases}
+% TODO: Present 3-5 exemplar failure cases
+% - Full trace showing where system failed
+% - Root cause analysis: schema linking error? Semantic error? Syntactic error?
+% - What component(s) failed?
+% - Could failure be prevented with different design choices?
+
+\paragraph{Edge Cases and Boundary Conditions}
+% TODO: Present interesting edge cases
+% - Very ambiguous queries
+% - Queries requiring domain knowledge
+% - Queries with multiple valid interpretations
+% - Queries at the limit of SQL expressiveness
+% - How system behaves at boundaries
 
 \newpage
-

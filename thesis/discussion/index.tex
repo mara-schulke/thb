@@ -1,9 +1,146 @@
 % Discussion
 \section{Discussion}
 
-\subsection{Interpretation of Results}
-\subsection{Limitations of the Implementation}
-\subsection{Ethical and Data Privacy Considerations}
-\subsection{Potential Future Developments}
+\subsection{Discussion of Findings}
+
+% TODO: Introduction paragraph synthesizing evaluation results
+
+\subsubsection{Research Questions Revisited}
+
+\paragraph{RQ1: Feasibility for Real-World Application}
+% TODO: Answer RQ1 directly with evidence
+% - Is semantic accuracy high enough? (cite Spider/Bird EA from 7.2)
+% - Can it run on reasonable hardware? (cite performance analysis from 7.4)
+% - Overall verdict: Yes/No/Qualified, with supporting evidence
+
+\paragraph{RQ1.1: Semantic Accuracy Threshold}
+% TODO: Address sub-question on accuracy benefits
+% - What EA threshold provides "noticeable benefit"?
+% - How does achieved EA compare to this threshold?
+% - User tolerance for errors in different contexts
+
+\paragraph{RQ1.2: Hardware Accessibility}
+% TODO: Address sub-question on hardware requirements
+% - RTX 3090 (24GB VRAM): Is this "mass-available"?
+% - Comparison to high-end research GPUs (A100, H100)
+% - Could system run on lower-tier GPUs with optimizations?
+
+\paragraph{RQ2: Ambiguity Resolution Approaches}
+% TODO: Answer RQ2 with evidence from ablations
+% - Which components most effectively resolve ambiguity? (cite ablation study 7.3)
+% - Ranking: σ, φ, ρ, ν by impact on ambiguous queries
+% - Context-dependent effectiveness (different approaches for different ambiguity types)
+
+\paragraph{RQ3: Strategies for Increasing Semantic Accuracy}
+% TODO: Answer RQ3 with evidence from ablations
+% - Which strategies provide largest accuracy gains? (cite 7.3.6 cumulative analysis)
+% - Are gains cumulative or synergistic?
+% - Optimal combination of techniques
+% - Comparison to literature: do findings align with prior work?
+
+\subsubsection{Real-World Viability Assessment}
+
+\paragraph{Practical Deployment Considerations}
+% TODO: Discuss deployment feasibility
+% - Integration with PostgreSQL architecture
+% - Deployment as extension vs external service
+% - Security considerations (SQL injection risks from LLM output)
+% - Privacy considerations (schema/data exposure to model)
+
+\paragraph{User Experience Implications}
+% TODO: Discuss UX trade-offs
+% - Latency acceptable for interactive use?
+% - How to communicate uncertainty to users?
+% - Handling ambiguous queries: clarification dialogs?
+% - Trust and transparency: showing generated SQL to users
+
+\paragraph{Comparison to Traditional SQL Interfaces}
+% TODO: Position system relative to traditional approaches
+% - When is NL interface better than SQL?
+% - When should users still write SQL manually?
+% - Complementary use cases (NL for exploration, SQL for production)
+% - Learning curve: does NL interface help SQL learning or hinder it?
+
+\paragraph{Accessibility and Democratization Benefits}
+% TODO: Discuss broader impact
+% - Does system truly make databases more accessible?
+% - Who benefits most? (Non-technical users, analysts, data scientists)
+% - Limitations for complex analytical queries
+% - Role in data democratization initiatives
+
+\subsubsection{Limitations and Threats to Validity}
+
+\paragraph{Benchmark Limitations}
+% TODO: Discuss external validity threats
+% - Spider/Bird may not represent all real-world queries
+% - Academic benchmarks vs production query distributions
+% - Domain coverage gaps
+% - Temporal limitations (benchmarks are static snapshots)
+
+\paragraph{Model-Specific Results}
+% TODO: Discuss generalizability to other models
+% - OmniSQL 7B is one specific model
+% - Would results hold for other LLMs? (GPT-4, Claude, Llama, Qwen)
+% - Fine-tuning specificity: OmniSQL trained on Spider/Bird
+% - Reproducibility with future model generations
+
+\paragraph{Hardware-Specific Results}
+% TODO: Discuss generalizability to other hardware
+% - RTX 3090 specific (not A100, not Apple Silicon)
+% - CUDA-specific optimizations
+% - Would results translate to other GPU architectures?
+% - Cloud deployment characteristics may differ
+
+\paragraph{Evaluation Metric Limitations}
+% TODO: Discuss measurement validity threats
+% - EA doesn't capture semantic equivalence perfectly
+% - EM is too strict (many equivalent SQL formulations)
+% - Missing metrics: query readability, maintainability, efficiency
+% - User satisfaction not measured
+
+\paragraph{Comparison Validity}
+% TODO: Discuss comparison fairness
+% - Different SOTA systems use different models, hardware
+% - Not apples-to-apples comparisons
+% - Cherry-picking risks in literature
+% - Reproducibility challenges
+
+\paragraph{Internal Validity Considerations}
+% TODO: Discuss experimental design limitations
+% - Ablation study design choices
+% - Hyperparameter tuning: were optimal settings found?
+% - Statistical power: sample sizes sufficient?
+% - Confounding factors
+
+\subsubsection{Implications for Future Work}
+
+\paragraph{System Improvements}
+% TODO: Recommend concrete system enhancements
+% - Components that deserve deeper investigation
+% - Alternative approaches to explore (e.g., different schema subsetting strategies)
+% - Performance optimizations (caching, batching, quantization)
+% - Integration of newer LLMs
+
+\paragraph{Evaluation Enhancements}
+% TODO: Recommend additional experiments
+% - User studies with real users (not just benchmark metrics)
+% - Longitudinal deployment studies
+% - Domain-specific fine-tuning experiments
+% - Alternative benchmark datasets
+% - Comparative studies with commercial tools (e.g., GitHub Copilot for databases)
+
+\paragraph{Theoretical Contributions}
+% TODO: Discuss research directions
+% - Formalization of ambiguity resolution in NL2SQL
+% - Better understanding of component synergies
+% - Transfer learning from NL2SQL to other semantic parsing tasks
+% - Formal verification of generated SQL queries
+
+\paragraph{Practical Deployment Research}
+% TODO: Recommend real-world validation
+% - Pilot deployments in production environments
+% - Integration with BI tools (Tableau, Power BI)
+% - Education contexts (teaching SQL through NL)
+% - Accessibility studies (impact on non-technical users)
 
 \newpage
