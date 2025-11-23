@@ -37,14 +37,6 @@ inference on GPUs and a rust compiler version is 1.91 for compiling
 Q8\_0} and \textsc{Qwen3 Embedding 8B Q4\_K\_M} for generation and embedding
 respectively.
 
-\paragraph{System Configuration}
-
-% TODO: Describe configuration parameters
-% - Model loading settings
-% - Batch sizes
-% - Timeout configurations
-% - Any other relevant parameters
-
 \subsubsection{Benchmark Datasets}
 
 The benchmarking datasets used are the \textsc{Spider} and \textsc{Bird}
@@ -53,97 +45,135 @@ Comparable research has frequently published performance metrics
 (\textsc{Execution Accuracy} and \textsc{Exact Match}) on these benchmarks
 which makes the performance of \textsc{Natural} comparable to other works.
 
-\paragraph{Spider Test Set}
+\paragraph{Spider}
 
-The \textsc{Spider}
+\textsc{Spider} is likely the most prevalently used benchmark for NL2SQL
+systems in contemporary research. The test dataset is comprised of 10,181
+questions and 5693 corresponding SQL queries spread across 200 databases
+spanning 138 domains. Questions in \textsc{Spider} are categorized by
+difficulty (easy, medium, hard, extra hard). Evaluations on \textsc{Spider}
+refer to the test dataset.
 
-% TODO: Describe Spider benchmark
-% - Dataset size: 10,181 questions, 5,693 SQL queries
-% - 200 databases across 138 domains
-% - Difficulty distribution (Easy/Medium/Hard/Extra Hard)
-% - Why Spider was chosen
-% - Train/dev/test split strategy
+\paragraph{Bird}
 
-\paragraph{Bird Benchmark}
-% TODO: Describe Bird benchmark
-% - Dataset size: 12,751 pairs across 95 databases (33.4 GB)
-% - 37 domains
-% - Real-world characteristics (dirty data, external knowledge requirements)
-% - Why Bird was chosen as complementary to Spider
-
-\paragraph{Dataset Preprocessing}
-% TODO: Describe any preprocessing steps
-% - Database preparation
-% - Schema extraction
-% - Gold standard SQL formatting
+\textsc{Bird} is another widely used benchmark that is comprised of 12,751
+question answer pairs spread across 95 databases in 37 domains. It aims to be
+more representative of real world scenarios with external knowledge
+requirements and is generally considered harder than \textsc{Spider}.
 
 \subsubsection{Evaluation Metrics}
 
 \paragraph{Execution Accuracy (EA)}
-% TODO: Define execution accuracy
-% - Definition: whether query results match ground truth
-% - Calculation method
-% - Why EA is the primary metric
-% - Reference to natural-benchmark implementation
+
+\textsc{Execution Accuracy} (or EA) is the primary success metric of NL2SQL systems
+as it represents the semantic accuracy of the SQL queries produced NL2SQL
+systems. Execution accuracy is computed by determining whether the rows in the
+candidate results are a permutation of the rows returned by ground truth
+results. 
+
+For a query $q_g$ with candidate results $R_c$ and ground truth results $R_g$, 
+where $R_c, R_g \subseteq \mathbb{V}^{n \times m}$ (sets of $n$ rows with $m$ columns 
+of values $\mathbb{V}$), semantically accurate execution is defined as:
+
+\begin{equation}
+    semanticeq(R_c, R_g, q_g) = \mathbbm{1}\left[\exists \pi \in \Pi_m : 
+    \begin{cases}
+        R_c = \pi(R_g) & \text{if } ordered(q_g) \\
+        R_c \equiv_{\text{multiset}} \pi(R_g) & \text{otherwise}
+    \end{cases}
+    \right]
+\end{equation}
+
+where $\Pi_m$ is the set of valid column permutations (those preserving column
+value sets), $\pi(R_g)$ applies permutation $\pi$ to reorder columns in each
+row of $R_g$, $\equiv_{\text{multiset}}$ denotes multiset equality (allowing
+row reordering) and $ordered(q_g)$ is determining if the ground truth query
+$q_g$ contains an \texttt{ORDER BY} clause. Row and value comparisons use
+tolerance-based equality for floating-point values ($|\cdot| < 10^{-5}$). The
+calculation for measuring \textsc{Natural}'s EA was ported from \textsc{Spider}
+\citep{Spider}.
 
 \paragraph{Exact Match (EM)}
+
 % TODO: Define exact match
 % - Definition: whether SQL query exactly matches ground truth
 % - Calculation method
 % - Limitations and interpretation
 
+\textsc{Exact Match}..
+
 \paragraph{Performance Metrics}
-% TODO: Define performance metrics
+
+Measuring real world applicablility, the metric \textsc{Latency} is introduced 
+for measuring the compound pipeline runtime, thus measuring NL query to final
+SQL candidate.
+
+% TODO:
 % - End-to-end latency (time from NL query to SQL result)
 % - Per-component latency (σ, φ, π, ρ, ν timings)
 % - Throughput (queries per second)
 % - Resource utilization (GPU memory, CPU usage)
 
-\paragraph{Statistical Significance}
-% TODO: Describe statistical testing approach
-% - Test selection (e.g., paired t-test, McNemar's test)
-% - Significance threshold (p < 0.05)
-% - Confidence intervals
-
 \subsubsection{Baseline Systems and Comparisons}
 
+To determine the effect of approaches introduced by \textsc{Natural} two
+a set of baselines is introduced. The baselines are split into two groups,
+internal baselines (measuring the system without crucial components) and
+external baselines (eg, State-of-the-Art system performance).
+
 \paragraph{Internal Baselines}
-% TODO: Describe ablated baselines
-% - Zero-shot baseline (π only, no σ, φ, ρ, ν)
-% - Partial system variants for ablation studies
+
+Two primary internal baselines are introduced:
+
+\begin{enumerate}
+    \item \textbf{Model Baseline} — Using only the inference logic for
+        zero-shot accuracy, aiming to represent \textsc{OmniSQL} performance as
+        closely as possible.
+    \item \textbf{Zero-Shot Baseline} — A full \textsc{Natural} pipeline but
+        without any examples available for the in-context learning inference
+        phase.
+\end{enumerate}
+
+These baselines aim to measure both the actual performance of the NL2SQL model
+(\textsc{OmniSQL}) and the full \textsc{Natural} pipeline without in-context
+learning.
 
 \paragraph{State-of-the-Art Comparisons}
-% TODO: List SOTA systems for comparison
+
+\textcolor{red}{X} external baselines are referenced from previous research:
+
 % - GPT-4 results from literature
 % - DIN-SQL, DAIL-SQL, C3 results
 % - Other relevant open-source approaches
 % - Note: Direct comparison constraints (different models, hardware)
 
-\subsection{Benchmark Performance Analysis}
-
-% TODO: Introduction paragraph presenting overall findings
+\subsection{Benchmark Results}
 
 \subsubsection{Spider Results}
 
 \paragraph{Overall Performance}
+
 % TODO: Present overall EA and EM scores
 % - Table: Overall Spider dev set results
 % - Comparison to baseline
 % - Comparison to SOTA from literature
 
 \paragraph{Performance by Difficulty Level}
+
 % TODO: Break down results by Spider difficulty classification
 % - Table: EA/EM by Easy/Medium/Hard/Extra Hard
 % - Analysis of performance degradation with difficulty
 % - Discussion of which difficulty levels benefit most from system components
 
 \paragraph{Performance by Database}
+
 % TODO: Present per-database analysis
 % - Identify databases where system excels
 % - Identify databases where system struggles
 % - Analyze characteristics that correlate with performance
 
 \paragraph{Performance by SQL Complexity}
+
 % TODO: Analyze results by SQL pattern complexity
 % - Simple SELECT queries
 % - JOIN operations
@@ -153,6 +183,7 @@ The \textsc{Spider}
 % - Complex predicates
 
 \paragraph{Learning Curve Analysis}
+
 % TODO: Analyze impact of training example quantity
 % - How does performance change with k-shot examples?
 % - Diminishing returns analysis
@@ -161,24 +192,28 @@ The \textsc{Spider}
 \subsubsection{Bird Results}
 
 \paragraph{Overall Performance}
+
 % TODO: Present overall Bird results
 % - Table: Overall Bird dev set results
 % - Comparison to baseline
 % - Comparison to SOTA from literature (GPT-4: 54.89%, human: 92.96%)
 
 \paragraph{Domain-Specific Performance}
+
 % TODO: Break down by Bird's 37 domains
 % - Best-performing domains
 % - Worst-performing domains
 % - Domain characteristics that impact performance
 
 \paragraph{Dirty Data Handling}
+
 % TODO: Analyze performance on Bird's dirty data cases
 % - How does system handle real-world data quality issues?
 % - Error patterns related to data quality
 % - Comparison to clean data performance
 
 \paragraph{External Knowledge Requirements}
+
 % TODO: Analyze cases requiring external knowledge
 % - Identify queries needing domain knowledge
 % - System performance on these cases
@@ -193,6 +228,7 @@ The \textsc{Spider}
 % - Note differences in model architecture and hardware
 
 \paragraph{Open-Source vs Proprietary Models}
+
 % TODO: Discuss open-source (OmniSQL 7B) vs proprietary (GPT-4) trade-offs
 % - Performance gap analysis
 % - Cost and accessibility advantages
@@ -200,6 +236,7 @@ The \textsc{Spider}
 % - Deployment feasibility differences
 
 \paragraph{Qualitative Comparison}
+
 % TODO: Beyond metrics, discuss systemic differences
 % - System architecture differences
 % - Component strategies (how others handle schema subsetting, refinement, etc.)
@@ -212,24 +249,28 @@ The \textsc{Spider}
 \subsubsection{Latency Analysis}
 
 \paragraph{Per-Component Timing Breakdown}
+
 % TODO: Present timing for each pipeline component
 % - Table: Average latency for σ, φ, π, ρ, ν
 % - Distribution statistics (median, p50, p95, p99)
 % - Identify bottlenecks
 
 \paragraph{End-to-End Query Response Time}
+
 % TODO: Present total pipeline latency
 % - Distribution of total response times
 % - Comparison to acceptable thresholds (what's "interactive"?)
 % - Impact of query complexity on latency
 
 \paragraph{Latency vs Accuracy Trade-offs}
+
 % TODO: Analyze speed-accuracy Pareto frontier
 % - Can we reduce latency by limiting refinement iterations?
 % - Can we reduce latency by using fewer candidates for voting?
 % - Configurable performance profiles (fast mode vs accurate mode)
 
 \paragraph{Bottleneck Identification and Optimization Opportunities}
+
 % TODO: Identify where time is spent
 % - Model inference time (largest component?)
 % - Embedding search time
