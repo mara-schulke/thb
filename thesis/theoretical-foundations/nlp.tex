@@ -1,16 +1,117 @@
 \subsection{Natural Language Processing}
 
-% TODO: Complete NLP theoretical foundations section
-% - Text preprocessing and tokenization
-% - Word embeddings and semantic representations
-% - Language modeling fundamentals
-% - Syntactic and semantic parsing
-% - Named entity recognition and linking
-% - Text similarity metrics (cosine, semantic distance)
-% - Masked language modeling approaches
+Natural language processing (NLP) provides the foundations for working with
+natural language inputs in computer science and mathematics. It allows for text
+understanding and text representation, aswell as text processing and semantic
+feature extraction, capturing meaning and structure. For NL2SQL systems NLP
+enable semantic understanding of natural language queries and semantic search
+using linguistic similarity. Using NLP and text embeddings reference datasets
+can be used for semantic search effectively and accurately.
 
-% TODO: Connect to design section
-% - Role in natural language query understanding
-% - Embedding space construction for example selection
-% - Masking techniques for domain generalization
-% - Semantic similarity computation in function Ã
+\subsubsection{Text Preprocessing and Tokenization}
+
+Before neural networks can process text, raw text must be converted into a
+structured representations that models can process. This transformation is called
+tokenization, which refers to the process of segmenting text into discrete
+units (tokens) for subsequent processing.
+
+\paragraph{Tokenization Approaches}
+
+Tokens are short character chains that allow representing text efficiently as a
+series of tokens by refering to the tokenizers vocabulary. Therefore NLP
+systems mostly employ subword tokenization. Modern tokenization approaches
+balance vocabulary size with representational efficiency. Common approaches
+include \textbf{Byte-Pair Encoding (BPE)}, \textbf{WordPiece} and
+\textbf{SentencePiece}.
+
+These subword tokenization approaches are particularly valuable for NL2SQL
+because database schemas often contain domain-specific terminology, compound
+words, and technical terminology that may not appear in common vocabularies.
+Subword approaches handle unseen words gracefully by decomposing them into
+meaningful tokens.
+
+\paragraph{Tokenization in NL2SQL Contexts}
+
+For NL2SQL systems, tokenization must be capable of both encoding natural
+language queries and SQL queries. SQL presents a challenge in NLP as it relies
+on a structured syntax and usage of special characters (dots, underscores,
+SQL operators, etc.) which are less commonly found in natural language.
+
+\subsubsection{Word Embeddings and Semantic Representations}
+
+Word embeddings are the vector space representation of a tokens where semantic
+meaning is captured through geometric properties. As word embeddings are
+ordinary vectors in a high-dimensional vector space, common vector operations
+can still be performed.
+
+\paragraph{Embedding Functions}
+
+An embedding function maps tokens from a discrete vocabulary $V$ to dense
+vectors in $\mathbb{R}^d$:
+
+\begin{equation}
+e_{w}: V \rightarrow \mathbb{R}^d
+\end{equation}
+
+where $d$ is the embedding dimensionality (usually between 256-8192 for modern
+models). The key property of the vector space $\mathbb{R}^d$ is that
+semantically similar words occupy nearby regions in this vector space, hence
+vector operations and proximity in the vector space allows for computation of
+semantic properties such as semantic distance.
+
+Early embedding methods like Word2Vec and GloVe learned static representations
+where each word has a single vector regardless of its surrounding context.
+Modern contextual embeddings, generate different vectors for the same word
+based on its context, thus capturing meaning more accurately.
+
+\paragraph{Sentence Embeddings}
+
+While word embeddings are useful for determining the relationships between
+words, they are limited in length and complexity. NL2SQL systems require
+representations of entire questions and SQL queries in order to discover
+answers to similar questions asked in the past. Sentence embeddings aggregate
+the token-level meaning into fixed-size vectors in the same vector space
+$\mathbb{R}^d$, thus representing complete sentences or texts in one vector.
+
+\begin{equation}
+    e_{s}: (v_0, .., v_n) \rightarrow \mathbb{R}^d
+\end{equation}
+
+Different aggregation / pooling strategies emerged, like mean pooling, max
+pooling, using a CLS token or learned aggregation. \textsc{Natural} uses
+an embedding model (Qwen3-Embedding-8B) trained specifically for generating
+high-quality sentence representations for subsequent searching.
+
+\subsubsection{Semantic Similarity Metrics}
+
+Quantifying the similarity between two natural language sentences is essential
+for example selection in NL2SQL. This requires that similarity metrics in the
+vector space align with natural understanding of semantic relation.
+
+\paragraph{Cosine Similarity}
+
+Cosine similarity is a measurement using the angle between two vectors,
+to capture their directional similarity while normalizing for magnitude:
+
+\begin{equation}
+s_{\cos} = \frac{u \cdot v}{\|u\| \|v\|} = \frac{\displaystyle\sum_{i=1}^n u_i v_i}{\sqrt{\displaystyle\sum_{i=1}^n u_i^2} \sqrt{\displaystyle\sum_{i=1}^n v_i^2}}
+\end{equation}
+
+Thus cosine similarity ranges from -1 which indicates opposite directions to 1
+representing same direction, with 0 indicating orthogonality of the input
+vectors. This metric is widely used in NLP as it is independent of vector
+magnitude, efficient to compute and well-suited for high-dimensional vector
+spaces. 
+
+\paragraph{Cosine Distance}
+
+Cosine distance converts similarity into a distance metric:
+
+\begin{equation}
+d_{\cos}(u, v) = 1 - \text{s}_{\cos}(u, v)
+\end{equation}
+
+Thus cosine distance ranges from 0 for identical direction to 2 for opposite
+direction input vectors. This is satisfying properties desirable for distance
+metrics while preserving the angular relationship of the input vectors $u$ and
+$v$.
