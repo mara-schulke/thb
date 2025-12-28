@@ -1,0 +1,27 @@
+[pipelines]
+natural-baseline = { label = "Natural (Baseline)", order = 0 }
+natural-zeroshot = { label = "Natural (Zeroshot)", order = 1 }
+natural-full-syn = { label = "Natural (Synthetic)", order = 2 }
+natural-full-train = { label = "Natural (Train)", order = 3 }
+natural-full-ground = { label = "Natural (Ground)", order = 4 }
+
+[benchmark.spider-dev]
+natural-baseline = { execution-accuracy = 0.7756, exact-match = 0.0 }
+natural-zeroshot = { execution-accuracy = 0.7878, exact-match = 0.0 }
+natural-full-train = { execution-accuracy = 0.0, exact-match = 0.0 }     # replace
+natural-full-syn = { execution-accuracy = 0.0, exact-match = 0.0 }       # replace
+natural-full-ground = { execution-accuracy = 0.8427, exact-match = 0.0 }
+
+[benchmark.spider-test]
+natural-baseline = { execution-accuracy = 0.7708, exact-match = 0.3250 }
+natural-zeroshot = { execution-accuracy = 0.7850, exact-match = 0.3290 }
+natural-full-train = { execution-accuracy = 0.8140, exact-match = 0.4390 }
+natural-full-syn = { execution-accuracy = 0.8010, exact-match = 0.3870 }
+natural-full-ground = { execution-accuracy = 0.8287, exact-match = 0.3950 }
+
+[benchmark.bird-dev]
+natural-baseline = { execution-accuracy = 0.3696, exact-match = 0.0 }
+natural-zeroshot = { execution-accuracy = 0.3716, exact-match = 0.0 }
+natural-full-train = { execution-accuracy = 0.5091, exact-match = 0.0 }
+natural-full-syn = { execution-accuracy = 0.400, exact-match = 0.18 }    # replace
+natural-full-ground = { execution-accuracy = 0.5582, exact-match = 0.0 }

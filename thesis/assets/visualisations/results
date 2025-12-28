@@ -1,0 +1,33 @@
++-------------+--------------------------------------------+----------------------------------------------+---------------------------------------------------+
+|             |                  spider-dev                |                  spider-test                 |                       bird-dev                    |
++-------------+--------------------------------------------+----------------------------------------------+---------------------------------------------------+
+| baseline    | natural-baseline-spider-dev-final          | tim-natural-baseline-spider-test             | natural-baseline-bird-dev-final                   |
+| zeroshot    | natural-zeroshot-spider-dev-fixed-final    | natural-zero-shot-spider-test-2              | natural-zeroshot-bird-dev-final-3                 |
+| full-syn    | natural-full-spider-dev-repaired-lib-mixed | tim-spider-test-full                         | natural-full-bird-dev-bielefeld-full-syn-repaired |
+| full-train  | natural-full-spider-dev-train-final        | tim-spider-test-full-train                   | natural-full-bird-dev-train-final                 |
+| full-ground | natural-full-spider-dev-ground-final       | natural-full-spider-test-repaired-lib-ground | natural-full-bird-dev-repaired-ground             |
++-------------+--------------------------------------------+----------------------------------------------+---------------------------------------------------+
+
+
+
+
+
+
+
++---------------------+--------------------------+--------------------------+--------------------------+
+|                     |        spider-dev        |       spider-test        |         bird-dev         |
++---------------------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+|                     |   EA   |   EM   |   ER   |   EA   |   EM   |   ER   |   EA   |   EM   |   ER   |
++---------------------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+| natural-baseline    | 77.56% |        |        | 77.08% |        |        | 32.46% |        |        |
+| natural-zeroshot    | 78.78% |        |        | 77.53% |        |        | 34.05% |        |        |
+| natural-full-syn    | 76.51% |        |        | 79.65% |        |        |        |        |        |
+| natural-full-train  | 76.48% |        |        | 81.40% |        |        | 48.41% |        |        |
+| natural-full-ground | 84.27% |        |        | 82.87% |        |        | 55.82% |        |        |
++---------------------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+| omnisql-7b          |        |        |   ??   |        |        |   ??   |        |        |   ??   |
+| omnisql-14b         |        |        |   ??   |        |        |   ??   |        |        |   ??   |
+| omnisql-30b         |        |        |   ??   |        |        |   ??   |        |        |   ??   |
++---------------------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+| dailsql-XXX         |        |        |        |        |        |        |        |        |        |
++---------------------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
