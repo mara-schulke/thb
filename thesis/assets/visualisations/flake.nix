@@ -4,18 +4,26 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    fonts = {
+      url = "git+ssh://git@github.com/hemisphere-systems/fonts";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       nixpkgs,
       flake-utils,
+      fonts,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ fonts.overlays.default ];
+        };
 
         juliaWithPackages = pkgs.julia.withPackages [
           "Plots"
@@ -26,24 +34,46 @@
           "ArgParse"
         ];
 
-        render = pkgs.writeShellScriptBin "render" ''
+        berkeleyMonoPath = "${pkgs.berkeley-mono}/share/fonts/truetype/berkeley-mono";
+
+        renderBin = pkgs.writeShellScriptBin "render" ''
+          export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
           ${juliaWithPackages}/bin/julia bin/render "$@"
         '';
+
+        visualizations = pkgs.stdenv.mkDerivation {
+          name = "thesis-visualizations";
+          src = ./.;
+
+          buildInputs = [ juliaWithPackages ];
+
+          buildPhase = ''
+            export HOME=$TMPDIR
+            export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
+            ${juliaWithPackages}/bin/julia bin/render --results var/conf/benchmark.toml --plots var/conf/plots.toml
+          '';
+
+          installPhase = ''
+            mkdir -p $out
+            cp -r out/* $out/
+          '';
+        };
       in
       {
         packages = {
-          default = render;
-          render = render;
+          default = visualizations;
+          visualizations = visualizations;
+          render = renderBin;
         };
 
         apps = {
           default = {
             type = "app";
-            program = "${render}/bin/render";
+            program = "${renderBin}/bin/render";
           };
           render = {
             type = "app";
-            program = "${render}/bin/render";
+            program = "${renderBin}/bin/render";
           };
         };
 
@@ -51,6 +81,9 @@
           buildInputs = [
             juliaWithPackages
           ];
+          shellHook = ''
+            export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
+          '';
         };
       }
     );
