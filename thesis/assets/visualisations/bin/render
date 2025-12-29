@@ -1,0 +1,10 @@
+#!/usr/bin/env julia
+
+# Entry point script for the thesis visualization system
+
+const SRC_DIR = joinpath(@__DIR__, "..", "src")
+
+# Load module directly
+include(joinpath(SRC_DIR, "Render.jl"))
+
+exit(Render.run(ARGS))
