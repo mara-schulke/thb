@@ -12,6 +12,14 @@ function Label(s::String)
     return "\n$(s)\n"
 end
 
+# Ensure output directory exists before saving
+function ensure_output_dir(output_path::String)
+    output_dir = dirname(output_path)
+    if !isempty(output_dir) && !isdir(output_dir)
+        mkpath(output_dir)
+    end
+end
+
 # ============================================================================
 # BenchmarkPlot - Single benchmark line plot
 # ============================================================================
@@ -69,6 +77,7 @@ function render(plot_config::BenchmarkPlot, data::BenchmarkData; plot_font, pale
           linewidth=2,
           color=palette[1])
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
 
@@ -139,6 +148,7 @@ function render(plot_config::MetricComparisonPlot, data::BenchmarkData; plot_fon
               color=palette[color_idx])
     end
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
 
@@ -209,6 +219,7 @@ function render(plot_config::RelativeImprovementPlot, data::BenchmarkData; plot_
 
     hline!(p, [0], color=:black, linestyle=:dash, label=Label("Baseline"), linewidth=1)
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
     return p
@@ -282,6 +293,7 @@ function render(plot_config::MetricComparisonBarsPlot, data::BenchmarkData; plot
         color_palette=palette
     )
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
     return p
@@ -351,6 +363,7 @@ function render(plot_config::SotaComparisonPlot, data::BenchmarkData; plot_font,
         color_palette=palette
     )
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
     return p
@@ -410,6 +423,7 @@ function render(plot_config::ExampleSourcePlot, data::BenchmarkData; plot_font, 
         color_palette=palette
     )
 
+    ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)
     println("plot saved to: $(plot_config.output)")
     return p

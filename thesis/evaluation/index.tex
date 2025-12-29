@@ -88,10 +88,7 @@ where $\Pi_m$ is the set of valid column permutations (those preserving column
 value sets), $\pi(R_g)$ applies permutation $\pi$ to reorder columns in each
 row of $R_g$, $\equiv_{\text{multiset}}$ denotes multiset equality (allowing
 row reordering) and $ordered(q_g)$ is determining if the ground truth query
-$q_g$ contains an \texttt{ORDER BY} clause. Row and value comparisons use
-tolerance-based equality for floating-point values ($|\cdot| < 10^{-5}$). The
-calculation for measuring \textsc{Natural}'s EA was ported from \textsc{Spider}
-\citep{Spider}.
+$q_g$ contains an \texttt{ORDER BY} clause.
 
 \paragraph{Exact Match (EM)}
 
@@ -111,7 +108,6 @@ SQL candidate.
 % TODO:
 % - End-to-end latency (time from NL query to SQL result)
 % - Per-component latency (σ, φ, π, ρ, ν timings)
-% - Throughput (queries per second)
 % - Resource utilization (GPU memory, CPU usage)
 
 \subsubsection{Baseline Systems and Comparisons}
@@ -140,12 +136,14 @@ learning.
 
 \paragraph{State-of-the-Art Comparisons}
 
-\textcolor{red}{X} external baselines are referenced from previous research:
+Two primary external baselines are taking into account:
 
-% - GPT-4 results from literature
-% - DIN-SQL, DAIL-SQL, C3 results
-% - Other relevant open-source approaches
-% - Note: Direct comparison constraints (different models, hardware)
+\begin{enumerate}
+    \item \textbf{GPT-4} — A proprietary baseline for advanced model
+        capabilities without finetuning.
+    \item \textbf{OmniSQL} — The open source baseline model series used by
+        \textsc{Natural}.
+\end{enumerate}
 
 \subsection{Benchmark Results}
 
@@ -222,6 +220,7 @@ learning.
 \subsubsection{Comparison with State-of-the-Art}
 
 \paragraph{Quantitative Comparison}
+
 % TODO: Create comprehensive comparison table
 % - Table: System vs GPT-4, DIN-SQL, DAIL-SQL, C3, etc.
 % - Both Spider and Bird results
