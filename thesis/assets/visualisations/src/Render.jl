@@ -18,13 +18,31 @@ export run
 
 pyplot()
 
-const PLOT_FONT = "Berkeley Mono"
-const BERKELEY_MONO_PATH = "/nix/store/yy92c3cq5lkfbcawckwv733rck0lz04d-berkeley-mono-1.0.0/share/fonts/truetype/berkeley-mono"
+# Get Berkeley Mono path from environment, or use default monospace
+const BERKELEY_MONO_PATH = get(ENV, "BERKELEY_MONO_PATH", "")
+const BERKELEY_MONO_FONT = isempty(BERKELEY_MONO_PATH) ? "" : joinpath(BERKELEY_MONO_PATH, "BerkeleyMono-Regular.ttf")
 
-PyPlot.matplotlib.font_manager.fontManager.addfont(joinpath(BERKELEY_MONO_PATH, "BerkeleyMono-Regular.ttf"))
+# Try to load Berkeley Mono, fall back to default monospace if unavailable
+const PLOT_FONT = if !isempty(BERKELEY_MONO_FONT) && isfile(BERKELEY_MONO_FONT)
+    try
+        PyPlot.matplotlib.font_manager.fontManager.addfont(BERKELEY_MONO_FONT)
+        PyPlot.matplotlib.rcParams["font.monospace"] = ["Berkeley Mono"]
+        "Berkeley Mono"
+    catch e
+        @warn "Failed to load Berkeley Mono font: $e"
+        "monospace"
+    end
+else
+    if isempty(BERKELEY_MONO_PATH)
+        @warn "BERKELEY_MONO_PATH not set, using default monospace"
+    else
+        @warn "Berkeley Mono font not found at $BERKELEY_MONO_FONT, using default monospace"
+    end
+    "monospace"
+end
+
 PyPlot.matplotlib.rcParams["svg.fonttype"] = "path"
 PyPlot.matplotlib.rcParams["font.family"] = "monospace"
-PyPlot.matplotlib.rcParams["font.monospace"] = ["Berkeley Mono"]
 
 default(fontfamily=PLOT_FONT, linewidth=2, framestyle=:box, grid=true)
 scalefontsizes()
