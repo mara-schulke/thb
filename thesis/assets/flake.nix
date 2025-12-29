@@ -36,13 +36,13 @@
 
         berkeleyMonoPath = "${pkgs.berkeley-mono}/share/fonts/truetype/berkeley-mono";
 
-        renderBin = pkgs.writeShellScriptBin "render" ''
+        render = pkgs.writeShellScriptBin "render" ''
           export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
           ${juliaWithPackages}/bin/julia bin/render "$@"
         '';
 
-        visualizations = pkgs.stdenv.mkDerivation {
-          name = "thesis-visualizations";
+        assets = pkgs.stdenv.mkDerivation {
+          name = "assets";
           src = ./.;
 
           buildInputs = [ juliaWithPackages ];
@@ -61,19 +61,19 @@
       in
       {
         packages = {
-          default = visualizations;
-          visualizations = visualizations;
-          render = renderBin;
+          default = assets;
+          assets = assets;
+          render = render;
         };
 
         apps = {
           default = {
             type = "app";
-            program = "${renderBin}/bin/render";
+            program = "${render}/bin/render";
           };
           render = {
             type = "app";
-            program = "${renderBin}/bin/render";
+            program = "${render}/bin/render";
           };
         };
 
