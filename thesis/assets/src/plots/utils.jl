@@ -22,5 +22,5 @@ Get fillstyle for pipelines (striped pattern for unverified).
 Returns a vector of fillstyles corresponding to each pipeline.
 """
 function get_fillstyles(pipelines::Vector{Pipeline})
-    return [p.verified ? nothing : :// for p in pipelines]
+    return [p.verified ? nothing : :/ for p in pipelines]
 end

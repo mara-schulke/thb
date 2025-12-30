@@ -13,9 +13,9 @@ gpt-4-turbo = { label = "GPT-4-Turbo", order = 21, sota = true, external = true,
 gpt-4o = { label = "GPT-4o", order = 22, sota = true, external = true, verified = false }
 
 [metrics]
-execution-accuracy = { label = "Execution Accuracy (%)" }
-exact-match = { label = "Exact Match (%)" }
-error-rate = { label = "Error Rate (%)" }
+execution-accuracy = { label = "Execution Accuracy" }
+exact-match = { label = "Exact Match" }
+error-rate = { label = "Error Rate" }
 
 [benchmark.spider-dev]
 natural-model = { execution-accuracy = 0.7900, exact-match = 0.330, error-rate = 0.001 }

@@ -43,8 +43,8 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
     system2_label = get_pipeline_label(system2_pipeline)
 
     # Get fillstyles
-    fillstyle1 = system1_pipeline.verified ? nothing : ://
-    fillstyle2 = system2_pipeline.verified ? nothing : ://
+    fillstyle1 = system1_pipeline.verified ? nothing : :/
+    fillstyle2 = system2_pipeline.verified ? nothing : :/
 
     # Determine rotation angle
     rotation_angle = n_benchmarks > 8 ? 45 : 0
@@ -67,7 +67,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             title=Title(plot_config.title),
             legend=:outertop,
             legend_columns=3,
-            size=(2560, 1440),
+            size=DIMENSIONS,
             gridalpha=0.3,
             ylims=:auto,
             margins=10Plots.mm,
@@ -93,7 +93,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             ylabel=Label("Difference (%)"),
             title=Title(plot_config.title),
             legend=:outertop,
-            size=(2560, 1440),
+            size=DIMENSIONS,
             gridalpha=0.3,
             ylims=:auto,
             margins=10Plots.mm,

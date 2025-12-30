@@ -21,7 +21,7 @@ const PLOT_FONT = if !isempty(BERKELEY_MONO_FONT) && isfile(BERKELEY_MONO_FONT)
         "Berkeley Mono"
     catch e
         @warn "Failed to load Berkeley Mono font: $e"
-        "monospace"
+        "Computer Modern"
     end
 else
     if isempty(BERKELEY_MONO_PATH)
@@ -29,7 +29,7 @@ else
     else
         @warn "Berkeley Mono font not found at $BERKELEY_MONO_FONT, using default monospace"
     end
-    "monospace"
+    "Computer Modern"
 end
 
 default(fontfamily=PLOT_FONT, linewidth=2, framestyle=:box, grid=true, dpi=300)
@@ -37,6 +37,7 @@ scalefontsizes()
 scalefontsizes(1.3)
 
 const PALETTE = reverse(palette(:dense, 12))
+const DIMENSIONS = (800, 500)
 
 # ============================================================================
 # Include submodules

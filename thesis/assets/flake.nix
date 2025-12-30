@@ -38,8 +38,7 @@
         berkeleyMonoPath = "${pkgs.berkeley-mono}/share/fonts/truetype/berkeley-mono";
 
         render = pkgs.writeShellScriptBin "render" ''
-          export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
-          ${juliaWithPackages}/bin/julia bin/render "$@"
+          ${juliaWithPackages}/bin/julia ${./.}/bin/render "$@"
         '';
 
         assets = pkgs.stdenv.mkDerivation {
@@ -50,7 +49,6 @@
 
           buildPhase = ''
             export HOME=$TMPDIR
-            export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
             ${juliaWithPackages}/bin/julia bin/render --results var/conf/benchmark.toml --plots var/conf/plots.toml
           '';
 

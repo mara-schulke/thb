@@ -56,7 +56,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
         ylabel=Label(metric_label),
         legend=:outertop,
         legend_columns=4,
-        size=(2560, 1440),
+        size=DIMENSIONS,
         gridalpha=0.3,
         ylims=(0, 100),
         margins=10Plots.mm,
