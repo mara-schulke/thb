@@ -1,58 +1,51 @@
-# Plot configurations for thesis visualizations
-
 [[plots]]
-type = "benchmark"
+type = "pipeline-bars"
 benchmark = "spider-dev"
 metric = "execution-accuracy"
-metric_label = "Execution Accuracy"
 output = "out/spider-dev.svg"
 
 [[plots]]
-type = "benchmark"
+type = "pipeline-bars"
 benchmark = "spider-test"
 metric = "execution-accuracy"
-metric_label = "Execution Accuracy"
 output = "out/spider-test.svg"
 
 [[plots]]
-type = "benchmark"
+type = "pipeline-bars"
 benchmark = "bird-dev"
 metric = "execution-accuracy"
-metric_label = "Execution Accuracy"
 output = "out/bird-dev.svg"
 
 [[plots]]
-type = "metric_comparison"
-metric = "execution-accuracy"
-metric_label = "Execution Accuracy"
-output = "out/comparison.svg"
-
-[[plots]]
-type = "relative_improvement"
+type = "baseline-improvement"
 baseline_key = "natural-baseline"
-comparison_keys = ["natural-zeroshot", "natural-full-syn", "natural-full-train", "natural-full-ground"]
+comparison_keys = [
+  "natural-zeroshot",
+  "natural-full-syn",
+  "natural-full-train",
+  "natural-full-ground",
+]
 metric = "execution-accuracy"
 title = "Relative Performance Improvement Over Baseline"
 output = "out/relative-improvement.svg"
 
 [[plots]]
-type = "metric_comparison_bars"
+type = "benchmark-bars"
 metric = "execution-accuracy"
-metric_label = "Execution Accuracy"
-include_sota = false
+include-sota = false
 output = "out/comparison-bars-natural.svg"
 
 [[plots]]
-type = "sota_comparison"
-natural_configs = ["natural-baseline", "natural-full-ground"]
-sota_configs = ["omnisql-7b-ext", "gpt-4o"]
+type = "sota-bars"
+natural = ["natural-baseline", "natural-full-ground"]
+sota = ["omnisql-7b", "gpt-4o"]
 metric = "execution-accuracy"
 title = "Performance Comparison: Natural vs SOTA"
 output = "out/sota-comparison.svg"
 
 [[plots]]
-type = "example_source"
-source_keys = ["natural-full-syn", "natural-full-train", "natural-full-ground"]
+type = "source-bars"
+source = ["natural-full-syn", "natural-full-train", "natural-full-ground"]
 metric = "execution-accuracy"
 title = "Impact of Example Source on Performance"
 output = "out/example-source-comparison.svg"

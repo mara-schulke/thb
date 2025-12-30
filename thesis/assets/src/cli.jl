@@ -8,7 +8,7 @@ using TOML
 include("data.jl")
 include("plots.jl")
 
-function parse_commandline()
+function parse()
     s = ArgParseSettings()
 
     @add_arg_table! s begin
@@ -25,51 +25,42 @@ function parse_commandline()
     return parse_args(s)
 end
 
-function create_plot_from_config(config::Dict)
+function plottable(config::Dict, data::BenchmarkData)
     plot_type = config["type"]
 
-    if plot_type == "benchmark"
-        return BenchmarkPlot(
+    if plot_type == "pipeline-bars"
+        return PipelineBarsPlot(
             config["benchmark"],
             config["metric"],
-            config["metric_label"],
             title=get(config, "title", nothing),
             output=config["output"]
         )
-    elseif plot_type == "metric_comparison"
-        return MetricComparisonPlot(
+    elseif plot_type == "benchmark-bars"
+        return BenchmarkBarsPlot(
             config["metric"],
-            metric_label=get(config, "metric_label", nothing),
             title=get(config, "title", nothing),
+            include_sota=get(config, "include-sota", false),
             output=config["output"]
         )
-    elseif plot_type == "relative_improvement"
-        return RelativeImprovementPlot(
+    elseif plot_type == "baseline-improvement"
+        return BaselineImprovementPlot(
             baseline_key=config["baseline_key"],
             comparison_keys=config["comparison_keys"],
             metric=config["metric"],
             title=config["title"],
             output=config["output"]
         )
-    elseif plot_type == "metric_comparison_bars"
-        return MetricComparisonBarsPlot(
-            config["metric"],
-            metric_label=get(config, "metric_label", nothing),
-            title=get(config, "title", nothing),
-            include_sota=get(config, "include_sota", false),
-            output=config["output"]
-        )
-    elseif plot_type == "sota_comparison"
-        return SotaComparisonPlot(
-            natural_configs=config["natural_configs"],
-            sota_configs=config["sota_configs"],
+    elseif plot_type == "sota-bars"
+        return SotaBarsPlot(
+            natural=config["natural"],
+            sota=config["sota"],
             metric=config["metric"],
             title=config["title"],
             output=config["output"]
         )
-    elseif plot_type == "example_source"
-        return ExampleSourcePlot(
-            source_keys=config["source_keys"],
+    elseif plot_type == "source-bars"
+        return SourceBarsPlot(
+            source=config["source"],
             metric=config["metric"],
             title=config["title"],
             output=config["output"]
@@ -80,10 +71,10 @@ function create_plot_from_config(config::Dict)
 end
 
 function main(args::Vector{String}; plot_font, palette)
-    parsed_args = parse_commandline()
+    parsed = parse()
 
-    results_file = parsed_args["results"]
-    plots_file = parsed_args["plots"]
+    results_file = parsed["results"]
+    plots_file = parsed["plots"]
 
     if !isfile(results_file)
         println("Error: Results file '$results_file' not found")
@@ -101,17 +92,17 @@ function main(args::Vector{String}; plot_font, palette)
     println()
 
     data = BenchmarkData(results_file)
-    plot_configs = TOML.parsefile(plots_file)
+    plots = TOML.parsefile(plots_file)
 
-    if !haskey(plot_configs, "plots")
+    if !haskey(plots, "plots")
         println("Error: No 'plots' array found in $plots_file")
         return 1
     end
 
-    for (i, config) in enumerate(plot_configs["plots"])
+    for (i, config) in enumerate(plots["plots"])
         try
-            plot_obj = create_plot_from_config(config)
-            render(plot_obj, data; plot_font=plot_font, palette=palette)
+            plot = plottable(config, data)
+            render(plot, data; plot_font=plot_font, palette=palette)
         catch e
             println("Error rendering plot $i: $e")
             showerror(stdout, e, catch_backtrace())

@@ -28,6 +28,7 @@
         juliaWithPackages = pkgs.julia.withPackages [
           "Plots"
           "PyPlot"
+          "GR"
           "StatsPlots"
           "TOML"
           "ColorSchemes"

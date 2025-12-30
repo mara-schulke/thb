@@ -1,32 +1,23 @@
-"""
-Render - Thesis visualization and plotting system
-
-Main module that coordinates benchmark data visualization.
-"""
 module Render
 
 using Plots
 using StatsPlots
 using ColorSchemes
-import PyPlot
+
+import GR
 
 export run
 
-# ============================================================================
-# Configuration and Setup
-# ============================================================================
+gr()
 
-pyplot()
-
-# Get Berkeley Mono path from environment, or use default monospace
 const BERKELEY_MONO_PATH = get(ENV, "BERKELEY_MONO_PATH", "")
 const BERKELEY_MONO_FONT = isempty(BERKELEY_MONO_PATH) ? "" : joinpath(BERKELEY_MONO_PATH, "BerkeleyMono-Regular.ttf")
 
-# Try to load Berkeley Mono, fall back to default monospace if unavailable
 const PLOT_FONT = if !isempty(BERKELEY_MONO_FONT) && isfile(BERKELEY_MONO_FONT)
     try
-        PyPlot.matplotlib.font_manager.fontManager.addfont(BERKELEY_MONO_FONT)
-        PyPlot.matplotlib.rcParams["font.monospace"] = ["Berkeley Mono"]
+        ENV["GKS_FONT_DIRS"] = BERKELEY_MONO_PATH
+        font = GR.loadfont("Berkeley Mono")
+        GR.settextfontprec(font, GR.TEXT_PRECISION_OUTLINE)
         "Berkeley Mono"
     catch e
         @warn "Failed to load Berkeley Mono font: $e"
@@ -41,15 +32,11 @@ else
     "monospace"
 end
 
-PyPlot.matplotlib.rcParams["svg.fonttype"] = "path"
-PyPlot.matplotlib.rcParams["font.family"] = "monospace"
-
 default(fontfamily=PLOT_FONT, linewidth=2, framestyle=:box, grid=true)
 scalefontsizes()
 scalefontsizes(1.0)
 
-# :lajolla10 or :tofino10 or :vanimo10
-const PALETTE = palette(:tofino10)
+const PALETTE = reverse(palette(:dense, 12))
 
 # ============================================================================
 # Include submodules
@@ -73,4 +60,4 @@ function run(args::Vector{String})
     return main(args; plot_font=PLOT_FONT, palette=PALETTE)
 end
 
-end # module
+end
