@@ -61,7 +61,7 @@ function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palet
         title=Title(plot_config.title),
         legend=:outertop,
         legend_columns=4,
-        size=(1400, 800),
+        size=(2560, 1440),
         gridalpha=0.3,
         ylims=(0, 105),
         margins=10Plots.mm,

@@ -1,26 +1,33 @@
 """
-BenchmarkBarsPlot - Grouped bar chart comparing pipelines across benchmarks.
+MetricBreakdownPlot - Show a single metric across selected pipelines and benchmarks.
 """
 
-struct BenchmarkBarsPlot
+struct MetricBreakdownPlot
     metric::String
+    pipeline_keys::Vector{String}
     title::Union{String, Nothing}
-    include_sota::Bool
     output::String
+    include_all_pipelines::Bool
 end
 
-function BenchmarkBarsPlot(metric::String;
-                           title=nothing,
-                           include_sota=false,
-                           output="comparison-bars.svg")
-    BenchmarkBarsPlot(metric, title, include_sota, output)
+function MetricBreakdownPlot(;
+                              metric="execution-accuracy",
+                              pipeline_keys=String[],
+                              title=nothing,
+                              output="metric-breakdown.svg",
+                              include_all_pipelines=false)
+    MetricBreakdownPlot(metric, pipeline_keys, title, output, include_all_pipelines)
 end
 
-function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, palette)
-    pipelines = if plot_config.include_sota
+function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font, palette)
+    # Determine which pipelines to include
+    pipelines = if plot_config.include_all_pipelines
         data.pipelines
+    elseif !isempty(plot_config.pipeline_keys)
+        filter(p -> p.key in plot_config.pipeline_keys, data.pipelines)
     else
-        filter(p -> !p.sota, data.pipelines)
+        # Default: include all internal pipelines
+        filter(p -> !p.external, data.pipelines)
     end
 
     pipeline_labels = [get_pipeline_label(p) for p in pipelines]
@@ -37,14 +44,17 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
         end
     end
 
+    # Get metric label
     metric_label = haskey(data.metrics, plot_config.metric) ?
                    data.metrics[plot_config.metric].label :
                    plot_config.metric
+
+    # Generate title
     title = plot_config.title === nothing ?
-            "$metric_label Across Benchmarks" :
+            "$metric_label Across Systems" :
             plot_config.title
 
-    # Only rotate labels if there are more than 8
+    # Determine rotation angle
     rotation_angle = n_benchmarks > 8 ? 45 : 0
 
     p = groupedbar(
@@ -55,7 +65,7 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
         label=permutedims(pipeline_labels),
         fillstyle=permutedims(fillstyles),
         xlabel=Label("Benchmark"),
-        ylabel=Label("Score (%)"),
+        ylabel=Label("$metric_label (%)"),
         title=Title(title),
         legend=:outertop,
         legend_columns=4,

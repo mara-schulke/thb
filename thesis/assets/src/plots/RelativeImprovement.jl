@@ -58,7 +58,7 @@ function render(plot_config::BaselineImprovementPlot, data::BenchmarkData; plot_
         legend=:outertop,
         legend_columns=4,
         ylims=:auto,
-        size=(1400, 800),
+        size=(2560, 1440),
         gridalpha=0.3,
         margins=10Plots.mm,
         top_margin=5Plots.mm,

@@ -32,9 +32,9 @@ else
     "monospace"
 end
 
-default(fontfamily=PLOT_FONT, linewidth=2, framestyle=:box, grid=true)
+default(fontfamily=PLOT_FONT, linewidth=2, framestyle=:box, grid=true, dpi=300)
 scalefontsizes()
-scalefontsizes(1.0)
+scalefontsizes(1.3)
 
 const PALETTE = reverse(palette(:dense, 12))
 

@@ -65,6 +65,23 @@ function plottable(config::Dict, data::BenchmarkData)
             title=config["title"],
             output=config["output"]
         )
+    elseif plot_type == "performance-gap"
+        return PerformanceGapPlot(
+            system1_key=config["system1_key"],
+            system2_key=config["system2_key"],
+            metric=config["metric"],
+            title=config["title"],
+            output=config["output"],
+            show_absolute=get(config, "show_absolute", true)
+        )
+    elseif plot_type == "metric-breakdown"
+        return MetricBreakdownPlot(
+            metric=config["metric"],
+            pipeline_keys=get(config, "pipeline_keys", String[]),
+            title=get(config, "title", nothing),
+            output=config["output"],
+            include_all_pipelines=get(config, "include_all_pipelines", false)
+        )
     else
         error("Unknown plot type: $plot_type")
     end
