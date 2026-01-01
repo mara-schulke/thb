@@ -3,6 +3,8 @@ TODO
 /praxisprojekt/mnt/**/*
 
 bin
+result
+svg-inkscape
 .DS_Store
 .classpath
 .settings
