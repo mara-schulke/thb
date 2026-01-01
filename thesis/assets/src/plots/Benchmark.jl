@@ -29,7 +29,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
     fillstyles = get_fillstyles(data.pipelines)
 
     title = plot_config.title === nothing ?
-            "Performance on $(plot_config.benchmark)\n" :
+            "Performance on $(get_benchmark_label(data, plot_config.benchmark))\n" :
             plot_config.title
 
     metric_label = haskey(data.metrics, plot_config.metric) ?
@@ -51,6 +51,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
         bar_width=0.8,
         label=permutedims(pipeline_labels),
         fillstyle=permutedims(fillstyles),
+        color_palette=readable(data.pipelines, palette),
         title=Title(title),
         xlabel=Label("Pipeline"),
         ylabel=Label(metric_label),
@@ -67,8 +68,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
         guidefontsize=10,
         tickfontsize=10,
         legendfontsize=10,
-        rotation=rotation_angle,
-        color_palette=palette)
+        rotation=rotation_angle)
 
     ensure_output_dir(plot_config.output)
     savefig(p, plot_config.output)

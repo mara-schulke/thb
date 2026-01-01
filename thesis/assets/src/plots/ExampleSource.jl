@@ -21,13 +21,14 @@ function render(plot_config::SourceBarsPlot, data::BenchmarkData; plot_font, pal
     source_pipelines = [data.pipelines[findfirst(p -> p.key == k, data.pipelines)] for k in plot_config.source]
     source_labels = [p.label for p in source_pipelines]
     fillstyles = get_fillstyles(source_pipelines)
-    benchmarks = collect(keys(data.benchmarks))
+    benchmark_keys = collect(keys(data.results))
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     n_sources = length(plot_config.source)
-    n_benchmarks = length(benchmarks)
+    n_benchmarks = length(benchmark_keys)
     values = zeros(n_sources, n_benchmarks)
 
-    for (i, benchmark) in enumerate(benchmarks)
+    for (i, benchmark) in enumerate(benchmark_keys)
         for (j, source) in enumerate(plot_config.source)
             values[j, i] = get_value(data, benchmark, source, plot_config.metric)
         end
@@ -37,12 +38,13 @@ function render(plot_config::SourceBarsPlot, data::BenchmarkData; plot_font, pal
     rotation_angle = n_benchmarks > 8 ? 45 : 0
 
     p = groupedbar(
-        benchmarks,
+        benchmark_labels,
         values',
         bar_position=:dodge,
         bar_width=0.8,
         label=permutedims(source_labels),
         fillstyle=permutedims(fillstyles),
+        color_palette=readable(source_pipelines, palette),
         xlabel=Label("Benchmark"),
         ylabel=Label("Execution Accuracy (%)"),
         title=Title(plot_config.title),
@@ -59,8 +61,7 @@ function render(plot_config::SourceBarsPlot, data::BenchmarkData; plot_font, pal
         guidefontsize=10,
         tickfontsize=10,
         legendfontsize=10,
-        rotation=rotation_angle,
-        color_palette=palette
+        rotation=rotation_angle
     )
 
     ensure_output_dir(plot_config.output)

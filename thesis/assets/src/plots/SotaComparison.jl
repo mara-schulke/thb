@@ -11,11 +11,11 @@ struct SotaBarsPlot
 end
 
 function SotaBarsPlot(;
-                            natural=["natural-baseline", "natural-full-ground"],
-                            sota=["omnisql-7b", "gpt-4o"],
-                            metric="execution-accuracy",
-                            title="Performance Comparison: Natural vs SOTA",
-                            output="sota-comparison.svg")
+    natural=["natural-baseline", "natural-full-ground"],
+    sota=["omnisql-7b", "gpt-4o"],
+    metric="execution-accuracy",
+    title="Performance Comparison: Natural vs SOTA",
+    output="sota-comparison.svg")
     SotaBarsPlot(natural, sota, metric, title, output)
 end
 
@@ -34,28 +34,30 @@ function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palet
     end
 
     fillstyles = get_fillstyles(config_pipelines)
-    benchmarks = collect(keys(data.benchmarks))
+    benchmark_keys = collect(keys(data.results))
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
     n_configs = length(all_configs)
-    n_benchmarks = length(benchmarks)
+    n_benchmarks = length(benchmark_keys)
     values = zeros(n_configs, n_benchmarks)
 
-    for (i, benchmark) in enumerate(benchmarks)
+    for (i, benchmark) in enumerate(benchmark_keys)
         for (j, config) in enumerate(all_configs)
             values[j, i] = get_value(data, benchmark, config, plot_config.metric)
         end
     end
 
-    benchmarks = map(Label, benchmarks)
+    benchmark_label_objs = map(Label, benchmark_labels)
 
     rotation = n_benchmarks > 8 ? 45 : 0
 
     p = groupedbar(
-        benchmarks,
+        benchmark_label_objs,
         values',
         bar_position=:dodge,
         bar_width=0.8,
         label=permutedims(config_labels),
         fillstyle=permutedims(fillstyles),
+        color_palette=readable(config_pipelines, palette),
         xlabel=Label("Benchmark"),
         ylabel=Label("Execution Accuracy (%)"),
         title=Title(plot_config.title),
@@ -71,9 +73,8 @@ function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palet
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=10,
-        rotation=rotation,
-        color_palette=palette
+        legendfontsize=8,
+        rotation=rotation
     )
 
     ensure_output_dir(plot_config.output)

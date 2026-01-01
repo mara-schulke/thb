@@ -32,13 +32,14 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
 
     pipeline_labels = [get_pipeline_label(p) for p in pipelines]
     fillstyles = get_fillstyles(pipelines)
-    benchmarks = collect(keys(data.benchmarks))
+    benchmark_keys = collect(keys(data.results))
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     n_pipelines = length(pipelines)
-    n_benchmarks = length(benchmarks)
+    n_benchmarks = length(benchmark_keys)
     values = zeros(n_pipelines, n_benchmarks)
 
-    for (i, benchmark) in enumerate(benchmarks)
+    for (i, benchmark) in enumerate(benchmark_keys)
         for (j, pipeline) in enumerate(pipelines)
             values[j, i] = get_value(data, benchmark, pipeline.key, plot_config.metric)
         end
@@ -58,12 +59,13 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
     rotation_angle = n_benchmarks > 8 ? 45 : 0
 
     p = groupedbar(
-        benchmarks,
+        benchmark_labels,
         values',
         bar_position=:dodge,
         bar_width=0.8,
         label=permutedims(pipeline_labels),
         fillstyle=permutedims(fillstyles),
+        color_palette=readable(pipelines, palette),
         xlabel=Label("Benchmark"),
         ylabel=Label("$metric_label (%)"),
         title=Title(title),
@@ -79,9 +81,8 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=10,
-        rotation=rotation_angle,
-        color_palette=palette
+        legendfontsize=8,
+        rotation=rotation_angle
     )
 
     ensure_output_dir(plot_config.output)

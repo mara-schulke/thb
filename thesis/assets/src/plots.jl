@@ -4,6 +4,7 @@ Plot types and rendering functions for thesis visualizations.
 
 using Plots
 using StatsPlots
+using Colors
 
 include("data.jl")
 

@@ -22,14 +22,15 @@ function PerformanceGapPlot(;
 end
 
 function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font, palette)
-    benchmarks = collect(keys(data.benchmarks))
-    n_benchmarks = length(benchmarks)
+    benchmark_keys = collect(keys(data.results))
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
+    n_benchmarks = length(benchmark_keys)
 
     system1_values = zeros(n_benchmarks)
     system2_values = zeros(n_benchmarks)
     differences = zeros(n_benchmarks)
 
-    for (i, benchmark) in enumerate(benchmarks)
+    for (i, benchmark) in enumerate(benchmark_keys)
         system1_values[i] = get_value(data, benchmark, plot_config.system1_key, plot_config.metric)
         system2_values[i] = get_value(data, benchmark, plot_config.system2_key, plot_config.metric)
         differences[i] = system2_values[i] - system1_values[i]
@@ -46,6 +47,10 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
     fillstyle1 = system1_pipeline.verified ? nothing : :/
     fillstyle2 = system2_pipeline.verified ? nothing : :/
 
+    # Get colors for the two systems
+    both_pipelines = [system1_pipeline, system2_pipeline]
+    colors = readable(both_pipelines, palette)
+
     # Determine rotation angle
     rotation_angle = n_benchmarks > 8 ? 45 : 0
 
@@ -54,13 +59,15 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
         combined_data = hcat(system1_values, system2_values, differences)
         labels = [system1_label system2_label "Difference"]
         fillstyles = [fillstyle1 fillstyle2 nothing]
+        bar_colors = [colors[1] colors[2] palette.verified[3]]
 
         p = groupedbar(
-            benchmarks,
+            benchmark_labels,
             combined_data,
             bar_position=:dodge,
             bar_width=0.8,
             label=labels,
+            color_palette=bar_colors,
             fillstyle=fillstyles,
             xlabel=Label("Benchmark"),
             ylabel=Label("Score (%)"),
@@ -77,18 +84,18 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             titlefontsize=12,
             guidefontsize=10,
             tickfontsize=10,
-            legendfontsize=10,
-            rotation=rotation_angle,
-            color_palette=palette
+            legendfontsize=8,
+            rotation=rotation_angle
         )
 
         hline!(p, [0], color=:black, linestyle=:dash, label="", linewidth=1)
     else
         # Show only the difference
         p = bar(
-            benchmarks,
+            benchmark_labels,
             differences,
             label="Difference ($(system2_label) - $(system1_label))",
+            color=palette.verified[3],
             xlabel=Label("Benchmark"),
             ylabel=Label("Difference (%)"),
             title=Title(plot_config.title),
@@ -104,8 +111,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             guidefontsize=10,
             tickfontsize=10,
             legendfontsize=10,
-            rotation=rotation_angle,
-            color_palette=palette
+            rotation=rotation_angle
         )
 
         hline!(p, [0], color=:black, linestyle=:dash, label="No difference", linewidth=1)

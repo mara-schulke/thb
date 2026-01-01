@@ -4,17 +4,12 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    fonts = {
-      url = "git+ssh://git@github.com/hemisphere-systems/fonts";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
     {
       nixpkgs,
       flake-utils,
-      fonts,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -22,7 +17,6 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ fonts.overlays.default ];
         };
 
         juliaWithPackages = pkgs.julia.withPackages [
@@ -35,8 +29,6 @@
           "Colors"
           "ArgParse"
         ];
-
-        berkeleyMonoPath = "${pkgs.berkeley-mono}/share/fonts/truetype/berkeley-mono";
 
         render = pkgs.writeShellScriptBin "render" ''
           ${juliaWithPackages}/bin/julia ${./.}/bin/render "$@"
@@ -78,12 +70,7 @@
         };
 
         devShells.default = pkgs.mkShell {
-          buildInputs = [
-            juliaWithPackages
-          ];
-          shellHook = ''
-            export BERKELEY_MONO_PATH="${berkeleyMonoPath}"
-          '';
+          buildInputs = [ juliaWithPackages ];
         };
       }
     );

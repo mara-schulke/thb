@@ -17,10 +17,43 @@ function ensure_output_dir(output_path::String)
     end
 end
 
+struct PaletteScheme
+    verified::Any
+    unverified::Any
+end
+
 """
 Get fillstyle for pipelines (striped pattern for unverified).
 Returns a vector of fillstyles corresponding to each pipeline.
 """
 function get_fillstyles(pipelines::Vector{Pipeline})
     return [p.verified ? nothing : :/ for p in pipelines]
+end
+
+"""
+Get colors for pipelines, using different palettes for verified vs unverified.
+Verified: Uses palette.verified
+Unverified: Uses palette.unverified
+"""
+function readable(pipelines::Vector{Pipeline}, palette::PaletteScheme)
+    n_pipelines = length(pipelines)
+    colors = Vector{Any}(undef, n_pipelines)
+
+    verified_indices = findall(p -> p.verified, pipelines)
+    unverified_indices = findall(p -> !p.verified, pipelines)
+
+    verified_size = length(palette.verified)
+    unverified_size = length(palette.unverified)
+
+    for (i, idx) in enumerate(verified_indices)
+        color_idx = ((i - 1) % verified_size) + 1
+        colors[idx] = palette.verified[color_idx]
+    end
+
+    for (i, idx) in enumerate(unverified_indices)
+        color_idx = ((i - 1) % unverified_size) + 1
+        colors[idx] = palette.unverified[color_idx]
+    end
+
+    return colors
 end
