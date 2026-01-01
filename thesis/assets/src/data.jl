@@ -16,6 +16,18 @@ function Metric(key::String, data::Dict)
     Metric(key, String(data["label"]))
 end
 
+struct Benchmark
+    key::String
+    label::String
+end
+
+function Benchmark(key::String, data::Dict)
+    if !haskey(data, "label")
+        error("Benchmark '$key' missing required 'label' field")
+    end
+    Benchmark(key, String(data["label"]))
+end
+
 struct Pipeline
     key::String
     label::String
@@ -77,7 +89,8 @@ Base.keys(br::BenchmarkResults) = keys(br.data)
 struct BenchmarkData
     path::String
     pipelines::Vector{Pipeline}
-    benchmarks::BenchmarkResults
+    results::BenchmarkResults
+    benchmarks::Dict{String, Benchmark}
     metrics::Dict{String, Metric}
 end
 
@@ -96,9 +109,15 @@ function BenchmarkData(file::String)
     pipelines = [Pipeline(k, pipeline_data[k]::Dict) for k in keys(pipeline_data)]
     sort!(pipelines, by = p -> p.order)
 
-    # Parse benchmarks using nested constructors
-    benchmark_data = get(data, "benchmark", Dict())::Dict
-    benchmarks = BenchmarkResults(benchmark_data)
+    # Parse benchmark info (labels)
+    benchmarks_data = get(data, "benchmarks", Dict())::Dict
+    benchmarks = Dict{String, Benchmark}(
+        k => Benchmark(k, v::Dict) for (k, v) in benchmarks_data
+    )
+
+    # Parse results using nested constructors
+    results_data = get(data, "results", Dict())::Dict
+    results = BenchmarkResults(results_data)
 
     # Parse metrics using constructor
     metric_data = get(data, "metrics", Dict())::Dict
@@ -106,14 +125,14 @@ function BenchmarkData(file::String)
         k => Metric(k, v::Dict) for (k, v) in metric_data
     )
 
-    BenchmarkData(file, pipelines, benchmarks, metrics)
+    BenchmarkData(file, pipelines, results, benchmarks, metrics)
 end
 
 function get_value(bd::BenchmarkData, benchmark::String, pipeline_key::String, metric::String)
-    if haskey(bd.benchmarks, benchmark) &&
-       haskey(bd.benchmarks[benchmark], pipeline_key) &&
-       haskey(bd.benchmarks[benchmark][pipeline_key], metric)
-        return bd.benchmarks[benchmark][pipeline_key][metric] * 100
+    if haskey(bd.results, benchmark) &&
+       haskey(bd.results[benchmark], pipeline_key) &&
+       haskey(bd.results[benchmark][pipeline_key], metric)
+        return bd.results[benchmark][pipeline_key][metric] * 100
     end
     return 0.0
 end
@@ -124,4 +143,11 @@ function get_pipeline_label(pipeline::Pipeline, include_asterisk::Bool=true)
         label *= "*"
     end
     return label
+end
+
+function get_benchmark_label(bd::BenchmarkData, benchmark_key::String)
+    if haskey(bd.benchmarks, benchmark_key)
+        return bd.benchmarks[benchmark_key].label
+    end
+    return benchmark_key
 end
