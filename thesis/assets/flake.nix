@@ -32,6 +32,7 @@
           "StatsPlots"
           "TOML"
           "ColorSchemes"
+          "Colors"
           "ArgParse"
         ];
 

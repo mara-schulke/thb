@@ -21,33 +21,42 @@
           inherit system;
         };
 
-        render = pkgs.writeShellApplication {
-          name = "render";
-          buildInputs = [
-            pkgs.pdflatex
-            pkgs.inkscape
-          ];
-          text = ''
-            ${pkgs.pdflatex}/bin/pdflatex --shell-escape "$@"
-          '';
-        };
+        texlive = pkgs.texlive.combined.scheme-full;
 
         thesis = pkgs.stdenv.mkDerivation {
           name = "thesis";
           src = ./.;
 
-          buildInputs = [ render ];
+          buildInputs = [
+            texlive
+            pkgs.inkscape
+          ];
 
           buildPhase = ''
-            rm -rf assets
+            # Copy assets from the assets flake
+            rm -rf assets/out
             mkdir -p assets/out
-            cp -r ${assets} assets/out
-            ${render}/bin/render
+            cp -r ${assets.packages.${system}.default}/* assets/out/
+
+            # Set HOME for inkscape
+            export HOME=$TMPDIR
+
+            # Run pdflatex multiple times for proper references and citations
+            pdflatex -shell-escape -interaction=nonstopmode thesis.tex || true
+            bibtex thesis || true
+            pdflatex -shell-escape -interaction=nonstopmode thesis.tex || true
+            pdflatex -shell-escape -interaction=nonstopmode thesis.tex || true
+
+            # Verify PDF was created
+            if [ ! -f thesis.pdf ]; then
+              echo "ERROR: thesis.pdf was not created!"
+              exit 1
+            fi
           '';
 
           installPhase = ''
             mkdir -p $out
-            cp thesis.pdf $out
+            cp thesis.pdf $out/
           '';
         };
       in
@@ -59,8 +68,8 @@
 
         devShells.default = pkgs.mkShell {
           buildInputs = [
+            texlive
             pkgs.inkscape
-            assets.packages.${system}.default
           ];
         };
       }

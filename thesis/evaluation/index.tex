@@ -1,6 +1,6 @@
-% Reference: https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
-
 \section{Evaluation}
+
+% Reference: https://github.com/petavue/NL2SQL-Benchmark/blob/main/results/Report/NL2SQL%20Benchmark%20Report.pdf
 
 The evaluation phase of \textsc{Natural} builds upon the benchmarking
 infrastructure outlined in section~\ref{impl:benchmark}. This section is
@@ -63,13 +63,18 @@ requirements and is generally considered harder than \textsc{Spider}.
 
 \subsubsection{Evaluation Metrics}
 
-\paragraph{Execution Accuracy (EA)}
+The chosen set of evaluation metrics used is a mixture of semantic metrics
+($\mathbb{EA}$, $\mathbb{EM}$) and functional metrics ($\mathbb{ER}$,
+$\mathbb{CL}$) to gather a hollistic picture of system behavior and real world
+applicablility.
 
-\textsc{Execution Accuracy} (or EA) is the primary success metric of NL2SQL systems
-as it represents the semantic accuracy of the SQL queries produced NL2SQL
-systems. Execution accuracy is computed by determining whether the rows in the
-candidate results are a permutation of the rows returned by ground truth
-results. 
+\paragraph{Execution Accuracy ($\mathbb{EA}$)}
+
+\textsc{Execution Accuracy} (or $\mathbb{EA}$) is the primary success metric of
+NL2SQL systems as it represents the semantic accuracy of the SQL queries
+produced NL2SQL systems. Execution accuracy is computed by determining whether
+the rows in the candidate results are a permutation of the rows returned by
+ground truth results. 
 
 For a query $q_g$ with candidate results $R_c$ and ground truth results $R_g$, 
 where $R_c, R_g \subseteq \mathbb{V}^{n \times m}$ (sets of $n$ rows with $m$ columns 
@@ -90,7 +95,11 @@ row of $R_g$, $\equiv_{\text{multiset}}$ denotes multiset equality (allowing
 row reordering) and $ordered(q_g)$ is determining if the ground truth query
 $q_g$ contains an \texttt{ORDER BY} clause.
 
-\paragraph{Exact Match (EM)}
+In order to compute the $\mathbb{EA}$ on \textsc{Spider} and \textsc{Bird}
+the official evaluation suite is used respectively to ensure comparability
+across externally reported measurements and locally observed measurements.
+
+\paragraph{Exact Match ($\mathbb{EM}$)}
 
 % TODO: Define exact match
 % - Definition: whether SQL query exactly matches ground truth
@@ -99,11 +108,13 @@ $q_g$ contains an \texttt{ORDER BY} clause.
 
 \textsc{Exact Match}..
 
-\paragraph{Performance Metrics}
+\paragraph{Error Rate ($\mathbb{ER}$)}
+
+\paragraph{Candidate Latency ($\mathbb{CL}$)}
 
 Measuring real world applicablility, the metric \textsc{Latency} is introduced 
-for measuring the compound pipeline runtime, thus measuring NL query to final
-SQL candidate.
+for measuring the compound pipeline runtime, thus measuring time from natural
+language query to final SQL candidate output.
 
 % TODO:
 % - End-to-end latency (time from NL query to SQL result)
@@ -122,30 +133,81 @@ external baselines (eg, State-of-the-Art system performance).
 Two primary internal baselines are introduced:
 
 \begin{enumerate}
-    \item \textbf{Model Baseline} — Using only the inference logic for
-        zero-shot accuracy, aiming to represent \textsc{OmniSQL} performance as
-        closely as possible.
+    \item \textbf{Inference Baseline} — Using only the inference logic for
+        zero-shot accuracy, representing the performance contribution of
+        \textsc{OmniSQL}.
     \item \textbf{Zero-Shot Baseline} — A full \textsc{Natural} pipeline but
         without any examples available for the in-context learning inference
         phase.
 \end{enumerate}
 
-These baselines aim to measure both the actual performance of the NL2SQL model
-(\textsc{OmniSQL}) and the full \textsc{Natural} pipeline without in-context
-learning.
+These baselines aim to measure both the actual measured performance of the
+NL2SQL model used (\textsc{OmniSQL}) and the \textsc{Natural} pipeline
+without in-context learning.
 
 \paragraph{State-of-the-Art Comparisons}
 
-Two primary external baselines are taking into account:
+Two primary external baselines are introduced:
 
 \begin{enumerate}
     \item \textbf{GPT-4} — A proprietary baseline for advanced model
-        capabilities without finetuning.
+        capabilities without finetuning, quoted from \cite{OmniSQL}.
     \item \textbf{OmniSQL} — The open source baseline model series used by
-        \textsc{Natural}.
+        \textsc{Natural}, quoted from \cite{OmniSQL}.
 \end{enumerate}
 
 \subsection{Benchmark Results}
+
+\subsubsection{Overall Results}
+
+Table~\ref{tab:eval:overall-results} presents the comprehensive benchmark
+results for all system configurations across Spider and BIRD datasets,
+including execution accuracy (EA), exact match (EM), and error rate (ER)
+metrics.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{l|c|c|c|c|c|c|c|c|c}
+        \toprule
+        \textbf{System}    & \multicolumn{3}{c|}{\textbf{Spider (dev)}}       & \multicolumn{3}{c|}{\textbf{Spider (test)}}     & \multicolumn{3}{c}{\textbf{BIRD (dev)}} \\
+        \midrule
+                           & $\mathbb{EA}$  & $\mathbb{EM}$  & $\mathbb{ER}$  & $\mathbb{EA}$  & $\mathbb{EM}$  & $\mathbb{ER}$ & $\mathbb{EA}$  & $\mathbb{EM}$  & $\mathbb{ER}$ \\
+        \midrule
+        \multicolumn{10}{c}{\textbf{Closed-Source LLMs}} \\
+        \midrule
+        GPT-4o-mini*       & 71.0           & -              & -              & 83.7           & -             & -              & 61.5          & -              & ? \\
+        GPT-4-Turbo*       & 72.2           & -              & -              & 84.2           & -             & -              & 63.6          & -              & ? \\
+        GPT-4o*            & 70.7           & -              & -              & 84.9           & -             & -              & 64.0          & -              & ? \\
+        \midrule
+        \multicolumn{10}{c}{\textbf{Open-Source LLMs}} \\
+        \midrule
+        OmniSQL-7B*        & 81.6           & -              & -              & 89.8           & -             & -              & 66.1          & -              & ? \\
+        OmniSQL-14B*       & 82.0           & -              & -              & 88.3           & -             & -              & 65.9          & -              & ? \\
+        OmniSQL-32B*       & 80.9           & -              & -              & 89.8           & -             & -              & 67.0          & -              & ? \\
+        OmniSQL-7B-gguf    & \textbf{79.0}  & \textbf{33.0}  & 0.001          & 79.0           & 35.7          & 0.003          & 38.0          & 0.038          & 0.008 \\
+        \midrule
+        \multicolumn{10}{c}{\textbf{Pipelines}} \\
+        \midrule
+        Natural (Baseline) & 77.9           & 30.3           & \textbf{0.000} & 77.0           & 32.5          & \textbf{0.000} & 32.4          & 0.031          & \textbf{0.003} \\
+        Natural (Zeroshot) & 78.7           & 27.1           & 0.002          & 77.5           & 32.7          & 0.004          & 34.0          & 0.033          & 0.041 \\
+        Natural (Syn)      & 76.6           & 30.6           & 0.003          & 79.6           & 38.7          & 0.004          & \textbf{53.8} & \textbf{18.85} & 0.025 \\
+        Natural (Train)    & 76.4           & 30.1           & 0.006          & \textbf{81.4}  & \textbf{43.9} & 0.003          & 48.4          & 13.25          & 0.034 \\
+        Natural (Ground)** & 84.2           & 42.7           & 0.007          & 82.8           & 39.5          & 0.003          & 55.8          & 19.32          & 0.021 \\
+        \bottomrule
+    \end{tabular}
+    \caption{
+        Comprehensive benchmark results across all systems and datasets. EA
+        (Execution Accuracy), EM (Exact Match) and ER (Error Rate) are reported as
+        percentages. Systems marked with * are external benchmarks with unverified
+        results from published papers. Systems marked with ** had access to
+        ground truth data during inference, illustrating the upper bound
+        achievable. Bold values indicate best verified performance, excluding
+        systems with ground truth.
+        \citep{OmniSQL}
+    }
+    \label{tab:eval:overall-results}
+\end{table}
 
 \subsubsection{Spider Results}
 
@@ -226,6 +288,20 @@ Two primary external baselines are taking into account:
 % - Both Spider and Bird results
 % - Note differences in model architecture and hardware
 
+Figure~\ref{fig:eval:sota-landscape} presents the comprehensive SOTA landscape,
+positioning Natural within the current state-of-the-art systems across all
+benchmarks.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/sota-landscape.svg}
+    \caption{SOTA landscape comparison showing Natural's performance relative
+        to state-of-the-art systems (OmniSQL variants and GPT-4 models) across
+        Spider and BIRD benchmarks. Unverified external results are marked with striped
+        patterns.}
+    \label{fig:eval:sota-landscape}
+\end{figure}
+
 \paragraph{Open-Source vs Proprietary Models}
 
 % TODO: Discuss open-source (OmniSQL 7B) vs proprietary (GPT-4) trade-offs
@@ -240,6 +316,123 @@ Two primary external baselines are taking into account:
 % - System architecture differences
 % - Component strategies (how others handle schema subsetting, refinement, etc.)
 % - Integration and deployment characteristics
+
+\subsubsection{Baseline Performance Analysis}
+
+\paragraph{OmniSQL Performance Gap}
+
+A critical aspect of this evaluation is understanding the performance gap
+between our measured OmniSQL 7B (GGUF) baseline and the reported OmniSQL results.
+Figure~\ref{fig:eval:omnisql-difference} shows the difference between our
+measured performance using OmniSQL 7B and the reported values from the OmniSQL
+paper.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
+    \caption{Performance gap between measured OmniSQL-7B-gguf and reported
+        OmniSQL-7B results across benchmarks. Positive values indicate higher
+        reported performance, negative values indicate higher measured performance.}
+    \label{fig:eval:omnisql-difference}
+\end{figure}
+
+\paragraph{Cross-Benchmark Performance Comparison}
+
+Figures~\ref{fig:eval:baseline-gap-spider-dev},
+\ref{fig:eval:baseline-gap-spider-test}, and
+\ref{fig:eval:baseline-gap-bird-dev} present per-benchmark performance
+comparisons between OmniSQL (Quantized) and the OmniSQL (Unquantized) variant series.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/baseline-gap-spider-dev.svg}
+    \caption{Baseline performance gap on Spider (dev): OmniSQL 7B (GGUF) vs OmniSQL 7B/14B/32B variants.}
+    \label{fig:eval:baseline-gap-spider-dev}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/baseline-gap-spider-test.svg}
+    \caption{Baseline performance gap on Spider (test): OmniSQL 7B (GGUF) vs OmniSQL 7B/14B/32B variants.}
+    \label{fig:eval:baseline-gap-spider-test}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/baseline-gap-bird-dev.svg}
+    \caption{Baseline performance gap on BIRD (dev): OmniSQL 7B (GGUF) vs OmniSQL 7B/14B/32B variants.}
+    \label{fig:eval:baseline-gap-bird-dev}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/baseline-gap-combined.svg}
+    \caption{Combined baseline performance gap across all benchmarks showing OmniSQL 7B (GGUF) vs OmniSQL variants.}
+    \label{fig:eval:baseline-gap-combined}
+\end{figure}
+
+\paragraph{Metric-Specific Analysis}
+
+To understand performance characteristics across different evaluation metrics, we analyze execution accuracy (EA), exact match (EM), and error rate (ER) separately across all systems. Figures~\ref{fig:eval:metric-ea}, \ref{fig:eval:metric-em}, and \ref{fig:eval:metric-er} present these metric breakdowns.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/metric-ea-breakdown.svg}
+    \caption{Execution Accuracy (EA) breakdown across OmniSQL 7B (GGUF) and OmniSQL variants for all benchmarks.}
+    \label{fig:eval:metric-ea}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/metric-em-breakdown.svg}
+    \caption{Exact Match (EM) breakdown across OmniSQL 7B (GGUF) and OmniSQL variants for all benchmarks.}
+    \label{fig:eval:metric-em}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/metric-er-breakdown.svg}
+    \caption{Error Rate (ER) breakdown across OmniSQL 7B (GGUF) and OmniSQL variants for all benchmarks. Lower values indicate better performance.}
+    \label{fig:eval:metric-er}
+\end{figure}
+
+\subsubsection{Natural System Performance Evaluation}
+
+\paragraph{Overall Natural Performance}
+
+The Natural system demonstrates varying performance across different configurations and metrics. Figures~\ref{fig:eval:natural-ea}, \ref{fig:eval:natural-em}, and \ref{fig:eval:natural-er} show the complete performance profile of all Natural configurations.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/natural-overall-ea.svg}
+    \caption{Natural system Execution Accuracy across all configurations and benchmarks.}
+    \label{fig:eval:natural-ea}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/natural-overall-em.svg}
+    \caption{Natural system Exact Match scores across all configurations and benchmarks.}
+    \label{fig:eval:natural-em}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/natural-overall-er.svg}
+    \caption{Natural system Error Rates across all configurations and benchmarks. Lower values indicate better performance.}
+    \label{fig:eval:natural-er}
+\end{figure}
+
+\paragraph{Incremental Improvement Analysis}
+
+A key contribution of this work is demonstrating the incremental improvements achieved by Natural's pipeline components over the base model performance. Figure~\ref{fig:eval:incremental-improvement} shows the relative performance gains of each configuration over the OmniSQL 7B (GGUF) baseline.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=\textwidth]{assets/out/incremental-improvement.svg}
+    \caption{Incremental improvement of Natural pipeline configurations over the OmniSQL 7B (GGUF) baseline. Positive values indicate performance gains from pipeline components.}
+    \label{fig:eval:incremental-improvement}
+\end{figure}
 
 \subsection{Performance Characteristics}
 
