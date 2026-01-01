@@ -58,21 +58,21 @@ output = "out/example-source-comparison.svg"
 [[plots]]
 type = "metric-breakdown"
 metric = "execution-accuracy"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Baseline Performance Gap: Spider-dev"
 output = "out/baseline-gap-spider-dev.svg"
 
 [[plots]]
 type = "metric-breakdown"
 metric = "execution-accuracy"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Baseline Performance Gap: Spider-test"
 output = "out/baseline-gap-spider-test.svg"
 
 [[plots]]
 type = "metric-breakdown"
 metric = "execution-accuracy"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Baseline Performance Gap: BIRD-dev"
 output = "out/baseline-gap-bird-dev.svg"
 
@@ -80,7 +80,7 @@ output = "out/baseline-gap-bird-dev.svg"
 [[plots]]
 type = "metric-breakdown"
 metric = "execution-accuracy"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Baseline Performance Gap: All Benchmarks"
 output = "out/baseline-gap-combined.svg"
 
@@ -88,28 +88,28 @@ output = "out/baseline-gap-combined.svg"
 [[plots]]
 type = "metric-breakdown"
 metric = "execution-accuracy"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Execution Accuracy (EA) Across Systems"
 output = "out/metric-ea-breakdown.svg"
 
 [[plots]]
 type = "metric-breakdown"
 metric = "exact-match"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Exact Match (EM) Across Systems"
 output = "out/metric-em-breakdown.svg"
 
 [[plots]]
 type = "metric-breakdown"
 metric = "error-rate"
-pipeline_keys = ["natural-model", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Error Rate (ER) Across Systems"
 output = "out/metric-er-breakdown.svg"
 
 # OmniSQL difference visualization (measured vs reported)
 [[plots]]
 type = "performance-gap"
-system1_key = "natural-model"
+system1_key = "omnisql-7b-gguf"
 system2_key = "omnisql-7b"
 metric = "execution-accuracy"
 title = "OmniSQL Performance Gap: Measured vs Reported"
@@ -124,7 +124,7 @@ show_absolute = false
 type = "metric-breakdown"
 metric = "execution-accuracy"
 pipeline_keys = [
-  "natural-model",
+  "omnisql-7b-gguf",
   "natural-baseline",
   "natural-zeroshot",
   "natural-full-syn",
@@ -138,7 +138,7 @@ output = "out/natural-overall-ea.svg"
 type = "metric-breakdown"
 metric = "exact-match"
 pipeline_keys = [
-  "natural-model",
+  "omnisql-7b-gguf",
   "natural-baseline",
   "natural-zeroshot",
   "natural-full-syn",
@@ -152,7 +152,7 @@ output = "out/natural-overall-em.svg"
 type = "metric-breakdown"
 metric = "error-rate"
 pipeline_keys = [
-  "natural-model",
+  "omnisql-7b-gguf",
   "natural-baseline",
   "natural-zeroshot",
   "natural-full-syn",
@@ -179,7 +179,7 @@ output = "out/sota-landscape.svg"
 
 [[plots]]
 type = "baseline-improvement"
-baseline_key = "natural-model"
+baseline_key = "omnisql-7b-gguf"
 comparison_keys = [
   "natural-baseline",
   "natural-zeroshot",

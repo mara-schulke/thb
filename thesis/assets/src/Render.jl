@@ -37,7 +37,7 @@ scalefontsizes()
 scalefontsizes(1.3)
 
 const PALETTE = reverse(palette(:dense, 12))
-const DIMENSIONS = (800, 500)
+const DIMENSIONS = (1200, 600)
 
 # ============================================================================
 # Include submodules
