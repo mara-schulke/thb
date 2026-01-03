@@ -105,6 +105,7 @@ metric = "error-rate"
 pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
 title = "Error Rate (ER) Across Systems"
 output = "out/metric-er-breakdown.svg"
+scale = 1
 
 # OmniSQL difference visualization (measured vs reported)
 [[plots]]
@@ -161,6 +162,7 @@ pipeline_keys = [
 ]
 title = "Natural System Performance: Error Rate"
 output = "out/natural-overall-er.svg"
+scale = 1
 
 # ============================================================================
 # Story Point 3: SOTA Landscape Overview

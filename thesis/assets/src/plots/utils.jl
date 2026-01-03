@@ -23,6 +23,31 @@ struct PaletteScheme
 end
 
 """
+Compute y-axis bounds with 10% padding on upper bound only.
+Lower bound is always 0.
+Returns a tuple (ymin, ymax) suitable for use with ylims.
+"""
+function yautolims(data)
+    # Flatten if it's a matrix
+    values = vec(data)
+
+    # Filter out any NaN or Inf values
+    values = filter(x -> isfinite(x), values)
+
+    if isempty(values)
+        return (0, 100)  # Default fallback
+    end
+
+    ymax = maximum(values)
+
+    # Calculate padding (10% of max value, only on upper bound)
+    padding = ymax * 0.1
+
+    # Return bounds with 0 as lower bound and padding on upper bound
+    return (0, ymax + padding)
+end
+
+"""
 Get fillstyle for pipelines (striped pattern for unverified).
 Returns a vector of fillstyles corresponding to each pipeline.
 """

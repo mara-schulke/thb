@@ -73,7 +73,7 @@ function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palet
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=8,
+        legendfontsize=10,
         rotation=rotation
     )
 

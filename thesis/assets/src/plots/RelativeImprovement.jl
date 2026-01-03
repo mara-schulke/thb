@@ -59,7 +59,7 @@ function render(plot_config::BaselineImprovementPlot, data::BenchmarkData; plot_
         title=Title(plot_config.title),
         legend=:outertop,
         legend_columns=4,
-        ylims=:auto,
+        ylims=yautolims(improvements),
         size=DIMENSIONS,
         gridalpha=0.3,
         margins=10Plots.mm,
@@ -69,7 +69,7 @@ function render(plot_config::BaselineImprovementPlot, data::BenchmarkData; plot_
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=8,
+        legendfontsize=10,
         rotation=rotation_angle
     )
 

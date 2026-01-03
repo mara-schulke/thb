@@ -76,7 +76,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             legend_columns=3,
             size=DIMENSIONS,
             gridalpha=0.3,
-            ylims=:auto,
+            ylims=yautolims(combined_data),
             margins=10Plots.mm,
             top_margin=5Plots.mm,
             bottom_margin=20Plots.mm,
@@ -84,7 +84,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             titlefontsize=12,
             guidefontsize=10,
             tickfontsize=10,
-            legendfontsize=8,
+            legendfontsize=10,
             rotation=rotation_angle
         )
 

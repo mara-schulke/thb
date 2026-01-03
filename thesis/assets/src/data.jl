@@ -7,13 +7,14 @@ using TOML
 struct Metric
     key::String
     label::String
+    unit::String
 end
 
 function Metric(key::String, data::Dict)
     if !haskey(data, "label")
         error("Metric '$key' missing required 'label' field")
     end
-    Metric(key, String(data["label"]))
+    Metric(key, String(data["label"]), String(get(data, "unit", "")))
 end
 
 struct Benchmark
@@ -128,11 +129,11 @@ function BenchmarkData(file::String)
     BenchmarkData(file, pipelines, results, benchmarks, metrics)
 end
 
-function get_value(bd::BenchmarkData, benchmark::String, pipeline_key::String, metric::String)
+function get_value(bd::BenchmarkData, benchmark::String, pipeline_key::String, metric::String, scale::Number=100)
     if haskey(bd.results, benchmark) &&
        haskey(bd.results[benchmark], pipeline_key) &&
        haskey(bd.results[benchmark][pipeline_key], metric)
-        return bd.results[benchmark][pipeline_key][metric] * 100
+        return bd.results[benchmark][pipeline_key][metric] * scale
     end
     return 0.0
 end

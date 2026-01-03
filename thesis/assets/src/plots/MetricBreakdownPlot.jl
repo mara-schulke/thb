@@ -8,15 +8,17 @@ struct MetricBreakdownPlot
     title::Union{String, Nothing}
     output::String
     include_all_pipelines::Bool
+    scale::Number
 end
 
 function MetricBreakdownPlot(;
-                              metric="execution-accuracy",
-                              pipeline_keys=String[],
-                              title=nothing,
-                              output="metric-breakdown.svg",
-                              include_all_pipelines=false)
-    MetricBreakdownPlot(metric, pipeline_keys, title, output, include_all_pipelines)
+    metric="execution-accuracy",
+    pipeline_keys=String[],
+    title=nothing,
+    output="metric-breakdown.svg",
+    include_all_pipelines=false,
+    scale=100)
+    MetricBreakdownPlot(metric, pipeline_keys, title, output, include_all_pipelines, scale)
 end
 
 function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font, palette)
@@ -41,14 +43,18 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
 
     for (i, benchmark) in enumerate(benchmark_keys)
         for (j, pipeline) in enumerate(pipelines)
-            values[j, i] = get_value(data, benchmark, pipeline.key, plot_config.metric)
+            values[j, i] = get_value(data, benchmark, pipeline.key, plot_config.metric, plot_config.scale)
         end
     end
 
-    # Get metric label
+    # Get metric label and unit
     metric_label = haskey(data.metrics, plot_config.metric) ?
                    data.metrics[plot_config.metric].label :
                    plot_config.metric
+
+    metric_unit = haskey(data.metrics, plot_config.metric) ?
+                  data.metrics[plot_config.metric].unit :
+                  "%"
 
     # Generate title
     title = plot_config.title === nothing ?
@@ -67,13 +73,13 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
         fillstyle=permutedims(fillstyles),
         color_palette=readable(pipelines, palette),
         xlabel=Label("Benchmark"),
-        ylabel=Label("$metric_label (%)"),
+        ylabel=Label("$metric_label ($metric_unit)"),
         title=Title(title),
         legend=:outertop,
         legend_columns=4,
         size=DIMENSIONS,
         gridalpha=0.3,
-        ylims=(0, 100),
+        ylims=yautolims(values),
         margins=10Plots.mm,
         top_margin=5Plots.mm,
         bottom_margin=20Plots.mm,
@@ -81,7 +87,7 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=8,
+        legendfontsize=10,
         rotation=rotation_angle
     )
 

@@ -80,7 +80,8 @@ function plottable(config::Dict, data::BenchmarkData)
             pipeline_keys=get(config, "pipeline_keys", String[]),
             title=get(config, "title", nothing),
             output=config["output"],
-            include_all_pipelines=get(config, "include_all_pipelines", false)
+            include_all_pipelines=get(config, "include_all_pipelines", false),
+            scale=get(config, "scale", 100)
         )
     else
         error("Unknown plot type: $plot_type")

@@ -24,12 +24,12 @@ spider-test = { label = "Spider (test)" }
 bird-dev = { label = "BIRD (dev)" }
 
 [results.spider-dev]
-natural-baseline = { execution-accuracy = 0.7756, exact-match = 0.303, error-rate = 0.0 }
-natural-zeroshot = { execution-accuracy = 0.7878, exact-match = 0.271, error-rate = 0.002 }
-natural-full-train = { execution-accuracy = 0.7648, exact-match = 0.306, error-rate = 0.003 }
-natural-full-syn = { execution-accuracy = 0.7651, exact-match = 0.301, error-rate = 0.006 }
-natural-full-ground = { execution-accuracy = 0.8427, exact-match = 0.427, error-rate = 0.007 }
-omnisql-7b-gguf = { execution-accuracy = 0.7900, exact-match = 0.330, error-rate = 0.001 }
+natural-baseline = { execution-accuracy = 0.7750, exact-match = 0.303, error-rate = 0.0, candidate-latency = 7.3 }
+natural-zeroshot = { execution-accuracy = 0.7870, exact-match = 0.271, error-rate = 0.002, candidate-latency = 14.0 }
+natural-full-train = { execution-accuracy = 0.8040, exact-match = 0.422, error-rate = 0.003, candidate-latency = 16.2 }
+natural-full-syn = { execution-accuracy = 0.8100, exact-match = 0.410, error-rate = 0.006, candidate-latency = 16.3 }
+natural-full-ground = { execution-accuracy = 0.8420, exact-match = 0.427, error-rate = 0.007, candidate-latency = 16.1 }
+omnisql-7b-gguf = { execution-accuracy = 0.7900, exact-match = 0.330, error-rate = 0.001, candidate-latency = 6.6 }
 omnisql-7b = { execution-accuracy = 0.8160 }
 omnisql-14b = { execution-accuracy = 0.8200 }
 omnisql-32b = { execution-accuracy = 0.8090 }
@@ -38,12 +38,12 @@ gpt-4-turbo = { execution-accuracy = 0.7220 }
 gpt-4o = { execution-accuracy = 0.7070 }
 
 [results.spider-test]
-natural-baseline = { execution-accuracy = 0.7708, exact-match = 0.325, error-rate = 0.0 }
-natural-zeroshot = { execution-accuracy = 0.7850, exact-match = 0.329, error-rate = 0.004 }
-natural-full-train = { execution-accuracy = 0.8140, exact-match = 0.439, error-rate = 0.004 }
-natural-full-syn = { execution-accuracy = 0.8010, exact-match = 0.387, error-rate = 0.003 }
-natural-full-ground = { execution-accuracy = 0.8287, exact-match = 0.395, error-rate = 0.003 }
-omnisql-7b-gguf = { execution-accuracy = 0.7900, exact-match = 0.357, error-rate = 0.003 }
+natural-baseline = { execution-accuracy = 0.7708, exact-match = 0.325, error-rate = 0.0, candidate-latency = 7.3 }
+natural-zeroshot = { execution-accuracy = 0.7850, exact-match = 0.329, error-rate = 0.004, candidate-latency = 15.3 }
+natural-full-train = { execution-accuracy = 0.8140, exact-match = 0.439, error-rate = 0.004, candidate-latency = 15.4 }
+natural-full-syn = { execution-accuracy = 0.8010, exact-match = 0.387, error-rate = 0.003, candidate-latency = 15.8 }
+natural-full-ground = { execution-accuracy = 0.8287, exact-match = 0.395, error-rate = 0.003, candidate-latency = 16.0 }
+omnisql-7b-gguf = { execution-accuracy = 0.7900, exact-match = 0.357, error-rate = 0.003, candidate-latency = 6.7 }
 omnisql-7b = { execution-accuracy = 0.8980 }
 omnisql-14b = { execution-accuracy = 0.8830 }
 omnisql-32b = { execution-accuracy = 0.8980 }
@@ -52,12 +52,12 @@ gpt-4-turbo = { execution-accuracy = 0.8420 }
 gpt-4o = { execution-accuracy = 0.8490 }
 
 [results.bird-dev]
-natural-baseline = { execution-accuracy = 0.3696, exact-match = 0.0031, error-rate = 0.003 }
-natural-zeroshot = { execution-accuracy = 0.3716, exact-match = 0.0033, error-rate = 0.041 }
-natural-full-train = { execution-accuracy = 0.5091, exact-match = 0.1325, error-rate = 0.025 }
-natural-full-syn = { execution-accuracy = 0.5388, exact-match = 0.1885, error-rate = 0.034 }
-natural-full-ground = { execution-accuracy = 0.5717, exact-match = 0.1932, error-rate = 0.021 }
-omnisql-7b-gguf = { execution-accuracy = 0.3801, exact-match = 0.0038, error-rate = 0.008 }
+natural-baseline = { execution-accuracy = 0.3696, exact-match = 0.0031, error-rate = 0.003, candidate-latency = 9.3 }
+natural-zeroshot = { execution-accuracy = 0.3716, exact-match = 0.0033, error-rate = 0.041, candidate-latency = 18.7 }
+natural-full-train = { execution-accuracy = 0.5091, exact-match = 0.1325, error-rate = 0.025, candidate-latency = 33.7 }
+natural-full-syn = { execution-accuracy = 0.5388, exact-match = 0.1885, error-rate = 0.034, candidate-latency = 43.7 }
+natural-full-ground = { execution-accuracy = 0.5717, exact-match = 0.1932, error-rate = 0.021, candidate-latency = 43.8 }
+omnisql-7b-gguf = { execution-accuracy = 0.3801, exact-match = 0.0038, error-rate = 0.008, candidate-latency = 8.2 }
 omnisql-7b = { execution-accuracy = 0.6610 }
 omnisql-14b = { execution-accuracy = 0.6590 }
 omnisql-32b = { execution-accuracy = 0.6700 }

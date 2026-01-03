@@ -71,7 +71,7 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
         titlefontsize=12,
         guidefontsize=10,
         tickfontsize=10,
-        legendfontsize=8,
+        legendfontsize=10,
         rotation=rotation_angle
     )
 
