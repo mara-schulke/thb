@@ -197,7 +197,7 @@ This section is presenting the measured performance across all \textsc{Natural}
 configurations and benchmark datasets. Internal ablations are compared
 (Baseline, Zero-Shot, as well as different vector DBs) against external prior
 art (GPT-4, \OmniSQL). Subsequently performance characteristics and improvement
-trends are quantitatively and qalitatively analzed.
+trends are quantitatively and qalitatively analyzed.
 
 \subsubsection{Overview}
 
@@ -262,6 +262,9 @@ The $\delta$ in performance between the local measurement and the official
 values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
 28.1\% on \Bird~(dev).
 
+% FIGURE
+% figure of performance diff between omnisql
+
 Several factors may contribute to this stark gap between the two systems.
 First, model quantization will come at a non-negligible cost and different
 quantization variants come with different performance characteristics. The
@@ -276,6 +279,9 @@ unforseen ways. Unless the exact same inference environment, quantization and
 hyperparameters the performance difference might be caused by a multitude of
 subtle differences. Finally, dataset version differences or preprocessing
 variations could contribute to divergent results.
+
+% FIGURE
+% figure of performance landscape with baselines
 
 The \textit{Baseline} configuration of \Natural~further showed degredation of
 performance compared to the OmniSQL-7B-gguf system configuration. Using the
@@ -307,11 +313,30 @@ the \CL of \textit{Zero-Shot} increases by 6.7s on dev and 8.0s on test over
 \texit{Baseline}, doubling the system latency without a significant improvement
 in system performance.
 
+% FIGURE
+% candidate latency figure on spider dev and test
+
 Intruducing the vector databases to the system configurations demonstrates
 substantial improvement in performance characteristics. The two configurations
 without ground truth examples showed a significant improvement in both \EA~and
 \EM: \textit{Syn} outperformed all other system variants and baselines with a
 accuracy improvement of 3.1\% over \textit{Baseline} and 2.0\% over
 OmniSQL-7B-gguf on \Spider~(dev). On \Spider~(test) the \textit{Train}
-configuration outperformed \textit{Syn} on
+configuration outperformed \textit{Syn} by 1.8\% in \EA. For \EM~both system
+configurations show a steep improvement over the three baselines with largest
+\EM~deltas being observed between \textit{Zero-Shot} and \textit{Train} with
++15.1\% on \Spider~(dev) and between \textit{Baseline} and \textit{Train} with
++21.4\% on \Spider~(test). These double digit improvements in accuracy point
+towards the conclusion that in-context learning is an effective mechanism for
+further improving the performance of already fine-tuned models. The performance
+of the \textit{Ground} configuration shows the theoretical upper limits in
+\EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
+on \Spider~(dev) and 82.8\% on \Spider~(train).
 
+% FIGURE
+% error rate figure
+
+Error rates remain consistently low across all configurations (<0.7 failures
+per hundred queries), indicating that failures are predominantly semantic
+(incorrect results) rather than syntactic (malformed SQL), which validates the
+robustness of \textsc{OmniSQL}'s SQL generation capabilities.
