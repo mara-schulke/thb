@@ -1,16 +1,23 @@
+\newcommand{\EA}{$\mathbb{EA}$}
+\newcommand{\EM}{$\mathbb{EM}$}
+\newcommand{\ER}{$\mathbb{ER}$}
+\newcommand{\CL}{$\mathbb{CL}$}
+\newcommand{\Natural}{\textsc{Natural}}
+\newcommand{\OmniSQL}{\textsc{OmniSql}}
+\newcommand{\Spider}{\textsc{Spider}}
+\newcommand{\Bird}{\textsc{Bird}}
+
 \section{Evaluation}
 
-The evaluation phase of \textsc{Natural} builds upon the benchmarking
+The evaluation phase of \Natural builds upon the benchmarking
 infrastructure outlined in section~\ref{impl:benchmark}. This section is
-evaluating benchmarking data gathered while running \textsc{Natural} in
+evaluating benchmarking data gathered while running \Natural in
 different configurations on two prevalent benchmarking datasets:
-\textsc{Spider} and \textsc{Bird}. A representative baseline is introduced,
+\Spider and \Bird. A representative baseline is introduced,
 aiming to mirror the base-model performance. Subsequently an ablation study is
 performed to understand the performance impact of individual pipeline components.
 
 \subsection{Experimental Methodology}
-
-% TODO: Introduction paragraph explaining the systematic evaluation approach
 
 \subsubsection{Test Environment}
 
@@ -31,13 +38,13 @@ of 6900 MB/s.
 The software stack running on the system used for benchmarking is NixOS (25.05)
 with a recent linux kernel version (6.17.7). CUDA 13.0 is being used for
 inference on GPUs and a rust compiler version is 1.91 for compiling
-\textsc{Natural}. The models used during benchmarking are \textsc{OmniSQL 7B
+\Natural. The models used during benchmarking are \textsc{OmniSql 7B
 Q8\_0} and \textsc{Qwen3 Embedding 8B Q4\_K\_M} for generation and embedding
 respectively.
 
 \subsubsection{Benchmark Datasets}
 
-The benchmarking datasets used are the \textsc{Spider} and \textsc{Bird}
+The benchmarking datasets used are the \Spider and \Bird
 testdatasets that are prevalently used for evaluation of NL2SQL systems.
 Comparable research has frequently published performance metrics
 (\textsc{Execution Accuracy} and \textsc{Exact Match}) on these benchmarks
@@ -48,27 +55,26 @@ which makes the performance of \textsc{Natural} comparable to other works.
 \textsc{Spider} is likely the most prevalently used benchmark for NL2SQL
 systems in contemporary research. The test dataset is comprised of 10,181
 questions and 5693 corresponding SQL queries spread across 200 databases
-spanning 138 domains. Questions in \textsc{Spider} are categorized by
-difficulty (easy, medium, hard, extra hard). Evaluations on \textsc{Spider}
+spanning 138 domains. Questions in \Spider are categorized by
+difficulty (easy, medium, hard, extra hard). Evaluations on \Spider
 refer to the test dataset.
 
 \paragraph{Bird}
 
-\textsc{Bird} is another widely used benchmark that is comprised of 12,751
+\Bird is another widely used benchmark that is comprised of 12,751
 question answer pairs spread across 95 databases in 37 domains. It aims to be
 more representative of real world scenarios with external knowledge
-requirements and is generally considered harder than \textsc{Spider}.
+requirements and is generally considered harder than \Spider.
 
 \subsubsection{Evaluation Metrics}
 
 The chosen set of evaluation metrics used is a mixture of semantic metrics
-($\mathbb{EA}$, $\mathbb{EM}$) and functional metrics ($\mathbb{ER}$,
-$\mathbb{CL}$) to gather a hollistic picture of system behavior and real world
-applicablility.
+(\EA, \EM) and functional metrics (\ER, \CL) to gather a hollistic picture of
+system behavior and real world applicablility.
 
-\paragraph{Execution Accuracy ($\mathbb{EA}$)}
+\paragraph{Execution Accuracy (\EA)}
 
-\textsc{Execution Accuracy} (or $\mathbb{EA}$) is the primary success metric of
+Execution Accuracy (or \EA) is the primary success metric of
 NL2SQL systems as it represents the semantic accuracy of the SQL queries
 produced NL2SQL systems. Execution accuracy is computed by determining whether
 the rows in the candidate results are a permutation of the rows returned by
@@ -93,32 +99,31 @@ row of $R_g$, $\equiv_{\text{multiset}}$ denotes multiset equality (allowing
 row reordering) and $ordered(q_g)$ is determining if the ground truth query
 $q_g$ contains an \texttt{ORDER BY} clause.
 
-In order to compute the $\mathbb{EA}$ on \textsc{Spider} and \textsc{Bird}
-the official evaluation suite is used respectively to ensure comparability
-across externally reported measurements and locally observed measurements.
+In order to compute the \EA on \Spider and \Bird the official evaluation suite
+is used respectively to ensure comparability across externally reported
+measurements and locally observed measurements.
 
-\paragraph{Exact Match ($\mathbb{EM}$)}
+\paragraph{Exact Match (\EM)}
 
-\textsc{Exact Match} (or $\mathbb{EM}$) measures the syntactic equivalence
-between candidate and ground truth SQL queries after normalization (ie,
-whitespace trimming, casing adjustments etc). Unlike execution accuracy which
-validates semantic correctness through result comparison, exact
-match determines whether the generated query structurally matches the reference
-query. $\mathbb{EM}$ acts as a lower bound for execution accuracy as queries
-must be identical which is therefore more restrictive as semantically
-equivalent queries with different syntax (ie, using a different join order) are
-marked as incorrect.
+Exact Match (or \EM) measures the syntactic equivalence between
+candidate and ground truth SQL queries after normalization (ie, whitespace
+trimming, casing adjustments etc). Unlike execution accuracy which validates
+semantic correctness through result comparison, exact match determines whether
+the generated query structurally matches the reference query. \EM acts as a
+lower bound for execution accuracy as queries must be identical which is
+therefore more restrictive as semantically equivalent queries with different
+syntax (ie, using a different join order) are marked as incorrect.
 
-\paragraph{Error Rate ($\mathbb{ER}$)}
+\paragraph{Error Rate (\ER)}
 
-\textsc{Error Rate} (or $\mathbb{ER}$) describes the system reliability by
-measuring the frequency of SQL generation failures that prevent query execution.
-$\mathbb{ER}$ is reported in failures per hundred queries and monitors system
-reliability (schema violations, syntax errors, out-of-memory errors etc).
+Error Rate (or \ER) describes the system reliability by measuring the
+frequency of SQL generation failures that prevent query execution. \ER is
+reported in failures per hundred queries and monitors system reliability
+(schema violations, syntax errors, out-of-memory errors etc).
 
-\paragraph{Candidate Latency ($\mathbb{CL}$)}
+\paragraph{Candidate Latency (\CL)}
 
-\textsc{Candidate Latency} (or $\mathbb{CL}$) measures the end-to-end execution
+Candidate Latency (or \CL) measures the end-to-end execution
 time of a system from natural language input to SQL candidate output, reported
 in seconds. This metric captures the compound runtime of all pipeline
 components ($\sigma, \phi, \pi, \rho, \nu$) and reflects real-world system
@@ -129,7 +134,7 @@ computational cost.
 \subsubsection{Baselines}
 
 To adequately determine the performance impact of methods and components
-applied in \textsc{Natural} a baseline helps to measure relative performance
+applied in \Natural a baseline helps to measure relative performance
 gains or losses compared to existing systems. Therefore two sets of baseline
 systems are introduced: Internal baselines (measuring the system without
 crucial components) and external baselines (eg, proprietary system
@@ -140,21 +145,21 @@ performance and raw model performance).
 Introducing two internal baselines subsequently allows for a brief ablation
 study, where the impact of different pipeline configurations and different
 sampling datasets can be measured to isolate the contribution of each
-configuration. The \textit{Baseline} configuration of \textsc{Natural} is using
+configuration. The \textit{Baseline} configuration of \Natural is using
 only the inference logic ($\pi$) without all other pipeline components,
 representing the performance contribution of \textsc{OmniSQL} as closely as
-possible. Additonally the \textit{Zero-Shot} configuration of \textsc{Natural}
-is introduced and measures the performance of \textsc{Natural} with all
+possible. Additonally the \textit{Zero-Shot} configuration of \Natural
+is introduced and measures the performance of \Natural with all
 pipeline components activated but without any examples available to use during
 in-context learning.
 
 \paragraph{External Baselines}
 
-Using published results from other systems, \textsc{Natural} can be briefly
+Using published results from other systems, \Natural can be briefly
 compared against existing systems with similar capabilities highlighting
 relative performance improvements or losses. Notably external baselines largely
-rely on unverified data from other papers. Given that \textsc{Natural} is
-largely based on \textsc{OmniSQL}, GPT-4 and \textsc{OmniSQL} are the primary
+rely on unverified data from other papers. Given that \Natural is
+largely based on \OmniSQL, GPT-4 and \OmniSQL are the primary
 external systems are taken into account as baselines.
 
 \subsubsection{Vector Databases}
@@ -191,7 +196,7 @@ to past conversations.
 This section is presenting the measured performance across all \textsc{Natural}
 configurations and benchmark datasets. Internal ablations are compared
 (Baseline, Zero-Shot, as well as different vector DBs) against external prior
-art (GPT-4, OmniSQL). Subsequently performance characteristics and improvement
+art (GPT-4, \OmniSQL). Subsequently performance characteristics and improvement
 trends are quantitatively and qalitatively analzed.
 
 \subsubsection{Overview}
@@ -209,202 +214,104 @@ error rate ($\mathbb{ER}$) and candidate latency
     \hspace*{-2.5mm}
     \begin{tabular}{l|c|c|c|c|c|c|c|c|c|c|c|c}
         \toprule
-        \textbf{System}     & \multicolumn{4}{c|}{\textbf{Spider (dev)}}                       & \multicolumn{4}{c|}{\textbf{Spider (test)}}                     & \multicolumn{4}{c}{\textbf{BIRD (dev)}}                          \\
+        \textbf{System}     & \multicolumn{4}{c|}{\textbf{Spider (dev)}}                       & \multicolumn{4}{c|}{\textbf{Spider (test)}}                       & \multicolumn{4}{c}{\textbf{BIRD (dev)}}                            \\
         \midrule                                                                                                                                                 
-                            & $\mathbb{EA}$  & $\mathbb{EM}$  & $\mathbb{ER}$ & $\mathbb{CL}$ & $\mathbb{EA}$ & $\mathbb{EM}$  & $\mathbb{ER}$    & $\mathbb{CL}$  & $\mathbb{EA}$ & $\mathbb{EM}$    & $\mathbb{ER}$  & $\mathbb{CL}$ \\
+                            & \EA             & \EM            & \ER           & \CL           & \EA             & \EM          & \ER              & \CL            & \EA           & \EM              & \ER            & \CL           \\
         \midrule
         \multicolumn{13}{c}{\textbf{Closed-Source LLMs}} \\                                                                                                                                                                          
         \midrule                                                                                                                                                                                                                     
-        GPT-4o-mini*        & 71.0           & -              & -             & -             & 83.7           & -             & -                & -              & 61.5          & -                & ?              & -             \\
-        GPT-4-Turbo*        & 72.2           & -              & -             & -             & 84.2           & -             & -                & -              & 63.6          & -                & ?              & -             \\
-        GPT-4o*             & 70.7           & -              & -             & -             & 84.9           & -             & -                & -              & 64.0          & -                & ?              & -             \\
+        GPT-4o-mini*        & 71.0            & -              & -             & -             & 83.7           & -             & -                & -              & 61.5          & -                & ?              & -             \\
+        GPT-4-Turbo*        & 72.2            & -              & -             & -             & 84.2           & -             & -                & -              & 63.6          & -                & ?              & -             \\
+        GPT-4o*             & 70.7            & -              & -             & -             & 84.9           & -             & -                & -              & 64.0          & -                & ?              & -             \\
         \midrule
         \multicolumn{13}{c}{\textbf{Open-Source LLMs}} \\                                                                                                                                                                            
         \midrule
-        OmniSQL-7B*         & 81.6           & -              & -             & -             & 89.8           & -             & -                & -              & 66.1          & -                & ?              & -             \\
-        OmniSQL-14B*        & 82.0           & -              & -             & -             & 88.3           & -             & -                & -              & 65.9          & -                & ?              & -             \\
-        OmniSQL-32B*        & 80.9           & -              & -             & -             & 89.8           & -             & -                & -              & 67.0          & -                & ?              & -             \\
-        OmniSQL-7B-gguf     & 79.0           & 33.0           & 0.1           & \textbf{6.6s} & 79.0           & 35.7          & 0.3              & \textbf{6.7s}  & 38.0          & 0.03             & 0.8            & \textbf{8.2s} \\
+        OmniSQL-7B*         & 81.6            & -              & -             & -             & 89.8           & -             & -                & -              & 66.1          & -                & ?              & -             \\
+        OmniSQL-14B*        & 82.0            & -              & -             & -             & 88.3           & -             & -                & -              & 65.9          & -                & ?              & -             \\
+        OmniSQL-32B*        & 80.9            & -              & -             & -             & 89.8           & -             & -                & -              & 67.0          & -                & ?              & -             \\
+        OmniSQL-7B-gguf     & 79.0            & 33.0           & 0.1           & \textbf{6.6s} & 79.0           & 35.7          & 0.3              & \textbf{6.7s}  & 38.0          & 0.03             & 0.8            & \textbf{8.2s} \\
         \midrule
         \multicolumn{13}{c}{\textbf{Pipelines}} \\                                                                                                                                                                          
         \midrule
-        Natural (Baseline)  & 77.9           & 30.3           & \textbf{0.0}  & 7.3s          & 77.0           & 32.5          & \textbf{0.0}     & 7.3s           & 32.4          & 0.03             & \textbf{0.3}   & 9.3s          \\
-        Natural (Zero-Shot) & 78.7           & 27.1           & 0.2           & 14.0s         & 77.5           & 32.7          & 0.4              & 15.3s          & 34.0          & 0.03             & 0.4            & 18.7s         \\
-        Natural (Syn)       & \textbf{81.0}  & 41.2           & 0.3           & 16.3s         & 79.6           & 38.7          & 0.4              & 15.4s          & \textbf{53.8} & \textbf{18.8}    & 0.2            & 43.7s         \\
-        Natural (Train)     & 80.4           & \textbf{42.2}  & 0.6           & 16.2s         & \textbf{81.4}  & \textbf{43.9} & 0.3              & 15.8s          & 48.4          & 13.2             & 0.3            & 33.7s         \\
-        Natural (Ground)**  & 84.2           & 42.7           & 0.7           & 16.1s         & 82.8           & 39.5          & 0.3              & 16.0s          & 55.8          & 19.3             & 0.2            & 43.8s         \\
+        \Natural~(Baseline)  & 77.9           & 30.3           & \textbf{0.0}  & 7.3s          & 77.0           & 32.5          & \textbf{0.0}     & 7.3s           & 32.4          & 0.03             & \textbf{0.3}   & 9.3s          \\
+        \Natural~(Zero-Shot) & 78.7           & 27.1           & 0.2           & 14.0s         & 77.5           & 32.7          & 0.4              & 15.3s          & 34.0          & 0.03             & 0.4            & 18.7s         \\
+        \Natural~(Syn)       & \textbf{81.0}  & 41.2           & 0.3           & 16.3s         & 79.6           & 38.7          & 0.4              & 15.4s          & \textbf{53.8} & \textbf{18.8}    & 0.2            & 43.7s         \\
+        \Natural~(Train)     & 80.4           & \textbf{42.2}  & 0.6           & 16.2s         & \textbf{81.4}  & \textbf{43.9} & 0.3              & 15.8s          & 48.4          & 13.2             & 0.3            & 33.7s         \\
+        \Natural~(Ground)**  & 84.2           & 42.7           & 0.7           & 16.1s         & 82.8           & 39.5          & 0.3              & 16.0s          & 55.8          & 19.3             & 0.2            & 43.8s         \\
         \bottomrule
     \end{tabular}
     \caption{
-        Comprehensive benchmark results across all systems and datasets. $\mathbb{EA}$
-        (Execution Accuracy) and $\mathbb{EM}$ (Exact Match) are reported as
-        percentages. $\mathbb{ER}$ (Error Rate) is reported in failures per
-        hundred queries and $\mathbb{CL}$ (Candidate Latency) is reported in
-        seconds. Systems marked with * are external benchmarks with unverified
-        results from published papers. Systems marked with ** had access to
-        ground truth data during inference, illustrating the upper bound
-        achievable. Bold values indicate best verified performance, excluding
-        systems with access to ground truth.
-        \citep{OmniSQL}
+        Comprehensive benchmark results across all systems and datasets.
+        \EA~and \EM~are reported as percentages. \ER~is reported in failures
+        per hundred queries and \CL~is reported in seconds. Systems marked with
+        * are external benchmarks with unverified results from published
+        papers. Systems marked with ** had access to ground truth data during
+        inference, illustrating the upper bound achievable. Bold values
+        indicate best verified performance, excluding systems with access to
+        ground truth. \citep{OmniSQL}
     }
     \label{tab:eval:overall-results}
 \end{table}
 
-%\subsubsection{Spider Results}
-
-%\paragraph{Overall Performance}
-
-%% TODO: Present overall EA and EM scores
-%% - Table: Overall Spider dev set results
-%% - Comparison to baseline
-%% - Comparison to SOTA from literature
-
-%\paragraph{Performance by Difficulty Level}
-
-%% TODO: Break down results by Spider difficulty classification
-%% - Table: EA/EM by Easy/Medium/Hard/Extra Hard
-%% - Analysis of performance degradation with difficulty
-%% - Discussion of which difficulty levels benefit most from system components
-
-%\paragraph{Performance by Database}
-
-%% TODO: Present per-database analysis
-%% - Identify databases where system excels
-%% - Identify databases where system struggles
-%% - Analyze characteristics that correlate with performance
-
-%\paragraph{Performance by SQL Complexity}
-
-%% TODO: Analyze results by SQL pattern complexity
-%% - Simple SELECT queries
-%% - JOIN operations
-%% - Nested subqueries
-%% - Aggregations and GROUP BY
-%% - Set operations (UNION, INTERSECT, EXCEPT)
-%% - Complex predicates
-
-%\paragraph{Learning Curve Analysis}
-
-%% TODO: Analyze impact of training example quantity
-%% - How does performance change with k-shot examples?
-%% - Diminishing returns analysis
-% - Optimal k value determination
-
-%\subsubsection{Bird Results}
-
-%\paragraph{Overall Performance}
-
-%% TODO: Present overall Bird results
-%% - Table: Overall Bird dev set results
-%% - Comparison to baseline
-%% - Comparison to SOTA from literature (GPT-4: 54.89%, human: 92.96%)
-
-%\paragraph{Domain-Specific Performance}
-
-%% TODO: Break down by Bird's 37 domains
-%% - Best-performing domains
-%% - Worst-performing domains
-%% - Domain characteristics that impact performance
-
-%\paragraph{Dirty Data Handling}
-
-%% TODO: Analyze performance on Bird's dirty data cases
-%% - How does system handle real-world data quality issues?
-%% - Error patterns related to data quality
-%% - Comparison to clean data performance
-
-%\paragraph{External Knowledge Requirements}
-
-%% TODO: Analyze cases requiring external knowledge
-%% - Identify queries needing domain knowledge
-%% - System performance on these cases
-%% - Limitations of pure schema-based approaches
-
-%\subsubsection{Comparison with State-of-the-Art}
-
-%\paragraph{Quantitative Comparison}
-
-%Figure~\ref{fig:eval:sota-landscape} presents the comprehensive SOTA landscape,
-%positioning Natural within the current state-of-the-art systems across all
-%benchmarks.
-
-%\begin{figure}[h]
-    %\centering
-    %\includesvg[width=\textwidth]{assets/out/sota-landscape.svg}
-    %\caption{SOTA landscape comparison showing Natural's performance relative
-        %to state-of-the-art systems (OmniSQL variants and GPT-4 models) across
-        %Spider and BIRD benchmarks. Unverified external results are marked with striped
-        %patterns.}
-    %\label{fig:eval:sota-landscape}
-%\end{figure}
-
-%\paragraph{Open-Source vs Proprietary Models}
-
-%% TODO: Discuss open-source (OmniSQL 7B) vs proprietary (GPT-4) trade-offs
-%% - Performance gap analysis
-%% - Cost and accessibility advantages
-%% - Privacy and control benefits
-%% - Deployment feasibility differences
-
-%\paragraph{Qualitative Comparison}
-
-%% TODO: Beyond metrics, discuss systemic differences
-%% - System architecture differences
-%% - Component strategies (how others handle schema subsetting, refinement, etc.)
-%% - Integration and deployment characteristics
-
 \subsubsection{Baseline Performance Analysis}
 
-\paragraph{OmniSQL Performance Gap}
+One notable insight during benchmarking was the apparent gap between the
+and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
+quantization) and the reported accuracy metrics results from \cite{OmniSQL}.
+The $\delta$ in performance between the local measurement and the official
+values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
+28.1\% on \Bird~(dev).
 
-A critical aspect of this evaluation is understanding the performance gap
-between our measured OmniSQL 7B (GGUF) baseline and the reported OmniSQL results.
-Figure~\ref{fig:eval:omnisql-difference} shows the difference between our
-measured performance using OmniSQL 7B and the reported values from the OmniSQL
-paper.
+Several factors may contribute to this stark gap between the two systems.
+First, model quantization will come at a non-negligible cost and different
+quantization variants come with different performance characteristics. The
+OmniSQL-7B-gguf system uses the F16 weights but transformed into the gguf
+model format while published results presumably use full-precision models in
+the safetensor formats. Prior research has shown that bit-wise quantization
+can degrade model accuracy, particularly on complex reasoning tasks on
+multi-billion paramater models \citep{Int8AtScale}. Second, the exact
+hyperparameters used during evaluation likely differed between
+\cite{OmniSQL} and local benchmarks which may influence the model accuracy in
+unforseen ways. Unless the exact same inference environment, quantization and
+hyperparameters the performance difference might be caused by a multitude of
+subtle differences. Finally, dataset version differences or preprocessing
+variations could contribute to divergent results.
 
-%\begin{figure}[h]
-    %\centering
-    %\includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
-    %\caption{Performance gap between measured OmniSQL-7B-gguf and reported
-        %OmniSQL-7B results across benchmarks. Positive values indicate higher
-        %reported performance, negative values indicate higher measured performance.}
-    %\label{fig:eval:omnisql-difference}
-%\end{figure}
+The \textit{Baseline} configuration of \Natural~further showed degredation of
+performance compared to the OmniSQL-7B-gguf system configuration. Using the
+\textit{Baseline} configuration, \Natural~only uses the inference logic and
+prompt template for ICL ($\pi$) without other pipeline components, achieving
+77.9\% \EA~on \Spider~(dev), 77.0\% on \Spider~(test), and 32.4\% on \Bird
+(dev). These results further fall below the published \textsc{OmniSQL-7B}
+performance of 81.6\%, 89.8\%, and 66.1\% respectively, representing gaps of
+3.7, 12.8, and 33.7 percentage points. This continued degredation of
+performance indicates that a misaligned prompt template (ie, divergent from
+training phase) harms performance if not paired with counter measures such as
+ICL, self-correction or majority voting. These performance numbers mark the
+\textit{Baseline} configuration the worst performing variant of \Natural~on
+\EA~and \EM~across \Spider~(dev and test) and \Bird~(dev).
 
-\paragraph{Cross-Benchmark Performance Comparison}
+\subsubsection{Spider Results}
 
-Figures~\ref{fig:eval:baseline-gap-spider-dev},
-\ref{fig:eval:baseline-gap-spider-test}, and
-\ref{fig:eval:baseline-gap-bird-dev} present per-benchmark performance
-comparisons between OmniSQL (Quantized) and the OmniSQL (Unquantized) variant series.
+The results of the \Spider~benchmarks demonstrate consistent performance
+characteristics of \Natural~and \OmniSQL~across the development and test splits.
+The OmniSQL-7B-gguf system outperforms the two \Natural~baseline configurations
+\textit{Baseline} and \textit{Zero-Shot} in \EA~and \EM by 2.1\% and 0.3\% on
+the development split and by 2.0\% and 1.5\% on the test split respectively.
 
-\subsection{Qualitative Analysis}
+The full pipeline with the \textit{Zero-Shot} configuration (all components
+active but no examples) hence only yields marginal improvements (+0.8pp on dev,
++0.5pp on test) over \textit{Baseline}, suggesting that schema subsetting and
+query refinement contribute minimally without example-based guidance. Notably
+the \CL of \textit{Zero-Shot} increases by 6.7s on dev and 8.0s on test over
+\texit{Baseline}, doubling the system latency without a significant improvement
+in system performance.
 
-% TODO: Introduction paragraph explaining value of qualitative evaluation beyond metrics
+Intruducing the vector databases to the system configurations demonstrates
+substantial improvement in performance characteristics. The two configurations
+without ground truth examples showed a significant improvement in both \EA~and
+\EM: \textit{Syn} outperformed all other system variants and baselines with a
+accuracy improvement of 3.1\% over \textit{Baseline} and 2.0\% over
+OmniSQL-7B-gguf on \Spider~(dev). On \Spider~(test) the \textit{Train}
+configuration outperformed \textit{Syn} on
 
-\subsubsection{Case Studies}
-
-\paragraph{Success Cases}
-% TODO: Present 3-5 exemplar success cases
-% - Full trace: NL query → schema → examples → generated SQL → execution results
-% - Analysis of what made these queries succeed
-% - Demonstrate system capabilities at their best
-% - Show component contributions in action
-
-\paragraph{Failure Cases}
-% TODO: Present 3-5 exemplar failure cases
-% - Full trace showing where system failed
-% - Root cause analysis: schema linking error? Semantic error? Syntactic error?
-% - What component(s) failed?
-% - Could failure be prevented with different design choices?
-
-\paragraph{Edge Cases and Boundary Conditions}
-% TODO: Present interesting edge cases
-% - Very ambiguous queries
-% - Queries requiring domain knowledge
-% - Queries with multiple valid interpretations
-% - Queries at the limit of SQL expressiveness
-% - How system behaves at boundaries
-
-\newpage
