@@ -1,9 +1,9 @@
 [pipelines]
 natural-baseline = { label = "Natural (Baseline)", order = 0, verified = true }
 natural-zeroshot = { label = "Natural (Zeroshot)", order = 1, verified = true }
-natural-full-syn = { label = "Natural (Synthetic ICL)", order = 2, verified = true }
-natural-full-train = { label = "Natural (Train ICL)", order = 3, verified = true }
-natural-full-ground = { label = "Natural (Ground ICL)", order = 4, verified = true }
+natural-full-syn = { label = "Natural (Syn)", order = 2, verified = true }
+natural-full-train = { label = "Natural (Train)", order = 3, verified = true }
+natural-full-ground = { label = "Natural (Ground)", order = 4, verified = true }
 omnisql-7b-gguf = { label = "OmniSQL 7B (GGUF)", order = 10, verified = true }
 omnisql-7b = { label = "OmniSQL-7B", order = 11, sota = true, external = true, verified = false }
 omnisql-14b = { label = "OmniSQL-14B", order = 12, sota = true, external = true, verified = false }
@@ -53,10 +53,10 @@ gpt-4o = { execution-accuracy = 0.8490 }
 
 [results.bird-dev]
 natural-baseline = { execution-accuracy = 0.3696, exact-match = 0.0031, error-rate = 0.003, candidate-latency = 9.3 }
-natural-zeroshot = { execution-accuracy = 0.3716, exact-match = 0.0033, error-rate = 0.041, candidate-latency = 18.7 }
-natural-full-train = { execution-accuracy = 0.5091, exact-match = 0.1325, error-rate = 0.025, candidate-latency = 33.7 }
-natural-full-syn = { execution-accuracy = 0.5388, exact-match = 0.1885, error-rate = 0.034, candidate-latency = 43.7 }
-natural-full-ground = { execution-accuracy = 0.5717, exact-match = 0.1932, error-rate = 0.021, candidate-latency = 43.8 }
+natural-zeroshot = { execution-accuracy = 0.3716, exact-match = 0.0033, error-rate = 0.004, candidate-latency = 18.7 }
+natural-full-train = { execution-accuracy = 0.5091, exact-match = 0.1325, error-rate = 0.002, candidate-latency = 33.7 }
+natural-full-syn = { execution-accuracy = 0.5388, exact-match = 0.1885, error-rate = 0.003, candidate-latency = 43.7 }
+natural-full-ground = { execution-accuracy = 0.5717, exact-match = 0.1932, error-rate = 0.002, candidate-latency = 43.8 }
 omnisql-7b-gguf = { execution-accuracy = 0.3801, exact-match = 0.0038, error-rate = 0.008, candidate-latency = 8.2 }
 omnisql-7b = { execution-accuracy = 0.6610 }
 omnisql-14b = { execution-accuracy = 0.6590 }

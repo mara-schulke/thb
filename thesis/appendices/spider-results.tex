@@ -1,0 +1,33 @@
+\subsection{Spider Benchmark Results}\label{sec:appendix:spider-results}
+
+This section provides detailed breakdowns of the \textsc{Spider} benchmark results
+for both development and test splits, showing execution accuracy and exact match
+metrics across all system configurations.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/spider-dev-performance.svg}
+  \caption{Execution accuracy on \Spider~(dev). The \textit{Syn} configuration achieves the highest execution accuracy among all tested systems at 81.0\%, outperforming OmniSQL-7B-gguf by 2.0 percentage points.}
+  \label{fig:appendix:spider-dev-ea}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/spider-test-performance.svg}
+  \caption{Execution accuracy on \Spider~(test). The \textit{Train} configuration demonstrates the strongest performance among tested configurations, achieving 81.4\% execution accuracy.}
+  \label{fig:appendix:spider-test-ea}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/spider-dev-exact-match.svg}
+  \caption{Exact match performance on \Spider~(dev). ICL configurations demonstrate substantial improvements over baseline, with \textit{Ground} achieving 42.7\% exact match compared to 30.3\% for \textit{Baseline}.}
+  \label{fig:appendix:spider-dev-em}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/spider-test-exact-match.svg}
+  \caption{Exact match performance on \Spider~(test). The \textit{Train} configuration achieves 43.9\% exact match, representing a 21.4 percentage point improvement over \textit{Baseline}.}
+  \label{fig:appendix:spider-test-em}
+\end{figure}

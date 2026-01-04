@@ -62,7 +62,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
         ylims=(0, 100),
         margins=10Plots.mm,
         top_margin=5Plots.mm,
-        bottom_margin=20Plots.mm,
+        bottom_margin=rotation_angle > 0 ? 20Plots.mm : 5Plots.mm,
         fontfamily=plot_font,
         titlefontsize=12,
         guidefontsize=10,

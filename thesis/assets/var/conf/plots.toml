@@ -1,130 +1,72 @@
 [[plots]]
+type = "performance-gap"
+pipeline-a = "omnisql-7b-gguf"
+pipeline-b = "omnisql-7b"
+metric = "execution-accuracy"
+title = "OmniSQL Performance Gap: Measured vs Reported"
+output = "out/omnisql-difference.svg"
+
+[[plots]]
+type = "metric-breakdown"
+metric = "execution-accuracy"
+title = "Execution Accuracy Overview"
+output = "out/execution-accuracy-overview.svg"
+include-all-pipelines = true
+
+[[plots]]
+type = "metric-breakdown"
+metric = "exact-match"
+title = "Exact Match Overview"
+output = "out/exact-match-overview.svg"
+include-all-pipelines = true
+
+[[plots]]
 type = "pipeline-bars"
 benchmark = "spider-dev"
 metric = "execution-accuracy"
-output = "out/spider-dev.svg"
+title = "Spider (dev) Performance"
+output = "out/spider-dev-performance.svg"
 
 [[plots]]
 type = "pipeline-bars"
 benchmark = "spider-test"
 metric = "execution-accuracy"
-output = "out/spider-test.svg"
+title = "Spider (test) Performance"
+output = "out/spider-test-performance.svg"
 
 [[plots]]
 type = "pipeline-bars"
-benchmark = "bird-dev"
-metric = "execution-accuracy"
-output = "out/bird-dev.svg"
+benchmark = "spider-dev"
+metric = "exact-match"
+title = "Spider (dev) Exact Match"
+output = "out/spider-dev-exact-match.svg"
 
 [[plots]]
-type = "baseline-improvement"
-baseline_key = "natural-baseline"
-comparison_keys = [
+type = "pipeline-bars"
+benchmark = "spider-test"
+metric = "exact-match"
+title = "Spider (test) Exact Match"
+output = "out/spider-test-exact-match.svg"
+
+[[plots]]
+type = "metric-breakdown"
+metric = "candidate-latency"
+pipeline-keys = [
+  "natural-baseline",
   "natural-zeroshot",
   "natural-full-syn",
   "natural-full-train",
   "natural-full-ground",
+  "omnisql-7b-gguf",
 ]
-metric = "execution-accuracy"
-title = "Relative Performance Improvement Over Baseline"
-output = "out/relative-improvement.svg"
-
-[[plots]]
-type = "benchmark-bars"
-metric = "execution-accuracy"
-include-sota = false
-output = "out/comparison-bars-natural.svg"
-
-[[plots]]
-type = "sota-bars"
-natural = ["natural-baseline", "natural-full-ground"]
-sota = ["omnisql-7b", "gpt-4o"]
-metric = "execution-accuracy"
-title = "Performance Comparison: Natural vs SOTA"
-output = "out/sota-comparison.svg"
-
-[[plots]]
-type = "source-bars"
-source = ["natural-full-syn", "natural-full-train", "natural-full-ground"]
-metric = "execution-accuracy"
-title = "Impact of Example Source on Performance"
-output = "out/example-source-comparison.svg"
-
-# ============================================================================
-# Story Point 1: Baseline Performance Gap (Natural Model vs OmniSQL)
-# ============================================================================
-
-# Per-benchmark comparisons (Natural Model vs OmniSQL variants)
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Baseline Performance Gap: Spider-dev"
-output = "out/baseline-gap-spider-dev.svg"
-
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Baseline Performance Gap: Spider-test"
-output = "out/baseline-gap-spider-test.svg"
-
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Baseline Performance Gap: BIRD-dev"
-output = "out/baseline-gap-bird-dev.svg"
-
-# Combined cross-benchmark view
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Baseline Performance Gap: All Benchmarks"
-output = "out/baseline-gap-combined.svg"
-
-# Metric breakdowns
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Execution Accuracy (EA) Across Systems"
-output = "out/metric-ea-breakdown.svg"
-
-[[plots]]
-type = "metric-breakdown"
-metric = "exact-match"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Exact Match (EM) Across Systems"
-output = "out/metric-em-breakdown.svg"
+title = "Candidate Latency: Spider Benchmarks"
+output = "out/candidate-latency-spider.svg"
+scale = 1
 
 [[plots]]
 type = "metric-breakdown"
 metric = "error-rate"
-pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
-title = "Error Rate (ER) Across Systems"
-output = "out/metric-er-breakdown.svg"
-scale = 1
-
-# OmniSQL difference visualization (measured vs reported)
-[[plots]]
-type = "performance-gap"
-system1_key = "omnisql-7b-gguf"
-system2_key = "omnisql-7b"
-metric = "execution-accuracy"
-title = "OmniSQL Performance Gap: Measured vs Reported"
-output = "out/omnisql-difference.svg"
-show_absolute = false
-
-# ============================================================================
-# Story Point 2: Overall Natural Performance Evaluation
-# ============================================================================
-
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-pipeline_keys = [
+pipeline-keys = [
   "omnisql-7b-gguf",
   "natural-baseline",
   "natural-zeroshot",
@@ -132,63 +74,195 @@ pipeline_keys = [
   "natural-full-train",
   "natural-full-ground",
 ]
-title = "Natural System Performance: Execution Accuracy"
-output = "out/natural-overall-ea.svg"
-
-[[plots]]
-type = "metric-breakdown"
-metric = "exact-match"
-pipeline_keys = [
-  "omnisql-7b-gguf",
-  "natural-baseline",
-  "natural-zeroshot",
-  "natural-full-syn",
-  "natural-full-train",
-  "natural-full-ground",
-]
-title = "Natural System Performance: Exact Match"
-output = "out/natural-overall-em.svg"
-
-[[plots]]
-type = "metric-breakdown"
-metric = "error-rate"
-pipeline_keys = [
-  "omnisql-7b-gguf",
-  "natural-baseline",
-  "natural-zeroshot",
-  "natural-full-syn",
-  "natural-full-train",
-  "natural-full-ground",
-]
-title = "Natural System Performance: Error Rate"
-output = "out/natural-overall-er.svg"
+title = "Error Rates Across System Configurations"
+output = "out/error-rates.svg"
 scale = 1
 
 # ============================================================================
-# Story Point 3: SOTA Landscape Overview
+# Commented Out Plots (for future use)
 # ============================================================================
 
-[[plots]]
-type = "metric-breakdown"
-metric = "execution-accuracy"
-include_all_pipelines = true
-title = "SOTA Landscape: Natural vs State-of-the-Art Systems"
-output = "out/sota-landscape.svg"
-
-# ============================================================================
-# Story Point 4: Incremental Improvement over Natural Model
-# ============================================================================
-
-[[plots]]
-type = "baseline-improvement"
-baseline_key = "omnisql-7b-gguf"
-comparison_keys = [
-  "natural-baseline",
-  "natural-zeroshot",
-  "natural-full-syn",
-  "natural-full-train",
-  "natural-full-ground",
-]
-metric = "execution-accuracy"
-title = "Incremental Improvement Over Natural (Model)"
-output = "out/incremental-improvement.svg"
+# [[plots]]
+# type = "pipeline-bars"
+# benchmark = "spider-dev"
+# metric = "execution-accuracy"
+# output = "out/spider-dev.svg"
+#
+# [[plots]]
+# type = "pipeline-bars"
+# benchmark = "spider-test"
+# metric = "execution-accuracy"
+# output = "out/spider-test.svg"
+#
+# [[plots]]
+# type = "pipeline-bars"
+# benchmark = "bird-dev"
+# metric = "execution-accuracy"
+# output = "out/bird-dev.svg"
+#
+# [[plots]]
+# type = "baseline-improvement"
+# baseline_key = "natural-baseline"
+# comparison_keys = [
+#   "natural-zeroshot",
+#   "natural-full-syn",
+#   "natural-full-train",
+#   "natural-full-ground",
+# ]
+# metric = "execution-accuracy"
+# title = "Relative Performance Improvement Over Baseline"
+# output = "out/relative-improvement.svg"
+#
+# [[plots]]
+# type = "benchmark-bars"
+# metric = "execution-accuracy"
+# include-sota = false
+# output = "out/comparison-bars-natural.svg"
+#
+# [[plots]]
+# type = "sota-bars"
+# natural = ["natural-baseline", "natural-full-ground"]
+# sota = ["omnisql-7b", "gpt-4o"]
+# metric = "execution-accuracy"
+# title = "Performance Comparison: Natural vs SOTA"
+# output = "out/sota-comparison.svg"
+#
+# [[plots]]
+# type = "source-bars"
+# source = ["natural-full-syn", "natural-full-train", "natural-full-ground"]
+# metric = "execution-accuracy"
+# title = "Impact of Example Source on Performance"
+# output = "out/example-source-comparison.svg"
+#
+# # ============================================================================
+# # Story Point 1: Baseline Performance Gap (Natural Model vs OmniSQL)
+# # ============================================================================
+#
+# # Per-benchmark comparisons (Natural Model vs OmniSQL variants)
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Baseline Performance Gap: Spider-dev"
+# output = "out/baseline-gap-spider-dev.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Baseline Performance Gap: Spider-test"
+# output = "out/baseline-gap-spider-test.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Baseline Performance Gap: BIRD-dev"
+# output = "out/baseline-gap-bird-dev.svg"
+#
+# # Combined cross-benchmark view
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Baseline Performance Gap: All Benchmarks"
+# output = "out/baseline-gap-combined.svg"
+#
+# # Metric breakdowns
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Execution Accuracy (EA) Across Systems"
+# output = "out/metric-ea-breakdown.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "exact-match"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Exact Match (EM) Across Systems"
+# output = "out/metric-em-breakdown.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "error-rate"
+# pipeline_keys = ["omnisql-7b-gguf", "omnisql-7b", "omnisql-14b", "omnisql-32b"]
+# title = "Error Rate (ER) Across Systems"
+# output = "out/metric-er-breakdown.svg"
+# scale = 1
+#
+# # ============================================================================
+# # Story Point 2: Overall Natural Performance Evaluation
+# # ============================================================================
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# pipeline_keys = [
+#   "omnisql-7b-gguf",
+#   "natural-baseline",
+#   "natural-zeroshot",
+#   "natural-full-syn",
+#   "natural-full-train",
+#   "natural-full-ground",
+# ]
+# title = "Natural System Performance: Execution Accuracy"
+# output = "out/natural-overall-ea.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "exact-match"
+# pipeline_keys = [
+#   "omnisql-7b-gguf",
+#   "natural-baseline",
+#   "natural-zeroshot",
+#   "natural-full-syn",
+#   "natural-full-train",
+#   "natural-full-ground",
+# ]
+# title = "Natural System Performance: Exact Match"
+# output = "out/natural-overall-em.svg"
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "error-rate"
+# pipeline_keys = [
+#   "omnisql-7b-gguf",
+#   "natural-baseline",
+#   "natural-zeroshot",
+#   "natural-full-syn",
+#   "natural-full-train",
+#   "natural-full-ground",
+# ]
+# title = "Natural System Performance: Error Rate"
+# output = "out/natural-overall-er.svg"
+# scale = 1
+#
+# # ============================================================================
+# # Story Point 3: SOTA Landscape Overview
+# # ============================================================================
+#
+# [[plots]]
+# type = "metric-breakdown"
+# metric = "execution-accuracy"
+# include_all_pipelines = true
+# title = "SOTA Landscape: Natural vs State-of-the-Art Systems"
+# output = "out/sota-landscape.svg"
+#
+# # ============================================================================
+# # Story Point 4: Incremental Improvement over Natural Model
+# # ============================================================================
+#
+# [[plots]]
+# type = "baseline-improvement"
+# baseline_key = "omnisql-7b-gguf"
+# comparison_keys = [
+#   "natural-baseline",
+#   "natural-zeroshot",
+#   "natural-full-syn",
+#   "natural-full-train",
+#   "natural-full-ground",
+# ]
+# metric = "execution-accuracy"
+# title = "Incremental Improvement Over Natural (Model)"
+# output = "out/incremental-improvement.svg"

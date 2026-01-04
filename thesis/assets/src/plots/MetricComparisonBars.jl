@@ -38,9 +38,8 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
         end
     end
 
-    metric_label = haskey(data.metrics, plot_config.metric) ?
-                   data.metrics[plot_config.metric].label :
-                   plot_config.metric
+    metric_label = get_metric_label(data, plot_config.metric);
+
     title = plot_config.title === nothing ?
             "$metric_label Across Benchmarks" :
             plot_config.title
@@ -63,10 +62,10 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
         legend_columns=4,
         size=DIMENSIONS,
         gridalpha=0.3,
-        ylims=(0, 100),
+        ylims=yautolims(values'),
         margins=10Plots.mm,
         top_margin=5Plots.mm,
-        bottom_margin=20Plots.mm,
+        bottom_margin=5Plots.mm,
         fontfamily=plot_font,
         titlefontsize=12,
         guidefontsize=10,

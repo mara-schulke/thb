@@ -36,26 +36,23 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
         differences[i] = system2_values[i] - system1_values[i]
     end
 
-    # Get pipeline labels
     system1_pipeline = data.pipelines[findfirst(p -> p.key == plot_config.system1_key, data.pipelines)]
     system2_pipeline = data.pipelines[findfirst(p -> p.key == plot_config.system2_key, data.pipelines)]
 
     system1_label = get_pipeline_label(system1_pipeline)
     system2_label = get_pipeline_label(system2_pipeline)
 
-    # Get fillstyles
     fillstyle1 = system1_pipeline.verified ? nothing : :/
     fillstyle2 = system2_pipeline.verified ? nothing : :/
 
-    # Get colors for the two systems
     both_pipelines = [system1_pipeline, system2_pipeline]
     colors = readable(both_pipelines, palette)
 
-    # Determine rotation angle
     rotation_angle = n_benchmarks > 8 ? 45 : 0
 
+    metric_label = get_metric_label(data, plot_config.metric);
+
     if plot_config.show_absolute
-        # Show both systems and the difference
         combined_data = hcat(system1_values, system2_values, differences)
         labels = [system1_label system2_label "Difference"]
         fillstyles = [fillstyle1 fillstyle2 nothing]
@@ -79,7 +76,7 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
             ylims=yautolims(combined_data),
             margins=10Plots.mm,
             top_margin=5Plots.mm,
-            bottom_margin=20Plots.mm,
+            bottom_margin=5Plots.mm,
             fontfamily=plot_font,
             titlefontsize=12,
             guidefontsize=10,
@@ -90,22 +87,21 @@ function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font,
 
         hline!(p, [0], color=:black, linestyle=:dash, label="", linewidth=1)
     else
-        # Show only the difference
         p = bar(
             benchmark_labels,
             differences,
-            label="Difference ($(system2_label) - $(system1_label))",
-            color=palette.verified[3],
+            label="$metric_label difference",
+            color_palette=colors,
             xlabel=Label("Benchmark"),
             ylabel=Label("Difference (%)"),
             title=Title(plot_config.title),
             legend=:outertop,
             size=DIMENSIONS,
             gridalpha=0.3,
-            ylims=:auto,
+            ylims=yautolims(differences),
             margins=10Plots.mm,
             top_margin=5Plots.mm,
-            bottom_margin=20Plots.mm,
+            bottom_margin=5Plots.mm,
             fontfamily=plot_font,
             titlefontsize=12,
             guidefontsize=10,

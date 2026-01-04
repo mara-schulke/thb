@@ -152,3 +152,11 @@ function get_benchmark_label(bd::BenchmarkData, benchmark_key::String)
     end
     return benchmark_key
 end
+
+function get_metric_label(data::BenchmarkData, metric::String)
+    if haskey(data.metrics, metric) 
+        return data.metrics[metric].label
+    end
+
+    return metric
+end

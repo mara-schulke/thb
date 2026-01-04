@@ -10,7 +10,7 @@ include("data.jl")
 
 # Include all plot types
 include("plots/utils.jl")
-include("plots/Benchmark.jl")
+include("plots/PipelineBars.jl")
 include("plots/MetricComparisonBars.jl")
 include("plots/RelativeImprovement.jl")
 include("plots/SotaComparison.jl")

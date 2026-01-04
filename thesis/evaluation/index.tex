@@ -202,7 +202,9 @@ trends are quantitatively and qalitatively analyzed.
 \subsubsection{Overview}
 
 The overall benchmarking results are presented in
-Table~\ref{tab:eval:overall-results}, which displays the the performance for
+Table~\ref{tab:eval:overall-results} and visualized in
+Figures~\ref{fig:eval:execution-accuracy-overview}
+and~\ref{fig:eval:exact-match-overview}, which displays the the performance for
 all system configurations across the \textsc{Spider} and \textsc{Bird}
 datasets, the execution accuracy ($\mathbb{EA}$), exact match ($\mathbb{EM}$),
 error rate ($\mathbb{ER}$) and candidate latency
@@ -253,35 +255,56 @@ error rate ($\mathbb{ER}$) and candidate latency
     \label{tab:eval:overall-results}
 \end{table}
 
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/execution-accuracy-overview.svg}
+  \caption{Execution accuracy overview across all systems and benchmarks. The \textit{Syn} configuration achieves the highest verified performance on \Spider~(dev) at 81.0\% and \Bird~(dev) at 53.8\%, while \textit{Train} leads on \Spider~(test) at 81.4\%.}
+  \label{fig:eval:execution-accuracy-overview}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/exact-match-overview.svg}
+  \caption{Exact match overview across all systems and benchmarks. ICL configurations demonstrate substantial improvements over baselines, with \textit{Train} achieving 43.9\% on \Spider~(test), the highest verified exact match rate across all benchmarks.}
+  \label{fig:eval:exact-match-overview}
+\end{figure}
+
 \subsubsection{Baseline Performance Analysis}
 
 One notable insight during benchmarking was the apparent gap between the
 and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
-quantization) and the reported accuracy metrics results from \cite{OmniSQL}.
-The $\delta$ in performance between the local measurement and the official
+weights) and the reported accuracy metrics results from \cite{OmniSQL}.
+As shown in Figure~\ref{fig:eval:omnisql-gap}, the $\delta$ in performance between the local measurement and the official
 values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
 28.1\% on \Bird~(dev).
 
-% FIGURE
-% figure of performance diff between omnisql
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
+  \caption{
+    Performance gap between measured OmniSQL-7B-gguf and reported
+    OmniSQL-7B results across benchmarks. The $\delta$ ranges from 2.6\% on
+    \Spider~(dev) to 28.1\% on \Bird~(dev), highlighting differences between
+    quantized local deployment and published full-precision results.
+  }
+  \label{fig:eval:omnisql-gap}
+\end{figure}
 
 Several factors may contribute to this stark gap between the two systems.
-First, model quantization will come at a non-negligible cost and different
-quantization variants come with different performance characteristics. The
-OmniSQL-7B-gguf system uses the F16 weights but transformed into the gguf
+First, model quantization can come with a cost and different quantization
+variants and model formats come with different performance characteristics. The
+OmniSQL-7B-gguf system uses the F16 weights but transformed into the GGUF
 model format while published results presumably use full-precision models in
-the safetensor formats. Prior research has shown that bit-wise quantization
+the safetensors formats. Prior research has shown that bit-wise quantization
 can degrade model accuracy, particularly on complex reasoning tasks on
-multi-billion paramater models \citep{Int8AtScale}. Second, the exact
-hyperparameters used during evaluation likely differed between
-\cite{OmniSQL} and local benchmarks which may influence the model accuracy in
-unforseen ways. Unless the exact same inference environment, quantization and
-hyperparameters the performance difference might be caused by a multitude of
-subtle differences. Finally, dataset version differences or preprocessing
-variations could contribute to divergent results.
-
-% FIGURE
-% figure of performance landscape with baselines
+multi-billion paramater models \citep{Int8AtScale} and it is yet unclear
+whether the mere transformation into GGUF harms performance for this model
+series. Second, the exact hyperparameters used during evaluation likely
+differed between \cite{OmniSQL} and local benchmarks which may influence the
+model accuracy in unforseen ways. Unless the exact same inference environment,
+quantization and hyperparameters the performance difference might be caused by
+a multitude of subtle differences. Finally, dataset version differences or
+preprocessing variations could contribute to divergent results.
 
 The \textit{Baseline} configuration of \Natural~further showed degredation of
 performance compared to the OmniSQL-7B-gguf system configuration. Using the
@@ -300,7 +323,8 @@ ICL, self-correction or majority voting. These performance numbers mark the
 \subsubsection{Spider Results}
 
 The results of the \Spider~benchmarks demonstrate consistent performance
-characteristics of \Natural~and \OmniSQL~across the development and test splits.
+characteristics of \Natural~and \OmniSQL~across the development and test splits
+(detailed breakdown in Appendix~\ref{sec:appendix:spider-results}).
 The OmniSQL-7B-gguf system outperforms the two \Natural~baseline configurations
 \textit{Baseline} and \textit{Zero-Shot} in \EA~and \EM by 2.1\% and 0.3\% on
 the development split and by 2.0\% and 1.5\% on the test split respectively.
@@ -308,18 +332,29 @@ the development split and by 2.0\% and 1.5\% on the test split respectively.
 The full pipeline with the \textit{Zero-Shot} configuration (all components
 active but no examples) hence only yields marginal improvements (+0.8pp on dev,
 +0.5pp on test) over \textit{Baseline}, suggesting that schema subsetting and
-query refinement contribute minimally without example-based guidance. Notably
-the \CL of \textit{Zero-Shot} increases by 6.7s on dev and 8.0s on test over
-\texit{Baseline}, doubling the system latency without a significant improvement
-in system performance.
+query refinement contribute minimally without example-based guidance. Notably,
+as demonstrated in Figure~\ref{fig:eval:candidate-latency}, the \CL of
+\textit{Zero-Shot} increases by 6.7s on dev and 8.0s on test over
+\textit{Baseline}, doubling the system latency without a significant
+improvement in system performance.
 
-% FIGURE
-% candidate latency figure on spider dev and test
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/candidate-latency-spider.svg}
+  \caption{
+    Candidate latency across system configurations on \Spider~benchmarks. The
+    \textit{Zero-Shot} configuration shows doubled latency (14.0s on dev, 15.3s
+    on test) compared to \textit{Baseline} (7.3s) without commensurate
+    performance gains, while ICL configurations incur additional overhead from
+    example retrieval.
+  }
+  \label{fig:eval:candidate-latency}
+\end{figure}
 
-Intruducing the vector databases to the system configurations demonstrates
-substantial improvement in performance characteristics. The two configurations
-without ground truth examples showed a significant improvement in both \EA~and
-\EM: \textit{Syn} outperformed all other system variants and baselines with a
+Introducing vector database access to the system configurations demonstrates
+substantial improvement in performance. The two configurations without ground
+truth examples showed a significant improvement in both \EA~and \EM:
+\textit{Syn} outperformed all other system variants and baselines with a
 accuracy improvement of 3.1\% over \textit{Baseline} and 2.0\% over
 OmniSQL-7B-gguf on \Spider~(dev). On \Spider~(test) the \textit{Train}
 configuration outperformed \textit{Syn} by 1.8\% in \EA. For \EM~both system
@@ -331,12 +366,22 @@ towards the conclusion that in-context learning is an effective mechanism for
 further improving the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
 \EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
-on \Spider~(dev) and 82.8\% on \Spider~(train).
+on \Spider~(dev) and 82.8\% on \Spider~(train)
+(see~\ref{sec:appendix:spider-results}).
 
-% FIGURE
-% error rate figure
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/error-rates.svg}
+  \caption{
+      Error rates across system configurations. All configurations
+      maintain error rates below 0.7 failures per hundred queries, indicating that
+      failures are predominantly semantic (incorrect results) rather than
+      syntactic or runtime related (malformed SQL, out of memory errors).
+  }
+  \label{fig:eval:error-rates}
+\end{figure}
 
 Error rates remain consistently low across all configurations (<0.7 failures
-per hundred queries), indicating that failures are predominantly semantic
-(incorrect results) rather than syntactic (malformed SQL), which validates the
-robustness of \textsc{OmniSQL}'s SQL generation capabilities.
+per hundred queries), see ~\ref{fig:eval:error-rates}, indicating that failures
+are predominantly semantic (incorrect results) rather than syntactic (malformed
+SQL), which validates the robustness of \OmniSQL's SQL generation capabilities.

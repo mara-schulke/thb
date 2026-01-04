@@ -82,7 +82,7 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
         ylims=yautolims(values),
         margins=10Plots.mm,
         top_margin=5Plots.mm,
-        bottom_margin=20Plots.mm,
+        bottom_margin=5Plots.mm,
         fontfamily=plot_font,
         titlefontsize=12,
         guidefontsize=10,

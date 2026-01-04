@@ -44,8 +44,8 @@ function plottable(config::Dict, data::BenchmarkData)
         )
     elseif plot_type == "baseline-improvement"
         return BaselineImprovementPlot(
-            baseline_key=config["baseline_key"],
-            comparison_keys=config["comparison_keys"],
+            baseline_key=config["baseline-key"],
+            comparison_keys=config["comparison-keys"],
             metric=config["metric"],
             title=config["title"],
             output=config["output"]
@@ -67,20 +67,20 @@ function plottable(config::Dict, data::BenchmarkData)
         )
     elseif plot_type == "performance-gap"
         return PerformanceGapPlot(
-            system1_key=config["system1_key"],
-            system2_key=config["system2_key"],
+            system1_key=config["pipeline-a"],
+            system2_key=config["pipeline-b"],
             metric=config["metric"],
             title=config["title"],
             output=config["output"],
-            show_absolute=get(config, "show_absolute", true)
+            show_absolute=get(config, "show-absolute", false)
         )
     elseif plot_type == "metric-breakdown"
         return MetricBreakdownPlot(
             metric=config["metric"],
-            pipeline_keys=get(config, "pipeline_keys", String[]),
+            pipeline_keys=get(config, "pipeline-keys", String[]),
             title=get(config, "title", nothing),
             output=config["output"],
-            include_all_pipelines=get(config, "include_all_pipelines", false),
+            include_all_pipelines=get(config, "include-all-pipelines", false),
             scale=get(config, "scale", 100)
         )
     else

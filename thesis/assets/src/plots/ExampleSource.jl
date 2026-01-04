@@ -55,7 +55,7 @@ function render(plot_config::SourceBarsPlot, data::BenchmarkData; plot_font, pal
         ylims=(0, 100),
         margins=10Plots.mm,
         top_margin=5Plots.mm,
-        bottom_margin=20Plots.mm,
+        bottom_margin=5Plots.mm,
         fontfamily=plot_font,
         titlefontsize=12,
         guidefontsize=10,
