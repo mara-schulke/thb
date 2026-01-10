@@ -385,3 +385,58 @@ Error rates remain consistently low across all configurations (<0.7 failures
 per hundred queries), see ~\ref{fig:eval:error-rates}, indicating that failures
 are predominantly semantic (incorrect results) rather than syntactic (malformed
 SQL), which validates the robustness of \OmniSQL's SQL generation capabilities.
+
+\subsubsection{BIRD Results}
+
+Measurements on the \Bird benchmark, which is designed to represent real-world
+scenarios with imperfect data, external knowledge requirements and hard to
+reason about database schemas yields significantly lower absolute performance
+numbers but shows fundamental improvements through ICL based systems.
+While the \textit{Baseline} configuration of \Natural~only achieves 32.4\%
+\EA~(less than half the accuracy than on \Spider~with 77.9\% and 77.0\% for dev
+and test splits respectively). This poor baseline performance confirms \Bird
+being a significantly more challenging benchmark. While the \textit{Zero-Shot}
+configuration showns incremental improvements over the baseline with a relative
+improvement of +1.6pp in \EA~(34.0\% absolute), the overall performance shows
+to be behind the reported numbers of \OmniSQL~(7B) and GPT-4 by \cite{OmniSQL}
+which were reported to had an \EA of 66.1\% and 61.5\% respectively. The
+locally reproduced measurement of \OmniSQL~(7B-gguf) yielded a drop in \EA~of
+-28.1pp compared to the officially reported \EA~yielding 38.0\% in absolute
+accuracy.
+
+Both the \textit{Syn} and \textit{Train} configurations of \Natural~outperform
+all baselines. \textit{Syn} showns an improvement of +21.4pp over
+\textit{Baseline} and +15.8pp over \OmniSQL~(7B-gguf), achieving 53.8\% \EA,
+the best local measured system excluding \textit{Ground}. \textit{Train} yields
+improvements of +16.0pp over \textit{Baseline} and +10.4pp over
+\OmniSQL~(7B-gguf).
+
+This shows a stark contrast with \textsc{Spider}, where synthetic examples
+provided only +3.1pp improvement on dev and +2.6pp improvement on train.
+The effectiveness of synthetic examples on \Bird~suggests that the impact of
+ICL increases with query and schema complexity. When queries involve complex
+joins, nested subqueries, and aggregations, even domain-agnostic examples
+provide crucial scaffolding for the generation. The \textit{Train}
+configuration of \Natural~underperformed \textit{Syn} by 5.4pp. This may
+indicate that \textsc{Bird}'s training examples, while domain-relevant, contain
+different structural patterns than the development set, whereas
+\textsc{SynSQL-2.5m} contains a broader coverage of different database schema
+structures to reference from.
+
+The other metrics \EM, \ER~and \CL~further show a stark difference between
+\Spider~and \Bird. Systems which mostly relied on \OmniSQL~(\Natural
+\textit{Baseline} and \textit{Zero-Shot} and \OmniSQL~(7B-gguf)) showed the
+same 0.03\% in \EM indicating a potential overfitting of \OmniSQL~to the SQL
+style used in \Spider. Notably ICL based systems showed a significant
+improvement with +13.17pp for \textit{Train} and +18.77pp for \textit{Syn}.
+The \CL~metric showed a similar pattern to the \Spider~benchmarks with the \CL
+increasing with pipeline complexity from 9.3s for \textit{Baseline} to 43.8s
+for \textit{Ground}.
+
+Lastly the \textit{Ground} configuration establishes an upper bound of
+55.8\% \EA, representing a +23.4pp improvement over \textit{Baseline} (with a
++72\% relative gain). Despite these substantial relative improvements within
+the recorded benchmarks a significant gap of -10.3pp and -8.2pp remains when
+compared to the published \OmniSQL~(7B) performance with 66.1\% and GPT-4o
+performance with 64.0\%. This stark difference between local replication and
+officially reported performance metrics is yet unclarified.
