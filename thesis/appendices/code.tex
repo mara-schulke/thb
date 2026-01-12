@@ -1,6 +1,6 @@
-\subsection{Code Examples}
+\subsection{Code}
 
-\subsection{Vector Database API}\label{appendix:vector-db-api}
+\subsubsection{Vector Database API}\label{appendix:vector-db-api}
 
 \begin{verbatim}
 let question = "How many ..";
@@ -26,7 +26,7 @@ let samples = selection::<4>(
 )?;
 \end{verbatim}
 
-\subsubsection{Vector Database Schema}\label{appendix:vector-schema}
+\paragraph{Vector Database Schema}\label{appendix:vector-schema}
 
 \begin{verbatim}
 CREATE TABLE IF NOT EXISTS whitelist (
@@ -60,7 +60,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
 );
 \end{verbatim}
 
-\subsubsection{Benchmark Traits}\label{appendix:benchmark-traits}
+\paragraph{Benchmark Traits}\label{appendix:benchmark-traits}
 
 \begin{verbatim}
 pub trait Benchmark {

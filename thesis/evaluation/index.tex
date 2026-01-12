@@ -212,8 +212,7 @@ error rate ($\mathbb{ER}$) and candidate latency
 
 \begin{table}[ht]
     \centering
-    \footnotesize
-    \hspace*{-2.5mm}
+    \hspace*{-1.25mm}
     \begin{tabular}{l|c|c|c|c|c|c|c|c|c|c|c|c}
         \toprule
         \textbf{System}     & \multicolumn{4}{c|}{\textbf{Spider (dev)}}                       & \multicolumn{4}{c|}{\textbf{Spider (test)}}                       & \multicolumn{4}{c}{\textbf{BIRD (dev)}}                            \\
@@ -324,7 +323,7 @@ ICL, self-correction or majority voting. These performance numbers mark the
 
 The results of the \Spider~benchmarks demonstrate consistent performance
 characteristics of \Natural~and \OmniSQL~across the development and test splits
-(detailed breakdown in Appendix~\ref{sec:appendix:spider-results}).
+(detailed breakdown in Appendix~\ref{sec:appendix:benchmark-results-spider}).
 The OmniSQL-7B-gguf system outperforms the two \Natural~baseline configurations
 \textit{Baseline} and \textit{Zero-Shot} in \EA~and \EM by 2.1\% and 0.3\% on
 the development split and by 2.0\% and 1.5\% on the test split respectively.
@@ -367,7 +366,7 @@ further improving the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
 \EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
 on \Spider~(dev) and 82.8\% on \Spider~(train)
-(see~\ref{sec:appendix:spider-results}).
+(see~\ref{sec:appendix:benchmark-results-spider}).
 
 \begin{figure}[htbp]
   \centering
@@ -440,3 +439,37 @@ the recorded benchmarks a significant gap of -10.3pp and -8.2pp remains when
 compared to the published \OmniSQL~(7B) performance with 66.1\% and GPT-4o
 performance with 64.0\%. This stark difference between local replication and
 officially reported performance metrics is yet unclarified.
+
+\subsection{Performance Characteristics}
+
+To assess the performance of NL2SQL systems hollistically metrics beyond
+semantic accuracy have to be taken into account. The two performance
+characteristics \ER~and \CL~provide insight into system reliability and their
+real-world applicability. These functional metrics complement accuracy by
+revealing operational constraints (such as hardware requirements or
+reliability) that affect deployment feasibility.
+
+\subsubsection{Error Rate Analysis}
+
+The error rate results demonstrate great reliability across all benchmarked
+systems and datasets. The error rates remain below 0.7\% (fewer than 7 failures
+per 1000 queries) across all measured systems, with the \textit{Baseline}
+achieving 0.0\% error rate on \Spider~(dev) and 0.3\% on \Bird~(dev). Even
+\Natural~configurations with self-refinement, query parsing and ICL maintain
+low error rates: \textit{Ground} shows an \ER~of 0.7\% on \textsc{Spider}
+(dev), 0.3\% on \textsc{Spider} (test) and 0.2\% on \textsc{Bird} (dev).
+
+This consistency indicates that the \OmniSQL~model generates syntactically
+valid, executable SQL with a high reliability, and that pipeline components do
+not introduce significant failure modes.
+
+Furthermore these low error rates reveal an important characteristic of
+\OmniSQL~and \textsc{Natural}: Errors of these NL2SQL systems are predominantly
+semantic (ie, wrong results) rather than syntactic (eg, malformed SQL or schema
+violations) or runtime-related.
+
+This distinction matters for production deployments, as semantic errors are
+significantly harder to validate and catch than hard system failures. Semantic
+accuracy might be further improved through user feedback which can feedback
+into ICL. 
+
