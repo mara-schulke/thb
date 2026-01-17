@@ -473,3 +473,31 @@ significantly harder to validate and catch than hard system failures. Semantic
 accuracy might be further improved through user feedback which can feedback
 into ICL. 
 
+\subsubsection{Latency Analysis}
+
+Measuring the \CL~reveals the computational trade-offs that come with the
+the \textsc{Natural} pipeline architecture. The \textit{Baseline} configuration
+achieves minimal candidate latency (6.6s on \textsc{Spider} dev, 6.7s on test,
+8.2s on \textsc{Bird} dev), representing the time required for schema
+subsetting and SQL generation without example retrieval or refinement.
+
+The \textit{Zero-Shot} pipeline configuration approximately doubles the end to
+end latency to (14.0s, 15.3s, 18.7s respectively) highlighting that the
+schema subsetting, self-refinement and voting components contribute to a
+significant increase in computational cost. Configurations with example
+selection and in-context learning show further latency increases. The
+\textit{Train} and \textit{Syn} configurations achieve 15s-17s \CL~on
+\textsc{Spider} and 33s-44s on \textsc{Bird}, with the \textit{Syn}
+configuration yielding the highest latency (43.7s on \textsc{Bird}).
+
+Overall \OmniSQL~(7B-gguf) consistently showed the lowest \CL~values with
+(6.6s, 6.7s and 8.2) for \Spider~(dev and test) and \Bird~respectively. This is
+unsurprising as the \OmniSQL~(7B-gguf) system provides a realistic estimation
+for the $\pi$ component of \Natural.
+
+These characteristics can inform potential hardware requirements or deployment
+decisions. For interactive applications sub-second response times of these
+models are recommended. \Natural~clearly exceeds these thresholds by a factor
+of up to 45 on complex databases and questions (eg, \Bird). Thus either
+significantly better hardware is required, a simpler configuration needs to be
+used or further performance optimizations need to be introduced.
