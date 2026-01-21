@@ -1,58 +1,51 @@
 \subsection{Research Questions}
 
-% \subsubsection{Primary Research Questions}
+While recent NL2SQL research has achieved outstanding results using proprietary
+large language models GPT-4 and Claude, these systems introduce a significant
+data privacy and security concern for real world adoption: All database
+schemas and queries must be transimitted to an external API that is used for
+the actual inference. This incurrs risks, ongoing and uncontrolled costs and a
+dependency on a third-party service being available. This thesis investigates
+the applicability and competitiveness of open-source NL2SQL models deployed
+locally on consumer hardware. Therefore the following research questions are
+addressed:
 
-\subsubsection*{RQ1 — Are natural language database interfaces feasible for real world application?}
+\subsubsection*{RQ1 — To what extent can open-source LLMs achieve competitive NL2SQL performance through pipeline composition and optimization?}
 
-The primary research questions when it comes to natural language database interfaces revolve around their
-semantic accuracy and reliability, therefore questioning their feasibility for real world usage.
-LLMs have notoriously been known for their ability to hallucinate / produce false, but promising outputs.
-This behaviour can be especially  dangerous when opting for data driven decisions that rely on false data
-due to a mistranslation from natural language to SQL. LLMs could cause hard to understand and debug behaviour,
-like false computation of distributions when the intermediate format is not being shown to the user. This
-thesis tries to determine whether such hallucinations could be reasonably prevented and whether the associated
-performance and hardware requirements are suitable for a real world deployment, outside of research situations.
+State-of-the-art systems often combine multiple NLP and ML techniques like
+in-context learning, self-correction and candidate selection. Often they rely
+on closed-source models which provide impressive baseline performance with
+state-of-the-art reasoning capabilities. This research question investigates
+whether the emerging gap between proprietary systems and open-source models
+like \OmniSQL-7B can be reduced or closed by combining the models with other
+NLP or ML techniques. Specifically:
 
-Specifically the two big underlying questions are:
+\begin{itemize}
+    \item Can pipeline composition improve the performance of fine-tuned models significantly?
+    \item How does the performance of open-source NL2SQL systems compare to
+        closed-source model baselines on standard benchmarks?
+    \item What accuracy ceiling can be achieved within consumer hardware constraints?
+\end{itemize}
 
-\begin{enumerate}
-    \item Is the semantic accuracy of natural language database interfaces high enough to yield a noticable
-          benefit to users?
-    \item Is it possible to run such an interface on reasonable, mass available hardware (e.g. excluding high end research GPUs).
-\end{enumerate}
+\subsubsection*{RQ2 — How do NL2SQL pipeline components interact, and which configurations optimize the accuracy-latency tradeoff?}
 
-\subsubsection*{RQ2 — What approaches are most effective in resolving ambiguity when translating natural language queries into SQL?}
+In order to resolve the dependency on proprietary systems for NL2SQL, a cost
+effective local deployment must be achieved. Thus an offline NL2SQL system must
+utilize compute efficiently as simply combining all available techniques
+may not be optimal for performance characteristics. If components have
+dependencies, redundancies, or unfavorable cost-benefit ratios the overall
+accuracy-latency ratio would be reduced. This research question investigates
+the interactions of pipeline components and which configurations are favorable:
 
-To provide semantically correct results ambiguity in the user-provided natural language queries must be 
-adequately addressed. This thesis investigates various approaches to ambiguity management and
-resolution. Natural language queries can demonstrate ambiguity even at low levels of complexity —
-e.g. there are two different types of "sales" in a database schema, and the user asks to retireve
-"all sales".
-
-Such situations present the second major challenge associated with the practical implementation of natural
-language database interfaces. The success of this concept will significantly depend on whether suitable 
-designs and mitigation techniques can be implemented without creating problems with regards to the 
-aforementioned performance and hardware requirements. The research focus lies on both preventative measures
-through optimized pre-processing stages and prompt engineering techniques as well as reactive strategies
-that post process LLM output, either on the basis of further user input or context inference.
-
-\subsubsection*{RQ3 — Which strategies are increasing semantic accuracy of queries?}
-
-In order to enhance the semantic accuracy a series of improvements may be applied to the pipeline.
-Potential optimizations include supplying (parts of) the schema during LLM prompting, implementation of
-interactive contextual reasoning through a conversational interface which would allow for user
-refinement, the implementation of a robust SQL parsing and validation mechanism and a hybrid approach
-partly relying on traditional NLP preprocessing techniques. This research will quantify semantic accuracy
-using popular NL2SQL benchmarks and empirically evaluate the impact each approach has on the benchmark
-performance. Furthermore this research will take a look at the optimal combination of the aforementioned
-solutions in order to develop a system that strikes the right balance between accuracy and performance.
-
-% \subsubsection{Secondary Research Questions}
-
-% \subsubsection*{RQ4 — What use cases are most suitable for natural language database interfaces?}
-
-% \subsubsection*{RQ5 — Where are the limitations of natural language database interfaces?}
-
-% \subsubsection*{RQ6 — How is NL2SQL model performance impacted through model selection, fine tuning and pre/post processing?}
+\begin{itemize}
+    \item Do independent components of NL2SQL systems provide independent
+        benefits or do they interact synergistically?
+    \item Which components contribute most to accuracy improvement, and which add
+        latency without commensurate benefit?
+    \item How should pipelines be configured for different deployment scenarios (exploratory
+        analysis vs production queries, simple vs complex databases)?
+    \item What is the optimal point for the accuracy-latency tradeoff for
+        different use cases?
+\end{itemize}
 
 \newpage
