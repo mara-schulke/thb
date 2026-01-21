@@ -51,11 +51,9 @@ CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
   db_id              text not null,
 
   question           text not null,
-  question_masked    text not null,
   question_embedding float[2048],
 
   sql                text not null,
-  sql_masked         text not null,
   sql_embedding      float[2048]
 );
 \end{verbatim}

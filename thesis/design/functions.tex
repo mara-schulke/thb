@@ -41,16 +41,16 @@ tuples of natural language queries, schemas, corresponding SQL queries and their
 combined distance.
 
 The function utilizes cosine similarity in the embedding space to identify examples
-that are semantically closest to the input query $q$, considering both masked natural
+that are semantically closest to the input query $q$, considering both natural
 language representations and schema distance as described in Section~\ref{design:embedding}.
 This approach ensures that examples are weighted by the following properties:
 
 \begin{enumerate}
-    \item \textbf{Question similarity} – Semantic similarity between the masked input
+    \item \textbf{Question similarity} – Semantic similarity between the input
         query and historically observed natural language queries in the embedding space
         $v$, measured using cosine distance between their respective embeddings.
     \item \textbf{SQL similarity} – Structural similarity between the zero-shot inference
-        result $z$ and candidate SQL queries using masked SQL representations, enabling
+        result $z$ and candidate SQL queries using code representations, enabling
         pattern recognition across different database domains.
     \item \textbf{Database similarity} – Schema compatibility measured through the distance
         index $d$, ensuring selected examples operate on analogous database
@@ -64,17 +64,15 @@ The exact weighting of these can be adjusted through three constants, $w_q$, $w_
 \begin{algorithmic}[1]
 \Require $q \in \mathcal{Q}$, $z \in \Omega_{\mathcal{S}}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
 \Require $k \in \mathbb{N}$, $k \geq 1$                            \Comment{Number of examples to select}
-\State $q' \gets mask(q)$                                          \Comment{Mask input question}
-\State $z' \gets mask(z)$                                          \Comment{Mask zero-shot result}
 \State $candidates  \gets \emptyset$                               \Comment{Initialize candidate set}
-\For{$(q_i, s_i, \omega_i) \in v$}                            \Comment{For each sample}
-    \State $sim_q \gets cosine(\iota(q'), \iota(mask(q_i)))$       \Comment{Calculate question similarity}
-    \State $sim_s \gets cosine(\iota(z'), \iota(mask(\omega_i)))$  \Comment{Calculate SQL similarity}
+\For{$(q_i, s_i, \omega_i) \in v$}                                 \Comment{For each sample}
+    \State $sim_q \gets cosine(\iota(q), \iota(q_i))$              \Comment{Calculate question similarity}
+    \State $sim_s \gets cosine(\iota(z), \iota(\omega_i))$         \Comment{Calculate SQL similarity}
     \State $sim_d \gets d(s, s_i)$                                 \Comment{Calculate schema distance}
     \State $score \gets w_q \cdot sim_q + w_s \cdot sim_s + w_d \cdot sim_d$
     \State $candidates \gets candidates \cup \{(q_i, s_i, \omega_i, score)\}$
 \EndFor
-\State \Return $top_{k}(candidates)$                             \Comment{Return k highest scoring examples}
+\State \Return $top_{k}(candidates)$                               \Comment{Return k highest scoring examples}
 \end{algorithmic}
 \end{algorithm}
 

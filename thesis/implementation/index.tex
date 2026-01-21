@@ -201,20 +201,19 @@ training corpora whilst balancing semantic relevance and structural compatibilit
 The selection mechanism combines three distinct similarity measures implemented
 in the selection module in \texttt{natural-sampling::selection}. The 
 \texttt{selection} algorithm computes semantic similarity through cosine
-distance of the masked question embedding. Structural SQL similarity is
-computed via measuring the cosine distance of the masked SQL embedding, and
-schema compatibility using WWL kernel distance from the \texttt{natural-graphs}
-component. The embeddings are computed using the Qwen3-Embedding model (4B)
-using the query masking algorithm in \texttt{natural-sampling::masking}.
+distance of the question embedding. Structural SQL similarity is computed via
+measuring the cosine distance of the SQL embedding, and schema compatibility
+using WWL kernel distance from the \texttt{natural-graphs} component. The
+embeddings are computed using the Qwen3-Embedding model (4B) using the
+embedding implementation in \texttt{natural-sampling}.
 
 \paragraph{Weighting Strategy and Performance Characteristics}
 
 As this algorithm is aware of three distinct ways to measure sample similarity
-(masked question, masked query, structural). The implementation employs
-empirically optimized weights defined as constants: 70\% for semantic question
-similarity and 30\% for SQL structural similarity. Additionally, the final
-scoring combines 70\% sample-level similarity with 30\% schema-level
-compatibility.
+(question, query, structural). The implementation employs empirically optimized
+weights defined as constants: 70\% for semantic question similarity and 30\%
+for SQL structural similarity. Additionally, the final scoring combines 70\%
+sample-level similarity with 30\% schema-level compatibility.
 
 The selection algorithm yields a maximum of 32 candidates (\texttt{TOP\_K =
 32}) to limit computational overhead whilst maintaining selection quality.
@@ -225,9 +224,9 @@ extension, achieving sub-second retrieval times for vector databases exceeding
 \paragraph{Implementation Architecture}
 
 Using the \texttt{Selector} struct the embedding computation and representation
-is encapsulated from the actual selection algorithm. Thus via
-\texttt{Selector::new} the consuming code can compute the masked embeddings and
-use them subsequently to run example selection.
+is encapsulated from the actual selection algorithm. Thus via \texttt{Selector::new}
+the consuming code can compute the embeddings and use them subsequently to run
+example selection.
 
 The \texttt{selection} algorithm implementation follows a two-stage approach,
 split into initial candidate retrieval through vector search (using the
@@ -302,7 +301,7 @@ similarity scores, explicit instructions, and the target question.
 The biggest differentiation to the prompt of \citeauthor{OmniSQL} is the
 example section including similarity. For the actual SQL query presentation the
 code representation prompt format is used, inspired by DAIL-SQL
-\citep{DAIL-SQL}. Every example includes the masked question, similarity score,
+\citep{DAIL-SQL}. Every example includes the question, similarity score,
 and formatted SQL query for clarity.
 
 \paragraph{Prompt Engineering Strategy}
@@ -468,8 +467,8 @@ actual pipeline development, employing performance optimizations and enable
 rapid development of new approaches and hypotheses. The primary support systems
 are \texttt{Vector} – a vector database abstraction on top of SQLite,
 \texttt{wwl} – a library that implements Wasserstein-Weisfeiler-Leman kernels
-\citep{WWL} and the \texttt{embedding} and \texttt{masking} modules to compare
-and semantically search the embedding space.
+\citep{WWL} and the \texttt{natural-sampling} module to compare and semantically
+search the embedding space.
 
 \subsubsection{Vector Database}
 
@@ -492,35 +491,31 @@ regular database tables can be maintained to save data derived at sampling
 time. \texttt{Vector} hosts the database schema described
 in \ref{appendix:vector-schema}.
 
-Which maintains the word whitelist for query masking, the database graphs of
-the sample databases and the precomputed database indices. Thus at pipeline
-runtime the database indices and whitelists can be reconstructed through a
-cheap selection from \texttt{Vector} even though they are not indexed through
-embeddings.
+Which maintains the precomputed distance indices and the database graphs for
+example selection. Thus at pipeline runtime the database indices and graph
+representations can be reconstructed through a cheap selection from
+\texttt{Vector} even though they are not indexed through embeddings.
 
-The schema of the \texttt{samples} table largely drives the capabilities for
-example selection at runtime, it maintains embeddings of the masked sql query
-and natural language question respectively. Thus after cosine similarity search
-the original query or question can be reconstructed as well as the graph layout
-of the underlying database can be accessed through the \texttt{database} table.
+The schema of the \texttt{samples} table largely enables the example selection
+at runtime, it maintains embeddings of the sql query and natural language
+question respectively. Thus after cosine similarity search the original query
+or question can be reconstructed as well as the graph layout of the underlying
+database can be accessed through the \texttt{database} table.
 
 The \texttt{database} and \texttt{database\_indices} table contain \texttt{JSON}
 columns respectively for serializing complex graph and graph index structures
 to the database.
 
-\subsubsection{Embedding and Masking}
+\subsubsection{Embedding}
 
-The embedding and masking functionalities in \texttt{natural-sampling} abstract
-batch embedding of masked question and SQL queries using the GPU so that the
-runtime and sampling code can efficiently compute masked embeddings.
+The embedding functionalities in \texttt{natural-sampling} abstract batch embedding
+of questions and SQL queries using the GPU so that the runtime and sampling code
+can efficiently compute and use embeddings.
 
 \paragraph{Architecture}
 
-The two primary types for embedding plain and masked text are the
-\texttt{SemanticString} and \texttt{MaskedSemanticString} structs which
-encapsulate strings alognside their embedding vectors. The
-\texttt{MaskedSemanticString} version additionally contains the masked and
-unmasked versions of the embedded string. Furthermore they offer
+The primary type for embedding text is the \texttt{SemanticString} struct which
+holds strings alognside their embedding vectors. Furthermore this struct offers
 \texttt{embed\_seq} and \texttt{embed\_chunked} methods which can be used for
 batch computation of embeddings.
 
@@ -549,13 +544,6 @@ separation in the embedding output.
 % NOTE: Batch embedding computation time down from 200ms per item to
 % approximately 2ms per item when processing 1000-item batches.
 % PUT INTO TEXT/diagram description
-
-\paragraph{Integration}
-
-The \texttt{masking} module tightly integrates wiuth the embedding pipeline.
-During sampling, questions and queries are first masked, then embedded together
-using \texttt{embed\_chunked} and finally combined into
-\texttt{MaskedSemanticString} instances for storage in \texttt{Vector}.
 
 \subsubsection{Wasserstein-Weisfeiler-Leman Kernels}
 

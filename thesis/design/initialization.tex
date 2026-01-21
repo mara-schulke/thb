@@ -11,10 +11,9 @@ measurement. These components work together to support the example selection fun
 
 \subsubsection{Embedding}\label{design:embedding}
 
-Building upon DAIL-SQL's masked example selection approach, \textsc{Natural} constructs
-an embedding space $v$ to enable semantic similarity search. The system uses cosine
-similarity to identify relevant examples based on masked representations of both
-natural language queries and SQL statements, allowing efficient retrieval from
+\textsc{Natural} constructs an embedding space $v$ to enable semantic similarity search
+\citep{DAIL-SQL}. The system uses cosine similarity to identify relevant examples based
+on both the natural language queries and SQL statements, allowing efficient retrieval from
 large collections of question-answer pairs.
 
 We therefore embed a set of training samples $\mathcal{T} = \{(q_1, \omega_1), ..., (q_n, \omega_n)\}$
@@ -23,57 +22,9 @@ is the corresponding SQL query.
 
 The embedding space $v$ can be formally defined as:
 
-$$v = \{~(q, \iota(mask(q)), \omega, \iota(mask(\omega)))~|~(q, \omega) \in \mathcal{T}~\}$$
+$$v = \{~(q, \iota(q), \omega, \iota(\omega))~|~(q, \omega) \in \mathcal{T}~\}$$
 
-where $mask$ represents the masking function described in sections~\ref{design:nl-masking}
-and~\ref{design:sql-masking}, and $\iota$ is the embedding function that maps text to vector representations.
-
-\paragraph{Natural Language Masking}\label{design:nl-masking}
-
-Masking of natural language is the process of replacing all words which are not
-deemed \textit{structurally relevant} with the \texttt{<mask>} token. All words
-$w$ in a constant whitelist $\mathcal{W}$ are determined structurally relevant.
-The constant $\mathcal{W}$ contains common structural SQL keywords and is determined empirically.
-
-Working with masked language enables the system to capture semantic patterns
-independently of domain terminology, improving the generalizability across
-domains.
-
-Given $\mathcal{W} = \{\text{list}, \text{show}, \text{all}, \text{the},
-\text{with}\}$ the natural language
-questions:
-
-\begin{verbatim}
-Show all customers with the firstname John
-List all products with the name iPhone
-\end{verbatim}
-
-Will get masked into the same sentence, such that the semantic words are
-maintained, but domain specific terminology is discarded:
-
-\begin{verbatim}
-Show all <mask> with the <mask> <mask>
-\end{verbatim}
-
-\paragraph{SQL Masking}\label{design:sql-masking}
-
-Masking SQL queries refers to transforming all identifiers contained in 
-a SQL query to \texttt{<mask>} and all value literals to \texttt{<value>}.
-
-Thus, the queries:
-
-\begin{verbatim}
-SELECT * FROM customers WHERE firstname = 'John'
-SELECT * FROM products WHERE name = 'iPhone'
-\end{verbatim}
-
-get masked to:
-
-\begin{verbatim}
-SELECT * FROM <mask> WHERE <mask> = <value>
-\end{verbatim}
-
-
+where $\iota$ is the embedding function that maps text to vector representations.
 
 \subsubsection{Schema Indexing}
 
