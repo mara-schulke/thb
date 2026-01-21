@@ -6,38 +6,37 @@ be embedded into databases.
 
 \begin{enumerate}
     \item \textbf{Literature Review} — An analysis of the existing research in the fields of
-          natural language interfaces (NLI) for databases, GPU integration for acceleration
-          of database operations, and LLM/AI Model integration within database systems.
-          This phase establishes the theoretical foundation for this research and identifies current 
-          state-of-the-art approaches, their benefits and shortcomings.
+        natural language interfaces (NLI) for databases, GPU integration for acceleration
+        of database operations, and LLM/AI Model integration with database systems.
+        This phase establishes the theoretical foundation for this research and identifies current 
+        state-of-the-art approaches, their benefits and shortcomings.
     \item \textbf{Theoretical Foundations} — Introducing the theoretical concepts and frameworks 
-          required for understanding the problem statement and the proposed solution. The fundamentals
-          introduced in this section are referenced in the system design and implementation phases
-          respectively.
-    \item \textbf{System Design} — Design of a system architecture that can utilize GPU acceleration
-          for LLM integration from within postgres. The primary goals of the system design phase
-          are to arrive at an architecture that yields low latency natural language processing,
-          schema-aware SQL query generation, ambiguity detection and resolution whilst maintaining
-          a high semantic accuracy.
+        required for understanding the problem statement and the proposed solution. The fundamentals
+        introduced in this section are referenced in the system design and implementation phases
+        respectively.
+    \item \textbf{System Design} — Design of a system architecture that can translate natural language
+        to SQL using LLMs. The primary goal of the system design phase is to arrive at an architecture
+        that yields low latency natural language processing, schema-aware SQL query generation and ambiguity
+        resolution whilst maintaining a high semantic accuracy.
     \item \textbf{Implementation} — The implementation of a PostgreSQL extension according to the
-          above system design that relies on \texttt{rust} and \texttt{pgrx}. This extension will
-          provide a GPU accelerated framework for executing LLMs, implement a natural language
-          to query generation pipeline that relies on the SQL schema and create database functions
-          and operators for both query generation and execution.
+        above system design that relies on \texttt{rust} and \texttt{pgrx}. This extension will
+        provide a GPU accelerated framework for executing LLMs, implement a natural language
+        to query generation pipeline that relies on the SQL schema and create database functions
+        and operators for both query generation and execution.
     \item \textbf{Evaluation} — Benchmarking the implementation against standard evaluation datasets
-          framework and benchmark that introspects the implementations performance in multiple
-          dimensions. The most relevant evaluation metrics for this thesis are execution accuracy
-          ($\mathbb{EA}$), exact match ($\mathbb{EM}$), error rate ($\mathbb{ER}$) and candidate 
-          latency ($\mathbb{CL}$).
+        framework and benchmark that introspects the implementations performance in multiple
+        dimensions. The most relevant evaluation metrics for this thesis are execution accuracy
+        ($\mathbb{EA}$), exact match ($\mathbb{EM}$), error rate ($\mathbb{ER}$) and candidate 
+        latency ($\mathbb{CL}$).
     \item \textbf{Discussion} — Analysis and interpretation of the evaluation phase results against
-          the research goals of this thesis. Evaluating the performance and accuracy results recorded
-          during the benchmarks against the question whether real world deployments of NILs are feasible.
-          Furthermore the impact of approaches used are shown and it is determined whether a statistically
-          significant improvement can be achieved.
+        the research goals of this thesis. Evaluating the performance and accuracy results recorded
+        during the benchmarks against the question whether real world deployments of NILs are feasible.
+        Furthermore the impact of approaches used are shown and it is determined whether a statistically
+        significant improvement can be achieved.
     \item \textbf{Summary and Outlook} — Summarizes the contributions, addresses limitations
-          of this thesis and the implementation, and proposes directions for future research alongside
-          possible applications. Primary future research topics include advanced GPU optimization
-          techniques (e.g. further quantization), accuracy and performance impact of model fine tuning,
-          techniques, scalability of such a system in enterprise scenarios and the evaluation of security
-          and privacy considerations (e.g. managing access control).
+        of this thesis and the implementation, and proposes directions for future research alongside
+        possible applications. Primary future research topics include advanced GPU optimization
+        techniques (e.g. further quantization), accuracy and performance impact of model fine tuning,
+        techniques, scalability of such a system in enterprise scenarios and the evaluation of security
+        and privacy considerations (e.g. managing access control).
 \end{enumerate}
