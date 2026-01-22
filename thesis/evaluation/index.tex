@@ -275,35 +275,8 @@ and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
 weights) and the reported accuracy metrics results from \cite{OmniSQL}.
 As shown in Figure~\ref{fig:eval:omnisql-gap}, the $\delta$ in performance between the local measurement and the official
 values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
-28.1\% on \Bird~(dev).
-
-\begin{figure}[htbp]
-  \centering
-  \includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
-  \caption{
-    Performance gap between measured OmniSQL-7B-gguf and reported
-    OmniSQL-7B results across benchmarks. The $\delta$ ranges from 2.6\% on
-    \Spider~(dev) to 28.1\% on \Bird~(dev), highlighting differences between
-    quantized local deployment and published full-precision results.
-  }
-  \label{fig:eval:omnisql-gap}
-\end{figure}
-
-Several factors may contribute to this stark gap between the two systems.
-First, model quantization can come with a cost and different quantization
-variants and model formats come with different performance characteristics. The
-OmniSQL-7B-gguf system uses the F16 weights but transformed into the GGUF
-model format while published results presumably use full-precision models in
-the safetensors formats. Prior research has shown that bit-wise quantization
-can degrade model accuracy, particularly on complex reasoning tasks on
-multi-billion paramater models \citep{Int8AtScale} and it is yet unclear
-whether the mere transformation into GGUF harms performance for this model
-series. Second, the exact hyperparameters used during evaluation likely
-differed between \cite{OmniSQL} and local benchmarks which may influence the
-model accuracy in unforseen ways. Unless the exact same inference environment,
-quantization and hyperparameters the performance difference might be caused by
-a multitude of subtle differences. Finally, dataset version differences or
-preprocessing variations could contribute to divergent results.
+28.1\% on \Bird~(dev). The section performance gap section
+(\ref{sec:eval:performance-gap}) analyzes this gap in detail.
 
 The \textit{Baseline} configuration of \Natural~further showed degredation of
 performance compared to the OmniSQL-7B-gguf system configuration. Using the
@@ -501,3 +474,208 @@ models are recommended. \Natural~clearly exceeds these thresholds by a factor
 of up to 45 on complex databases and questions (eg, \Bird). Thus either
 significantly better hardware is required, a simpler configuration needs to be
 used or further performance optimizations need to be introduced.
+
+\subsection{Performance Gap}\label{sec:eval:performance-gap}
+
+During baseline validations of the foundational models a critical performance
+discrepancy emerged (see~\ref{fig:eval:omnisql-gap}) between the locally
+measured performance of \OmniSQL~7B and the published performance by
+\citeauthor{OmniSQL}. This section systematically breaks down the magnitude,
+potential causes and implications of this gap. 
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
+  \caption{
+    Performance gap between measured OmniSQL-7B-gguf and reported
+    OmniSQL-7B results across benchmarks. The $\delta$ ranges from 2.6\% on
+    \Spider~(dev) to 28.1\% on \Bird~(dev), highlighting differences between
+    quantized local deployment and published full-precision results.
+  }
+  \label{fig:eval:omnisql-gap}
+\end{figure}
+
+\subsubsection{Magnitude and Characterization of the Gap}
+
+Table~\ref{tab:eval:performance-gap} presents the gap between the measured
+performance discrepancies across all evaluated benchmarks for the \OmniSQL~7B model.
+It is important to note that a GGUF variant was used for local measurements.
+The resulting gap varies significantly by dataset, ranging from only 2.6\% on
+\Spider~(dev) up to 28.1\% on \Bird~(dev).
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{l|c|c|c}
+        \toprule
+        \textbf{Benchmark} & \textbf{Published (\EA)} & \textbf{Measured (\EA)} & \textbf{Gap ($\Delta$)} \\
+        \midrule
+        \Spider~(dev)      & 81.6\%                   & 79.0\%                  & -2.6pp                 \\
+        \Spider~(test)     & 89.8\%                   & 79.0\%                  & -10.8pp                \\
+        \Bird~(dev)        & 66.1\%                   & 38.0\%                  & -28.1pp                \\
+        \bottomrule
+    \end{tabular}
+    \caption{
+        Performance gap between published \OmniSQL~7B results \citep{OmniSQL} and
+        local measurements using OmniSQL-7B-gguf (Q8\_0 quantization). Negative
+        values indicate underperformance relative to published baselines.
+    }
+    \label{tab:eval:performance-gap}
+\end{table}
+
+
+The uneven distribution of the measure performance gaps across the three
+benchmarks suggests a systematic cause rather than random variation. The gap
+correlates strongly with benchmark complexity: \Spider~(dev), the simplest
+of the three benchmarks with well-structured schemas and clean data is showing
+only a minimal performance degredation of -2.6pp. \Spider~(test) which is not
+included in any training dataset, using more diverse domains and more complex
+queries is showing a moderate degreation of -10.8pp. \Bird~(dev) which is the
+most complex benchmark of the three, featuring larger schemas, dirty data and
+external knowledge is showing an extreme degredation of -28.1pp.
+
+This is indicating a performance drop correlating with task difficulty,
+suggesting that the locally measured model had impaired reasoning capabilities,
+difficulties handling larger schemas or handling external knowledge
+requirements.
+
+\subsubsection{Potential Contributing Factors}
+
+Several factors may contribute to this stark gap between the two systems.
+This subsection is analzing potential causes using available evidence.
+
+\paragraph{Model Quantization and Format Differences}
+
+Likely the most apparent difference between the published performance metrics
+and the local measurements for \OmniSQL~7B is the model format and precision.
+The OmniSQL-7B-gguf system uses the F16 weights but transformed into the GGUF
+model format while published results presumably use full-precision models in
+the safetensors formats. Prior research has shown that bit-wise quantization
+can degrade model accuracy, particularly on complex reasoning tasks on
+multi-billion paramater models \citep{Int8AtScale} and it is yet unclear
+whether the mere transformation into GGUF harms performance for this model
+series. Second, the exact hyperparameters used during evaluation likely
+differed between \cite{OmniSQL} and local benchmarks which may influence the
+model accuracy in unforseen ways. Unless the exact same inference environment,
+quantization and hyperparameters the performance difference might be caused by
+a multitude of subtle differences. Finally, dataset version differences or
+preprocessing variations could contribute to divergent results.
+
+The $\Delta$ of 2.6\% on \Spider~(dev) is well within the expected
+format-induced degradation ranges, which initially suggests that the model
+format alone could explain the simple benchmark discrepancy. However, the
+widening performance gaps with increasing benchmark complexity (up to 28.1\% on
+\Bird) substantially exceeed the typical effects of model format conversions
+indicating that other factors might contribtue to the observed performance loss.
+
+\paragraph{Inference Implementation Differences}
+
+\citeauthor{OmniSQL} likely used \texttt{vlm} as their inference engine, while
+local measurements of \OmniSQL~7B used Rust FFI bindings to llama.cpp. These
+engines implement the same mathematical operations but may differ in multiple
+dimensions. The engines might differ in implementation when it comes to numeric
+operations, the exact attention implementation, sampling algorithms and KV-cache
+management. To keep further inference environment divergent as small as possible,
+similar (where possible) sampling configurations, prompts and hyperparameters
+where used.
+
+\paragraph{Hyperparameter and Configuration Uncertainty}
+
+While the published \OmniSQL~evaluation does not exactly describe all its
+inference hyperparameters, some were noted in example code but uncertainty
+remains about the concrete configuration. Critical parameters that can widely
+influence model performance include temperature, top-p sampling, maximum
+generation length, context window size, repetition penalties and stop sequences.
+
+Local measurements used a context size of 32768 and only greedy sampling with
+standard stop sequences. Inferring from the results published by
+\citeauthor{OmniSQL} greedy sampling was the primary sampling method during
+evaluation alongside majority voting. Overall a difference in hyperparameters
+and inference engine configuration is possible, but is concluded to be unlikely
+given that greedy sampling as a standard and very straightforward algorithm.
+
+\paragraph{Prompt Template Alignment}
+
+While a prompt drift could cause significant performance differences the exact
+prompt as supplied by \citeauthor{OmniSQL} was used. Subtle differences in
+pharsing, layout or presentation could yield widely diverging results. It is
+likely that \OmniSQL~7B was fine-tuned using a specific prompt format, and deviation
+from this format can significantly degrade performance.
+
+The local benchmarking implementation used the published prompt template but
+likely had a slightly diverging code representation implementation than the
+authors of \OmniSQL. The code representation implementation used by the
+benchmarking harness is based around a the \texttt{sqlparser} crate in Rust
+which includes an implementation for human readable formatting of SQL queries.
+While these modifications are subtle, they may inadvertently misalign with the
+model's learned expectations on the code representation format, confusing the
+generation process.
+
+Further evidence for a possible prompt drift comes from the \textit{Baseline}
+configuration results. Even when using only the inference logic ($\pi$) without
+additional pipeline components, \Natural~achieved 77.9\% EA on \Spider~(dev)
+compared to OmniSQL-7B-gguf's 79.0\%—a 1.1pp degradation despite using the same
+model and quantization. This suggests that even \OmniSQL is noticeably
+sensitive to prompt template differences affect performance.
+
+The prompt template used in the local benchmarks for \Natural is shown in
+Appendix~\ref{appendix:prompt:natural:inference} and for \OmniSQL in
+Appendix~\ref{appendix:prompt:omnisql:inference}. \Natural's prompt deviated from
+the presumed original format through the addition of similarity scores for
+in-context learning examples, more explicit instructions and the likely modified
+schema representation.
+
+\subsubsection{Implications for Evaluation Validity}
+
+Due to time and resource constraints no exhaustive systematic evaluation of
+different quantization schemes, inference engines and prompt templates
+was performed. This singificantly limits the ability to draw
+definite conclusions on the exact root cause for the performance drift between
+the published performance numbers and the locally measured ones.
+
+\paragraph{Impact on Absolute Performance Claims}
+
+The substantial gap between the published vs reproduced baselines undermines
+the confidence in \textit{absolute} performance gains. The \textit{relative}
+performance gains are excellent (eg, \textit{Syn} achieving 53.8\% vs.
+\OmniSQL~7B-gguf achieving 38.0\% on \Bird) but given that no clear absolute
+improvement could be measured (eg, \textit{Syn} achieving 53.8\% vs \OmniSQL~7B
+achieving 66.1\% on \Bird). Furthermore the comparisons with other external
+systems become unclear if local measurements face a significant gap in
+compared to the published performance numbers.
+
+Thus this thesis avoids strong claims about absolute performance levels and
+instead focuses on the relative improvements achieved on local NL2SQL systems
+which is conistent with the evaluation environment and results.
+
+\paragraph{Reliability of Relative Comparisons}
+
+Most notably, the performance gap between \OmniSQL~7B and \OmniSQL~7B-gguf does
+not infect the validity results measured between different variants of \Natural
+and between \Natural and \OmniSQL. All \Natural~configurations and
+\OmniSQL~7B-gguf have been evaluated using the same evaluation framework and
+are therefore strictly comparable. \Natural~showed strong performance
+improvements across increasingly complex pipeline configurations. \textit{Syn}
+showed an improvement of +21.4pp pver \textit{Baseline} on \Bird which was
+reliably measurable regardless of the absolute baseline uncertainty.
+
+Furthermore component ablations in the evaluation provid valid evidence for
+understanding the relative contributions of different pipeline components
+(minimal gain without ICL vs. substantial gain with ICL). Therefore the
+conclusion holds true that example selection is the most impactful component
+and that components exhibit synergistic rather than additive effects remain
+valid although the conclusion is only backed by same-environment evaluations
+instead of cross-study evaluations.
+
+\paragraph{Broader Implications for LLM-based Research}
+
+The challenges encountered in this thesis reflect broader, systemic issues in
+LLM-based NL2SQL research. Without accessibility to the same hardware, models,
+specifications and evaluation frameworks a reliable cross-study comparison
+becomes close to unachievable. Intra-study comparisons remain valid but require
+significant time and hardware resources to achieve. This suggests that the
+NL2SQL research community would suggest from standardization of inference
+frameworks, comprehensive documentation of all hyperparameters and
+configurations used as well as a release of exact prompts, preprocessing code
+and scripts used during evaluation. Furthermore could multiple independent
+reproductions increase the confidence in claimed results. 
+
