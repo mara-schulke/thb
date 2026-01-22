@@ -19,9 +19,9 @@ error-rate = { label = "Error Rate", unit = "%" }
 candidate-latency = { label = "Candidate Latency", unit = "s" }
 
 [benchmarks]
-spider-dev = { label = "Spider (dev)" }
-spider-test = { label = "Spider (test)" }
-bird-dev = { label = "BIRD (dev)" }
+spider-dev = { label = "Spider (dev)", order = 0 }
+spider-test = { label = "Spider (test)", order = 1 }
+bird-dev = { label = "BIRD (dev)", order = 2 }
 
 [results.spider-dev]
 natural-baseline = { execution-accuracy = 0.7750, exact-match = 0.303, error-rate = 0.0, candidate-latency = 7.3 }
