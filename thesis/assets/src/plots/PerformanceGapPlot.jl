@@ -22,7 +22,7 @@ function PerformanceGapPlot(;
 end
 
 function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font, palette)
-    benchmark_keys = collect(keys(data.results))
+    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
     n_benchmarks = length(benchmark_keys)
 

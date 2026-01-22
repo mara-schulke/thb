@@ -34,7 +34,7 @@ function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palet
     end
 
     fillstyles = get_fillstyles(config_pipelines)
-    benchmark_keys = collect(keys(data.results))
+    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
     n_configs = length(all_configs)
     n_benchmarks = length(benchmark_keys)

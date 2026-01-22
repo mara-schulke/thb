@@ -82,3 +82,14 @@ function readable(pipelines::Vector{Pipeline}, palette::PaletteScheme)
 
     return colors
 end
+
+"""
+Sort benchmark keys by their order field from the benchmark configuration.
+Benchmarks without an order field will be placed at the end (order = 999).
+Returns a sorted vector of benchmark keys.
+"""
+function sort_benchmarks_by_order(data::BenchmarkData, benchmark_keys::Vector{String})
+    benchmarks_with_order = [(key, haskey(data.benchmarks, key) ? data.benchmarks[key].order : 999) for key in benchmark_keys]
+    sort!(benchmarks_with_order, by = x -> x[2])
+    return [x[1] for x in benchmarks_with_order]
+end

@@ -25,7 +25,7 @@ function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, 
 
     pipeline_labels = [get_pipeline_label(p) for p in pipelines]
     fillstyles = get_fillstyles(pipelines)
-    benchmark_keys = collect(keys(data.results))
+    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     n_pipelines = length(pipelines)

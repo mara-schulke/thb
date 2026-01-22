@@ -20,7 +20,7 @@ function BaselineImprovementPlot(;
 end
 
 function render(plot_config::BaselineImprovementPlot, data::BenchmarkData; plot_font, palette)
-    benchmark_keys = collect(keys(data.results))
+    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     baseline_values = Dict{String, Float64}()

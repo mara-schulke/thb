@@ -20,13 +20,17 @@ end
 struct Benchmark
     key::String
     label::String
+    order::Int
 end
 
 function Benchmark(key::String, data::Dict)
     if !haskey(data, "label")
         error("Benchmark '$key' missing required 'label' field")
     end
-    Benchmark(key, String(data["label"]))
+    if !haskey(data, "order")
+        error("Benchmark '$key' missing required 'order' field")
+    end
+    Benchmark(key, String(data["label"]), Int(data["order"]))
 end
 
 struct Pipeline
