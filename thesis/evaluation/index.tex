@@ -495,7 +495,7 @@ potential causes and implications of this gap.
   \label{fig:eval:omnisql-gap}
 \end{figure}
 
-\subsubsection{Magnitude and Characterization of the Gap}
+\subsubsection{Magnitude and Characterization}
 
 Table~\ref{tab:eval:performance-gap} presents the gap between the measured
 performance discrepancies across all evaluated benchmarks for the \OmniSQL~7B model.
@@ -569,7 +569,7 @@ indicating that other factors might contribtue to the observed performance loss.
 
 \paragraph{Inference Implementation Differences}
 
-\citeauthor{OmniSQL} likely used \texttt{vlm} as their inference engine, while
+\citeauthor{OmniSQL} likely used \texttt{vllm} as their inference engine, while
 local measurements of \OmniSQL~7B used Rust FFI bindings to llama.cpp. These
 engines implement the same mathematical operations but may differ in multiple
 dimensions. The engines might differ in implementation when it comes to numeric
@@ -679,3 +679,62 @@ configurations used as well as a release of exact prompts, preprocessing code
 and scripts used during evaluation. Furthermore could multiple independent
 reproductions increase the confidence in claimed results. 
 
+\subsubsection{Recommendations for Future Work}
+
+Based on this analysis several recommendations for further research in this
+area can be made:
+
+\paragraph{Systematic Quantization Study}
+
+A dedicated investigation of the impact of model quantization on NL2SQL
+performance could provide guidance for better understanding the quantization to
+performance tradeoffs. This would allow for emperical decision making when
+deploying choosing model sizes and quantization into resource constrained
+environments. Prior research exists on the general impact of quantization on
+model performance, but having concrete datapoints specific to NL2SQL would
+clarify the observed behavior \citep{Int8AtScale}. This study should evaluate
+state of the art NL2SQL systems across multiple quantization levels (F16, Q8,
+Q6, Q4 and Q3) on all major NL2SQL benchmarks like \Spider, \Spider~2.0 and
+\Bird~measuring both the accuracy and latency implications of different
+configurations. Furthermore an analysis could reveal correlation in performance
+behavior between quantization levels and query and schema complexity.
+
+\paragraph{Cross-Framework Validation}
+
+To isolate inference engine effects and subtle differences implied through
+different model formats the same model should be evaluated across multiple
+frameworks. This study could include PyTorch and Transformers, llama.cpp, vLLM
+and ONNX and evaluate state of the art NL2SQL models in varying sizes against
+prevalent benchmarks. Conistent results across the frameworks would further
+increase the confidence in reproducibility of results where descrepancies would
+highlight discrepancies in implementation-specific details of algorithms and
+prompting.
+
+\paragraph{Schema and Example Presentation}
+
+While research on schema and example presentation exist within the NL2SQL
+community it is not exhaustive and includes evaluations of different classes of
+schema and query presentation \citep{DAIL-SQL, XiYan}. Further research in this
+field could highlight differences introduced through subtle changes in
+presentation of examples or schemas and recommend mitigation techniques like
+identifying the most performant presentation formats or fine-tuning base models
+to a specific presentation format.
+
+\subsubsection{Summary}
+
+Overall the gap of 28.1pp on \Bird~between the published \OmniSQL~7B results
+(66.1\% \EA) and local measurements (38.0\% \EA) represents a significant
+challenge for the absolute performance interpretation from this evaluation.
+While strong incremental performance gains could be observed (eg, \textit{Syn}
+achieving 53.8\% vs. \OmniSQL~7B-gguf achieving 38.0\% on \Bird) by applying
+the techniques outlined in this thesis (schema aware example selection,
+self-refinement, majority voting) no clear statement can be made on the
+absolute performance of \Natural. Multiple factors are possibly contributing to
+the observed gap which include model quantization, inference implementation,
+hyperparameter uncertainty, prompt template drifting and potential dataset or
+evaluation script version differences.
+
+Despite these limitations, the gap does \textit{not} invalidate the core
+contributions of this thesis. The relative comparisons within the consistent
+local evaluation environment remain reliable, therefore enabling valid, but
+thesis-local conclusions.
