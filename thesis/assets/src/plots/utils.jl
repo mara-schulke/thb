@@ -91,5 +91,8 @@ Returns a sorted vector of benchmark keys.
 function sort_benchmarks_by_order(data::BenchmarkData, benchmark_keys::Vector{String})
     benchmarks_with_order = [(key, haskey(data.benchmarks, key) ? data.benchmarks[key].order : 999) for key in benchmark_keys]
     sort!(benchmarks_with_order, by = x -> x[2])
+
+    print([x[1] for x in benchmarks_with_order])
+
     return [x[1] for x in benchmarks_with_order]
 end

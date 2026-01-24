@@ -29,12 +29,6 @@ let samples = selection::<4>(
 \paragraph{Vector Database Schema}\label{appendix:vector-schema}
 
 \begin{verbatim}
-CREATE TABLE IF NOT EXISTS whitelist (
-  word             text not null primary key,
-  frequency        integer not null,
-  domain_count     integer not null
-);
-
 CREATE TABLE IF NOT EXISTS databases (
   id               text not null,
   name             text not null,
