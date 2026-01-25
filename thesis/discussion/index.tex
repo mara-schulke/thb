@@ -78,7 +78,8 @@ observable and reproducible within a controlled environment.
 To conclude this thesis, the research questions that were outlined in section
 \ref{section:introduction:research-questions} are answered.
 
-\subsubsection{RQ1 — To what extent can open-source LLMs achieve competitive NL2SQL performance through pipeline composition and optimization?}
+\subsubsection{Research Question 1: To what extent can open-source LLMs achieve
+competitive NL2SQL performance through pipeline composition and optimization?}
 
 The capabilities of open-source NL2SQL models achieve \textit{partially
 competitive} performance on prevalent, structured NL2SQL benchmarks. Especially
@@ -209,3 +210,131 @@ environments. Nonetheless the measured performance yields the systems to face
 significant challenges in enterprise environments as an execution accuracy of
 53.8\% on \Bird with a latency of 43.7s is unacceptable for end users. This
 indicates that while promising there is still a gap that remains to be closed.
+
+\subsubsection{Research Question 2: How do NL2SQL pipeline components interact,
+and which configurations optimize the accuracy-latency tradeoff?}
+
+\paragraph{Component Interaction Analysis}
+
+The pipeline components $\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$ were shown to
+work best synergetically rather than additive with $\sigma$ representing the
+primary performance driver of the pipeline $nq$. The ablation study perfomed
+during evaluation reveals this through a systematic evaluation of the three
+types of configurations: \textit{Baseline}, \textit{Zero-Shot} and
+\textit{Full}. The evaluation results reveal the behaviour of the individual
+pipeline components in synergy, where \textit{Zero-Shot} only provides a
+marginal improvement over \textit{Baseline} (eg, +0.8pp on \Spider) while
+nearly doubling the latency. All configurations with active ICL
+demonstrated significant improvement over their non-ICL counterparts; The worst
+results produced by ICL configurations compared to the best-performing non-ICL
+configurations resulted in an improvement through ICL by +1.7pp on
+\Spider~(dev), +2.1pp on \Spider~(test) and +14.4pp on \Bird. These results
+reveal that the other pipeline components bring only a minimal benefit (+0.8pp
+on \Spider~(dev), +0.5pp on \Spider~(test) and +1.6pp on \Bird) to the
+\EA~performance of a pipeline while significantly impacting (ie. approximately
+doubling) the \CL.
+
+The underlying pattern of component interactions becomes even more apparent
+through examining \Natural's failure modes. Without examples \Natural~(and thus
+\OmniSQL) generate semantically inaccurate SQL candidates more often; usually
+incorrect column or table selection, misunderstanding of column semantics and
+value ranges or wrong join patterns result in syntactically correct queries
+which result in wrong result sets. For example the schema subsetting component
+is unable to work correctly if the initial query candidate is using the wrong
+set of tables alltogether, the majority voting algorithm fails to select the
+best candidate when all SQL candidates correspond to different result sets and
+self-refinement can only rarely repair semantically mislead initial queries. 
+In-context learning helps \Natural~to guide the foundational model by supplying
+a set of highly relevant, ranked examples which steers the model to put its
+attention on specific parts of the SQL schema. The schema-aware example
+selection algorithm works particularly well and was shown to be effective even
+on data that did not originate from the training splits of the corresponding
+benchmarks (\ref{tab:eval:overall-results}). 
+
+\paragraph{Component Contribution Ranking}
+
+The above insights allow for a ranking of components by their estimated impact
+based on the ablation evidence from Table~\ref{tab:eval:overall-results} and
+Figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
+by impact as follows:
+
+\begin{enumerate}
+    \item \textbf{Query Projection ($\pi$)} – The query projection component
+        itself remains the largest single contributor in performance and the
+        foundation models used predominately drives the performance of the
+        system. All other components are orchestrated around query projection.
+        This was shown through the \textit{Baseline} configuration which
+        achieved 77.9\% and 77.0\% on \Spider~(dev and test) and 32.4\% on
+        \Bird. The substantial gap between the two benchmarks highlights how
+        severly the model capabilities degrade with increasing task and schema
+        complexity.
+    \item \textbf{Example Selection ($\sigma$)} – As discussed above, the
+        example selection provides a non-neglible improvement in performance to
+        the overall system while introducing relatively little candidate
+        latency (eg, only +0.1-+2.3s on \Spider). The impact that ICL showed on
+        \Bird demonstrates that example selection is not only helpful for LLMs
+        generating SQL querys but a \textit{necessary} measure for enabling
+        them to handle complex query generation tasks on real-world data.
+    \item \textbf{Consensus Voting ($\nu$)} – The consesus voting algorithm
+        selects the most prevalent result set amogst multiple generation
+        attempts and validates that queries execute without any errors prior to
+        returning them to the user. This self-consensus mechanism ensures low
+        syntactic error rates across all configurations
+        (Figure~\ref{fig:eval:error-rates}). However the voting strategy only
+        gains in overall performance impact with an increasing number of
+        internal candidates. The evaluation was performed with 1-2 internal
+        candidates due to computational complexity of increasing the pipeline
+        iterations. This prevents definite conclusions on the impact.
+    \item \textbf{Self-Refinement ($\rho$)} – Self-refinement is effectively
+        prompting the underlying model for repairing or improving its initially
+        produced query candidate. This results in an overall marginal
+        improvement of \EA, but comes at a significant computational cost.
+        Adding self-refinement nearly doubles the \CL on average and provides
+        diminishing returns. The results of the \textit{Zero-Shot}
+        configuration, especially on the \Bird~benchmark, suggest that
+        self-refinement is unable to correct significant semantic errors on its
+        own without in-context learning.
+    \item \textbf{Schema-Subsetting ($\phi$)} – Schema subsetting aims to
+        reduce the noise for the model by filtering out unused table from the
+        SQL schema before running query projection, thus improving token
+        efficiency and accuracy. However, the exact impact of schema-subsetting
+        is difficult to isolate due to the constrained ablation study that was
+        performed. It is questionable whether schema-subsetting itself provides
+        a statistically significant improvement in performance or even harms
+        performance as the \textit{Baseline} configuration underperformed the
+        model baseline.
+\end{enumerate}
+
+\paragraph{Accuracy-Latency Tradeoff}
+
+The accuracy-latency measurements which is visualized in
+Figure~\ref{fig:eval:candidate-latency} and
+Table~\ref{tab:eval:overall-results} reveal three different efficiency profiles
+across the systems that where benchmarked.
+
+\begin{enumerate}
+    \item \textbf{Baseline} — The baseline profile includes both the
+        \textit{Baseline} configuration of \Natural~and the raw \OmniSQL~models.
+        The baseline profile is generally yielding the lowest possible
+        candidate latency, but also yields the lowest scores for both
+        \EA~and~\EM and is thus prioritising latency over accuracy.
+    \item \textbf{Zero-Shot} — The zero shot profile is denoted by a suboptimal
+        accuracy latency tradeoff where there are marginal performance gain
+        over the baseline results but this is accompanied by a strong average
+        increase in latency (effectively doubling on average).
+    \item \textbf{Full} — Lastly the full profile is a balanced profile which
+        weights accuracy over latency. Systems in this class include the
+        \textit{Syn}, \textit{Train} and \textit{Ground} configurations of
+        \Natural. These systems generally achieve best in class results but
+        also a consistently and significantly higher candidate latency.
+\end{enumerate}
+
+These three performance profiles highlight different tradeoffs that can be
+conciously made depending on the deployment scenario and the target usage
+pattern. For highly interactive systems like chat applications and interactive
+learning tools, the \textbf{Baseline} profile will yield better latency
+characteristics while maintain a significant portion of accuracy, especially on
+simple tasks. For more complex usecases where accuracy is generally more
+critical than latency (e.g, asynchronous report generation), the \textbf{Full}
+profile is representing a more dedsirable tradeoff, which renders the
+\textbf{Zero-Shot} profile mostly undesirable.
