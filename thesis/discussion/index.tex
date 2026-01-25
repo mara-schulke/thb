@@ -1,146 +1,76 @@
-% Discussion
 \section{Discussion}
 
-\subsection{Discussion of Findings}
+This section is linking the evaluation results back to the research questions
+of this thesis which where outlined in the introduction section. It is
+reflecting on the practical implications of the findings in this thesis and 
+deriving recommendations for actions and future research work in the NL2SQL
+community.
 
-% TODO: Introduction paragraph synthesizing evaluation results
+\subsection{Summary of Results}
 
-\subsubsection{Research Questions Revisited}
+The evaluation of \Natural~demonstrated the capabilities of open-source LLMs
+and showed that they can achieve competitive performance on prevalent structured
+NL2SQL benchmarks such as \Spider~and \Bird. Nonetheless significant
+challlenges remain for an enterprise-scale adoption of NL2SQL systems.
+\Natural~achieves up to 81.0\% on the \Spider~development split using the
+\textit{Syn} configuration and 81.4\% on the test split using the
+\textit{Train} configuration representing a +3.1pp and +4.4pp improvement
+over the 77.9-77.0\% baseline performance of \OmniSQL-7B respectively
+(Table~\ref{tab:eval:overall-results}).
 
-\paragraph{RQ1: Feasibility for Real-World Application}
-% TODO: Answer RQ1 directly with evidence
-% - Is semantic accuracy high enough? (cite Spider/Bird EA from 7.2)
-% - Can it run on reasonable hardware? (cite performance analysis from 7.4)
-% - Overall verdict: Yes/No/Qualified, with supporting evidence
+On the complex \Bird benchmark, the \textit{Syn} configuration reaches a 53.8\%
+\EA which represents a +21.4pp improvement over the 38.0\% achieved by the
+\textit{Baseline} configuration — representing a 66\% relative gain in
+execution accuracy. These results position \Natural as competitive with the
+locally-reproduced \OmniSQL-7B-gguf baseline (79.0\% on \Spider~(dev), 79.0\%
+on \Spider~(test), 38.0\% on \Bird) while remaining below published accuracy
+scores of closed-source model results (GPT-4o: 84.9\% \Spider, 64.0\% \Bird).
 
-\paragraph{RQ1.1: Semantic Accuracy Threshold}
-% TODO: Address sub-question on accuracy benefits
-% - What EA threshold provides "noticeable benefit"?
-% - How does achieved EA compare to this threshold?
-% - User tolerance for errors in different contexts
+The ablation study performed during evaluation reveals that pipeline components
+tend to interact in synergy rather than additively, with in-context learning
+and the example selection algorithm of \Natural serving as the crucial
+differentiator for performance. The \textit{Zero-Shot} configuration — which
+uses schema subsetting, self-refinement, and majority voting but does not apply
+example selection — achieves only a +0.8pp improvement on \Spider
+despite doubling the candidate latency from 7.3s to 14.0s. \Natural~
+configurations with active ICL and example selection yield up to +2.3pp on
+\Spider~dev, +3.9pp on \Spider~test and and +19.8pp on \Bird compared to
+\textit{Zero-Shot}. This shows that both schema subsetting and self-refinement
+techniques provide minimal benefit without in-context learning and example
+selection. Further ablation would help to understand the potential cross
+effects of components and the potential implications of disabling pipeline
+components like schema-subsetting, self-refinement and majority voting.
+Furthermore increasing the pipeline iterations from 1 to $k$ would yield
+insights into self balacing and self correction across iterations of \Natural.
 
-\paragraph{RQ1.2: Hardware Accessibility}
-% TODO: Address sub-question on hardware requirements
-% - RTX 3090 (24GB VRAM): Is this "mass-available"?
-% - Comparison to high-end research GPUs (A100, H100)
-% - Could system run on lower-tier GPUs with optimizations?
+A comparison of different example sources shows that structurally diverse
+synthetic examples are not necessarily performing worse than examples from the
+same dataset using the \Natural~example selection algorithm. Synthetic examples
+outperformed domain-similar training examples on \Bird by 5.4pp (53.8\% vs.
+48.4\%), while perfect example selection yielded 55.8\% accuracy and thus adds
++2.0pp over schema-aware selection. This indicates diminishing returns of
+in-context learning from increasingly sophisticated example strategies.
 
-\paragraph{RQ2: Ambiguity Resolution Approaches}
-% TODO: Answer RQ2 with evidence from ablations
-% - Which components most effectively resolve ambiguity? (cite ablation study 7.3)
-% - Ranking: σ, φ, ρ, ν by impact on ambiguous queries
-% - Context-dependent effectiveness (different approaches for different ambiguity types)
+Observed performance characteristics reveal a complex tradeoff for real-world
+applications. While all NL2SQL system that were evaluated maintain remarkably
+low error rates of less than 0.7 failures per 1000 queries (see
+Figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominately
+semantic (ie. incorrect results). Furthermore candidate latency ranges from
+7.3s for \Natural~(\textit{Baseline}) to up to 16.3s for ICL configurations on
+\Spider and 43.8s on \Bird. This yields \Natural viable for experimental,
+analytical workflows and asynchronous report generation but unviable for
+interactive systems like chatbot applications. While performance optimizations
+could be applied the hardware used is the primary bottleneck for the speed that
+is achievable as the majority of \CL is attributable to inference.
 
-\paragraph{RQ3: Strategies for Increasing Semantic Accuracy}
-% TODO: Answer RQ3 with evidence from ablations
-% - Which strategies provide largest accuracy gains? (cite 7.3.6 cumulative analysis)
-% - Are gains cumulative or synergistic?
-% - Optimal combination of techniques
-% - Comparison to literature: do findings align with prior work?
+Lastly the \EA~gap of 28.1pp between the published \OmniSQL-7B results (66.1\%
+on \Bird) and local measurements (38.0\%) raise concerns to the reliability of
+measurements and highlight systemic challenges in LLM-based research. The
+analysis of this gap concludes that it is likely attributable to quantization
+differences, inference engine variations and prompt template / code formatting
+sensitivity. Despite this remaining uncertainty in absolute performance
+comparisons, clear relative improvements from pipeline composition are
+observable and reproducible within a controlled environment.
 
-\subsubsection{Real-World Viability Assessment}
+\subsection{Answering the Research Questions}
 
-\paragraph{Practical Deployment Considerations}
-% TODO: Discuss deployment feasibility
-% - Integration with PostgreSQL architecture
-% - Deployment as extension vs external service
-% - Security considerations (SQL injection risks from LLM output)
-% - Privacy considerations (schema/data exposure to model)
-
-\paragraph{User Experience Implications}
-% TODO: Discuss UX trade-offs
-% - Latency acceptable for interactive use?
-% - How to communicate uncertainty to users?
-% - Handling ambiguous queries: clarification dialogs?
-% - Trust and transparency: showing generated SQL to users
-
-\paragraph{Comparison to Traditional SQL Interfaces}
-% TODO: Position system relative to traditional approaches
-% - When is NL interface better than SQL?
-% - When should users still write SQL manually?
-% - Complementary use cases (NL for exploration, SQL for production)
-% - Learning curve: does NL interface help SQL learning or hinder it?
-
-\paragraph{Accessibility and Democratization Benefits}
-% TODO: Discuss broader impact
-% - Does system truly make databases more accessible?
-% - Who benefits most? (Non-technical users, analysts, data scientists)
-% - Limitations for complex analytical queries
-% - Role in data democratization initiatives
-
-\subsubsection{Limitations and Threats to Validity}
-
-\paragraph{Benchmark Limitations}
-% TODO: Discuss external validity threats
-% - Spider/Bird may not represent all real-world queries
-% - Academic benchmarks vs production query distributions
-% - Domain coverage gaps
-% - Temporal limitations (benchmarks are static snapshots)
-
-\paragraph{Model-Specific Results}
-% TODO: Discuss generalizability to other models
-% - OmniSQL 7B is one specific model
-% - Would results hold for other LLMs? (GPT-4, Claude, Llama, Qwen)
-% - Fine-tuning specificity: OmniSQL trained on Spider/Bird
-% - Reproducibility with future model generations
-
-\paragraph{Hardware-Specific Results}
-% TODO: Discuss generalizability to other hardware
-% - RTX 3090 specific (not A100, not Apple Silicon)
-% - CUDA-specific optimizations
-% - Would results translate to other GPU architectures?
-% - Cloud deployment characteristics may differ
-
-\paragraph{Evaluation Metric Limitations}
-% TODO: Discuss measurement validity threats
-% - EA doesn't capture semantic equivalence perfectly
-% - EM is too strict (many equivalent SQL formulations)
-% - Missing metrics: query readability, maintainability, efficiency
-% - User satisfaction not measured
-
-\paragraph{Comparison Validity}
-% TODO: Discuss comparison fairness
-% - Different SOTA systems use different models, hardware
-% - Not apples-to-apples comparisons
-% - Cherry-picking risks in literature
-% - Reproducibility challenges
-
-\paragraph{Internal Validity Considerations}
-% TODO: Discuss experimental design limitations
-% - Ablation study design choices
-% - Hyperparameter tuning: were optimal settings found?
-% - Statistical power: sample sizes sufficient?
-% - Confounding factors
-
-\subsubsection{Implications for Future Work}
-
-\paragraph{System Improvements}
-% TODO: Recommend concrete system enhancements
-% - Components that deserve deeper investigation
-% - Alternative approaches to explore (e.g., different schema subsetting strategies)
-% - Performance optimizations (caching, batching, quantization)
-% - Integration of newer LLMs
-
-\paragraph{Evaluation Enhancements}
-% TODO: Recommend additional experiments
-% - User studies with real users (not just benchmark metrics)
-% - Longitudinal deployment studies
-% - Domain-specific fine-tuning experiments
-% - Alternative benchmark datasets
-% - Comparative studies with commercial tools (e.g., GitHub Copilot for databases)
-
-\paragraph{Theoretical Contributions}
-% TODO: Discuss research directions
-% - Formalization of ambiguity resolution in NL2SQL
-% - Better understanding of component synergies
-% - Transfer learning from NL2SQL to other semantic parsing tasks
-% - Formal verification of generated SQL queries
-
-\paragraph{Practical Deployment Research}
-% TODO: Recommend real-world validation
-% - Pilot deployments in production environments
-% - Integration with BI tools (Tableau, Power BI)
-% - Education contexts (teaching SQL through NL)
-% - Accessibility studies (impact on non-technical users)
-
-\newpage
