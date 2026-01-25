@@ -2,9 +2,10 @@
 
 This section is linking the evaluation results back to the research questions
 of this thesis which where outlined in the introduction section. It is
-reflecting on the practical implications of the findings in this thesis and 
-deriving recommendations for actions and future research work in the NL2SQL
-community.
+discussing the findings of this thesis and deriving recommendations for actions
+and future research work in the NL2SQL community.
+
+% TODO cleanup
 
 \subsection{Summary of Results}
 
@@ -14,8 +15,8 @@ NL2SQL benchmarks such as \Spider~and \Bird. Nonetheless significant
 challlenges remain for an enterprise-scale adoption of NL2SQL systems.
 \Natural~achieves up to 81.0\% on the \Spider~development split using the
 \textit{Syn} configuration and 81.4\% on the test split using the
-\textit{Train} configuration representing a +3.1pp and +4.4pp improvement
-over the 77.9-77.0\% baseline performance of \OmniSQL-7B respectively
+\textit{Train} configuration which represents a +3.1pp and +4.4pp improvement
+over the 77.9-77.0\% performance of \OmniSQL-7B respectively
 (Table~\ref{tab:eval:overall-results}).
 
 On the complex \Bird benchmark, the \textit{Syn} configuration reaches a 53.8\%
@@ -29,16 +30,16 @@ scores of closed-source model results (GPT-4o: 84.9\% \Spider, 64.0\% \Bird).
 The ablation study performed during evaluation reveals that pipeline components
 tend to interact in synergy rather than additively, with in-context learning
 and the example selection algorithm of \Natural serving as the crucial
-differentiator for performance. The \textit{Zero-Shot} configuration — which
+differentiator for performance. The \textit{Zero-Shot} configuration which
 uses schema subsetting, self-refinement, and majority voting but does not apply
-example selection — achieves only a +0.8pp improvement on \Spider
+example selection achieves only a +0.8pp improvement on \Spider
 despite doubling the candidate latency from 7.3s to 14.0s. \Natural~
 configurations with active ICL and example selection yield up to +2.3pp on
 \Spider~dev, +3.9pp on \Spider~test and and +19.8pp on \Bird compared to
 \textit{Zero-Shot}. This shows that both schema subsetting and self-refinement
 techniques provide minimal benefit without in-context learning and example
 selection. Further ablation would help to understand the potential cross
-effects of components and the potential implications of disabling pipeline
+effects of components and the implications of disabling pipeline
 components like schema-subsetting, self-refinement and majority voting.
 Furthermore increasing the pipeline iterations from 1 to $k$ would yield
 insights into self balacing and self correction across iterations of \Natural.
@@ -74,3 +75,137 @@ observable and reproducible within a controlled environment.
 
 \subsection{Answering the Research Questions}
 
+To conclude this thesis, the research questions that were outlined in section
+\ref{section:introduction:research-questions} are answered.
+
+\subsubsection{RQ1 — To what extent can open-source LLMs achieve competitive NL2SQL performance through pipeline composition and optimization?}
+
+The capabilities of open-source NL2SQL models achieve \textit{partially
+competitive} performance on prevalent, structured NL2SQL benchmarks. Especially
+through the composition of different algorithms the performance can be
+significantly improved. The evaluation performed in this thesis demonstrates
+that a combination of in-context learning, schema subsetting, self-refinement
+and majority voting boosts the competitiveness of fine-tuned base models.
+Nonetheless significant gaps in execution accuracy remain for enterprise-level
+real-world deployments.
+
+\Natural achieves up to 81.0\% \EA~on the \Spider~(dev) benchmark using the
+\textit{Syn} configuration (examples selected from the SynSQL-2.5m dataset,
+Table~\ref{tab:eval:overall-results}). This represents a +3.1pp increase
+improvement over \textit{Baseline} configuration and a +2.0pp increase over the
+baseline model performance of \OmniSQL-7B-gguf. On the test set of \Spider~the
+\textit{Train} configuration is outperforming the \textit{Syn} configuration by
++1.8pp with an \EA~of 81.4\%. \textit{Train} is further showing an +2.4pp
+increase over \OmniSQL-7B-gguf. On the more complex \Bird~benchmark
+\textit{Syn} outperforms \textit{Train} by +5.4pp in \EA~and \OmniSQL~7B-gguf
+by +15.8pp. However, on all three benchmarks noticable performance gap ranging
+from 2.6pp to 28.1pp was observed which reduces the trust in the measured
+results.
+
+This yields an overall unclear picture, with \Natural~showing strong
+performance gains over the locally measured baseline model performance of
+\OmniSQL but no absolute gain over the published results for \OmniSQL and other
+external systems by \citeauthor{OmniSQL}. For definite conclusions on the
+competitiveness of local LLM-based NL2SQL systems more research is needed.
+
+\paragraph{Pipeline Composition Effectiveness}
+
+Notably, the pipeline composition had notable impacts on the performance on
+NL2SQL benchmarks. The effectiveness of more complex pipeline configurations
+scaled drastically with database and benchmark complexity. On simpler
+benchmarks like \Spider~only marginal, single digit accuracy gains (+2.0pp and
++2.4pp) could be observed while approximately doubling the candidate latency
+(from 6.6s and 6.7s to 16.3 and 15.4s).
+
+On \Bird, the difference between the evaluated configurations of \Natural is
+significant. \textit{Baseline} achieved only about 32.4\% \EA~while
+\textit{Syn} achieved 53.8\% \EA~, representing a 66\% relative gain over
+baseline performance through an altered pipeline composition.
+
+The ablation study shows that the effectiveness of a pipeline configuration 
+heavily depends on in-context learning and example selection, as the
+\textit{Zero-Shot} configuration showed only marginal gains (+0.8pp on
+\Spider~(dev), +0.5pp on \Spider~(test) and +1.6pp on \Bird) over the
+\textit{Baseline} configuration while effectively doubling the candidate
+latency from 7.3s to 14.0s on \Spider~(dev), 7.3s to 15.3s on \Spider~(test)
+and 9.3s to 18.7s on \Bird. This data is showing that a naive composition
+strategy of simply enabling all available algorithms is not cost effective
+and might produce counter productive returns on user exerpience as the latency
+increases are significant.
+
+Lastly the \textit{Ground} configuration of \Natural~establishes a theoretical
+performance ceiling using perfect data during example selection and
+consistently performed best-in class during local measurements. \textit{Ground}
+achieved 84.2\% on \Spider~(dev), 82.8\% on \Spider~(test) and 55.8\% on \Bird,
+representing a relative gain to the next-best performing configuration of
+\Natural of +3.4pp, 1.4pp and +2.0pp respectively. This shows that in-context
+learning and example selection strategies have their limits and are already
+performing close to them. Further improvements would likely require better
+foundation models or a different architecture alltogether. A visual comparison
+across the different configurations
+(Figure~\ref{fig:eval:execution-accuracy-overview}) confirms that
+in-context-learning-based approaches (\textit{Syn}, \textit{Train},
+\textit{Ground}) outperform other configurations with diminishing
+returns from increasingly sophisticated example selection strategies.
+
+\paragraph{Comparison to Closed-Source Baselines}
+
+As no direct local comparison of \Natural~against closed-source models has been
+performed, no definite answer can be given to the performance gap between
+local NL2SQL systems and external, closed-source systems. The published results
+by \citeauthor{OmniSQL} in \citeyear{OmniSQL} report GPT-4o achieving 84.9\%
+execution accuracy on \Spider test and 64.0\% on \Bird development
+\citep{OmniSQL}. Compared to local measurements of the best-in class
+configuration of \Natural compared to GPT-4o shows a performance $\Delta$ of +10.3pp
+on \Spider~(dev), -3.5pp on \Spider~(test) and -10.2pp on \Bird. Generally this
+suggests competitive but not superior performance, although it must be
+interpreted cautiously as the performance gap between the results reported by
+\cite{OmniSQL} and local measurements are non trivial. Given the uncertainties
+in measurements this thesis can't claim a definite competitiveness compared to
+closed-source models. Further evaluations are needed to clarify the performance
+characteristics of all measured systems. Nonetheless, \Natural~presents a
+portable, at least partially competitive, alternative to closed-source systems.
+
+\paragraph{Accuracy Ceiling on Consumer Hardware}
+
+As \Natural~was developed and evaluated on consumer hardware, the hardware
+constraints induced by it imply a ceiling of possible model size and speed
+characteristics. The RTX 3090 has 24GB VRAM and can theoretically accomodate
+\OmniSQL~7B and \OmniSQL~14B but given that \Natural~is using additional
+embedding models and leaves 2-4GB headroom for KV-caches etc. to prevent
+out-of-memory crashes. Therefore only the \OmniSQL~7B model (15GB without
+quantization) is supported unless heavier quantization formats are used.
+
+This makes \Natural accessible to consumers with high-end consumer-grade
+hardware (~\$1,500 as of 2024-2025) without requiring enterprise-level
+hardware. The possible performance impact of using larger foundation models
+such as 14B and 32B was not evaluated. For enterprise real-world scenarios 
+larger base models could be used if the available hardware allows for it.
+The evaluation performed in this thesis suggests that with the selected model
+sizes and the available hardware \Natural~has a theoretical execution accuracy
+ceiling of 84.2\% and 82.8\% on \Spider~(dev and test) and 55.8\% on \Bird.
+This marks an upper bound achievable with the 7B models and the
+algorithms used. Therfore the foundation model capabilities emerge as the
+limiting factor rather unless an entirely different pipeline architecture such
+as agentic usage of LLMs is used. Nonetheless scaling the hardware and
+parameter sizes to 14B or 32B would likely yield significant gains in execution
+accuracy. 
+
+The latency characteristics of \Natural~remains in the practical range for
+non-interactive workflows but poses a significant challenge for local,
+interactive applications. While the \textit{Baseline} configuration achieves
+7.3s \CL, the optimal configurations of \Natural~(\textit{Syn} and \textit{Train})
+only achieve a \CL~of 15.4-16.3s (Table~\ref{tab:eval:overall-results}).
+This makes \Natural~viable for exploratory analytics and report generation but
+not for interactive environments such as SQL learning or interactive natural
+language driven data analyis platforms which would require sub-second latency.
+
+\paragraph{Conclusion}
+
+Overall, open-source LLMs \textit{can} achieve competitive NL2SQL performance
+as fine-tuning and in-context-learning prove to be effective and efficient
+mechanisms to achieve high accuracy values in constrained hardware
+environments. Nonetheless the measured performance yields the systems to face
+significant challenges in enterprise environments as an execution accuracy of
+53.8\% on \Bird with a latency of 43.7s is unacceptable for end users. This
+indicates that while promising there is still a gap that remains to be closed.
