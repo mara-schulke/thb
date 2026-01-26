@@ -331,21 +331,89 @@ across the systems that where benchmarked.
 
 These three performance profiles highlight different tradeoffs that can be
 conciously made depending on the deployment scenario and the target usage
-pattern. For highly interactive systems like chat applications and interactive
-learning tools, the \textbf{Baseline} profile will yield better latency
-characteristics while maintain a significant portion of accuracy, especially on
-simple tasks. For more complex usecases where accuracy is generally more
-critical than latency (e.g, asynchronous report generation), the \textbf{Full}
-profile is representing a more dedsirable tradeoff, which renders the
-\textbf{Zero-Shot} profile mostly undesirable.
+pattern
 
 \paragraph{Optimal Configurations for Different Deployment Scenarios}
 
+Given the tradeoffs a recommendation of profiles for certain deployment
+scenarios can be made. Generally the choice of the profile depends on the 
+reliability requirements, the iteractivity of the use case and the complexity
+of the domain. Some examplary recommendations for common use cases can be made:
+
+\begin{enumerate}
+    \item \textbf{Exploratory queries against simple databases} — For mostly
+        interaction heavy systems like interactive query interfaces, data
+        exploration and well-structured and smaller databases the
+        \textbf{Baseline} configuration provides the overall best tradeoff
+        given the lower latency which will significantly impact user
+        experience. On simpler databases, the baseline configuration provides
+        the best accuracy to latency ratio.
+
+    \item \textbf{Mixed complexity use cases} — For general purposed, mixed
+        complexity use cases like internal analytical tools, asynchronous
+        report generation and potentially complex databases the \textbf{Full}
+        profile excels. If latency is generally less important than accuracy
+        the latency problem can be eased by provisioning more powerful
+        hardware, especially in enterprise or professional scenarios.
+
+    \item \textbf{Enterprise databases} — For large, complex databases with
+        tens or even hundreds of tables, dirty data and potential external
+        knowledge requirements (e.g, resemmbling \Bird) the \textbf{Full}
+        profile is recommended. It provides meaningful assistance and paired
+        with synthetic, historic and potentially domain-specialized examples it
+        can achieve meaningful accuracy values in complex environments.
+        Especially when manual querying would take significant amounts of time
+        \Natural~can speed up the workflow.
+
+    \item \textbf{Research deployments} — For research deployments and user
+        experience evaluations of NL2SQL databases the \textbf{Full} profile
+        with potential ground truth samples is deemed optimal. \Natural~could
+        serve for pure, theoretical evaluation of potential NL2SQL systems and
+        their upper bound performance. Such a research deployment could
+        reference past conversations and historical examples to form a
+        self-learning system. This is configuration is not sensible for real
+        world deployments as it would require a ground truth entry for all
+        possibly asked questions. 
+\end{enumerate}
+
+Concluding, for highly interactive systems like chat applications and
+interactive learning tools, the \textbf{Baseline} profile will yield better
+latency characteristics while maintain a significant portion of accuracy,
+especially on simple tasks. For more complex usecases where accuracy is
+generally more critical than latency (e.g, asynchronous report generation), the
+\textbf{Full} profile is representing a more dedsirable tradeoff, which renders
+the \textbf{Zero-Shot} profile mostly undesirable.
+
 \paragraph{Implications for NL2SQL Pipeline Design}
+
+General implications for future NL2SQL pipeline and system design can be
+derived from this work. First, the example selection and self-learning
+capabilities of any NL2SQL system that is based on LLMs will notably drive up
+it's accuracy. Focusing on example quality, example selection and example
+presentation will result in a good return of invest. Second, detailed component
+ablations will help to evaluate the concrete contribution of individual
+components, making iterations simpler and faster. Components should be
+evaluated against realistic benchmarks (e.g, \Bird or \Spider 2.0) to measure
+their real-world effects. Lastly, it is desirable to enable the system to be
+fine-tunable to an specific deployment scenario. Reference data used,
+fine-tuned models or specialized example generation can help to improve the
+accuracy scores on a concrete deployment case beyond the theoretical benchmark
+results that are cross-domain.
 
 \paragraph{Conclusion}
 
+\Natural is a portable NL2SQL system which synergetically achieves largely
+competitive performance for a range of NL2SQL tasks. The \textbf{Full} profile
+of \Natural~ was delivers significant accuracy gains over the \textbf{Baseline}
+profile on complex use cases. Nonetheless \Natural~suffers from poor latency
+characteristics over compared to the foundation models making it not always the
+better choice.
 
+Therefore, the optimal NL2SQL system depends on the use case at hand, for
+enterprise level complexity using the advanced pipeline components can be
+beneficial, especially if continously learning systems are desirable. For
+exploratory and low latency systems, such as chatbots, \Natural provides only
+marginal benefit over the underlying models.
 
 \subsection{Practical Implications}
 
