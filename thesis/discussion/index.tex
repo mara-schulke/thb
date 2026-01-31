@@ -417,21 +417,141 @@ marginal benefit over the underlying models.
 
 \subsection{Practical Implications}
 
+This section is discussing the practical implications of the evaluation results
+ranging from deployment viability, to system integration patterns and
+accessibility concerns.
+
 \subsubsection{Deployment Viability and User Experience}
+
+\Natural's~ deployment viability and user experience closely rely on its
+the overall latency and portability characteristics of the system. Steeper
+hardware requirements, suboptimal candidate latency or non trivial dependencies
+make it harder and less appealing to employ NL2SQL systems.
 
 \paragraph{System Integration Approaches}
 
+The portability characteristic of \Natural~is predominately defined by its self
+contained architecture which enable two recommended deployment architectures
+which offer distinct trade-offs:
+
+\begin{enumerate}
+    \item \textbf{Database Extension} — By directly integrating \Natural~into a
+        DBMS such as PostgreSQLs extension system a tight coupling between the
+        underlying database and the NL2SQL system can be achieved which allow
+        for potentially drastically reduced latency if \Natural~is used for
+        expensive OLAP queries. This is largely implied by the pipeline
+        architecture loading data from the database during inference.
+        Furthermore the embedded architecture allows for enhanced data privacy
+        as no data needs to leave the DBMS during inference. To enable access
+        control patterns \Natural~can hook into row level access control and
+        PostgreSQLs access control system. This architecture comes with two
+        significant downsides. First, the database systems host needs to have
+        access to a powerful GPU in order to load the model and run inference
+        directly. Second, this architecture does not scale well, as a linear
+        number of equally sized nodes with GPUs would be required and would
+        thus likely yield a resource under utilization most of the time.
+    \item \textbf{Inference Service} — The alternative architecture is the
+        service oriented architecture which is trivially supported by embedding
+        the Rust crate of \Natural~into a gRPC or REST API. This architecture
+        would primarily excel in efficient resource utilization and deployment
+        flexibility but introduce a latency increase through the large amounts
+        of bidirectional network traffic between the inference service and the
+        DBMS. Lastly the network traffic might result in non trivial load on
+        the overall system and induce scalability challenges.
+\end{enumerate}
+
+Furthermore the portability and flexibility of \Natural's architecture allows
+for new hybrid approaches to be introduced optimizing for specific deployment
+scenarios.
+
 \paragraph{Latency and Interactivity}
+
+As shown in the evaluation results (See Table~\ref{tab:eval:overall-results})
+the \CL~consistently increases with the pipeline accuracy. This means that more
+powerful profiles of \Natural~require more powerful hardware in order to
+maintain stable latency characteristics. As described in
+\ref{sec:discussion:XYZ} (TODO) the latency of a NL2SQL system is a primary
+denominator of the usecases it is viable for; e.g, high latency systems
+are primarily sensible for asynchronous tasks whereas low latency systems are
+viable for fast and iterative usecases like query interfaces (e.g, snowflake)
+and chatbot integrations. The currently achieved latency of all NL2SQL
+system that were benchmark on consumer hardware is not viable for interactive
+user interfaces. Thus significantly more powerful hardware (e.g, Factor 10)
+would be required to make fully interactive systems viable for users.
 
 \paragraph{Trust, Transparency, and Error Communication}
 
-\subsubsection{Use Case Analysis and Accessibility Benefits}
+As shown in Figure \ref{fig:eval:error-rates}~and
+\ref{fig:eval:execution-accuracy-overview} the errors of \Natural~and other
+NL2SQL systems are primarly semantic errors, rather than syntactic errors. This
+in turn makes error detection and communication sigificantly harder, as the
+pipeline does not return information on potential semantic mistakes. A
+lightweight approach for improving the trust of users in downstream interfaces
+could be as simple as showing the generated SQL statement, generating
+multiple viable candidates and interpretations of the users natural language
+query at once and offer switching between them. A second, more advanced
+solution for semantic error detection would employ a new pipeline component to
+interpret the users natural query in different ways and return a set of
+different interpretations.
+
+\subsubsection{Use Cases and Accessibility}
+
+To evaluate the real world impact of \Natural~a look at potential use cases and
+accessibility implications is subsequently performed.
 
 \paragraph{Optimal Use Cases}
 
-\paragraph{Accessibility and Democratization Impact}
+In general, natural language query interfaces are most viable when the query
+complexity is moderate, e.g, simple joins, filtering and aggregations. The
+schema is well-documented, with clear table and column names that closely match
+domain language used during querying. Lastly, users need to have domain
+knowledge in order gauge whether returned results are accurate
+and iterations must be acceptable, e.g, no bulk deletion is automatically
+performed.
 
+Generally traditional SQL interfaces will remain superior for use cases where 
+production systems are altered, complex analytical queries are asked which
+require window functions, advanced aggregations and many joins as well as the
+exact behavior of a query must be user controllable.
 
+In an ideal scenario, natural language would be combined with SQL, enabling
+drafting and iterating on queries with natural languages but eventually
+transitioning to SQL if percise control is required (e.g, before deleting
+data). This approach would leverage \Natural's strength (rapid formulation of
+reasonable queries) while mitigating its primary weakness when it comes to
+definite semantic accuracy. Traditional SQL tooling can be further employed for
+query validation and optimization before executing them. Thus even lower level
+database interfaces could surface both options simultaneously in the future,
+allowing users to generate queries in natural language and refine them in SQL
+within the same workflow, therefore removing a currently existing gap.
+
+\paragraph{Accessibility and Democratization}
+
+The overall hypothesis of NL2SQL systems to significantly lower the entry
+barrier to data science and analytics holds true, but the evaluation of
+\Natural~and similar NL2SQL systems showed a set of significant caveats due to
+the limited semantic accuracy (See Figure
+\ref{fig:eval:execution-accuracy-overview}).
+
+The primary user groups benefitting from NL2SQL systems are domain experts with
+limited SQL knowledge, occasional database users and users wanting to learn
+SQL. Due to the need to verify the output candidates of \Natural~for semantic
+errors it is currently unfeasible for users to have no awareness of SQL as this
+would risk frequent semantic inaccuracy. Furthermore the evaluation results
+show that the accuracy of \Natural~and \OmniSQL~is severly constrained on
+\Bird~which contains complex schemas and external knowledge requirements. This
+indicates that the accuracy of NL2SQL systems on complex, real-world relevant
+databases and questions is still substantially to low in order to sunset the
+need for SQL.
+
+Nonetheless, NL2SQL can speed up various workflows, easing the need to explore
+and understand the schema manually, allows users to draft sensible queries from
+natural language problem statements and help users learn how different natural
+language questions map to SQL statements. The democratization achieved through
+\Natural~\&~co is therefore mostly \textit{vertical} (speeding up existing
+users and easing workflows) instead of \textit{horizontal} (allowing entirely
+unfamiliar users to use databases). With increasing NL2SQL capabilities this
+trend will likely change.
 
 \subsection{Limitations and Threats to Validity}
 
