@@ -555,23 +555,134 @@ trend will likely change.
 
 \subsection{Limitations and Threats to Validity}
 
+Given the stark differences between published and locally reproduced result,
+the constrained benchmark selection (excluding more advanced benchmarks like
+\Spider~2.0) and the constrained hardware that was available during the
+evaluation the results of this thesis need to be treated as rather unreliable.
+
 \subsubsection{Experimental Limitations}
+
+The performed evaluation had severe limitations with regards to the model
+sizes, reproducibility and the constrained benchmark selection.
 
 \paragraph{Benchmark Representativeness}
 
+The evaluation performed in this thesis relies on only two benchmarks -
+\Spider~and \Bird~- which likely do not accurately represent the real-world
+query distributions and databases schemas that NL2SQL systems will encounter.
+Thus the results are not indicative of the guaranteed real-world performance,
+but rather highlighting patterns where \Natural~is performing well (e.g,
+structured schemas, simpler questions) and problematic patterns that need
+improvement (e.g, external knowledge requirements and dirty schemas).
+
+This results in a set of limitations this thesis does not address; First, the 
+evaluation inevitably is a constrained domain converage, second the query
+complexity and distributions are fairly constrained with advanced complexity
+benchmarks like \Spider~2.0 not being used. Lastly, the schema design patterns
+are limited to the patterns used by \Spider~and \Bird and the SQLite dialect.
+
 \paragraph{Model and Hardware Specificity}
+
+Furthermore, all results shown in Table~\ref{tab:eval:overall-results} are
+subject to the configurations and models used due to the hardware constraints
+that existed during benchmarking. More powerful hardware than the RTX 3090
+would allow for larger models (e.g, \OmniSQL-32B and better embedding models)
+as well as likely substantially improve the candidate latency measurements.
+
+Additionally there exists a risk of \OmniSQL~being fine-tuned to perform well
+on \Spider~training and development sets which would further limit the ability
+to transfer the performance into real-world deployments. 
 
 \paragraph{Reproducibility Challenges}
 
+Likely the most significant threat to validity on this thesis is the observed
+performance gap between the published \OmniSQL results and locally achieved
+results. This gap is substantial on \Bird, where published results report
+66.1\% \EA for \OmniSQL~7B while locally only 38.0\% \EA~could be achieved. 
+This represents a 28.1pp difference in accuracy. As discussed in
+section~\ref{sec:evaluation:gap}, this might be caused by a multitude of
+different factors such as model format differences, diverging hyperparameters,
+prompt drifting and dataset versioning.
+
+The existence of this gap \textbf{severly} undermines the confidence in the
+absolute performance of \Natural~compared to \OmniSQL~and other systems,
+resutling in uncertainty on whether the steep, relative performance gains shown
+by \Natural~are transferrable into environments where this gap does not exist.
+It highlights general reproducibility challenges that are prevalent in
+LLM-based research.
+
+The implications for this thesis are twofold; First, no absolute performance
+assessment can be made and any claims of absolute performance superiorrity of
+\Natural~over \OmniSQL~or GPT-4 would be premature. Further research and
+extensive evaluations are required to solve this gap and make a reliable,
+absolute assessment possible. Second, while the absolute performance is
+unreliable, the relative performance increases can be treated with more
+confidence. It was shown that the machine learning algorithm introduced in
+\Natural~offer a reliable improvement of up to +21.4pp over the
+\textit{baseline} configuration. Nonetheless it is unclear whether this
+improvement in accuracy would persist or substantially shrink with increasingly
+better \textit{baseline} performance.
+
+The conclusion of this thesis is therefore that relative improvements achieved
+through pipeline composition can be substantial, but must be further verified
+through independent research before any deployment decision is made.
+
 \subsubsection{Methodological Constraints}
+
+Beyond representativeness and reliability of measurements the chosen evaluation
+metrics, comparisons with external systems and internal validity are
+constrained.
 
 \paragraph{Evaluation Metric Limitations}
 
-\paragraph{Comparison Validity Concerns}
+While the two prevalent metrics \EA~and \EM~are indicative of the general
+pipeline performance and ability to generate sound SQL queries, a series of
+metrics is missing to get a full understanding of NL2SQL performance that is
+relevant in real-world deployments.
+
+Primarily the metrics are lacking further dimensions, such as the performance
+of a query candidate (e.g, inefficient queries should be penalized), user
+satisfaction and perceived usefulness are not evaluated and learning
+effectiveness and productivity gains are not measured. This makes the
+evaluation primarily machine learning bound, rather than impact bound which is
+acceptable given the rather early stage of NL2SQL systems but limit the ability
+to forecast the actual benefit of using it.
+
+Additionally, the \EM~metric is overly strict, limiting the solution space to
+one exact style of writing SQL and risks that optimizing for \EM~needs
+fine-tuned models in order to perform well.
+
+Overall, these limitations indicate that a system with good metric performance
+might still bring questionable real world benefits to users (e.g, through a
+poor user experience, inefficient SQL etc.). Future evaluations should define
+reasonable metrics that look beyond the functional performance of a system.
+
+\paragraph{Comparison Validity}
+
+As mentioned above, the comparisons with SOTA results (GPT-4, \OmniSQL
+variants, etc.) face additional validity challenges beyond the observed
+performance gaps. Variables that influence the validity of the performed
+comparisons include the potentially diverging hardware platforms, model
+configurations and evaluation environments that were used. Additionally, the 
+results from \OmniSQL~would benefit from an independent reproduction which
+would substantially strengthen their reliability and enable a conclusion to be
+drawn on whether the local measurements are faulty and what could have caused
+them to diverge.
 
 \paragraph{Internal Validity}
 
+Lastly, beyond the comparisons validity with other systems, the internal
+validity is also questionable as there were several significant limitations
+during the evaluation.
 
+First, the hyperparameter, as well as example selection weights were entirely
+experimentally estimated, not emperically optimized. Furthermore, the
+configurations that were used were only a small subset of the possible
+configurations due to the extreme length of benchmark runtimes (6-24h). Lastly,
+no statistical testing and observation of performance characteristics was
+performed. Further evaluations should include detailed case studies,
+fine-grained performance metrics by query and schema complexity and more
+benchmark datasets.
 
 \subsection{Future Work}
 
