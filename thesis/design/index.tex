@@ -16,11 +16,15 @@ The proposed system consists of five components:
     \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the most likely result from multiple generation attempts.
 \end{enumerate}
 
+% TODO: CRITICAL - Replace verbatim with a proper figure/flowchart using TikZ or similar
+% TODO: This looks unprofessional. Create a proper algorithmic flowchart showing:
+% TODO:   1. Input (NL query), 2. Pipeline stages, 3. Iteration loop, 4. Output (SQL)
+% TODO: Use the algorithm2e package for better formatting
 The system processes queries using the following algorithm:
 
 
 \begin{verbatim}
-  Natural Language Query 
+  Natural Language Query
 → Sketch Generation
 → Example Selection
 → k-times [
