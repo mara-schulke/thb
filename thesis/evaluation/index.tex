@@ -278,14 +278,14 @@ values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
 28.1\% on \Bird~(dev). The section performance gap section
 (\ref{sec:eval:performance-gap}) analyzes this gap in detail.
 
-The \textit{Baseline} configuration of \Natural~further showed degredation of
+The \textit{Baseline} configuration of \Natural~further showed degradation of
 performance compared to the OmniSQL-7B-gguf system configuration. Using the
 \textit{Baseline} configuration, \Natural~only uses the inference logic and
 prompt template for ICL ($\pi$) without other pipeline components, achieving
 77.9\% \EA~on \Spider~(dev), 77.0\% on \Spider~(test), and 32.4\% on \Bird
 (dev). These results further fall below the published \textsc{OmniSQL-7B}
 performance of 81.6\%, 89.8\%, and 66.1\% respectively, representing gaps of
-3.7, 12.8, and 33.7 percentage points. This continued degredation of
+3.7, 12.8, and 33.7 percentage points. This continued degradation of
 performance indicates that a misaligned prompt template (ie, divergent from
 training phase) harms performance if not paired with counter measures such as
 ICL, self-correction or majority voting. These performance numbers mark the
@@ -415,7 +415,7 @@ officially reported performance metrics is yet unclarified.
 
 \subsection{Performance Characteristics}
 
-To assess the performance of NL2SQL systems hollistically metrics beyond
+To assess the performance of NL2SQL systems holistically metrics beyond
 semantic accuracy have to be taken into account. The two performance
 characteristics \ER~and \CL~provide insight into system reliability and their
 real-world applicability. These functional metrics complement accuracy by
@@ -541,7 +541,7 @@ requirements.
 \subsubsection{Potential Contributing Factors}
 
 Several factors may contribute to this stark gap between the two systems.
-This subsection is analzing potential causes using available evidence.
+This subsection is analyzing potential causes using available evidence.
 
 \paragraph{Model Quantization and Format Differences}
 
@@ -564,8 +564,8 @@ The $\Delta$ of 2.6\% on \Spider~(dev) is well within the expected
 format-induced degradation ranges, which initially suggests that the model
 format alone could explain the simple benchmark discrepancy. However, the
 widening performance gaps with increasing benchmark complexity (up to 28.1\% on
-\Bird) substantially exceeed the typical effects of model format conversions
-indicating that other factors might contribtue to the observed performance loss.
+\Bird) substantially exceed the typical effects of model format conversions
+indicating that other factors might contribute to the observed performance loss.
 
 \paragraph{Inference Implementation Differences}
 
@@ -597,7 +597,7 @@ given that greedy sampling as a standard and very straightforward algorithm.
 
 While a prompt drift could cause significant performance differences the exact
 prompt as supplied by \citeauthor{OmniSQL} was used. Subtle differences in
-pharsing, layout or presentation could yield widely diverging results. It is
+phrasing, layout or presentation could yield widely diverging results. It is
 likely that \OmniSQL~7B was fine-tuned using a specific prompt format, and deviation
 from this format can significantly degrade performance.
 
@@ -628,7 +628,7 @@ schema representation.
 
 Due to time and resource constraints no exhaustive systematic evaluation of
 different quantization schemes, inference engines and prompt templates
-was performed. This singificantly limits the ability to draw
+was performed. This significantly limits the ability to draw
 definite conclusions on the exact root cause for the performance drift between
 the published performance numbers and the locally measured ones.
 
@@ -673,7 +673,8 @@ LLM-based NL2SQL research. Without accessibility to the same hardware, models,
 specifications and evaluation frameworks a reliable cross-study comparison
 becomes close to unachievable. Intra-study comparisons remain valid but require
 significant time and hardware resources to achieve. This suggests that the
-NL2SQL research community would suggest from standardization of inference
+% TODO: Add a specific recommendation for a standardized evaluation protocol or reference implementation
+NL2SQL research community would benefit from standardization of inference
 frameworks, comprehensive documentation of all hyperparameters and
 configurations used as well as a release of exact prompts, preprocessing code
 and scripts used during evaluation. Furthermore could multiple independent
@@ -688,7 +689,7 @@ area can be made:
 
 A dedicated investigation of the impact of model quantization on NL2SQL
 performance could provide guidance for better understanding the quantization to
-performance tradeoffs. This would allow for emperical decision making when
+performance tradeoffs. This would allow for empirical decision making when
 deploying choosing model sizes and quantization into resource constrained
 environments. Prior research exists on the general impact of quantization on
 model performance, but having concrete datapoints specific to NL2SQL would
@@ -705,8 +706,8 @@ To isolate inference engine effects and subtle differences implied through
 different model formats the same model should be evaluated across multiple
 frameworks. This study could include PyTorch and Transformers, llama.cpp, vLLM
 and ONNX and evaluate state of the art NL2SQL models in varying sizes against
-prevalent benchmarks. Conistent results across the frameworks would further
-increase the confidence in reproducibility of results where descrepancies would
+prevalent benchmarks. Consistent results across the frameworks would further
+increase the confidence in reproducibility of results where discrepancies would
 highlight discrepancies in implementation-specific details of algorithms and
 prompting.
 

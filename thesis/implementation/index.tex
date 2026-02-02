@@ -80,6 +80,7 @@ requirements. Therefore, instead of choosing a heavily quantized version of the
 8B variant (ie, Q4\_KM or below), the 4B model with Q8\_0 shows similar
 performance characteristics on simple use cases while offering a significantly
 smaller memory footprint at 2 gigabytes.
+% TODO: Fix this citation - replace red text with proper \citep{} reference
 \textcolor{red}{https://huggingface.co/Qwen/Qwen3-Embedding-8B cite}.
 
 As models have significant loading times, the system loads models globally and 
@@ -160,7 +161,7 @@ production-ready systems.
 
 \paragraph{Similarity Search Framework}
 
-For lightweight similarity search SQLite in combination with it's
+For lightweight similarity search SQLite in combination with its
 \texttt{sqlite-vec} extension is a sensible option. Especially for smaller data
 loads introducing the complexity of \texttt{faiss} and comparable vector search
 solutions like \texttt{qdrant} outweighs their speed benefits.
@@ -259,6 +260,7 @@ execution of the set of query candidates provided to the subsetting algorithm.
 
 \paragraph{Performance and Trade-off Characteristics}
 
+% TODO: Add actual measured complexity numbers here - replace XXX placeholders with empirical data
 As a new in-memory database for each table-query combination is created, this
 leads to $O(queries \times tables)$ complexity. \textcolor{red}{For schemas
 with XXX+ tables and multiple query candidates, this results in XXX-XXXms
@@ -291,7 +293,7 @@ prompt optimized for in-context-learning with \textsc{OmniSQL}.
 
 The \texttt{ICLGenerator::generate} method implements few-shot prompting
 with relevance filtering. Relevance filtering refers to removing all selected
-samples with a similarity of less than 0.5 (this value was emperically derived
+samples with a similarity of less than 0.5 (this value was empirically derived
 from evaluations). Thus only semantically or structurally similar samples are
 actually provided to the model.
 
@@ -515,7 +517,7 @@ can efficiently compute and use embeddings.
 \paragraph{Architecture}
 
 The primary type for embedding text is the \texttt{SemanticString} struct which
-holds strings alognside their embedding vectors. Furthermore this struct offers
+holds strings alongside their embedding vectors. Furthermore this struct offers
 \texttt{embed\_seq} and \texttt{embed\_chunked} methods which can be used for
 batch computation of embeddings.
 
@@ -707,13 +709,13 @@ Two primary issues emerged while developing the benchmarking infrastructure for
 
 While loading result sets from the provided test database, a faulty
 code path failed to parse query result with types other than
-\texttt{Text}. This casued empty result sets to be returned as query results
+\texttt{Text}. This caused empty result sets to be returned as query results
 from both the ground truth query and the candidate query, resulting in a false
 positive, skewing the \textsc{EA} metric significantly upwards.
 
 Furthermore frequent pipeline failures of \textsc{Natural} made it hard to get
 compute reliable performance metrics as context window constraints, out
-of memory issues and CUDA issues caused a signficiant number of test
+of memory issues and CUDA issues caused a significant number of test
 cases to fail, making subsequently computed metrics unreliable as only
 a subset of the dataset was included in the results.
 
@@ -725,7 +727,7 @@ design and theoretical problems. While \textsc{Natural} turned out to
 demonstrate the approaches recommended in the system design section, the
 development process was significantly slowed down due to constrained hardware
 availability, technology stack decisions and research methodology. The overall
-system architecture turned out positive, but the timeline was noticably expanded.
+system architecture turned out positive, but the timeline was noticeably expanded.
 
 This section reflects on the most impactful challenges that were encountered
 during the implementation of \textsc{Natural} and analyzes how hardware

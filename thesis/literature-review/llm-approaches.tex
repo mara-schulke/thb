@@ -1,7 +1,7 @@
 \subsection{Large Language Models}
 
-The emergence of LLMs such as GPT-3, GPT-4, and Claude fundamentally transformed the landscape of NL2SQL research. Early 
-experiments with LLMs for NL2SQL tasks showed state-of-the-art capabilities in comparsion with contemporary PLM approaches 
+The emergence of LLMs such as GPT-3, GPT-4, and Claude fundamentally transformed the landscape of NL2SQL research. Early
+experiments with LLMs for NL2SQL tasks showed state-of-the-art capabilities in comparison with contemporary PLM approaches 
 \citep{DAIL-SQL}. \cite{T2SQL-LLM-Bench-3} demonstrated that \textsc{Codex} (a contemporary model based on GPT-3), without any 
 fine-tuning efforts, could achieve competitive performance on \textsc{Spider}, outperforming many state-of-the-art approaches that 
 required extensive training. This breakthrough challenged the contemporary assumption that further specialization of model 
@@ -32,16 +32,16 @@ state-of-the-art 86.6\% execution accuracy on \textsc{Spider}.
 
 The comparison between zero-shot and few-shot performance reveals the accuracy gain potential through supplying examples
 to models in the inference context. While contemporary LLMs (such as GPT-4) have demonstrate impressive zero-shot performance
-(achieving 72.3\% execution accuarcy on benchmarks like \textsc{Spider}) \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning 
+(achieving 72.3\% execution accuracy on benchmarks like \textsc{Spider}) \citep[Table 1, p.~8]{DAIL-SQL}, few-shot learning 
 still shows to substantially improve model performance. \cite{DAIL-SQL} shows that even one-shot learning boosts GPT-4's
 execution accuracy to 80.2\%, representing a 7.9\% increase, while five-shot learning reaches 82.4\% \citep[Table 2, p.~8]{DAIL-
 SQL}. 
 
-Especially with complex queryies which can involve multiple tables, nested queries and complex joins, zero-shot approaches
-often dramatically underperform $k$-shot ones. NL2SQL approaches that dont supply examples to the model during inference time
+Especially with complex queries which can involve multiple tables, nested queries and complex joins, zero-shot approaches
+often dramatically underperform $k$-shot ones. NL2SQL approaches that don't supply examples to the model during inference time
 fail more frequently to generate semantically accurate SQL queries \citep{DAIL-SQL}. Notable is the leap in exact match ratio
 measured by the \textsc{Spider} benchmark — jumping from 22.1\% for GPT-4 using zero-shot to 71.9\% with five-shot. The
-results presented by \cite{DAIL-SQL} show signficant correlation between $k$ and the execution accuracy of $k$-shot approaches.
+results presented by \cite{DAIL-SQL} show significant correlation between $k$ and the execution accuracy of $k$-shot approaches.
 
 This effectiveness has established ICL approaches as a standard technique applied in LLM-based NL2SQL approaches. Contemporary
 approaches like \textsc{XiYan-SQL, Chase-SQL and Din-SQL} all utilize variations of ICL to achieve state-of-the-art results
@@ -53,7 +53,7 @@ approaches like \textsc{XiYan-SQL, Chase-SQL and Din-SQL} all utilize variations
 sub-parts and utilizes in-context-learning and self-correction during the generation phase. Compared to DAIL-SQL which relies
 on example selection during the in-context-learning phase, DIN-SQL focuses on a refinement loop that allows the model to self-
 correct errors it made during the initial generation phase — thus the model can repair schema linking, syntactic or semantic
-errors. By explicitly instructing the LLM to review its work against a specfic schema, the user input and potential database
+errors. By explicitly instructing the LLM to review its work against a specific schema, the user input and potential database
 errors, DIN-SQL achieves a high execution accuracy on \textsc{Spider} with 85.3\%. Therefore DIN-SQL outperforms contemporary
 approaches but is surpassed by by DAIL-SQL by 1.3\% \citep{DINSQL, DAIL-SQL}. Furthermore DIN-SQL makes observations on the
 impact that the self-correction prompt can steer results significantly — \citeauthor{DINSQL} found that using \textit{generic
@@ -67,7 +67,7 @@ how structured introspection can play a significant role in enhancing LLM perfor
 Building upon DIN-SQL's self-correction module, \cite{MAGIC} proposed MAGIC (Multi-Agent Guideline for In-Context Text-to-SQL),
 which further advances the self-correction mechanism through harnessing a set of specialized agents to automate the self-correction
 prompt engineering \citep{MAGIC}. MAGIC consists of a manager agent, a correction agent and a feedback agent that collaboratively
-refine LLM instructions during the refinement loop. Further MAGIC derives common faliure patterns of the initial query generation
+refine LLM instructions during the refinement loop. Further MAGIC derives common failure patterns of the initial query generation
 phase from training data, allowing it to efficiently spot the most common mistakes that the model makes at generation time. This
 approach represent a further advancement on \citeauthor{DINSQL}'s DIN-SQL, effectively supersetting the \textit{generic} and
 \textit{gentle} correction mechanisms through an intelligent, self-adapting one \citep{MAGIC}. The autogenerated guidelines from
@@ -79,13 +79,13 @@ While DIN-SQL and MAGIC focus on automated self-correction in single-turn settin
 Chain-of-Editions (CoE-SQL), which addresses the unique challenges of multi-turn conversational NLIDBs. Conversational interfaces
 for NL2SQL systems enable human-in-the-loop refinement. Interactive information seeking from the user has shown to be an
 effective way to drive overall accuracy of the system and improve user satisfaction \citep{NALIR}. Rather than approaching
-each query independently, CoE-SQL recognizes that in a conversational context, successive SQL queries usuallly require only
+each query independently, CoE-SQL recognizes that in a conversational context, successive SQL queries usually require only
 small and incremental modifications of the previous queries. Interactive user input is an effective measure for dealing with
 ambiguous natural language queries \citep{CoE-SQL, UnnaturalQueryLanguage, NALIR}.
 
 \subsubsection{Candidate Selection Frameworks}
 
-Contemporary NL2SQL approaches have increasingly emphasized on the generation of query candidates and their selectiion as a
+Contemporary NL2SQL approaches have increasingly emphasized on the generation of query candidates and their selection as a
 promising architecture. Candidate selection strategies have shown significant performance improvements on challenging benchmarks.
 These approach acknowledge the inherent difficulty of generating perfect SQL queries in one attempt / using one generation
 mechanism, even with capable LLMs and modern self-correction mechanisms.
@@ -97,7 +97,7 @@ language queries into multiple sub tasks that can be individually tackled, a cha
 inspects execution plans of SQL queries and a schema-aware generation of synthetic examples that can be used for in-context
 learning \citep{CHASE}. These different generation mechanisms produce a set of query candidates that each have different
 characteristics. For candidate selection CHASE harnesses a fine-tuned LLM that can do binary selection of candidates.
-\citeauthor{CHASE} have demostrated that their query selection approach is more robust than apparent alternatives and yields
+\citeauthor{CHASE} have demonstrated that their query selection approach is more robust than apparent alternatives and yields
 state-of-the-art performance with 73\% execution accuracy on \textsc{Bird} and 87.6\% on \textsc{Spider} \citep{CHASE}.
 
 Conceptually similar work has been done by \citeauthor*{XiYan} with \textsc{XiYan-SQL} which is architected as multi-generation
@@ -113,7 +113,7 @@ during the generation stage \citep{XiYan}. Through this sophisticated and divers
 able to achieve impressive results across contemporary NL2SQL benchmarks — achieving 89.65\% execution accuracy on
 \textsc{Spider} and 73.34\% on \textsc{Bird}, which renders \textsc{XiYan-SQL} state-of-the-art \citep{XiYan}.
 
-Both CHASE and \textsc{XiYan-SQL} show that diversifing candidate generation and training specialized models for candidate
+Both CHASE and \textsc{XiYan-SQL} show that diversifying candidate generation and training specialized models for candidate
 selection yield state-of-the-art execution accuracy which significantly outperforms single-path generation approaches.
 The success of these two approaches indicates that for increasingly complex NL2SQL tasks (such as \textsc{Spider2.0}),
 the capability to generate multiple valid interpretations of the natural language query is an important stepping stone
@@ -124,7 +124,7 @@ transferability with the robustness of specialized model architectures for candi
 % Maybe: Agent specialization and collaboration patterns
 % Maybe: Voting and selection mechanisms for query ranking
 
-\subsubsection{Retrieval-Augumented Generation}
+\subsubsection{Retrieval-Augmented Generation}
 
 Retrieval-Augmented Generation (RAG) has emerged as a powerful paradigm for enhancing NL2SQL systems by integrating
 external knowledge retrieval with the generative capabilities of LLMs. This technique is seen in all above introduced
@@ -165,29 +165,29 @@ performance against LLM based approaches like DAIL-SQL \citep{DAIL-SQL, RetAug}.
 
 While general-purpose LLMs demonstrated state-of-the-art natural language understanding capabilities, the research
 domain of NLIDBs increasingly explored the potential of fine-tuned LLMs for NL2SQL tasks, which offer a promising
-tradeof between natural language understanding (ie. breadth of the model) and concrete SQL generation capabilities
+tradeoff between natural language understanding (ie. breadth of the model) and concrete SQL generation capabilities
 (ie. depth of the model). Multiple research works have been done on the fine-tuning of language models which
 yielded a series of dedicated models for optimized SQL generation.
 
 A significant limitation of many LLM-based NL2SQL solutions is their dependency on proprietary and closed-source
 LLMs like GPT-4(o), Claude and Gemini. Whilst they are useful for initially proving the potential of LLMs on
-contemporary benchmarks, this dependency introduces significant concerns related to data-privacy, high-side use 
+contemporary benchmarks, this dependency introduces significant concerns related to data-privacy, high-side use
 (e.g. in classified environments), transparency of data-flow and deployment costs. To address these challenges
-\cite{CodeS} have introduced \textsc{CodeS} in \citeyear{CodeS}, a series of of open-source language models dedicated
+\cite{CodeS} have introduced \textsc{CodeS} in \citeyear{CodeS}, a series of open-source language models dedicated
 for NL2SQL tasks with parameter sizes ranging from 1B to 15B. The \textsc{CodeS} models were evaluated against
 contemporary benchmarks like \textsc{Spider} and \textsc{Bird} and showed promising inference results when compared
 to their closed-source counterparts. \cite{CodeS} showed that \textsc{CodeS} 7B achieves 85.4\% execution accuracy
 on the \textsc{Spider} development set, outperforming both fine-tuning approaches like RESDSQL and GRAPHIX-T5-PICARD
-aswell as prompting based methods DIN-SQL+GPT-4 and DAIL-SQL+GPT-4 \citep{CodeS}. The same tendency was observed
+as well as prompting based methods DIN-SQL+GPT-4 and DAIL-SQL+GPT-4 \citep{CodeS}. The same tendency was observed
 on \textsc{Bird} with \textsc{CodeS}-15B achieving 60.37\% execution accuracy, compared to 57.41\% for DAIL-SQL+GPT-4
 and 55.90\% for DIN-SQL+GPT4 \citep{CodeS}. This marks a significant advancement in the open-source language model
 research area, with \textsc{CodeS} reaching new state-of-the-art performance in \citeyear{CodeS}. While more recent
 approaches like \textsc{XiYan-SQL} and CHASE both outperform \textsc{CodeS}, CHASE relies on proprietary models and
-\textsc{XiYan-SQL} doesnt provide any information on what base models where used.
+\textsc{XiYan-SQL} doesn't provide any information on what base models were used.
 
-\cite{CodeS} addressed serveral critical research challenges in the NL2SQL domain and proved that open-source models
+\cite{CodeS} addressed several critical research challenges in the NL2SQL domain and proved that open-source models
 could perform competitively with proprietary models whilst maintaining a significantly smaller parameter footprint
-(ie. 7B and 15B) compared to GPT-4 which is a multi-hundred-billion parameter model. This makes it feasibile to deploy
+(ie. 7B and 15B) compared to GPT-4 which is a multi-hundred-billion parameter model. This makes it feasible to deploy
 \textsc{CodeS} locally, instead of relying on an enterprise API like OpenAI's one \citep{CodeS}, therefore making it
 highly practical for real-world deployments where computation resource are constrained. 
 
@@ -197,7 +197,7 @@ performance when compared to alternative LLMs - including both open-source and c
 achieve significant execution accuracy improvements on both \textsc{Spider} and \textsc{Bird}, the 7B model reaches 88.9\%
 on \textsc{Spider} and 66.1\% execution accuracy on \textsc{Bird} which represents a significant (5\%+) improvement over
 comparable alternatives \citep{OmniSQL}. These results were achieved without combining \textsc{OmniSQL} with advanced
-in-context-learning, self-correction, retrieval-augumented-generation or candidate-selection techniques, which indicates
+in-context-learning, self-correction, retrieval-augmented-generation or candidate-selection techniques, which indicates
 that even higher accuracy scores are possible.
 
 \subsubsection{Limitations and Challenges}
@@ -215,7 +215,7 @@ are apparent that impact their practical implementation and real-world deployabi
            errors and yet return semantically incorrect data. As noted by \citeauthor{NL2SQLUnsolved}, ``achieving
            Enterprise-Grade NL2SQL is still far from being resolved'' even with state-of-the-art models, particularly
            when handling complex real-world database schemas and ambiguous queries \citep{NL2SQLUnsolved, Spider2}.
-    \item \textbf{Computational Resource Requriements} — The resource intensity of LLM-based systems presents barriers
+    \item \textbf{Computational Resource Requirements} — The resource intensity of LLM-based systems presents barriers
            to widespread adoption. High-performance state-of-the-art models require substantial computational resources
            during inference, making them expensive to deploy at scale. While smaller models exist, they typically show
            reduced performance on complex queries, creating a challenging trade-off between accuracy and resource
@@ -226,7 +226,7 @@ are apparent that impact their practical implementation and real-world deployabi
            closed-source competitors. 
     \item \textbf{Data Privacy and Security Implications} — Using LLMs particularly through proprietary APIs brings
            along considerable concerns with regards to data privacy and security as sensitive data may be transferred
-           to respective model vendors. Potential senstive data aswell as database schemas alongside user questions
+           to respective model vendors. Potential sensitive data as well as database schemas alongside user questions
            needs to be communicated to external parties in order to form a usable system if closed source models are
            used. Recent open-source model developments like \textsc{CodeS} and \textsc{OmniSQL} seem to mitigate this
            problem partially, but as mentioned above using local inference with LLMs brings along stark computational
@@ -242,7 +242,7 @@ are apparent that impact their practical implementation and real-world deployabi
            impressive execution accuracy while using significantly fewer parameters than LLMs, making them more computationally
            efficient \citep{RESDSQL}. Despite reducing inference-time requirements, these approaches typically utilize
            re-training and domain specific fine-tuning which both limits their flexibility and introduces training costs.
-           Yet for certain scenarios PLM-based approaches offer an interesting tradeoffs: Frontloading the computational effort
+           Yet for certain scenarios PLM-based approaches offer interesting tradeoffs: Frontloading the computational effort
            can be interesting in compute-constrained environments and help to reduce ongoing costs. LLMs dont require the upfront
            cost of fine-tuning and adaption but require significantly more resource for their deployment. This indicates
            that certain systems and environments might benefit more from PLM approaches than LLM ones. Contemporary research,
