@@ -1,60 +1,80 @@
 \subsubsection{Deployment and Performance Gaps}
 
-Despite impressive academic results, significant gaps remain in transitioning NL2SQL systems from research environments
-to real-world, enterprise-feasible, deployments:
+Despite impressive academic results, significant gaps remain in transitioning
+NL2SQL systems from research environments to real-world, enterprise-feasible,
+deployments:
 
 \begin{enumerate}
-    \item \textbf{Database Integration} — While existing research has often focused on standalone systems, little attention
-          has been given to the integration complexities between NL2SQL capabilities and database management systems like 
-          PostgreSQL. Having two standalone systems imposes a significant data transfer need between the two systems when infact, 
-          natural language queries can be treated as an extension to most existing databases. This implementation gap prevents 
-          seamless adoption into existing databases as it requires additional software layers which in turn increase the overall 
-          complexity and cost.
-    \item \textbf{Hardware Requirement Optimization} — As mentioned above, current LLM-based approaches often require significant
-          compute resources in order to achieve state-of-the-art results. There is limited research available on performance 
-          optimization of NLIDBs in order to achieve practical and industry-viable hardware constraints.
-    \item \textbf{Real-time Performance Considerations} — Most research papers evaluate models based on their accuracy metrics 
-          alone without factoring in the latency and throughput characteristics of their solutions. This imposes a possibly 
-          significant $\delta$ between academic research and production environments. Responsiveness is an important metric for 
-          user experience and should therefore play a role in NLIDB research when it comes to evaluating different NL2SQL 
-          architectures.
-    \item \textbf{Privacy and Security} — While open-source models address some privacy concerns by enabling a local deployment of 
-          LLMs, research gaps remain in ensuring that NL2SQL systems respect database access controls and security policies. This 
-          is especially important for enterprise and government environments where data access is strictly regulated.
+    \item \textbf{Database Integration} — While existing research has often
+        focused on standalone systems, little attention has been given to the
+        integration complexities between NL2SQL capabilities and database
+        management systems like PostgreSQL.
+    \item \textbf{Hardware Requirement Optimization} — Current LLM-based
+        approaches often require significant compute resources in order to
+        achieve state-of-the-art results. There is limited research available
+        on performance optimization of NL2SQL systems in order to achieve
+        practical hardware constraints.
+    \item \textbf{Latency Performance Considerations} — Most research papers
+        evaluate models based on their accuracy metrics alone without factoring
+        in the latency and throughput characteristics of their solutions.
+        Responsiveness is an important metric for user experience and should
+        therefore play a role in NL2SQL research when it comes to evaluating
+        different NL2SQL architectures.
+    \item \textbf{Privacy and Security} — While open-source models address some
+        privacy concerns by enabling a local deployment of LLMs, research gaps
+        remain in ensuring that NL2SQL systems respect database access controls
+        and security policies. This is especially important for enterprise and
+        government environments where data access is strictly regulated.
 \end{enumerate}
 
 \subsubsection{Ambiguity Resolution and Semantic Accuracy}
 
-Despite the long existance of the research field, fundamental questions remain open with regards to handling ambiguity effectively
-in natural language queries. Current, especially language model based, systems struggle to correctly identify when natural language
-queries contain ambiguities that they cant confidently resolve. Although some approaches like multi-path generation and candidate 
-selection are a promising way to work around ambiguous language, early systems like \textsc{NaLIR} showed that the most effective 
-way to deal with inherently ambiguous language is asking clarifying questions, instead of trying to interpret the query best-effort
-\citep{NALIR}. Ambiguous language is an inherent source of inaccuracy and therefore a cause for misleading query results. 
-Contemporary research and benchmarks dont focus ambiguity detection and strategies resolution which therefore leaves open
-questions to be further researched.
+Despite the long history of this field, fundamental questions remain
+open with regards to handling ambiguity effectively. Current LLM-based systems
+struggle to correctly identify when queries contain ambiguities that they
+can't confidently resolve. Some approaches like multi-path generation
+and candidate selection are a promising way to handle ambiguous language,
+early systems like \textsc{NaLIR} showed that the most effective way to deal
+with ambiguous language is asking clarifying questions, instead of outputting a
+best-effort query candidate \citep{NALIR}. Contemporary research and benchmarks
+does not focus sufficiently on ambiguity detection and resolution.
 
 \subsubsection{Evaluation and Benchmarking Gaps}
 
 \begin{enumerate}
-    \item \textbf{Enterprise-grade Evaluation} — As highlighted by \textsc{Spider 2.0}, there is a gap between academic 
-          benchmarks and enterprise realities. Further research is needed to create evaluation frameworks that better represent 
-          real-world enterprise environments with thousands of tables and complex relationships. \cite{Spider2} is a promising 
-          first step is this direction.
-    \item \textbf{Performance Metrics} — As mentioned above, current benchmarks often dont capture latency or throughput of NL2SQL 
-          systems at all, allowing for solutions to achieve state-of-the-art scores that require significantly more resources than 
-          their predecessors. Having meaningful performance metrics and benchmarking would allow to further analyze the proposed 
-          solutions for their real world feasibility.
-    \item \textbf{User Experience Metrics} — Contemporary benchmarks focus on execution accuracy without assessing potential
-          user satisfaction, trust, and overall experience. Metrics that capture these aspects are necessary for understanding the 
-          actual utility of NL2SQL systems in practice. Although execution accuracy is a big factor for the trustworthiness of a 
-          NLIDB, it is not the only component as indicated by \citeauthor*{NALIR} in \citeyear{NALIR}.
+    \item \textbf{Enterprise-grade Evaluation} — As highlighted by
+        \textsc{Spider 2.0}, there is a gap between academic benchmarks and
+        enterprise realities. Further research is needed to create evaluation
+        frameworks that better represent real-world enterprise environments
+        with thousands of tables and complex relationships. \cite{Spider2} is a
+        promising step is this direction.
+    \item \textbf{Performance Metrics} — Current benchmarks often don't capture
+        latency or throughput of NL2SQL systems at all, allowing for solutions
+        to achieve state-of-the-art scores that require significantly more
+        resources than their predecessors. Having meaningful performance
+        metrics and benchmarking would allow to further analyze the proposed
+        solutions for their real world feasibility.
+    \item \textbf{User Experience Metrics} — Contemporary benchmarks focus on
+        execution accuracy without assessing potential user satisfaction,
+        trust, and overall experience. Metrics that capture these aspects are
+        necessary for understanding the actual utility of NL2SQL systems in
+        practice. Although execution accuracy is a big factor for the
+        trustworthiness of a NL2SQL system, it is not the only component as
+        indicated by \citeauthor*{NALIR} in \citeyear{NALIR}.
 \end{enumerate}
 
 \subsubsection{Thesis Placement}
 
-This thesis addresses several of the above outlined research gaps. The primary focus of this work is the integration of open-source
-NL2SQL models with advanced techniques like candidate selection, subset-encoding of database schemas, and synthetic example 
-generation for in-context learning. Through the implementation of a PostgreSQL extension this work will bridge multiple critical 
-gaps between theoretical advancements and their practical deployability into real world systems whilst exploring performance 
+The three primary identified gaps: Performance gaps between proprietary and
+open-source models, inadequate ambiguity resolution and semantic accuracy and
+the lack of production-ready implementations exploring poerformance
+characteristics, motivate the implementation of \Natural~a NL2SQL system
+bridging the gap between theoretical research performance and real world
+deployability. Specifically this work researches the ability of schema-aware
+example selection for in-context learning using graph-kernels to improve the
+ambiguity resolution and semantic accuracy of NL2SQL systems.
+
+By providing a production-ready implementation of a \Natural, this work
+further bridges the apparent gaps between theoretical advancements and their
+practical deployability, whilst exploring performance and portability
 characteristics.
