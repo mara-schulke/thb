@@ -1,22 +1,22 @@
 \begin{abstract}
 
 As current state-of-the-art NL2SQL systems largely rely on proprietary models,
-open-source models like OmniSQL recently emerged and show competitive NL2SQL
-performance on prevalent benchmarks. As proprietary models are primarily
-accessible through external APIs, they require transmitting database schemas
-and contents across the wire. This induces serious data sovereignty, data
-prvivacy and reliability concerns for sensity industries such as healthcare,
-finance and aerospace \& defense. A fundamental challenge in NL2SQL is the gap
-between theoretical research performance and production-ready systems that
-leverage open-source models for sensitive and potentially air gapped
-environments.
+open-source models like \textsc{OmniSQL} recently emerged and show competitive
+NL2SQL performance on prevalent benchmarks. Since proprietary models are
+primarily accessible through external APIs, they require transmitting database
+schemas and contents across the wire. This induces serious data sovereignty,
+data prvivacy and reliability concerns for sensity industries such as
+healthcare, finance and aerospace \& defense. A fundamental challenge in NL2SQL
+is the gap between theoretical research performance and production-ready
+systems that leverage open-source models for sensitive and potentially air
+gapped environments.
 
 This thesis presents \textsc{Natural}, a sovereign NL2SQL system built
-on the open-source OmniSQL-7B model. The system employs a five-stage pipeline:
-graph-based example selection using Wasserstein-Weisfeiler-Lehman kernels
-($\sigma$), schema subsetting ($\phi$), few-shot query projection ($\pi$),
-self-refinement ($\rho$), and consensus voting ($\nu$). Implemented in Rust,
-\textsc{Natural} enables both a deployment as a database extension or
+on the open-source \textsc{OmniSQL}-7B model. The system employs a five-stage
+pipeline: graph-based example selection using Wasserstein-Weisfeiler-Lehman
+kernels ($\sigma$), schema subsetting ($\phi$), few-shot query projection
+($\pi$), self-refinement ($\rho$), and consensus voting ($\nu$). Implemented in
+Rust, \textsc{Natural} enables both a deployment as a database extension or
 standalone inference service without any external dependencies.
 
 Evaluations on the \textsc{Spider} and \textsc{Bird} benchmarks demonstrate a
