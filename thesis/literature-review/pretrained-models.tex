@@ -1,185 +1,202 @@
 \subsection{Pre-trained Language Models}
 
-% NOTE: Remove ~200-300 words
-
-The advantages of combining specialized neural networks with general-purpose
-pre-trained language models led to a pivotal point in the NL2SQL research field
-towards focusing increasingly on the application of pre-trained language models
-for NL2SQL systems. Models like BERT or T5 offered noticeable performance
-improvements over specialized neural networks due to training happening on
-large amounts of natural language data, instead of pure, but smaller NL2SQL
-datasets — \textsc{Spider2.0} which is a contemporary NL2SQL benchmark consists
-of just 632 real-world questions \citep{Spider2}. PLM-based NL2SQL systems can
-observed dramatic performance improvements through improved language model
-abilities in understanding of patterns and identification of semantic
-relationships.
+Combining specialized neural networks with pre-trained language models led to a
+pivotal point in the NL2SQL research field towards focusing on the application
+of pre-trained language models for NL2SQL systems. Models like BERT or T5
+offered performance improvements over specialized neural networks due to
+training on large natural language data, instead of smaller NL2SQL datasets —
+\textsc{Spider2.0} which is a contemporary NL2SQL benchmark consists of just
+632 real-world questions \citep{Spider2}. PLM-based NL2SQL systems observed
+performance improvements through improved understanding of patterns and
+identification of semantic relationships.
 
 \subsubsection{Early Pre-trained Language Model Adaptations}
 
-The outlined benefits led to concrete research efforts focusing on whether the
-sole application of pre-trained language models could outperform neural
-state-of-the-art approaches.
+This led to research on whether pre-trained language models could outperform
+neural state-of-the-art approaches.
 
 \textsc{Grappa} was introduced by \citeauthor*{GRAPPA} in \citeyear{GRAPPA} — a
-novel grammar-augmented pre-training approach built on
+grammar-augmented pre-training approach built on
 RoBERTa\textsubscript{\tiny{LARGE}} (a derivative model from BERT). It
 generated synthetic training data (ie. natural language and sql pairs) using a
-synchronous context-free grammar (SCFG) which analyses and identifies patterns
-in natural language queries that can be used as templates for synthesizing
-training data. The specialized pre-training helped \textsc{Grappa} to establish
-a robust connection between natural-language and database schema elements,
-showing significant improvements on existing approaches on multiple
-benchmarks like \textsc{Spider} and \textsc{WikiSQL} \citep{GRAPPA}.
+synchronous context-free grammar (SCFG) which identifies patterns in natural
+language queries as templates for synthesizing training data. Specialized
+pre-training helped \textsc{Grappa} establish a connection between
+natural-language and database schema elements, showing improvements on existing
+approaches on benchmarks like \textsc{Spider} and \textsc{WikiSQL}
+\citep{GRAPPA}.
 
 Several NL2SQL approaches in this timeframe focused on \textit{schema
 understanding} and \textit{schema linking} — the generalizability of PLMs
-required techniques to ensure that models both understand the semantic intent
-and correctly identify database schema elements. \textsc{StruG}
+required techniques to ensure models understand the semantic intent and
+correctly identify database schema elements. \textsc{StruG}
 (Structure-Grounded-Pretraining) was introduced in \citeyear{STRUG} by
-\citeauthor*{STRUG} and presented a novel pretraining approach that improves
-model abilities when it comes to \textit{schema linking}, it separates the
-problem in three facets: column grounding, value grounding and column-value
-mapping. In direct comparison with \textsc{Grappa}, \textsc{StruG} achieves
-similar performance while being significantly cheaper to train \citep{STRUG}.
+\citeauthor*{STRUG} and presented a pretraining approach that improves model
+abilities for \textit{schema linking}, separating the problem in three facets:
+column grounding, value grounding and column-value mapping. \textsc{StruG}
+achieves similar performance to \textsc{Grappa} while being cheaper to train
+\citep{STRUG}.
 
 \subsubsection{Advanced Pre-trained Language Model Approaches}
 
-Researchers have developed increasingly capable systems that leveraged
-pre-trained language models whilst addressing their understanding limitations,
+Researchers developed systems that leveraged pre-trained language models whilst
+addressing their understanding limitations,
 
 \citeauthor*{RYANSQL} introduced \textsc{Ryansql} (Recursively Yielding
 Annotation Network for SQL) in \citeyear{RYANSQL}, which implemented a
-sketch-based approach for decomposing complex SQL generation into multiple
-smaller problems. \textsc{Ryansql} transformed nested statements into a set of
-top-level statements using the Statement Position Code (SPC) technique. This
-approach allowed \textsc{Ryansql} to achieve 58.2\% accuracy on the
-\textsc{Spider} benchmark, representing a 3.2\% improvement over contemporary
-state-of-the-art approaches at the time \citep{RYANSQL}. The sketch-based
-approach makes \textsc{Ryansql} a PLM-augmented successor of \textsc{SQLNet}
-which was a early neural approach to employ sketch-based query generation
+sketch-based approach for decomposing complex SQL generation into smaller
+problems. \textsc{Ryansql} transformed nested statements into top-level
+statements using the Statement Position Code (SPC) technique. This allowed
+\textsc{Ryansql} to achieve 58.2\% accuracy on \textsc{Spider}, a 3.2\%
+improvement over state-of-the-art \citep{RYANSQL}. The sketch-based approach
+makes \textsc{Ryansql} a PLM-augmented successor of \textsc{SQLNet} which was
+an early neural approach to employ sketch-based query generation
 \citep{RYANSQL, SQLNet}.
 
-A significant advancement in terms of execution accuracy was reached with the
-application of T5-Models for NL2SQL tasks. T5 (Text-to-Text Transfer
-Transformer) Models were shown to be well-suited for query generation — T5-3B
-for NL2SQL yielded 71.4\% execution accuracy, presenting a breakthrough in this
-domain \citep{T2SQL-LLM-Bench-3}.
+T5-Models for NL2SQL tasks reached significant advancement in execution
+accuracy. T5 (Text-to-Text Transfer Transformer) Models were shown well-suited
+for query generation — T5-3B for NL2SQL yielded 71.4\% execution accuracy, a
+breakthrough in this domain \citep{T2SQL-LLM-Bench-3}.
 
-Subsequently, \citeauthor*{GRAPHIX} introduced GRAPHIX-T5 in
-\citeyear{GRAPHIX}, which combined the T5 PLMs with a further graph-aware
-layers for NL2SQL tasks. This architecture could leverage both pre-trained
-knowledge of T5 models as well as the database schema structure during
-inference. GRAPHIX-T5 constructs a schema graph where nodes represent tables
-and columns and edges represent relationships between them, such as foreign
-keys or columns association \citep{GRAPHIX}. GRAPHIX-T5 outperformed standard
-T5 models significantly, with GRAPHIX-T5\textsubscript{\tiny{LARGE}} showing
-6.6\% increase in execution accuracy over T5\textsubscript{\tiny{LARGE}}. When
-both GRAPHIX and the baseline T5 models were combined with \textsc{Picard} (a
-novel constrained decoding mechanism) absolute $\Delta$ between them jumped to
-7.6\% (81.0\% in absolute numbers), evaluated on \textsc{Spider} (dev)
+\citeauthor*{GRAPHIX} introduced GRAPHIX-T5 in \citeyear{GRAPHIX}, which
+combined T5 PLMs with graph-aware layers for NL2SQL tasks. This architecture
+leveraged pre-trained knowledge of T5 models and database schema structure
+during inference. GRAPHIX-T5 constructs a schema graph where nodes represent
+tables and columns and edges represent relationships between them, such as
+foreign keys or column association \citep{GRAPHIX}. GRAPHIX-T5 outperformed
+standard T5 models, with GRAPHIX-T5\textsubscript{\tiny{LARGE}} showing 6.6\%
+increase in execution accuracy over T5\textsubscript{\tiny{LARGE}}. When both
+GRAPHIX and baseline T5 models were combined with \textsc{Picard} (a
+constrained decoding mechanism) absolute $\Delta$ between them jumped to 7.6\%
+(81.0\% in absolute numbers), evaluated on \textsc{Spider} (dev)
 \citep{GRAPHIX}.
 
-In parallel, \citeauthor*{RESDSQL} proposed \textsc{Resdsql} in
-\citeyear{RESDSQL}, which proposed to decouple \textit{schema linking} and
-\textit{skeleton parsing}. 
+\citeauthor*{RESDSQL} proposed \textsc{Resdsql} in \citeyear{RESDSQL}, which
+decoupled \textit{schema linking} and \textit{skeleton parsing}.
 
-\textsc{Resdsql} employed a ranking approach to filter schema elements
-before passing them to the model for query generation, which improved its token
-efficiency. This approach allowed \textsc{Resdsql} to achieve state-of-the-art
-performance when being evaluated on \textsc{Spider}, outperforming
-GRAPHIX-T5\textsubscript{\tiny{3B}}-PICARD by 0.8\% in execution accuracy.
-When combined with \textsc{NatSQL} (a contemporary intermediate representation
-approach introduced by \cite{NATSQL}) absolute improvement over
+\textsc{Resdsql} employed a ranking approach to filter schema elements before
+passing them to the model for query generation, which improved token
+efficiency. This allowed \textsc{Resdsql} to achieve state-of-the-art
+performance on \textsc{Spider}, outperforming
+GRAPHIX-T5\textsubscript{\tiny{3B}}-PICARD by 0.8\% in execution accuracy. When
+combined with \textsc{NatSQL} (an intermediate representation approach
+introduced by \cite{NATSQL}) absolute improvement over
 GRAPHIX-T5\textsubscript{\tiny{3B}}-PICARD jumped to 3.1\%.
 
-These advancement showed rapid improvements over earlier methods, far
-surpassing neural approaches. The language understanding capabilities inherited
-from the PLM base-models strengthened their robustness and effectiveness.
-Collectively these approaches represent a leap in NL2SQL research, emphasizing
-their usability potential and real-world feasibility. This research era primed
-the research field for the transition towards large language model adoption.
+These advancements showed rapid improvements over earlier methods, surpassing
+neural approaches. Language understanding capabilities inherited from PLM
+base-models strengthened robustness and effectiveness. These approaches
+represent a leap in NL2SQL research, emphasizing usability potential and
+real-world feasibility. This research era primed the field for transition
+towards large language model adoption.
 
 \subsubsection{Constrained Decoding and Ranking Techniques}
 
-A major challenge in NL2SQL research is making sure that model generated queries are not just semantically accurate
-but also syntactically valid queries and thus executable. To address this issue \citeauthor*{PICARD} released \textsc{Picard}
-(Parsing Incrementally for Constrained Auto-Regressive Decoding) in \citeyear{PICARD}, a constrained decoding mechanism
-for language models which utilizes the SQL grammar and constrained decoding mechanisms to incrementally parse the generate SQL,
-rejecting invalid tokens based on the grammar. \textsc{Picard} showed to significantly improve the performance of pre-trained
-language models (like T5 or BERT) when it comes to NL2SQL tasks, lifting them from mid-level to state-of-the-art solutions
-on the \textsc{Spider} benchmark \citep{PICARD}.
+A major challenge in NL2SQL research is ensuring model generated queries are
+semantically accurate and syntactically valid. To address this
+\citeauthor*{PICARD} released \textsc{Picard} (Parsing Incrementally for
+Constrained Auto-Regressive Decoding) in \citeyear{PICARD}, a constrained
+decoding mechanism for language models which utilizes SQL grammar to
+incrementally parse generated SQL, rejecting invalid tokens based on grammar.
+\textsc{Picard} significantly improved performance of pre-trained language
+models (like T5 or BERT) for NL2SQL tasks, lifting them from mid-level to
+state-of-the-art solutions on \textsc{Spider} \citep{PICARD}.
 
-\textsc{Picard} operates as an incremental parser during model output decoding of pre-trained language models and continuously
-evaluates the probability of each token. Instead of just passing model outputs to a database for execution \textsc{Picard}
-incrementally parses and validates the generated SQL, rejecting tokens if needed thus significantly improving the valid
-output accuracy (sometimes referred to as VA) of language models. This approach is addressing a significant issue associated
-with pre-trained language models — while they outperform in natural language understanding and reasoning, they often lack
-SQL grammar knowledge and tend to generate queries that are not executable due to their unconstrained output space \citep{PICARD}.
+\textsc{Picard} operates as an incremental parser during model output decoding
+and continuously evaluates token probability. Instead of passing model outputs
+to a database for execution \textsc{Picard} incrementally parses and validates
+generated SQL, rejecting tokens if needed thus improving valid output accuracy
+(sometimes referred to as VA) of language models. This addresses an issue
+associated with pre-trained language models — while they outperform in natural
+language understanding and reasoning, they often lack SQL grammar knowledge and
+tend to generate queries that are not executable due to unconstrained output
+space \citep{PICARD}.
 
-The above introduces RESDSQL built on top of \textsc{Picard}'s foundations and used a ranking-enhanced framework for input
-encoding. These two approaches represent a unique class of approaches that utilize input and output constraining in order
-to increase the performance characteristics of pre-trained language models \citep{RESDSQL}.
+RESDSQL built on \textsc{Picard}'s foundations and used a ranking-enhanced
+framework for input encoding. These approaches represent a class of approaches
+that utilize input and output constraining to increase performance
+characteristics of pre-trained language models \citep{RESDSQL}.
 
 \subsubsection{Advantages of PLM Approaches}
 
-PLM approaches to NL2SQL tasks have yielded significant performance improvements for the NL2SQL domain and represent a
-leap in NLIDB-research. They primed the research field towards using language models which led to a transition towards
-large language models in the following years. Namely PLM approaches brought a series of upsides with them:
+PLM approaches to NL2SQL tasks yielded performance improvements and represent a
+leap in NLIDB-research. They primed the field towards using language models
+which led to transition towards large language models. PLM approaches brought
+upsides:
 
 \begin{enumerate}
-    \item \textbf{Compute Efficiency} — PLMs like \textsc{RESDSQL} achieve high accuracy (up to 84.1\% on \textsc{Spider}
-        depending on variants) whilst using far fewer parameters than contemporary LLMs, making them significantly more efficient
-        and therefore reduce hardware requirements for their deployment \citep{RESDSQL}.
-    \item \textbf{Transferability} — Approaches like \textsc{Grappa} and \textsc{StruG} can incorporate domain-specific
-        understanding
-        of natural language, table structures and SQL syntax during pre-training which addressed one of the primary issues with
-        neural approaches \citep{GRAPPA, STRUG}.
-    \item \textbf{Vocabulary} — PLMs offer a larger vocabulary due to the vast amounts of training data available. This enables
-        them to handle a wide variety of natural language patterns which addresses the benchmark-overfitting tendency of neural 
-        approaches which primarily trained on the development sets of contemporary benchmarks.
+    \item \textbf{Compute Efficiency} — PLMs like \textsc{RESDSQL} achieve high
+        accuracy (up to 84.1\% on \textsc{Spider} depending on variants) whilst
+        using fewer parameters than contemporary LLMs, making them more
+        efficient and reducing hardware requirements for deployment
+        \citep{RESDSQL}.
+    \item \textbf{Transferability} — Approaches like \textsc{Grappa} and
+        \textsc{StruG} incorporate domain-specific understanding of natural
+        language, table structures and SQL syntax during pre-training which
+        addressed a primary issue with neural approaches \citep{GRAPPA, STRUG}.
+    \item \textbf{Vocabulary} — PLMs offer larger vocabulary due to vast
+        training data available. This enables them to handle variety of natural
+        language patterns which addresses benchmark-overfitting tendency of
+        neural approaches which primarily trained on development sets of
+        contemporary benchmarks.
 \end{enumerate}
 
 \subsubsection{Limitations of PLM Approaches}
 
-Although representing the state-of-the-art at the time, PLMs introduce a class of problems which are associated with their
-non-NL2SQL associated nature. There have been an array of approaches to mitigate these shortcomings but nonetheless they
-must be considered when using a PLM-based approach to NL2SQL:
+Although representing state-of-the-art at the time, PLMs introduce problems
+associated with their non-NL2SQL nature. There have been approaches to mitigate
+these shortcomings but they must be considered when using PLM-based approach to
+NL2SQL:
 
 \begin{enumerate}
-
-    \item \textbf{Fine-tuning Requirements} — Most PLMs require substantial domain-specific, or at least NL2SQL specific,
-          fine-tuning, limiting a straightforward adaptation to new domains or databases. Although being significantly
-          more efficient than LLM-based approaches the potential need for initial fine-tuning represent a significant
-          computational resource burden. Furthermore when not using synthetic data generation (e.g. \textsc{Grappa})
-          annotated datasets of training data are needed to achieve appropriate performance characteristics \citep{GRAPPA}.
-    \item \textbf{Wide Input \& Output Space} — Due to the general nature of PLMs their input and output space is often
-          far larger than needed 
-          NL2SQL tasks. ``Large pre-trained language models for textual data have an unconstrained output space; at each
-          decoding step, they can produce any of 10,000s of sub-word tokens'' \citep{PICARD}. This applies to both the
-          input and output token space, therefore multiple approaches have been researched which focus on constraining
-          these to the subset needed for NL2SQL tasks. Namely GRAPHIX-T5 and \textsc{Picard} have proposed potential
-          (and promising) solutions to this issue \citep{GRAPHIX, PICARD}.
-    \item \textbf{Limited Schema Awareness} — Due to being general purpose, and non-NL2SQL optimized, PLMs tend to
-          incorporate limited amounts of schema awareness when being applied out of the box for NL2SQL tasks. Multiple
-          research efforts focused on improving this situation, most notably \textsc{Resdsql} and GRAPHIX-T5 tried to
-          improve the schema linking \& awareness of PLMs \citep{RESDSQL, GRAPHIX}, nonetheless the non-specialized nature
-          of PLMs prevents NL2SQL being part of the fundamental model architecture.
+    \item \textbf{Fine-tuning Requirements} — Most PLMs require substantial
+        domain-specific or NL2SQL specific fine-tuning, limiting
+        straightforward adaptation to new domains or databases. Although more
+        efficient than LLM-based approaches the potential need for initial
+        fine-tuning represents computational resource burden. Furthermore when
+        not using synthetic data generation (e.g. \textsc{Grappa}) annotated
+        datasets of training data are needed to achieve appropriate performance
+        characteristics \citep{GRAPPA}.
+    \item \textbf{Wide Input \& Output Space} — Due to general nature of PLMs
+        their input and output space is often larger than needed for NL2SQL
+        tasks. ``Large pre-trained language models for textual data have an
+        unconstrained output space; at each decoding step, they can produce any
+        of 10,000s of sub-word tokens'' \citep{PICARD}. This applies to both
+        input and output token space, therefore approaches have been researched
+        which focus on constraining these to the subset needed for NL2SQL
+        tasks. GRAPHIX-T5 and \textsc{Picard} proposed solutions to this issue
+        \citep{GRAPHIX, PICARD}.
+    \item \textbf{Limited Schema Awareness} — Due to being general purpose and
+        non-NL2SQL optimized, PLMs tend to incorporate limited schema awareness
+        when applied out of the box for NL2SQL tasks. Multiple research efforts
+        focused on improving this, most notably \textsc{Resdsql} and GRAPHIX-T5
+        tried to improve schema linking \& awareness of PLMs \citep{RESDSQL,
+        GRAPHIX}, nonetheless the non-specialized nature of PLMs prevents
+        NL2SQL being part of fundamental model architecture.
 \end{enumerate}
 
-These characteristics positioned PLMs as powerful but comparatively resource-intensive solutions for NL2SQL (especially
-in direct comparison with neural approaches), ultimately yielding the research domain to transition toward exploring
-Large Language Model approaches that promise even greater flexibility in adaptation and potentially superior handling
-of complex queries through advanced in-context learning approaches.
+These characteristics positioned PLMs as powerful but resource-intensive
+solutions for NL2SQL (especially in comparison with neural approaches),
+ultimately yielding the research domain to transition toward exploring Large
+Language Model approaches that promise greater flexibility in adaptation and
+potentially superior handling of complex queries through advanced in-context
+learning approaches.
 
 \subsubsection{Comparison with Large Language Models}
 
-The research on applying pre-trained language models for NL2SQL tasks primed the field for the transition towards LLM usage. While
-PLMs like T5 and BERT range from millions to a few billion parameters, prevalent LLMs such as GPT-3 and GPT-4 operate at
-significantly larger scales, ranging from a few billions to hundred of billions parameters. The scale of LLMs enables in-context
-learning techniques that enable significantly easier and cheaper transferability of NL2SQL systems across domains \citep{DAIL-SQL}.
-The $\delta$ of deployment, inference and training requirements of these two approaches are significant due to the size difference
-in models, which transfer to hardware requirements and therefore cost. While PLMs can require extensive fine-tuning on
-domain-specific data which may aswell be resource intensive \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer the cost to the 
-inference environment, where model modificants are less impactful, due to the extensive pre-training that took place. Approaches 
-like \textsc{DinSQL} show that with the application of LLMs the engineering challenges around model instruction gained relevance 
-while model training became less of a central problem to solve \citep{DINSQL}.
+Research on applying pre-trained language models for NL2SQL tasks primed the
+field for transition towards LLM usage. While PLMs like T5 and BERT range from
+millions to a few billion parameters, prevalent LLMs such as GPT-3 and GPT-4
+operate at larger scales, ranging from a few billions to hundred of billions
+parameters. The scale of LLMs enables in-context learning techniques that
+enable easier and cheaper transferability of NL2SQL systems across domains
+\citep{DAIL-SQL}. The $\Delta$ of deployment, inference and training
+requirements of these approaches are significant due to size difference in
+models, which transfer to hardware requirements and cost. While PLMs can
+require extensive fine-tuning on domain-specific data which may be resource
+intensive \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer cost to
+inference environment, where model modificants are less impactful, due to
+extensive pre-training that took place. Approaches like \textsc{DinSQL} show
+that with application of LLMs the engineering challenges around model
+instruction gained relevance while model training became less of a central
+problem to solve \citep{DINSQL}.
