@@ -691,18 +691,46 @@ benchmark datasets.
 
 \subsection{Future Work}
 
+The work on \Natural~revealed several important areas that subsequent research
+should focus on. These areas include system improvements, further and extensive
+evaluations and user oriented research.
+
 \subsubsection{System Improvements}
 
-\paragraph{Performance Optimization}
+One significant opportunity for future research would be further system
+and performance improvements in order to enable deployments on less powerful
+hardware. The overall candidate latency of \Natural~emerged as a critical
+blocker for real world adoption, as requiring users to procure expensive
+research or enterprise grade GPUs is suboptimal. Therefore substantial amounts
+of performance optimization are needed in order to achieve a democratization
+effect.
+
+\paragraph{Model Quantization and Distillation}
+
+Through further research on quantization effects on NL2SQL models as well as
+potentially applied model distillation, significantly smaller LLMs could yield
+a noticeable increase in performance and therefore drop the hardware
+requirements. For users with existing high-end hardware, this could yield a
+significant candidate latency reduction and unlock interactive usecases that
+are not viable with the latency values measured in this thesis.
 
 \paragraph{Component Refinement}
 
-\subsubsection{Evaluation and Validation}
+% TODO: Expand on specific optimization techniques (e.g., INT8 quantization, speculative decoding)
+Furthermore, additional component refinement as well as removing components
+which turn out to add minimal or no additional performance would both increase
+the semantic accuracy of \Natural~as well as reduce any potentially needless
+computational overheads. Especially the schema subsetting component has shown
+little to no notable performance improvement, and could potentially even
+harm performance.  
 
-\paragraph{User Studies}
+\paragraph{Multi-Model Architectures}
 
-\paragraph{Extended Benchmarking}
-
-\subsubsection{Deployment Research}
+Lastly, this thesis did not utilize a multi-model, or agentic architecture as
+proposed by \cite{XiYan}. Future research could integrate the learnings of this
+thesis with a multi-model, or agentic architecture to see whether a
+reimplementation of the \Natural's components as tool calls provide a
+performance gain over agentic architectures without example selection
+algorithms, self refinement.
 
 \newpage
