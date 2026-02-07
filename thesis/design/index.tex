@@ -1,27 +1,28 @@
 \section{System Design}\label{section:design}
 
-This chapter describes the design of \textsc{Natural}, our proposed NL2SQL system, 
+This chapter describes \textsc{Natural}, a proposed NL2SQL system,
 addressing limitations and research gaps identified in the literature review.
 
-\textsc{Natural} is architected as a pipeline that transforms natural
+\textsc{Natural} is a pipeline that transforms natural
 language questions into SQL queries using example selection ($\sigma$),
-schema subsetting ($\phi$), and self refinement ($\rho$) and voting ($\nu$).
-The proposed system consists of five components:
+schema subsetting ($\phi$), self refinement ($\rho$) and voting ($\nu$).
+The system consists of five components:
 
 \begin{enumerate}
-    \item \textbf{Example Selection} $\sigma$ – Identifies semantically and structurally similar examples using cosine similarity and schema distance.
-    \item \textbf{Schema Subsetting} $\phi$ – Reducing schema complexity by subsetting the schema to the relevant subset of tables and relationships.
-    \item \textbf{Query Projection} $\pi$ – Few-shot learning with a finetuned model to project natural language queries to SQL statements.
-    \item \textbf{Self Refinement} $\rho$ – Self refinement of generated SQL statements through execution feedback and error analysis.
-    \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the most likely result from multiple generation attempts.
+    \item \textbf{Example Selection} $\sigma$ – Identifies semantically and
+        structurally similar examples using cosine similarity and schema
+        distance.
+    \item \textbf{Schema Subsetting} $\phi$ – Reducing schema complexity by
+        subsetting to relevant tables and relationships.
+    \item \textbf{Query Projection} $\pi$ – Few-shot learning with a finetuned
+        model to project natural language queries to SQL statements.
+    \item \textbf{Self Refinement} $\rho$ – Self refinement of generated SQL
+        statements through execution feedback and error analysis.
+    \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the
+        most likely result from multiple generation attempts.
 \end{enumerate}
 
-% TODO: CRITICAL - Replace verbatim with a proper figure/flowchart using TikZ or similar
-% TODO: This looks unprofessional. Create a proper algorithmic flowchart showing:
-% TODO:   1. Input (NL query), 2. Pipeline stages, 3. Iteration loop, 4. Output (SQL)
-% TODO: Use the algorithm2e package for better formatting
 The system processes queries using the following algorithm:
-
 
 \begin{verbatim}
   Natural Language Query
@@ -36,9 +37,10 @@ The system processes queries using the following algorithm:
 → SQL Query
 \end{verbatim}
 
-This design largely builds upon few-shot learning concepts from DAIL-SQL \citep{DAIL-SQL}
-and OmniSQL \citep{OmniSQL} but incorporates novel contributions in schema-aware example
-selection by harnessing a graph-based structural similarity metric.
+This design builds upon few-shot learning concepts from DAIL-SQL
+\citep{DAIL-SQL} and OmniSQL \citep{OmniSQL} but incorporates novel
+contributions in schema-aware example selection using a graph-based structural
+similarity metric.
 
 \subimport{}{initialization}
 \subimport{}{functions}

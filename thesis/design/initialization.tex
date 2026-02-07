@@ -1,19 +1,19 @@
 \subsection{Initialization}
 
-Before the \textsc{Natural} system can process queries, it requires initialization
-with historical data to construct a specific embedding space $v \in \mathcal{V}$ and
-schema distance index $d \in \mathcal{D}$. This preprocessing phase analyzes existing
+Before processing queries, \textsc{Natural} requires initialization
+with historical data to construct an embedding space $v \in \mathcal{V}$ and
+schema distance index $d \in \mathcal{D}$. This preprocessing phase analyzes
 datasets and previous user interactions to enable semantically-aware example selection.
 
-The initialization process consists of two main components: (1) embedding generation
+The initialization process consists of two components: (1) embedding generation
 for semantic similarity computation, and (2) schema indexing for structural similarity
-measurement. These components work together to support the example selection function $\sigma$.
+measurement. These components support the example selection function $\sigma$.
 
 \subsubsection{Embedding}\label{design:embedding}
 
 \textsc{Natural} constructs an embedding space $v$ to enable semantic similarity search
-\citep{DAIL-SQL}. The system uses cosine similarity to identify relevant examples based
-on both the natural language queries and SQL statements, allowing efficient retrieval from
+\citep{DAIL-SQL}. It uses cosine similarity to identify relevant examples based
+on natural language queries and SQL statements, allowing efficient retrieval from
 large collections of question-answer pairs.
 
 We therefore embed a set of training samples $\mathcal{T} = \{(q_1, \omega_1), ..., (q_n, \omega_n)\}$
@@ -28,15 +28,15 @@ where $\iota$ is the embedding function that maps text to vector representations
 
 \subsubsection{Schema Indexing}
 
-To choose the most relevant subset of samples for few-shot learning,
-it is important that the SQL queries we choose as examples are written for
-structurally similar database schemas in order to minimize the structural
-difference between the selected samples and the ground truth query for a given
+To choose relevant samples for few-shot learning,
+the SQL queries chosen as examples should use
+structurally similar database schemas to minimize the structural
+difference between the selected samples and the ground truth query for a
 natural language question.
 
 For example $\omega_{ground}$ the question ``Give me all contacts for the user with the id 10''
-might look different depending on the database schema at hand, thus only selecting
-samples based on the similarity of the natural language question will yield inferior
+might look different depending on the database schema, thus selecting
+samples based only on the similarity of the natural language question will yield inferior
 sample quality.
 
 \begin{figure}[ht]
@@ -110,16 +110,16 @@ WHERE id = 10;
 \end{figure}
 
 
-As shown in the figures~\ref{figure:sql-join-example} and~\ref{figure:sql-array-example}
-the structural similarity of the underlying database schema is a crucial component
-of the relevance of an example.
+Figures~\ref{figure:sql-join-example} and~\ref{figure:sql-array-example} show
+the structural similarity of the database schema is crucial to
+the relevance of an example.
 
 \paragraph{Graph Representation}\label{design:graph-repr}
 
-To determine structural similarity of database schemas systematically, we propose
-using graph representation of database schemas as a data definition language (DDL)
-independent representation of the database structure. Choosing a graph
-representation allows us to leverage established methods for measuring graph similarity
+To determine structural similarity of database schemas, we propose
+using graph representation as a data definition language (DDL)
+independent representation of the database structure. A graph
+representation allows leveraging established methods for measuring graph similarity
 such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. 
 Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell, w)$ as:
 
@@ -152,14 +152,14 @@ Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell
 \end{enumerate}
 
 We define the structural similarity of two databases as the topological distance
-of the respective graphs. The graph representation captures essential schema
+of their graphs. The graph representation captures essential
 structure through semantic node labeling that prioritizes constraints over data
-types: primary key columns receive label 3 regardless of their underlying data
+types: primary key columns receive label 3 regardless of data
 type, foreign key columns receive label 4, and only then are remaining columns
 categorized by data type (text=5, numeric=6, datetime=7, boolean=8, other=9).
 This hierarchical labeling ensures that structural relationships take
 precedence over exact content, while omitting table names, column names and
-domain terminology to achieve schema-agnostic comparison.
+domain terminology for schema-agnostic comparison.
 
 The graph representation of the database schemas introduced in~\ref{figure:schema-normalized}
 and~\ref{figure:schema-denormalized} are therefore:
@@ -238,20 +238,20 @@ D^{f}_{W}(G, G') = W_1(f(G), f(G'))
 
 as introduced by \citeauthor{WWL} in \citeyear{WWL}.
 
-For the database schemas above, the graph representation of the normalized
+For the database schemas, the normalized
 schema $G_{norm}$ (see figure~\ref{figure:normalized-graph-representation})
 with 5 nodes and 5 edges and denormalized schema $G_{denorm}$ (see figure~\ref{figure:denormalized-graph-representation})
 with 3 nodes and 2 edges show significant topological differences.
-The WWL distance captures both the reduction in graph complexity (fewer nodes and edges)
+The WWL distance captures the reduction in graph complexity (fewer nodes and edges)
 and the loss of relational structure (elimination of foreign key relationships),
-resulting in a substantial distance value reflecting their structural dissimilarity
-despite representing equivalent logical data with $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
+resulting in a substantial distance reflecting their structural dissimilarity
+despite equivalent logical data: $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
 
 
 \paragraph{Distance Index}
 
 The distance index $d$ maintains precomputed distances between
-all observed database schemas, enabling efficient retrieval of structurally similar
+observed database schemas, enabling efficient retrieval of structurally similar
 databases during sample selection. This index is constructed as a set of
 schema-distance tuples $\{(sm_1, di_1), \ldots, (sm_i, di_i)\}$ where $sm_i$ is
 a database schema name and $di_i$ denotes its WWL distance to the current schema.
