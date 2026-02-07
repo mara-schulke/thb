@@ -13,10 +13,10 @@ operations. A neural network is comprised of interconnected computational units
 (called neurons) organized in layers, where each connection has an associated
 (and learnable) weight and bias parameters.
 
-The fundamental computation paradigm of neural network outputs is called
-forward propagation, which is applying the respective weights ($W$) and biases
-($b$) to the input parameter ($a$) and transforming it using a (non-linear)
-activation function $f$:
+The computation paradigm of neural network outputs is called forward
+propagation, which is applying the weights ($W$) and biases ($b$) to the input
+parameter ($a$) and transforming it using a (non-linear) activation function
+$f$:
 
 \begin{equation}
 a^{l+1} = f(Wa^l + b)
@@ -25,10 +25,9 @@ a^{l+1} = f(Wa^l + b)
 where $W \in \mathbb{R}^{m \times n}$ is the weight matrix, $a \in
 \mathbb{R}^{n}$ is the input vector, $b \in \mathbb{R}^{m}$ is the bias vector,
 and $f$ is an activiation function (e.g. ReLU, sigmoid, or tanh). Using this
-function repeatedly, propagates information through the neural network.
+function repeatedly propagates information through the neural network.
 
-The most important architectures for simple natural language
-processing networks include:
+The important architectures for natural language processing networks include:
 
 \begin{itemize}
     \item \textbf{Feedforward Networks} — Which can process fixed-size inputs
@@ -45,28 +44,27 @@ processing networks include:
 \end{itemize}
 
 The ability of neural networks to learn hierarchical representations through
-multiple layers makes them particularly well-suited for the complex translation
-required in NL2SQL systems.
+multiple layers makes them well-suited for the complex translation required in
+NL2SQL systems.
 
 \subsubsection{Learning Approaches}
 
-Broadly speaking, there are three fundamental approaches to training a machine
-learning model, also known as the process of ``learning'':
+There are three approaches to training a machine learning model, also known as
+the process of ``learning'':
 
 \begin{enumerate}
-    \item \textbf{Supervised Learning} – The process of training a model
-        using a labeled dataset of input and output pairs. This learning
-        approach is quite commonly used in models used for NL2SQL which were
-        trained on question and answer pairs (natural language question and
-        corresponding SQL query). This learning approach aims to minimise the
-        loss between predicitions and ground truth.
+    \item \textbf{Supervised Learning} – The process of training a model using
+        a labeled dataset of input and output pairs. This learning approach is
+        commonly used in models used for NL2SQL which were trained on question
+        and answer pairs (natural language question and corresponding SQL
+        query). This learning approach aims to minimise the loss between
+        predicitions and ground truth.
     \item \textbf{Unsupervised Learning} – Includes learning patterns that work
         with unlabeled datasets and use approaches like clustering, language
         modeling and heuristics to infer structure and yield predictions.
-        Unsupervised learning is most appropriate when there is no clear,
-        singular answer and the domain provides large datasets that are not
-        feasible to label manually (eg, dataset gathered through webscraping
-        the internet).
+        Unsupervised learning is appropriate when there is no clear answer and
+        the domain provides large datasets that are not feasible to label
+        manually (eg, dataset gathered through webscraping the internet).
     \item \textbf{Reinforcement Learning} – The process of learning through
         reward signals, commonly known as the reward function. Applied to
         NL2SQL systems this could transfer to training a model's SQL generation
@@ -105,12 +103,12 @@ language models.
 \subsubsection{Transformer Architecture}
 
 The transformer architecture, introduced by \citeauthor{AttentionIsAllYouNeed}
-in \citeyear{AttentionIsAllYouNeed}, introduced the model architecture found in 
+in \citeyear{AttentionIsAllYouNeed}, introduced the model architecture found in
 modern large language models \citep{AttentionIsAllYouNeed}. Unlike earlier
-sequence to sequence models, transformers process are capable of processing
-entire sequences of inputs in parallel by using a self-attention mechanism.
-This enabled more efficient training on massive datasets and superior
-representation of of complex dependencies in input sequences.
+sequence to sequence models, transformers are capable of processing entire
+sequences of inputs in parallel by using a self-attention mechanism. This
+enabled more efficient training on massive datasets and superior representation
+of complex dependencies in input sequences.
 
 \paragraph{Self-Attention Mechanism}
 
@@ -146,9 +144,9 @@ where each $head$ computes:
 \end{equation}
 
 Each attention head can specialize in capturing a different type of semantic
-relationship. For example one head might focus on syntactic structure (e.g., linking SQL
-keywords to their arguments), while others might capture semantic relationships
-between works (e.g., List all x where y). This multi-attention mechanism is
-essential for the complex tasks which require capturing multiple different
-semantic relationships between words. 
+relationship. For example one head might focus on syntactic structure (e.g.,
+linking SQL keywords to their arguments), while others might capture semantic
+relationships between works (e.g., List all x where y). This multi-attention
+mechanism is essential for the complex tasks which require capturing multiple
+different semantic relationships between words. 
 

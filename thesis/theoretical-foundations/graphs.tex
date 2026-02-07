@@ -1,11 +1,11 @@
 \subsection{Graph Theory}
 
 Graph theory is a mathematical domain for working with structures and
-relationships. It is highly relevant for databases and NL2SQL systems as
-modeling relationships in databases maps intuitively to graphs. This section
-introduces the theoretical framework of graphs, graph kernels and graph
-similarity which are required foundations for the example selection algorithm
-of \textsc{Natural}.
+relationships. It is relevant for databases and NL2SQL systems as modeling
+relationships in databases maps intuitively to graphs. This section introduces
+the theoretical framework of graphs, graph kernels and graph similarity which
+are required foundations for the example selection algorithm of
+\textsc{Natural}.
 
 \subsubsection{Graph Fundamentals}
 
@@ -36,9 +36,12 @@ iteratively refines node labels based on the neighborhood structure in the
 graph \citep{WWL}:
 
 \begin{enumerate}
-    \item \textbf{Sorting} — Represent vertices as a sorted list of neighbors ($L_v$)
-    \item \textbf{Compression} — Compute the hash of $L_v$ for every vertex ($h(L_v)$)
-    \item \textbf{Relabeling} — Relabel every vertex $v$ with $h(L_v)$ as its new node label
+    \item \textbf{Sorting} — Represent vertices as a sorted list of neighbors
+        ($L_v$)
+    \item \textbf{Compression} — Compute the hash of $L_v$ for every vertex
+        ($h(L_v)$)
+    \item \textbf{Relabeling} — Relabel every vertex $v$ with $h(L_v)$ as its
+        new node label
 \end{enumerate}
 
 This algorithm is repeated for $w$ iterations (typically $w = 3-5$, due to
@@ -70,17 +73,18 @@ WWL kernels combine the labels computed using WL with Wasserstein distance to
 measure graph distance \citep{WWL}:
 
 \begin{enumerate}
-    \item Apply $w$ WL iterations to both graphs, producing node label distributions at each iteration
+    \item Apply $w$ WL iterations to both graphs, producing node label
+        distributions at each iteration
     \item Compute Wasserstein distance between graphs using Hamming distance
         (for the categorical features) or Euclidean distance (for continuous
         features) as the ground metric
     \item Aggregate distances into a similarity score using a Laplacian kernel:\\
-          $k_{\text{WWL}}(G_1, G_2) = \exp\left(-\lambda  D_W)\right)$
+        $k_{\text{WWL}}(G_1, G_2) = \exp\left(-\lambda  D_W)\right)$
 \end{enumerate}
 
 The resulting graph kernel captures both local neighborhood structures (using
 the WL algorithm) and global distributional properties (using the Wasserstein
 distance) \citep{WWL}. For database schemas, WWL kernels can similar structural
 patterns (table structures, possible joins, constraints) while remaining robust
-to minor structure variations. This makes them particularly well suited for
-NL2SQL example selection algorithms that factor in schema similarity.
+to minor structure variations. This makes them well suited for NL2SQL example
+selection algorithms that factor in schema similarity.

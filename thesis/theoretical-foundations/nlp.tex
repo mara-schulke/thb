@@ -2,18 +2,18 @@
 
 Natural language processing (NLP) provides the foundations for working with
 natural language inputs in computer science and mathematics. It allows for text
-understanding and text representation, aswell as text processing and semantic
-feature extraction, capturing meaning and structure. For NL2SQL systems NLP
-enable semantic understanding of natural language queries and semantic search
-using linguistic similarity. Using NLP and text embeddings reference datasets
-can be used for semantic search effectively and accurately.
+understanding and text representation, text processing and semantic feature
+extraction, capturing meaning and structure. For NL2SQL systems NLP enable
+semantic understanding of natural language queries and semantic search using
+linguistic similarity. Using NLP and text embeddings reference datasets can be
+used for semantic search.
 
 \subsubsection{Text Preprocessing and Tokenization}
 
-Before neural networks can process text, raw text must be converted into a
-structured representations that models can process. This transformation is called
-tokenization, which refers to the process of segmenting text into discrete
-units (tokens) for subsequent processing.
+Before neural networks can process text, raw text must be converted into
+structured representations that models can process. This transformation is
+called tokenization, which refers to the process of segmenting text into
+discrete units (tokens) for processing.
 
 \paragraph{Tokenization Approaches}
 
@@ -24,11 +24,10 @@ balance vocabulary size with representational efficiency. Common approaches
 include \textbf{Byte-Pair Encoding (BPE)}, \textbf{WordPiece} and
 \textbf{SentencePiece}.
 
-These subword tokenization approaches are particularly valuable for NL2SQL
-because database schemas often contain domain-specific terminology, compound
-words, and technical terminology that may not appear in common vocabularies.
-Subword approaches handle unseen words gracefully by decomposing them into
-meaningful tokens.
+These subword tokenization approaches are valuable for NL2SQL because database
+schemas often contain domain-specific terminology, compound words, and
+technical terminology that may not appear in common vocabularies. Subword
+approaches handle unseen words by decomposing them into meaningful tokens.
 
 \paragraph{Tokenization in NL2SQL Contexts}
 

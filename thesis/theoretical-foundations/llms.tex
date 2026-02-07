@@ -1,15 +1,15 @@
 \subsection{Large Language Models}
 
-Large language models (LLMs) are a recent advancement built on top of the
-transformer architecture for natural language processing, demonstrating state
-of the art capabilities in understanding, reasoning and text generation. These
-models form the core of most modern NL2SQL systems like \textsc{XiYan-SQL},
-\textsc{DAIL} and others. They have a wide language understanding as they have
-been trained on large text corpora, are exposed to different domains of traning
-data and have an inherent understanding of the SQL syntax as they have been
-exposed to it during pre-training. This shifted the approach while developing
-NL2SQL systems to focus on in-context learning methods instead of training
-dedicated models from scratch.
+Large language models (LLMs) are an advancement built on the transformer
+architecture for natural language processing, demonstrating state of the art
+capabilities in understanding, reasoning and text generation. These models form
+the core of most modern NL2SQL systems like \textsc{XiYan-SQL}, \textsc{DAIL}
+and others. They have wide language understanding as they have been trained on
+large text corpora, are exposed to different domains of traning data and have
+an inherent understanding of the SQL syntax as they have been exposed to it
+during pre-training. This shifted the approach while developing NL2SQL systems
+to focus on in-context learning methods instead of training dedicated models
+from scratch.
 
 \subsubsection{Feedforward and Residual Connections}
 
@@ -20,7 +20,8 @@ feedforward networks:
 \text{FFN}(x) = \text{GELU}(xW_1 + b_1)W_2 + b_2
 \end{equation}
 
-Residual connections and layer normalization stabilize training of complex networks:
+Residual connections and layer normalization stabilize training of complex
+networks:
 
 \begin{equation}
     \text{Output} = x + \text{Sublayer}(\text{LayerNorm}(x))
@@ -32,19 +33,17 @@ of parameters while maintaining training stability.
 
 \subsubsection{Positional Encoding}
 
-Since transformers are able to process sequences in parallel, positional
-encodings inject information about token positions. Original transformers use
-sinusoidal functions, while modern LLMs often employ learned positional
-embeddings or relative position encodings. This positional information is
-inherently important for NL2SQL systems, where the order of generated SQL
-clauses (e.g., \texttt{SELECT} must come before before \texttt{WHERE}) carries
-significant semantic meaning.
+Since transformers process sequences in parallel, positional encodings inject
+information about token positions. Original transformers use sinusoidal
+functions, while modern LLMs often employ learned positional embeddings or
+relative position encodings. This positional information is important for
+NL2SQL systems, where the order of generated SQL clauses (e.g., \texttt{SELECT}
+must come before \texttt{WHERE}) carries semantic meaning.
 
 \subsubsection{Pre-training and Fine-tuning}
 
 Large language models are trained in a two-fold process that separates the
-training of general language understanding from from task-specific
-capabilities.
+training of general language understanding from task-specific capabilities.
 
 \paragraph{Pre-training}
 
@@ -60,8 +59,8 @@ token given a previous context:
 
 This objective ingrains general language patterns, common knowledge,
 reasoning capabilities, and even programming knowledge into models 
-when code is included in the training datasets. Models like GPT, LLaMA, and Qwen
-are pre-trained using this objective, aiming to predict coherent
+when code is included in the training datasets. Models like GPT, LLaMA, and
+Qwen are pre-trained using this objective, aiming to predict coherent
 continuations of text sequences.
 
 \paragraph{Fine-tuning}
@@ -72,20 +71,21 @@ solving NL2SQL tasks, by continuing model training on a labeled dataset
 model can learn to map natural language questions to expected SQL queries when
 being presented with a question and a database schema.
 
-Fine-tuning usualy require significantly smaller datasets (thousands to
-hundreds of thousands of examples) compared to pre-training (billions to
-trillions of tokens), largely relying on the natural language understanding
-capabilities acquired during the pre-training phase.
+Fine-tuning usualy requires smaller datasets (thousands to hundreds of
+thousands of examples) compared to pre-training (billions to trillions of
+tokens), largely relying on the natural language understanding capabilities
+acquired during the pre-training phase.
 
-Models like \textsc{OmniSQL} demonstrate that smaller fine-tuned models 
-can outperform significantly larger LLMs for NL2SQL tasks using a fraction of
-the parameters \citep{OmniSQL}.
+Models like \textsc{OmniSQL} demonstrate that smaller fine-tuned models can
+outperform larger LLMs for NL2SQL tasks using a fraction of the parameters
+\citep{OmniSQL}.
 
 \subsubsection{In-Context Learning}
 
 In-context learning (ICL) is the process of teaching a model how to perform a
 certain task by providing examples in its prompt, without updating models
-parameters. Thus ICL and Fine-tuning differ by their timing: runtime vs learning.
+parameters. Thus ICL and Fine-tuning differ by their timing: runtime vs
+learning.
 
 This capability emerged with sufficiently large models which have large enough
 context windows to fit in examples of solutions for similar problems. This
