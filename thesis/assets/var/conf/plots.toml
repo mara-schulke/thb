@@ -77,3 +77,72 @@ pipeline-keys = [
 title = "Error Rates Across System Configurations"
 output = "out/error-rates.svg"
 scale = 1
+
+[[plots]]
+type = "pipeline-bars"
+benchmark = "bird-dev"
+metric = "execution-accuracy"
+title = "BIRD (dev) Performance"
+output = "out/bird-dev-performance.svg"
+
+[[plots]]
+type = "pipeline-bars"
+benchmark = "bird-dev"
+metric = "exact-match"
+title = "BIRD (dev) Exact Match"
+output = "out/bird-dev-exact-match.svg"
+
+[[plots]]
+type = "metric-breakdown"
+metric = "candidate-latency"
+pipeline-keys = [
+  "natural-baseline",
+  "natural-zeroshot",
+  "natural-full-syn",
+  "natural-full-train",
+  "natural-full-ground",
+  "omnisql-7b-gguf",
+]
+benchmark-keys = ["bird-dev"]
+title = "Candidate Latency: BIRD Benchmark"
+output = "out/candidate-latency-bird.svg"
+scale = 1
+
+[[plots]]
+type = "baseline-improvement"
+baseline-key = "natural-baseline"
+comparison-keys = [
+  "natural-zeroshot",
+  "natural-full-syn",
+  "natural-full-train",
+  "natural-full-ground",
+]
+metric = "execution-accuracy"
+title = "Execution Accuracy Improvement Over Baseline"
+output = "out/baseline-improvement-ea.svg"
+
+[[plots]]
+type = "baseline-improvement"
+baseline-key = "natural-baseline"
+comparison-keys = [
+  "natural-zeroshot",
+  "natural-full-syn",
+  "natural-full-train",
+  "natural-full-ground",
+]
+metric = "exact-match"
+title = "Exact Match Improvement Over Baseline"
+output = "out/baseline-improvement-em.svg"
+
+[[plots]]
+type = "latency-accuracy"
+pipeline-keys = [
+  "omnisql-7b-gguf",
+  "natural-baseline",
+  "natural-zeroshot",
+  "natural-full-syn",
+  "natural-full-train",
+  "natural-full-ground",
+]
+title = "Latency vs. Accuracy Trade-off Across Benchmarks"
+output = "out/latency-accuracy-tradeoff.svg"

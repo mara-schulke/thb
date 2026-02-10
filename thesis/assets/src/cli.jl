@@ -78,10 +78,18 @@ function plottable(config::Dict, data::BenchmarkData)
         return MetricBreakdownPlot(
             metric=config["metric"],
             pipeline_keys=get(config, "pipeline-keys", String[]),
+            benchmark_keys=get(config, "benchmark-keys", String[]),
             title=get(config, "title", nothing),
             output=config["output"],
             include_all_pipelines=get(config, "include-all-pipelines", false),
             scale=get(config, "scale", 100)
+        )
+    elseif plot_type == "latency-accuracy"
+        return LatencyAccuracyPlot(
+            pipeline_keys=get(config, "pipeline-keys", String[]),
+            benchmark_keys=get(config, "benchmark-keys", String[]),
+            title=get(config, "title", nothing),
+            output=config["output"]
         )
     else
         error("Unknown plot type: $plot_type")

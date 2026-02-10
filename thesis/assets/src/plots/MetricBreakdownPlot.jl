@@ -5,6 +5,7 @@ MetricBreakdownPlot - Show a single metric across selected pipelines and benchma
 struct MetricBreakdownPlot
     metric::String
     pipeline_keys::Vector{String}
+    benchmark_keys::Vector{String}
     title::Union{String, Nothing}
     output::String
     include_all_pipelines::Bool
@@ -14,11 +15,12 @@ end
 function MetricBreakdownPlot(;
     metric="execution-accuracy",
     pipeline_keys=String[],
+    benchmark_keys=String[],
     title=nothing,
     output="metric-breakdown.svg",
     include_all_pipelines=false,
     scale=100)
-    MetricBreakdownPlot(metric, pipeline_keys, title, output, include_all_pipelines, scale)
+    MetricBreakdownPlot(metric, pipeline_keys, benchmark_keys, title, output, include_all_pipelines, scale)
 end
 
 function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font, palette)
@@ -34,7 +36,12 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
 
     pipeline_labels = [get_pipeline_label(p) for p in pipelines]
     fillstyles = get_fillstyles(pipelines)
-    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
+    all_benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
+    benchmark_keys = if !isempty(plot_config.benchmark_keys)
+        filter(k -> k in plot_config.benchmark_keys, all_benchmark_keys)
+    else
+        all_benchmark_keys
+    end
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     n_pipelines = length(pipelines)
