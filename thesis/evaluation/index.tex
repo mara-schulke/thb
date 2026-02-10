@@ -1,34 +1,28 @@
-\newcommand{\EA}{$\mathbb{EA}$}
-\newcommand{\EM}{$\mathbb{EM}$}
-\newcommand{\ER}{$\mathbb{ER}$}
-\newcommand{\CL}{$\mathbb{CL}$}
-\newcommand{\Natural}{\textsc{Natural}}
-\newcommand{\OmniSQL}{\textsc{OmniSql}}
-\newcommand{\Spider}{\textsc{Spider}}
-\newcommand{\Bird}{\textsc{Bird}}
-
 \section{Evaluation}
 
-The evaluation phase of \Natural builds upon the benchmarking
+The evaluation phase of \Natural~builds upon the benchmarking
 infrastructure outlined in section~\ref{impl:benchmark}. This section is
-evaluating benchmarking data gathered while running \Natural in
+evaluating the performance metrics recorded while running \Natural in
 different configurations on two prevalent benchmarking datasets:
 \Spider and \Bird. A representative baseline is introduced,
 aiming to mirror the base-model performance. Subsequently an ablation study is
 performed to understand the performance impact of individual pipeline components.
 
-\subsection{Experimental Methodology}
+\subsection{Methodology}
 
-\subsubsection{Test Environment}
+The following sections document the experimentation environment, outline
+tradeoffs and constraints influencing the performed evaluations.
 
-The tests are performed on a consumer-grade linux system, as research- or
-enterprise-grade hardware was not available. Thus only a subset of datasets and
-configurations have been measured, as a single benchmark executions on prevalent
-datasets takes 12-36 hours.
+\subsubsection{Experimentation Environment}
+
+All benchmarks are performed on a consumer-grade linux system, as research- or
+enterprise-grade hardware was not available. Only a subset of commonly used
+datasets and configurations have been therefore measured, as a single benchmark
+executions of \Spider~and~\Bird take between 12-36 hours. 
 
 \paragraph{Hardware Configuration}
 
-The system used for benchmarking has a NVIDIA RTX 3090 GPU with 24GB VRAM
+The host system used for benchmarking has a NVIDIA RTX 3090 GPU with 24GB VRAM
 available, an AMD 9990X3D CPU with 12-cores up to 5.5GHz, 64GB of RAM at
 6400mt/s and 1TB of SSD storage at a read speed of 7450 MB/s and a write speed
 of 6900 MB/s.
@@ -44,33 +38,21 @@ respectively.
 
 \subsubsection{Benchmark Datasets}
 
-The benchmarking datasets used are the \Spider and \Bird
-testdatasets that are prevalently used for evaluation of NL2SQL systems.
-Comparable research has frequently published performance metrics
-(\textsc{Execution Accuracy} and \textsc{Exact Match}) on these benchmarks
-which makes the performance of \textsc{Natural} comparable to other works.
-
-\paragraph{Spider}
-
-\textsc{Spider} is likely the most prevalently used benchmark for NL2SQL
-systems in contemporary research. The test dataset is comprised of 10,181
-questions and 5693 corresponding SQL queries spread across 200 databases
-spanning 138 domains. Questions in \Spider are categorized by
-difficulty (easy, medium, hard, extra hard). Evaluations on \Spider
-refer to the test dataset.
-
-\paragraph{Bird}
-
-\Bird is another widely used benchmark that is comprised of 12,751
-question answer pairs spread across 95 databases in 37 domains. It aims to be
-more representative of real world scenarios with external knowledge
-requirements and is generally considered harder than \Spider.
+\Spider and \Bird were used as benchmarking datasets as they are prevalently
+used for the evaluation of NL2SQL systems and therefore enable cross study
+evaluations (see section \ref{lit:benchmarks:spider} and
+\ref{lit:benchmarks:bird}). The complex \Spider~2.0 version of \Spider~was
+excluded from this evaluation due to the lack of time and hardware required to
+develop a competitive approach (see section \ref{lit:benchmarks:spider2}).
+Comparable research publishes \textsc{Execution Accuracy} and \textsc{Exact
+Match} metrics on these benchmarks which enables relative and absolute
+performance comparisons of \textsc{Natural} with other studies.
 
 \subsubsection{Evaluation Metrics}
 
 The chosen set of evaluation metrics used is a mixture of semantic metrics
-(\EA, \EM) and functional metrics (\ER, \CL) to gather a hollistic picture of
-system behavior and real world applicablility.
+(\EA, \EM) and functional metrics (\ER, \CL) to gain understanding on system
+behavior and real world applicability.
 
 \paragraph{Execution Accuracy (\EA)}
 
@@ -257,14 +239,24 @@ error rate ($\mathbb{ER}$) and candidate latency
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/execution-accuracy-overview.svg}
-  \caption{Execution accuracy overview across all systems and benchmarks. The \textit{Syn} configuration achieves the highest verified performance on \Spider~(dev) at 81.0\% and \Bird~(dev) at 53.8\%, while \textit{Train} leads on \Spider~(test) at 81.4\%.}
+  \caption{
+    Execution accuracy overview across all systems and benchmarks. The
+    \textit{Syn} configuration achieves the highest verified performance on
+    \Spider~(dev) at 81.0\% and \Bird~(dev) at 53.8\%, while \textit{Train} leads
+    on \Spider~(test) at 81.4\%.
+  }
   \label{fig:eval:execution-accuracy-overview}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/exact-match-overview.svg}
-  \caption{Exact match overview across all systems and benchmarks. ICL configurations demonstrate substantial improvements over baselines, with \textit{Train} achieving 43.9\% on \Spider~(test), the highest verified exact match rate across all benchmarks.}
+  \caption{
+    Exact match overview across all systems and benchmarks. ICL configurations
+    demonstrate substantial improvements over baselines, with \textit{Train}
+    achieving 43.9\% on \Spider~(test), the highest verified exact match rate
+    across all benchmarks.
+  }
   \label{fig:eval:exact-match-overview}
 \end{figure}
 
@@ -273,10 +265,11 @@ error rate ($\mathbb{ER}$) and candidate latency
 One notable insight during benchmarking was the apparent gap between the
 and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
 weights) and the reported accuracy metrics results from \cite{OmniSQL}.
-As shown in Figure~\ref{fig:eval:omnisql-gap}, the $\delta$ in performance between the local measurement and the official
-values ranges from 2.6\% on \Spider~(dev) to 11.8\% on \Spider~(test) and
-28.1\% on \Bird~(dev). The section performance gap section
-(\ref{sec:eval:performance-gap}) analyzes this gap in detail.
+As shown in Figure~\ref{fig:eval:omnisql-gap}, the $\Delta$ in performance
+between the local measurement and the official values ranges from 2.6\% on
+\Spider~(dev) to 11.8\% on \Spider~(test) and 28.1\% on \Bird~(dev). The
+section performance gap section (\ref{sec:eval:performance-gap}) analyzes this
+gap in detail.
 
 The \textit{Baseline} configuration of \Natural~further showed degradation of
 performance compared to the OmniSQL-7B-gguf system configuration. Using the
@@ -343,11 +336,25 @@ on \Spider~(dev) and 82.8\% on \Spider~(train)
 
 \begin{figure}[htbp]
   \centering
+  \includesvg[width=\textwidth]{assets/out/baseline-improvement-ea.svg}
+  \caption{
+    Execution accuracy improvement over the \textit{Baseline} configuration
+    across all benchmarks. The \textit{Zero-Shot} configuration yields marginal
+    gains ($\leq$1.6pp), while ICL-enabled configurations show substantial
+    improvements peaking at +21.4pp (\textit{Syn} on \Bird~dev). The stark
+    contrast between \Spider~and \Bird~gains highlights that ICL impact scales
+    with query and schema complexity.
+  }
+  \label{fig:eval:baseline-improvement-ea}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
   \includesvg[width=\textwidth]{assets/out/error-rates.svg}
   \caption{
       Error rates across system configurations. All configurations
-      maintain error rates below 0.7 failures per hundred queries, indicating that
-      failures are predominantly semantic (incorrect results) rather than
+      maintain error rates below 0.7 failures per hundred queries, indicating
+      that failures are predominantly semantic (incorrect results) rather than
       syntactic or runtime related (malformed SQL, out of memory errors).
   }
   \label{fig:eval:error-rates}
@@ -380,8 +387,7 @@ Both the \textit{Syn} and \textit{Train} configurations of \Natural~outperform
 all baselines. \textit{Syn} showns an improvement of +21.4pp over
 \textit{Baseline} and +15.8pp over \OmniSQL~(7B-gguf), achieving 53.8\% \EA,
 the best local measured system excluding \textit{Ground}. \textit{Train} yields
-improvements of +16.0pp over \textit{Baseline} and +10.4pp over
-\OmniSQL~(7B-gguf).
+improvements of +16.0pp over \textit{Baseline} and +10.4pp over \OmniSQL~(7B-gguf).
 
 This shows a stark contrast with \textsc{Spider}, where synthetic examples
 provided only +3.1pp improvement on dev and +2.6pp improvement on train.
@@ -405,13 +411,28 @@ The \CL~metric showed a similar pattern to the \Spider~benchmarks with the \CL
 increasing with pipeline complexity from 9.3s for \textit{Baseline} to 43.8s
 for \textit{Ground}.
 
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/candidate-latency-bird.svg}
+  \caption{
+    Candidate latency across system configurations on the \Bird~benchmark.
+    Latencies are substantially higher than \Spider~equivalents, with
+    \textit{Syn} and \textit{Ground} reaching 43.7s and 43.8s respectively,
+    driven by the larger schemas, longer prompts and more complex query
+    generation required by \Bird.
+  }
+  \label{fig:eval:candidate-latency-bird}
+\end{figure}
+
 Lastly the \textit{Ground} configuration establishes an upper bound of
 55.8\% \EA, representing a +23.4pp improvement over \textit{Baseline} (with a
 +72\% relative gain). Despite these substantial relative improvements within
 the recorded benchmarks a significant gap of -10.3pp and -8.2pp remains when
 compared to the published \OmniSQL~(7B) performance with 66.1\% and GPT-4o
 performance with 64.0\%. This stark difference between local replication and
-officially reported performance metrics is yet unclarified.
+officially reported performance metrics is yet unclarified. Detailed per-metric
+breakdowns for \Bird~(dev) are provided in
+Appendix~\ref{fig:appendix:bird-dev-ea} and~\ref{fig:appendix:bird-dev-em}.
 
 \subsection{Performance Characteristics}
 
@@ -475,6 +496,22 @@ of up to 45 on complex databases and questions (eg, \Bird). Thus either
 significantly better hardware is required, a simpler configuration needs to be
 used or further performance optimizations need to be introduced.
 
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/latency-accuracy-tradeoff.svg}
+  \caption{
+    Latency vs.\ execution accuracy trade-off across all verified system
+    configurations and benchmarks. Each point represents a
+    (configuration, benchmark) pair. The plot illustrates an efficiency
+    frontier: moving from \textit{Baseline} to ICL-enabled configurations
+    increases accuracy substantially but incurs significant latency costs,
+    particularly on \Bird~where the latency penalty reaches 43s. The
+    \textit{Zero-Shot} configuration represents an inefficient operating
+    point — high latency relative to accuracy gains over \textit{Baseline}.
+  }
+  \label{fig:eval:latency-accuracy-tradeoff}
+\end{figure}
+
 \subsection{Performance Gap}\label{sec:eval:performance-gap}
 
 During baseline validations of the foundational models a critical performance
@@ -488,7 +525,7 @@ potential causes and implications of this gap.
   \includesvg[width=\textwidth]{assets/out/omnisql-difference.svg}
   \caption{
     Performance gap between measured OmniSQL-7B-gguf and reported
-    OmniSQL-7B results across benchmarks. The $\delta$ ranges from 2.6\% on
+    OmniSQL-7B results across benchmarks. The $\Delta$ ranges from 2.6\% on
     \Spider~(dev) to 28.1\% on \Bird~(dev), highlighting differences between
     quantized local deployment and published full-precision results.
   }
@@ -521,7 +558,6 @@ The resulting gap varies significantly by dataset, ranging from only 2.6\% on
     }
     \label{tab:eval:performance-gap}
 \end{table}
-
 
 The uneven distribution of the measure performance gaps across the three
 benchmarks suggests a systematic cause rather than random variation. The gap
@@ -598,8 +634,8 @@ given that greedy sampling as a standard and very straightforward algorithm.
 While a prompt drift could cause significant performance differences the exact
 prompt as supplied by \citeauthor{OmniSQL} was used. Subtle differences in
 phrasing, layout or presentation could yield widely diverging results. It is
-likely that \OmniSQL~7B was fine-tuned using a specific prompt format, and deviation
-from this format can significantly degrade performance.
+likely that \OmniSQL~7B was fine-tuned using a specific prompt format, and
+deviation from this format can significantly degrade performance.
 
 The local benchmarking implementation used the published prompt template but
 likely had a slightly diverging code representation implementation than the
@@ -619,10 +655,10 @@ sensitive to prompt template differences affect performance.
 
 The prompt template used in the local benchmarks for \Natural is shown in
 Appendix~\ref{appendix:prompt:natural:inference} and for \OmniSQL in
-Appendix~\ref{appendix:prompt:omnisql:inference}. \Natural's prompt deviated from
-the presumed original format through the addition of similarity scores for
-in-context learning examples, more explicit instructions and the likely modified
-schema representation.
+Appendix~\ref{appendix:prompt:omnisql:inference}. \Natural's prompt deviated
+from the presumed original format through the addition of similarity scores for
+in-context learning examples, more explicit instructions and the likely
+modified schema representation.
 
 \subsubsection{Implications for Evaluation Validity}
 
@@ -673,7 +709,8 @@ LLM-based NL2SQL research. Without accessibility to the same hardware, models,
 specifications and evaluation frameworks a reliable cross-study comparison
 becomes close to unachievable. Intra-study comparisons remain valid but require
 significant time and hardware resources to achieve. This suggests that the
-% TODO: Add a specific recommendation for a standardized evaluation protocol or reference implementation
+% TODO: Add a specific recommendation for a standardized evaluation protocol or
+% reference implementation
 NL2SQL research community would benefit from standardization of inference
 frameworks, comprehensive documentation of all hyperparameters and
 configurations used as well as a release of exact prompts, preprocessing code
