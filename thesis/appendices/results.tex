@@ -11,33 +11,86 @@ metrics across all system configurations.
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/spider-dev-performance.svg}
-  \caption{Execution accuracy on \Spider~(dev). The \textit{Syn} configuration achieves the highest execution accuracy among all tested systems at 81.0\%, outperforming OmniSQL-7B-gguf by 2.0 percentage points.}
+  \caption{
+    Execution accuracy on \Spider~(dev). The \textit{Syn} configuration
+    achieves the highest execution accuracy among all tested systems at 81.0\%,
+    outperforming OmniSQL-7B-gguf by 2.0pp.
+  }
   \label{fig:appendix:spider-dev-ea}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/spider-test-performance.svg}
-  \caption{Execution accuracy on \Spider~(test). The \textit{Train} configuration demonstrates the strongest performance among tested configurations, achieving 81.4\% execution accuracy.}
+  \caption{
+    Execution accuracy on \Spider~(test). The \textit{Train} configuration
+    demonstrates the strongest performance among tested configurations, achieving
+    81.4\% execution accuracy.
+  }
   \label{fig:appendix:spider-test-ea}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/spider-dev-exact-match.svg}
-  \caption{Exact match performance on \Spider~(dev). ICL configurations demonstrate substantial improvements over baseline, with \textit{Ground} achieving 42.7\% exact match compared to 30.3\% for \textit{Baseline}.}
+  \caption{
+    Exact match performance on \Spider~(dev). ICL configurations demonstrate
+    substantial improvements over baseline, with \textit{Ground} achieving 42.7\%
+    exact match compared to 30.3\% for \textit{Baseline}.
+  }
   \label{fig:appendix:spider-dev-em}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includesvg[width=\textwidth]{assets/out/spider-test-exact-match.svg}
-  \caption{Exact match performance on \Spider~(test). The \textit{Train} configuration achieves 43.9\% exact match, representing a 21.4 percentage point improvement over \textit{Baseline}.}
+  \caption{
+    Exact match performance on \Spider~(test). The \textit{Train}
+    configuration achieves 43.9\% exact match, representing a +21.4pp
+    improvement over \textit{Baseline}.
+  }
   \label{fig:appendix:spider-test-em}
 \end{figure}
 
 \subsubsection{Bird}\label{sec:appendix:benchmark-results-bird}
 
 This section provides detailed breakdowns of the \textsc{Bird} benchmark results
-its development split, showing execution accuracy and exact match metrics
+for its development split, showing execution accuracy and exact match metrics
 across all system configurations.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/bird-dev-performance.svg}
+  \caption{
+    Execution accuracy on \Bird~(dev). The \textit{Syn} configuration achieves
+    the highest verified execution accuracy at 53.8\%, representing a +21.4pp
+    improvement over the \textit{Baseline} configuration.
+  }
+  \label{fig:appendix:bird-dev-ea}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/bird-dev-exact-match.svg}
+  \caption{
+    Exact match performance on \Bird~(dev). ICL-based configurations show
+    dramatic improvements, with \textit{Syn} achieving 18.85\% compared to
+    near-zero rates (0.03\%) for systems without example retrieval, highlighting
+    the strong impact of in-context learning on syntactic alignment for complex
+    queries.
+  }
+  \label{fig:appendix:bird-dev-em}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=\textwidth]{assets/out/baseline-improvement-em.svg}
+  \caption{
+    Exact match improvement over the \textit{Baseline} configuration across all
+    benchmarks. The \textit{Train} configuration yields the largest
+    \EM~improvement on \Spider~(+12.0pp on dev, +11.4pp on test), while
+    \textit{Syn} dominates on \Bird~(dev) with +18.5pp, confirming that diverse
+    synthetic examples provide stronger syntactic alignment for complex queries.
+  }
+  \label{fig:appendix:baseline-improvement-em}
+\end{figure}
