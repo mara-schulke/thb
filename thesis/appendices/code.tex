@@ -5,25 +5,16 @@
 \begin{verbatim}
 let question = "How many ..";
 
-// Initialize vector database for similarity search
+// Initialize vector database and embedding model
 let vector = Vector::infer();
 let model = EmbeddingModel::from_env().expect("failed to load embedding model");
 
-// Query distance indices
-let index = DistanceIndexRow::get("test_db", &vector)?;
+// Load schema distance index for the target database
+let index: DistanceIndex = DistanceIndexRow::get("test_db", &vector)?.into();
 
-// Embed question and perform similarity search
-let selector = Selector::new(&question, None, &model, &vector)?;
-let samples = selection::<4>(
-    &Selector::new(
-        question.as_ref(),
-        None,
-        &model,
-        &vector,
-    )?,
-    &index.into(),
-    &vector,
-)?;
+// Embed the question and run the multi-dimensional selection algorithm
+let selector = Selector::new(question.as_ref(), None, &model)?;
+let samples = selection::<8>(&selector, &index, &vector)?;
 \end{verbatim}
 
 \paragraph{Vector Database Schema}\label{appendix:vector-schema}
@@ -45,10 +36,10 @@ CREATE VIRTUAL TABLE IF NOT EXISTS samples USING vec0 (
   db_id              text not null,
 
   question           text not null,
-  question_embedding float[2048],
+  question_embedding float[4096],
 
   sql                text not null,
-  sql_embedding      float[2048]
+  sql_embedding      float[4096]
 );
 \end{verbatim}
 

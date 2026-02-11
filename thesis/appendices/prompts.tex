@@ -2,18 +2,173 @@
 
 \subsubsection{Natural Inference Prompt}\label{appendix:prompt:natural:inference}
 
+The following prompt is used by the ICL generator stage ($\pi$) when relevant examples
+are available. Template variables are denoted \texttt{\{variable\}}: \texttt{\{schema\}}
+is the (optionally subsetted) database schema, \texttt{\{examples\}} is the rendered
+example block (see below), and \texttt{\{query\}} is the natural language question.
+
 \begin{verbatim}
-EXAMPLE OF THE PROMPT
+### Task Overview
+1. You are a text to sql model that is meant to answer the question
+   using valid sql.
+2. Below, you are provided with a database schema, a set of examples
+   and a natural language question.
+3. Your task is to understand the schema, the examples and generate a
+   valid SQL query to answer the question.
+
+### SQLite Schema
+```
+{schema}
+```
+This schema describes the database's structure, including tables,
+columns, primary keys, foreign keys, and any relevant relationships
+or constraints.
+
+### Examples
+{examples}
+
+### Instructions
+- Make sure you only output the information that is asked in the
+  question. If the question asks for a specific column, make sure to
+  only include that column in the SELECT clause, nothing more.
+- The generated query should return all of the information asked in
+  the question without any missing or extra information.
+- Before generating the final SQL query, please think through the
+  steps of how to write the query.
+
+### Question
+`{query}`
+
+### Output Format
+In your answer, please enclose the generated SQL query in a code block:
+
+```sql
+-- Your SQL Query
+```
+
+Take a deep breath and think step by step to find the correct SQL query.
+\end{verbatim}
+
+\noindent The \texttt{\{examples\}} block is rendered from the retrieved sample
+candidates (filtered to distance $< 0.5$) as follows. Each example is annotated
+with its cosine similarity score:
+
+\begin{verbatim}
+Some example questions and corresponding SQL queries are provided
+based on similar problems:
+
+```sql
+-- Question: {question_masked} [similarity={score}]
+{sql}
+
+-- Question: {question_masked} [similarity={score}]
+{sql}
+```
+
+These examples can help you find the solution to the following
+question, you must choose the most relevant example!
+\end{verbatim}
+
+\noindent When no examples pass the relevance threshold, \texttt{\{examples\}} is
+replaced with:
+
+\begin{verbatim}
+No relevant examples found, *carefully* think through the given
+question and schema to arrive at a valid query
 \end{verbatim}
 
 \subsubsection{Natural Refinement Prompt}\label{appendix:prompt:natural:refinementprompt}
 
+The following prompt is used by the self-refinement stage ($\rho$). It provides the
+candidate query generated in the projection stage alongside the schema and original
+question for correction. Template variables: \texttt{\{schema\}}, \texttt{\{query\}}
+(the natural language question), and \texttt{\{candidate\}} (the SQL candidate to
+be revised).
+
 \begin{verbatim}
-EXAMPLE OF THE PROMPT
+### Task Overview:
+1. You are a text to sql model that is meant to answer the question
+   using valid sql.
+2. Below, you are provided with a database schema, a set of examples
+   and a natural language question.
+3. Your task is to understand the schema, revisit the given SQL query
+   to answer the question.
+4. If you spot any errors in the SQL query, correct them!
+
+### Database Engine:
+SQLite
+
+### Database Schema:
+```
+{schema}
+```
+This schema describes the database's structure, including tables,
+columns, primary keys, foreign keys, and any relevant relationships
+or constraints.
+
+### Question
+```sql
+-- Question: {query}
+{candidate}
+```
+
+### Instructions
+- Make sure you only output the information that is asked in the
+  question. If the question asks for a specific column, make sure to
+  only include that column in the SELECT clause, nothing more.
+- The generated query should return all of the information asked in
+  the question without any missing or extra information.
+- Before generating the final SQL query, please think through the
+  steps of how to write the query.
+
+### Output Format
+In your answer, please enclose the generated SQL query in a code block:
+
+```sql
+-- Your SQL Query
+```
+
+Take a deep breath and think step by step to find the correct SQL query.
 \end{verbatim}
 
 \subsubsection{OmniSQL Inference Prompt}\label{appendix:prompt:omnisql:inference}
 
+The following simplified prompt is used for the zero-shot \textit{Baseline}
+configuration and as the base prompt for the \OmniSQL~model directly (without
+in-context examples). Template variables: \texttt{\{schema\}} and \texttt{\{query\}}.
+
 \begin{verbatim}
-EXAMPLE OF THE PROMPT
+Task Overview:
+You are a data science expert. Below, you are provided with a database
+schema and a natural language question. Your task is to understand the
+schema and generate a valid SQL query to answer the question.
+
+Database Engine:
+SQLite
+
+Database Schema:
+{schema}
+This schema describes the database's structure, including tables,
+columns, primary keys, foreign keys, and any relevant relationships
+or constraints.
+
+Question:
+{query}
+
+Instructions:
+- Make sure you only output the information that is asked in the
+  question. If the question asks for a specific column, make sure to
+  only include that column in the SELECT clause, nothing more.
+- The generated query should return all of the information asked in
+  the question without any missing or extra information.
+- Before generating the final SQL query, please think through the
+  steps of how to write the query.
+
+Output Format:
+In your answer, please enclose the generated SQL query in a code block:
+```
+-- Your SQL query
+```
+
+Take a deep breath and think step by step to find the correct SQL query.
 \end{verbatim}
