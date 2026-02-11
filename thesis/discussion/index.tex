@@ -335,7 +335,7 @@ These three performance profiles highlight different tradeoffs that can be
 consciously made depending on the deployment scenario and the target usage
 pattern
 
-\paragraph{Optimal Configurations for Different Deployment Scenarios}
+\paragraph{Optimal Configurations for Different Deployment Scenarios}\label{sec:discussion:deployment-scenarios}
 
 Given the tradeoffs a recommendation of profiles for certain deployment
 scenarios can be made. Generally the choice of the profile depends on the 
@@ -473,7 +473,7 @@ As shown in the evaluation results (See Table~\ref{tab:eval:overall-results})
 the \CL~consistently increases with the pipeline accuracy. This means that more
 powerful profiles of \Natural~require more powerful hardware in order to
 maintain stable latency characteristics. As described in
-\ref{sec:discussion:XYZ} (TODO: Fix this ref) the latency of a NL2SQL system is a primary
+\ref{sec:discussion:deployment-scenarios} the latency of a NL2SQL system is a primary
 denominator of the usecases it is viable for; e.g, high latency systems
 are primarily sensible for asynchronous tasks whereas low latency systems are
 viable for fast and iterative usecases like query interfaces (e.g, snowflake)
@@ -605,7 +605,7 @@ performance gap between the published \OmniSQL results and locally achieved
 results. This gap is substantial on \Bird, where published results report
 66.1\% \EA for \OmniSQL~7B while locally only 38.0\% \EA~could be achieved. 
 This represents a 28.1pp difference in accuracy. As discussed in
-section~\ref{sec:evaluation:gap}, this might be caused by a multitude of
+section~\ref{sec:eval:performance-gap}, this might be caused by a multitude of
 different factors such as model format differences, diverging hyperparameters,
 prompt drifting and dataset versioning.
 

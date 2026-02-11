@@ -312,7 +312,7 @@ and formatted SQL query.
 \textsc{OmniSQL} prompt was used as base for
 \textsc{Natural}'s prompt with a code representation prompt.
 \textsc{Natural} uses more explicit instructions
-(see~\ref{appendix:inference-prompt}) compared to DAIL-SQL. Key
+(see~\ref{appendix:prompt:natural:inference}) compared to DAIL-SQL. Key
 differentiations include the inclusion of similarity scores to give the model
 the ability to weight samples.
 
@@ -374,7 +374,7 @@ error-fixing instructions.
 The refinement prompt uses a structured format similar to ICL generation but
 with key differences: it includes the original question as context, provides
 the candidate query that needs fixing, and uses explicit correction language
-(see \ref{appendix:refinement-prompt}).
+(see \ref{appendix:prompt:natural:refinementprompt}).
 
 \paragraph{Model Resource Management}
 
