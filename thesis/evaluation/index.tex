@@ -31,7 +31,7 @@ of 6900 MB/s.
 
 The software stack running on the system used for benchmarking is NixOS (25.05)
 with a recent linux kernel version (6.17.7). CUDA 13.0 is being used for
-inference on GPUs and a rust compiler version is 1.91 for compiling
+inference on GPUs and Rust 1.91 for compiling
 \Natural. The models used during benchmarking are \textsc{OmniSql 7B
 Q8\_0} and \textsc{Qwen3 Embedding 8B Q4\_K\_M} for generation and embedding
 respectively.
@@ -203,15 +203,15 @@ error rate ($\mathbb{ER}$) and candidate latency
         \midrule
         \multicolumn{13}{c}{\textbf{Closed-Source LLMs}} \\                                                                                                                                                                          
         \midrule                                                                                                                                                                                                                     
-        GPT-4o-mini*        & 71.0            & -              & -             & -             & 83.7           & -             & -                & -              & 61.5          & -                & ?              & -             \\
-        GPT-4-Turbo*        & 72.2            & -              & -             & -             & 84.2           & -             & -                & -              & 63.6          & -                & ?              & -             \\
-        GPT-4o*             & 70.7            & -              & -             & -             & 84.9           & -             & -                & -              & 64.0          & -                & ?              & -             \\
+        GPT-4o-mini*        & 71.0            & -              & -             & -             & 83.7           & -             & -                & -              & 61.5          & -                & -              & -             \\
+        GPT-4-Turbo*        & 72.2            & -              & -             & -             & 84.2           & -             & -                & -              & 63.6          & -                & -              & -             \\
+        GPT-4o*             & 70.7            & -              & -             & -             & 84.9           & -             & -                & -              & 64.0          & -                & -              & -             \\
         \midrule
-        \multicolumn{13}{c}{\textbf{Open-Source LLMs}} \\                                                                                                                                                                            
+        \multicolumn{13}{c}{\textbf{Open-Source LLMs}} \\
         \midrule
-        OmniSQL-7B*         & 81.6            & -              & -             & -             & 89.8           & -             & -                & -              & 66.1          & -                & ?              & -             \\
-        OmniSQL-14B*        & 82.0            & -              & -             & -             & 88.3           & -             & -                & -              & 65.9          & -                & ?              & -             \\
-        OmniSQL-32B*        & 80.9            & -              & -             & -             & 89.8           & -             & -                & -              & 67.0          & -                & ?              & -             \\
+        OmniSQL-7B*         & 81.6            & -              & -             & -             & 89.8           & -             & -                & -              & 66.1          & -                & -              & -             \\
+        OmniSQL-14B*        & 82.0            & -              & -             & -             & 88.3           & -             & -                & -              & 65.9          & -                & -              & -             \\
+        OmniSQL-32B*        & 80.9            & -              & -             & -             & 89.8           & -             & -                & -              & 67.0          & -                & -              & -             \\
         OmniSQL-7B-gguf     & 79.0            & 33.0           & 0.1           & \textbf{6.6s} & 79.0           & 35.7          & 0.3              & \textbf{6.7s}  & 38.0          & 0.03             & 0.8            & \textbf{8.2s} \\
         \midrule
         \multicolumn{13}{c}{\textbf{Pipelines}} \\                                                                                                                                                                          

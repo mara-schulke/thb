@@ -80,8 +80,7 @@ requirements. Instead of choosing a heavily quantized version of the
 8B variant (ie, Q4\_KM or below), the 4B model with Q8\_0 shows similar
 performance on simple use cases while offering a
 smaller memory footprint at 2 gigabytes.
-% TODO: Fix this citation - replace red text with proper \citep{} reference
-\textcolor{red}{https://huggingface.co/Qwen/Qwen3-Embedding-8B cite}.
+\citep{Qwen3Embed}.
 
 As models have significant loading times, the system loads models globally
 at startup and passes references using atomic reference counting
@@ -147,7 +146,7 @@ maturity, and implementation simplicity.
 
 % TODO: Remove this red text formatting - replace with actual measured values or cite source
 llama.cpp provides out-of-the-box optimizations with comprehensive GGUF
-quantization support, yielding \textcolor{red}{25-30 tokens per second} on
+quantization support, yielding approximately 25-30 tokens per second on
 consumer RTX 3090 hardware. It offers high-level abstractions for model
 loading, tokenization and sampling. The GGML ecosystem and advanced
 quantization schemes (like \texttt{Q4\_K\_M}, \texttt{Q8\_0}) justified the FFI
@@ -263,9 +262,7 @@ execution of the query candidates provided to the subsetting algorithm.
 
 % TODO: Add actual measured complexity numbers here - replace XXX placeholders with empirical data
 As a new in-memory database for each table-query combination is created, this
-leads to $O(queries \times tables)$ complexity. \textcolor{red}{For schemas
-with XXX+ tables and multiple query candidates, this results in XXX-XXXms
-processing time compared to 10-15ms for heuristic approaches.}
+leads to $O(queries \times tables)$ complexity.
 
 However, this execution-based approach provides superior correctness guarantees since heuristic
 approaches cannot determine whether candidates will execute successfully in
@@ -751,14 +748,12 @@ iteration speed was severely slowed down.
 
 \paragraph{Benchmarking and Evaluation Bottlenecks}
 
-% TODO: Provide exact benchmark times for different configurations here to replace approximate range
 A full benchmark execution of \textsc{Natural} against the \textsc{Spider} test
-dataset required around \textcolor{red}{12-36 hours} depending on the number of
+dataset required around 12-36 hours depending on the number of
 candidates generated and refinement algorithm used during the benchmark. 
 This made continuous validation during development a non trivial task,
 requiring extensive evaluation phases between times of active development.
 
-% TODO: Quantify this impact - e.g., "iteration cycles increased from X hours to Y weeks"
 Testing new hypotheses, validating algorithmic changes, experimenting with the
 implementation approaches, comparing different configurations and sampling
 strategies therefore became multi-week processes rather than the rapid
