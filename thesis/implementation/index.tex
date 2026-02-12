@@ -419,7 +419,7 @@ state-of-the-art performance. The result-based self-consensus mechanism is
 executing every query candidate, verifies that it works on the database, and
 loads it's results. By partitioning the available candidates into buckets based
 on their hashed result, queries can be deemed semantically equivalent if they
-end up in the same bucket. After every query has been exeuted and partitioned,
+end up in the same bucket. After every query has been executed and partitioned,
 the algorithm groups the % TODO: Consider adding pseudocode for the voting algorithm to clarify bucket partitioning
 buckets in a hash map \texttt{buckets} with the result
 hash as key and bucket as value.
@@ -654,7 +654,7 @@ understand the benchmark performance.
 
 \subsubsection{Execution-Based Evaluation System}
 
-The \texttt{natural-benchmark} CLI evovles around the concept of executions
+The \texttt{natural-benchmark} CLI evolves around the concept of executions
 which are single benchmark runs against a specific benchmark dataset
 (defaulting to \textsc{Spider}). An execution is the set of tests that have
 been executed using a version of \textsc{Natural} against a benchmark. The
@@ -735,7 +735,7 @@ This section reflects on the most impactful challenges that were encountered
 during the implementation of \textsc{Natural} and analyzes how hardware
 limitations influenced design decisions, confidence in the performance of
 \textsc{Natural} and the overall impact on development velocity. These insights
-are transferrable beyond \textsc{Natural} and are applicable to any
+are transferable beyond \textsc{Natural} and are applicable to any
 production-grade implementation of research algorithms.
 
 \subsubsection{Hardware Constraints and Development Velocity}

@@ -130,7 +130,7 @@ sampling datasets can be measured to isolate the contribution of each
 configuration. The \textit{Baseline} configuration of \Natural is using
 only the inference logic ($\pi$) without all other pipeline components,
 representing the performance contribution of \textsc{OmniSQL} as closely as
-possible. Additonally the \textit{Zero-Shot} configuration of \Natural
+possible. Additionally the \textit{Zero-Shot} configuration of \Natural
 is introduced and measures the performance of \Natural with all
 pipeline components activated but without any examples available to use during
 in-context learning.
@@ -263,7 +263,7 @@ error rate ($\mathbb{ER}$) and candidate latency
 \subsubsection{Baseline Performance Analysis}
 
 One notable insight during benchmarking was the apparent gap between the
-and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
+published and the locally measured performance of \OmniSQL~7B (using GGUF with the F16
 weights) and the reported accuracy metrics results from \cite{OmniSQL}.
 As shown in Figure~\ref{fig:eval:omnisql-gap}, the $\Delta$ in performance
 between the local measurement and the official values ranges from 2.6\% on
@@ -331,7 +331,7 @@ towards the conclusion that in-context learning is an effective mechanism for
 further improving the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
 \EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
-on \Spider~(dev) and 82.8\% on \Spider~(train)
+on \Spider~(dev) and 82.8\% on \Spider~(test)
 (see~\ref{sec:appendix:benchmark-results-spider}).
 
 \begin{figure}[htbp]
@@ -375,7 +375,7 @@ While the \textit{Baseline} configuration of \Natural~only achieves 32.4\%
 \EA~(less than half the accuracy than on \Spider~with 77.9\% and 77.0\% for dev
 and test splits respectively). This poor baseline performance confirms \Bird
 being a significantly more challenging benchmark. While the \textit{Zero-Shot}
-configuration showns incremental improvements over the baseline with a relative
+configuration shows incremental improvements over the baseline with a relative
 improvement of +1.6pp in \EA~(34.0\% absolute), the overall performance shows
 to be behind the reported numbers of \OmniSQL~(7B) and GPT-4 by \cite{OmniSQL}
 which were reported to had an \EA of 66.1\% and 61.5\% respectively. The
@@ -384,7 +384,7 @@ locally reproduced measurement of \OmniSQL~(7B-gguf) yielded a drop in \EA~of
 accuracy.
 
 Both the \textit{Syn} and \textit{Train} configurations of \Natural~outperform
-all baselines. \textit{Syn} showns an improvement of +21.4pp over
+all baselines. \textit{Syn} shows an improvement of +21.4pp over
 \textit{Baseline} and +15.8pp over \OmniSQL~(7B-gguf), achieving 53.8\% \EA,
 the best local measured system excluding \textit{Ground}. \textit{Train} yields
 improvements of +16.0pp over \textit{Baseline} and +10.4pp over \OmniSQL~(7B-gguf).
@@ -471,8 +471,8 @@ into ICL.
 
 Measuring the \CL~reveals the computational trade-offs that come with the
 the \textsc{Natural} pipeline architecture. The \textit{Baseline} configuration
-achieves minimal candidate latency (6.6s on \textsc{Spider} dev, 6.7s on test,
-8.2s on \textsc{Bird} dev), representing the time required for schema
+achieves minimal candidate latency (7.3s on \textsc{Spider} dev, 7.3s on test,
+9.3s on \textsc{Bird} dev), representing the time required for schema
 subsetting and SQL generation without example retrieval or refinement.
 
 The \textit{Zero-Shot} pipeline configuration approximately doubles the end to
@@ -485,7 +485,7 @@ selection and in-context learning show further latency increases. The
 configuration yielding the highest latency (43.7s on \textsc{Bird}).
 
 Overall \OmniSQL~(7B-gguf) consistently showed the lowest \CL~values with
-(6.6s, 6.7s and 8.2) for \Spider~(dev and test) and \Bird~respectively. This is
+(6.6s, 6.7s and 8.2s) for \Spider~(dev and test) and \Bird~respectively. This is
 unsurprising as the \OmniSQL~(7B-gguf) system provides a realistic estimation
 for the $\pi$ component of \Natural.
 
@@ -563,11 +563,11 @@ The uneven distribution of the measure performance gaps across the three
 benchmarks suggests a systematic cause rather than random variation. The gap
 correlates strongly with benchmark complexity: \Spider~(dev), the simplest
 of the three benchmarks with well-structured schemas and clean data is showing
-only a minimal performance degredation of -2.6pp. \Spider~(test) which is not
+only a minimal performance degradation of -2.6pp. \Spider~(test) which is not
 included in any training dataset, using more diverse domains and more complex
 queries is showing a moderate degreation of -10.8pp. \Bird~(dev) which is the
 most complex benchmark of the three, featuring larger schemas, dirty data and
-external knowledge is showing an extreme degredation of -28.1pp.
+external knowledge is showing an extreme degradation of -28.1pp.
 
 This is indicating a performance drop correlating with task difficulty,
 suggesting that the locally measured model had impaired reasoning capabilities,
@@ -587,11 +587,11 @@ The OmniSQL-7B-gguf system uses the F16 weights but transformed into the GGUF
 model format while published results presumably use full-precision models in
 the safetensors formats. Prior research has shown that bit-wise quantization
 can degrade model accuracy, particularly on complex reasoning tasks on
-multi-billion paramater models \citep{Int8AtScale} and it is yet unclear
+multi-billion parameter models \citep{Int8AtScale} and it is yet unclear
 whether the mere transformation into GGUF harms performance for this model
 series. Second, the exact hyperparameters used during evaluation likely
 differed between \cite{OmniSQL} and local benchmarks which may influence the
-model accuracy in unforseen ways. Unless the exact same inference environment,
+model accuracy in unforeseen ways. Unless the exact same inference environment,
 quantization and hyperparameters the performance difference might be caused by
 a multitude of subtle differences. Finally, dataset version differences or
 preprocessing variations could contribute to divergent results.
@@ -681,7 +681,7 @@ compared to the published performance numbers.
 
 Thus this thesis avoids strong claims about absolute performance levels and
 instead focuses on the relative improvements achieved on local NL2SQL systems
-which is conistent with the evaluation environment and results.
+which is consistent with the evaluation environment and results.
 
 \paragraph{Reliability of Relative Comparisons}
 
@@ -694,7 +694,7 @@ improvements across increasingly complex pipeline configurations. \textit{Syn}
 showed an improvement of +21.4pp pver \textit{Baseline} on \Bird which was
 reliably measurable regardless of the absolute baseline uncertainty.
 
-Furthermore component ablations in the evaluation provid valid evidence for
+Furthermore component ablations in the evaluation provide valid evidence for
 understanding the relative contributions of different pipeline components
 (minimal gain without ICL vs. substantial gain with ICL). Therefore the
 conclusion holds true that example selection is the most impactful component

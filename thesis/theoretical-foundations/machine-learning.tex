@@ -24,7 +24,7 @@ a^{l+1} = f(Wa^l + b)
 
 where $W \in \mathbb{R}^{m \times n}$ is the weight matrix, $a \in
 \mathbb{R}^{n}$ is the input vector, $b \in \mathbb{R}^{m}$ is the bias vector,
-and $f$ is an activiation function (e.g. ReLU, sigmoid, or tanh). Using this
+and $f$ is an activation function (e.g. ReLU, sigmoid, or tanh). Using this
 function repeatedly propagates information through the neural network.
 
 The important architectures for natural language processing networks include:
@@ -58,7 +58,7 @@ the process of ``learning'':
         commonly used in models used for NL2SQL which were trained on question
         and answer pairs (natural language question and corresponding SQL
         query). This learning approach aims to minimise the loss between
-        predicitions and ground truth.
+        predictions and ground truth.
     \item \textbf{Unsupervised Learning} – Includes learning patterns that work
         with unlabeled datasets and use approaches like clustering, language
         modeling and heuristics to infer structure and yield predictions.
@@ -90,7 +90,7 @@ based on the compatibility between queries $Q$ and keys $K$:
 \end{equation}
 
 where $d_k$ is the dimensionality of the key vectors, used for scaling to
-prevent softmax saturation which would incurr small gradients. The softmax
+prevent softmax saturation which would incur small gradients. The softmax
 operation converts compatibility scores into a probability distribution,
 determining how much attention to pay to each value.
 
