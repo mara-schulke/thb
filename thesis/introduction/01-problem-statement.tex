@@ -1,36 +1,18 @@
 \subsection{Problem Statement and Motivation}\label{section:introduction:problem}
 
-Database systems represent a backbone of modern computer science, allowing
-rapid advancements whilst shielding us from the problem categories that come
-with managing and querying large amounts of structured data
-efficiently. However, most Database Management Systems (DBMS) have
-required specialized knowledge of the Structured Query
-Language (SQL) to become usable. Whilst this barrier may be perceived
-differently across user groups it represents a fundamental misalignment
-between end-user goals (e.g. analysts, researchers, domain experts etc.) and
-the underlying DBMS, requiring software engineering efforts to reduce this friction.
+Most Database Management Systems (DBMS) require specialized knowledge of the
+Structured Query Language (SQL) in order for users to query data. This
+represents a usability barrier for domain experts, data analysts and
+researchers. Recently Large Language Models (LLMs) have made natural language
+interfaces to databases (NLIDBs) substantially more feasible due to their
+language understanding and reasoning capabilities.
 
-% TODO: Add a concrete example or case study here to illustrate the impact of this barrier
-This barrier is the reason entire classes of software projects exists (for
-example, admin and support panels), data analytics tools etc. which therefore
-introduce significant churn and delay between the implementation of a database
-system and reaching the desired end user impact. Often these projects span
-multiple years, require costly staffing and yield little to no novel technical
-value.
-
-Large Language Models (LLMs) have proven
-themselves as a tool for bridging fuzzy user provided input into
-discrete, machine readable formats. Prominent models have
-demonstrated capabilities that enable computer scientists to tackle
-problem classes that used to be challenging or yield unsatisfying results
-with logical programming approaches.
-
-This thesis explores ways to overcome the barrier using
-natural language queries, so domain experts, business owners, support
-staff etc. are able to interact with their data,
-eliminating the requirement of learning SQL (and its pitfalls). By translating
-natural language to SQL using Large Language Models this translation becomes
-robust (e.g. against different phrasing) and enables
-applications in how businesses, researchers and professionals interact with
-their data — it represents a shift (ie. moving away from SQL)
-towards a more inclusive and data driven world. 
+State-of-the-art NL2SQL systems unfortunately largely depend on proprietary
+models to achieve their accuracy. These models require transmitting database
+schemas and queries to external services, conflicting with data sovereignty
+requirements and security policies in regulated sectors such as healthcare,
+finance, and government technology, thus creating a gap between theoretical
+research performance and deployable systems. This thesis explores approaches to
+overcome these barriers, presenting a sovergein and open-source NL2SQL
+system which allows users in restricted sectors to interact with their data
+intuitively.

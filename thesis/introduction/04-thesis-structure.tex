@@ -1,29 +1,26 @@
-\subsection{Structure of the Thesis}\label{section:introduction:structure}
+\subsection{Thesis Structure}\label{section:introduction:structure}
 
 This thesis follows a research and development methodology to implement a
 portable NL2SQL system that can be used in sovereign environments and be
 embedded into databases.
 
 \begin{enumerate}
-    \item \textbf{Literature Review} — Analysis of existing research in the
-        fields of natural language interfaces (NLI) for databases, GPU
-        integration for acceleration of database operations, and LLM/AI Model
-        integration with database systems. This phase establishes the
-        theoretical foundation and identifies current state-of-the-art
-        approaches, their benefits and shortcomings.
+    \item \textbf{Literature Review} — Analysis of existing research on NLIDB.
+        This review establishes the ecosystem context and identifies current
+        state-of-the-art approaches, their benefits and shortcomings.
     \item \textbf{Theoretical Foundations} — Introduces theoretical concepts
-        and frameworks required for understanding the problem statement and the
+        required for understanding the problem statement and the
         proposed solution. The fundamentals introduced in this section are
-        referenced in the system design and implementation phases.
+        referenced in the system design and implementation.
     \item \textbf{System Design} — Design of a system architecture that
         translates natural language to SQL using LLMs. The goal is to arrive at
         an architecture that implements robust natural language processing,
         schema-aware example selection and self refinement stages whilst
         maintaining high semantic accuracy.
     \item \textbf{Implementation} — Implementation of a portable, standalone
-        NL2SQL pipeline, according to the produced system design. Porting
-        machine learning algorithms from the system design phase into a
-        production grade implementation.
+        NL2SQL pipeline, according to the system design. Porting machine
+        learning algorithms from the system design into a production grade
+        implementation.
     \item \textbf{Evaluation} — Benchmarking the implementation against
         standard evaluation datasets that introspect the implementations
         performance in multiple dimensions. The most relevant evaluation
@@ -31,17 +28,10 @@ embedded into databases.
         ($\mathbb{EM}$), error rate ($\mathbb{ER}$) and candidate latency
         ($\mathbb{CL}$).
     \item \textbf{Discussion} — Analysis and interpretation of the evaluation
-        results against the research goals. Evaluating the performance and
-        accuracy results recorded during the benchmarks against whether real
-        world deployments of NILs are feasible. The impact of approaches used
-        are shown and it is determined whether a statistically significant
-        improvement can be achieved.
+        results against the research goals. Interpreting the results recorded
+        during the evaluation and determinin the impact of approaches used.
     \item \textbf{Summary and Outlook} — Summarizes the contributions,
-        addresses limitations of the thesis and the implementation, and
-        proposes directions for future research alongside possible
-        applications. Future research topics include GPU optimization
-        techniques (e.g. further quantization), accuracy and performance impact
-        of model fine tuning, scalability in enterprise scenarios and the
-        evaluation of security and privacy considerations (e.g. managing access
-        control).
+        addresses limitations of this thesis and the accompanying
+        implementation, and proposes directions for future research alongside
+        possible applications.
 \end{enumerate}

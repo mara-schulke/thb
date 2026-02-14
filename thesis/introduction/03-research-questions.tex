@@ -1,27 +1,18 @@
 \subsection{Research Questions}\label{section:introduction:research-questions}
 
-While recent NL2SQL research has achieved outstanding results using proprietary
-large language models like GPT-4 and Claude, these systems introduce
-data privacy and security concerns for real world adoption: Database
-schemas and queries must be transmitted to an external API for
-inference. This incurs risks, ongoing costs and a
-dependency on a third-party service being available. This thesis investigates
-the applicability and competitiveness of open-source NL2SQL models deployed
-locally on consumer hardware. The following research questions are
-addressed:
+This thesis investigates the applicability and competitiveness of local and
+open-source NL2SQL systems.
 
 \subsubsection*{RQ1 — To what extent can open-source LLMs achieve competitive NL2SQL performance through pipeline composition and optimization?}
 
-State-of-the-art systems combine multiple NLP and ML techniques like
-in-context learning, self-correction and candidate selection. They rely
-on closed-source models which provide impressive baseline performance with
-state-of-the-art reasoning capabilities. This research question investigates
-whether the gap between proprietary systems and open-source models
-like \textsc{OmniSQL}-7B can be reduced or closed by combining the models with
-other NLP or ML techniques. Specifically:
+State-of-the-art systems combine multiple techniques like in-context learning,
+self-correction and candidate selection. This research
+question investigates whether the gap between proprietary systems and
+open-source models like \textsc{OmniSQL} can be closed by combining the models
+with additional NL2SQL techniques. Specifically:
 
 \begin{itemize}
-    \item Can pipeline composition improve the performance of fine-tuned models significantly?
+    \item Can pipeline composition improve the performance of fine-tuned models?
     \item How does the performance of open-source NL2SQL systems compare to
         closed-source model baselines on standard benchmarks?
     \item What accuracy ceiling can be achieved within consumer hardware constraints?
@@ -29,23 +20,20 @@ other NLP or ML techniques. Specifically:
 
 \subsubsection*{RQ2 — How do NL2SQL pipeline components interact, and which configurations optimize the accuracy-latency tradeoff?}
 
-To resolve the dependency on proprietary systems for NL2SQL, a
-cost-effective local deployment must be achieved. An offline NL2SQL system must
-utilize compute efficiently as combining all available techniques
-may not be optimal for performance characteristics. If components have
-dependencies, redundancies, or unfavorable cost-benefit ratios the
-accuracy-latency ratio would be reduced. This research question investigates
-the interactions of pipeline components and which configurations are favorable:
+To resolve the dependency on proprietary systems for NL2SQL, a cost-effective
+local deployment must be achieved. An offline NL2SQL system must utilize
+compute efficiently as combining all available techniques may not be optimal
+for performance characteristics, as components redundancies, or components with
+unfavorable cost-benefit ratios harm accuracy-latency tradeoff. This research
+question investigates the interactions of pipeline components and which
+configurations are favorable:
 
 \begin{itemize}
     \item Do independent components of NL2SQL systems provide independent
         benefits or do they interact synergistically?
     \item Which components contribute most to accuracy improvement, and which add
-        latency without commensurate benefit?
+        latency without substantial benefit?
     \item How should pipelines be configured for different deployment scenarios (exploratory
         analysis vs production queries, simple vs complex databases)?
-    \item What is the optimal point for the accuracy-latency tradeoff for
-        different use cases?
+    \item What is the optimal tradeoff between accuracy and latency by use case?
 \end{itemize}
-
-\newpage
