@@ -20,7 +20,7 @@ input query. This function implements the example selection mechanism
 that enables few-shot learning for SQL generation.
 
 $$
-\sigma: \mathcal{Q} \times \Omega_{\mathcal{S}} \times \mathcal{S} \times \mathcal{V} \times \mathcal{D} \rightarrow \mathcal{C}'
+\sigma: \mathcal{Q} \times \mathcal{C} \times \mathcal{S} \times \mathcal{V} \times \mathcal{D} \rightarrow \mathcal{C}'
 $$
 
 \vspace{0.5em}
@@ -28,13 +28,13 @@ $$
 For a specific input instance, we write:
 
 $$
-\sigma(q, z, s, v, d) = \{(q_1, s_1, \omega_1, d_1), \ldots, (q_k, s_k, \omega_k, d_k)\}
+\sigma(q, C, s, v, d) = \{(q_1, s_1, \omega_1, d_1), \ldots, (q_k, s_k, \omega_k, d_k)\}
 $$
 
 \vspace{0.5em}
 
-where $q \in \mathcal{Q}$ is the input natural language query, $z \in \Omega_{\mathcal{S}}$
-is the zero-shot inference result, $s \in \mathcal{S}$ is the database schema,
+where $q \in \mathcal{Q}$ is the input natural language query, $C \in \mathcal{C}$
+is the current set of generated query candidates, $s \in \mathcal{S}$ is the database schema,
 $v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
 and the result is a candidate set $\mathcal{C}' \in \mathcal{C}$ containing $k$
 tuples of natural language queries, schemas, corresponding SQL queries and their
@@ -49,9 +49,10 @@ This approach ensures examples are weighted by the following properties:
     \item \textbf{Question similarity} – Semantic similarity between the input
         query and observed natural language queries in the embedding space
         $v$, measured using cosine distance between their embeddings.
-    \item \textbf{SQL similarity} – Structural similarity between the zero-shot inference
-        result $z$ and candidate SQL queries using code representations, enabling
-        pattern recognition across different database domains.
+    \item \textbf{SQL similarity} – Structural similarity between the current best
+        candidate $\hat{\omega} = \nu(C)$ and candidate SQL queries using code
+        representations, enabling pattern recognition across different database
+        domains. On the first iteration $C = \emptyset$ and this term is omitted.
     \item \textbf{Database similarity} – Schema compatibility measured through the distance
         index $d$, ensuring selected examples operate on analogous database
         structures with similar table relationships and column types.
@@ -62,12 +63,13 @@ The exact weighting of these can be adjusted through three constants, $w_q$, $w_
 \begin{algorithm}
 \caption{$\sigma$ - Example Selection}\label{algorithms:sigma}
 \begin{algorithmic}[1]
-\Require $q \in \mathcal{Q}$, $z \in \Omega_{\mathcal{S}}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
+\Require $q \in \mathcal{Q}$, $C \in \mathcal{C}$, $s \in \mathcal{S}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
 \Require $k \in \mathbb{N}$, $k \geq 1$                            \Comment{Number of examples to select}
+\State $\hat{\omega} \gets \nu(C)$ if $C \neq \emptyset$, else $\perp$ \Comment{Best current candidate, if any}
 \State $candidates  \gets \emptyset$                               \Comment{Initialize candidate set}
 \For{$(q_i, s_i, \omega_i) \in v$}                                 \Comment{For each sample}
     \State $sim_q \gets cosine(\iota(q), \iota(q_i))$              \Comment{Calculate question similarity}
-    \State $sim_s \gets cosine(\iota(z), \iota(\omega_i))$         \Comment{Calculate SQL similarity}
+    \State $sim_s \gets cosine(\iota(\hat{\omega}), \iota(\omega_i))$ if $\hat{\omega} \neq \perp$, else $0$ \Comment{SQL similarity}
     \State $sim_d \gets d(s, s_i)$                                 \Comment{Calculate schema distance}
     \State $score \gets w_q \cdot sim_q + w_s \cdot sim_s + w_d \cdot sim_d$
     \State $candidates \gets candidates \cup \{(q_i, s_i, \omega_i, score)\}$
@@ -84,7 +86,7 @@ $C$. This schema pruning mechanism reduces the complexity of the SQL generation 
 and improves token efficiency by focusing on relevant schema elements.
 
 $$
-\phi: \mathcal{C}' \times \mathcal{S} \rightarrow \mathcal{S}'
+\phi: \mathcal{C} \times \mathcal{S} \rightarrow \mathcal{S}'
 $$
 
 \vspace{0.5em}
@@ -92,17 +94,18 @@ $$
 For a specific input instance, we write:
 
 $$
-\phi(c, s) = s'
+\phi(C, s) = s'
 $$
 
 \vspace{0.5em}
 
-where $c \in \mathcal{C}'$ is a candidate set containing selected examples, $s \in \mathcal{S}$
+where $C \in \mathcal{C}$ is the set of generated query candidates so far, $s \in \mathcal{S}$
 is the full database schema, and $s' \subseteq s$ is the reduced schema subset containing
 only relevant tables and columns.
 
-The function analyzes the selected examples in $c$ to identify which schema elements
-are commonly referenced in similar queries. This enables
+The function analyzes the generated candidates in $C$ to identify which schema elements
+are referenced across them. On the first iteration $C = \emptyset$ and the full schema
+$s$ is returned unchanged. This enables
 focusing on relevant portions of potentially large
 and complex database schemas, improving accuracy and computational
 efficiency and preventing exceeding limited context windows.
@@ -110,10 +113,11 @@ efficiency and preventing exceeding limited context windows.
 \begin{algorithm}
 \caption{$\phi$ - Schema Subsetting}\label{algorithms:phi}
 \begin{algorithmic}[1]
-\Require $c \in \mathcal{C}'$, $s \in \mathcal{S}$
+\Require $C \in \mathcal{C}$, $s \in \mathcal{S}$
+\If{$C = \emptyset$} \Return $s$ \EndIf              \Comment{No candidates yet: return full schema}
 \State $s' \gets \emptyset$                          \Comment{Empty schema subset}
 \For{$table \in s$}
-    \If{$\exists~r \in references(c, table)$}        \Comment{Any candidates reference the table}
+    \If{$\exists~r \in references(C, table)$}        \Comment{Any generated candidate references the table}
         \State $s' \gets s' \cup \{table\}$          \Comment{Extend subsetted schema}
     \EndIf
 \EndFor

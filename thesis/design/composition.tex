@@ -1,9 +1,8 @@
 \subsection{Composition – $nq$}
 
-The $nq$ function composes the system by establishing a
-zero-shot baseline, then using precomputed embedding space $v$ and distance
-index $d$ from initialization to guide few-shot generation while
-self refining results through execution feedback and yielding the most likely
+The $nq$ function composes the system by iteratively subsetting the schema,
+selecting relevant examples and generating query candidates, self refining
+results through execution feedback, and yielding the most likely
 candidate $\omega$ through majority voting.
 
 $$
@@ -34,16 +33,14 @@ The $nq$ function implements Algorithm~\ref{algorithms:nq}.
 \begin{algorithmic}[1]
 \Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
 \Require $k \in \mathbb{N}$, $k \geq 1$             \Comment{Number of candidates to generate}
-\State $z \gets \pi(\emptyset, q, s)$               \Comment{Generate zero-shot baseline}
-\State $\mathcal{C}' \gets \sigma(q, z, s, v, d)$   \Comment{Select relevant examples}
 \State $C \gets \emptyset$                          \Comment{Initialize candidate set}
 \While{$|C| < k$}                                   \Comment{Generate k candidates}
-    \State $s' \gets \phi(\mathcal{C}', s)$         \Comment{Subset schema to relevant elements}
+    \State $s' \gets \phi(C, s)$                    \Comment{Subset schema using generated candidates}
+    \State $\mathcal{C}' \gets \sigma(q, C, s, v, d)$ \Comment{Select examples using current candidates}
     \State $\omega \gets \pi(\mathcal{C}', q, s')$  \Comment{Generate candidate query}
     \If{$e(\omega, s')$}                            \Comment{Validate syntactic correctness}
         \State $C \gets C \cup \{\omega\}$          \Comment{Add valid candidate}
     \EndIf
-
     \State $\omega' \gets \rho(q, s', e, \omega)$   \Comment{Attempt self-correction}
     \If{$e(\omega', s')$}                           \Comment{Validate corrected query}
         \State $C \gets C \cup \{\omega'\}$         \Comment{Add corrected candidate}
