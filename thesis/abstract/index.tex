@@ -5,35 +5,42 @@ for inference, which in turn poses serious data sovereignty, data privacy and
 reliability concerns on their users as they require transmitting database
 schemas and contents across the wire. This applies especially to sensitive
 industries such as healthcare, finance, aerospace and defense. Recently
-open-source modele like \textsc{OmniSQL} emerged which show competitive NL2SQL
-performance on prevalent benchmarks, addressing the fundamental gap between
-theoretical research performance and production-ready systems that leverage
-open-source models for sensitive air gapped environments.
+open-source models like \textsc{OmniSQL} emerged which show competitive NL2SQL
+performance on benchmarks and thus address the gap between theoretical research
+systems and production-ready systems that leverage open-source models for
+sensitive air gapped environments.
 
-This thesis presents \textsc{Natural}, a sovereign NL2SQL system built
-on the open-source \textsc{OmniSQL}-7B model. The system employs a five-stage
-pipeline: graph-based example selection using Wasserstein-Weisfeiler-Lehman
-kernels ($\sigma$), schema subsetting ($\phi$), few-shot query projection
-($\pi$), self-refinement ($\rho$), and consensus voting ($\nu$). Implemented in
-Rust, \textsc{Natural} enables both a deployment as a database extension or
-standalone inference service without any external dependencies.
+This thesis introduces \textsc{Natural}, a sovereign NL2SQL pipeline built
+around the open-source \textsc{OmniSQL} model series. The system consists of
+five components: graph-based example selection using
+Wasserstein-Weisfeiler-Lehman kernels ($\sigma$), schema subsetting ($\phi$),
+few-shot query projection ($\pi$), self-refinement ($\rho$), and consensus
+voting ($\nu$). \textsc{Natural} can be deployed as a database extension or as
+a inference service without external dependencies.
 
-Evaluations on the \textsc{Spider} and \textsc{Bird} benchmarks demonstrate a
-81.0\% execution accuracy on \textsc{Spider} (dev), 81.4\% on \textsc{Spider}
-(test) and 53.8\% on Bird, representing +3.1pp and +21.4pp improvements over
-baseline respectively. An ablation study reveals synergistic component
-interactions, with example selection providing the largest gains (+19.8pp on
-Bird). Synthetic training examples outperform smaller reference datasets by
-5.4pp, validating structure-aware selection. A 28.1pp reproducibility gap
-between the published model performance of \textsc{OmniSQL} and local
-measurements highlighted substantial evaluation challenges in LLM-based NL2SQL
-research. The resulting candidate latency of 7-16 seconds on \textsc{Spider}
-queries suits analytical workloads but limits interactive applications.
+Benchmark results on \textsc{Spider} and \textsc{Bird} demonstrate a 81.0\%
+execution accuracy on \textsc{Spider} (dev), 81.4\% on \textsc{Spider}
+(test) and 53.8\% on \textsc{Bird}, representing +3.1pp and +21.4pp
+improvements over the locally reproduced \textsc{OmniSQL}-7B-gguf baseline
+respectively. The ablation reveals that in-context learning is the
+component impacting the performance the most. Adding example selection
+to the pipeline providing the largest execution accuracy improvements with
++19.8pp on \textsc{Bird}). Other pipeline components contribute marginally to
+this outcome. Furthermore, synthetic examples outperformed reference training
+datasets by +5.4pp on \textsc{Bird}, which suggests that the structural
+similarity of examples and the database has a greater impact than the domain
+similarity. A 27.1pp gap between the officially published \textsc{OmniSQL}
+results and the locally reproduced measurements highlight reproduction
+challenges in LLM-based NL2SQL systems and limit the ability of this thesis to
+perform absolute performance comparisons and derive definite conclusions. The
+7-16 seconds candidate latency of \textsc{Natural} on \textsc{Spider} enables
+real-world adoption for analytical workloads but is still limited for
+interactive use cases.
 
-This work demonstrates that open-source NL2SQL systems can achieve
-competitive performance while maintaining portability and sovereignty,
-establishing a foundation for secure database access in enterprise and
-government environments.
+The results of this work demonstrate that pipeline composition yield
+substantial (relative) execution accuracy improvements within controlled
+environments. \textsc{Natural} thus builds a foundation for sovereign NL2SQL
+systems in privacy and security sensitive contexts which prevents reliance on
+proprietary models.
 
 \end{abstract}
-
