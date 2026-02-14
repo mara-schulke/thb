@@ -3,13 +3,12 @@
 Earlier research on Natural Language Database
 Interfaces (NLIDBs) dates back over half a century, to the early 1970s. Two
 decades after the first major research systems were developed in this domain,
-\citeauthor*{NLIDBs} published an introduction and overview of NLIDBs where
-state-of-the-art approaches were provided \citep{NLIDBs}. Their
-work outlined key issues and challenges associated with NLIDBs, and
-compared them against existing solutions like formal query
-languages, form-based interfaces and graphical interfaces. These challenges
-(like unobvious limits, linguistic ambiguities, semantic inaccuracy, tedious
-configuration etc.) have shaped this field and remain
+\citeauthor*{NLIDBs} published an overview of NLIDBs and at the time,
+state-of-the-art approaches \citep{NLIDBs}. Their work outlined key issues and
+challenges associated with NLIDBs, and compared them against existing solutions
+like formal query languages, form-based interfaces and graphical interfaces.
+These challenges like unobvious limits, linguistic ambiguities, semantic
+inaccuracy, tedious configuration etc. have shaped this field and remain
 relevant metrics today.
 
 Early NLIDBs relied on traditional natural language processing (NLP)
@@ -21,47 +20,35 @@ machine learning usage \citep{ILPParsing}. In \citeyear{ILPParsing2}
 language database queries with multi clause construction, yielding promising
 results in NLIDBs \citep{ILPParsing2}.
 
-Building on the systematic overview of \citeauthor*{NLIDBs} and the first
-machine learning approaches from \citeauthor*{ILPParsing} and
-\citeauthor*{ILPParsing2}, \citeauthor{NLIDBTheory} proposed a novel approach
-for implementing NLIDBs and outperformed the state-of-the-art solutions —
-achieving 80\% semantic accuracy \citep{NLIDBTheory}. The novelty of the
-\textsc{Precise} system lies in its natural language processing approach,
-its lexical mapping strategy, allowing \textsc{Precise} to
-identify questions it can, and can't answer (introducing the concept of
-\textit{semantically tractable questions}) which results in a better
-and interactive end user experience. Their experiments showed that this
-approach is \textit{transferable} and \textit{unbiased} — they can
-feed in new, unknown questions into the system and maintain performance
-characteristics, whereas ILP-based approaches were suffering from a
-distribution drift of the questions asked.
+\citeauthor{NLIDBTheory} proposed a novel approach for implementing NLIDBs and
+outperformed the existing solutions, achieving 80\% semantic accuracy
+\citep{NLIDBTheory}. The novelty of the \textsc{Precise} system lies in its
+natural language processing approach, its lexical mapping strategy, allowing
+\textsc{Precise} to identify questions it can, and can't answer, introducing
+the concept of semantically tractable questions, which results in an improved
+end user experience. Their approach was shown to be transferable and unbiased,
+able to handle unknown questions and maintain performance characteristics.
+Previous ILP-based approaches were suffering from a distribution drift of the
+questions asked.
 
 The theoretical foundations and research questions highlighted by the
 aforementioned works shaped the research field:
 
 \begin{enumerate}
-    \item The trade-off characteristics derived from choosing a machine
-        learning vs. traditional NLP approach (e.g. \textsc{Chill} versus
-        \textsc{Precise}), particularly coverage versus correctness.
-    \item The linguistic challenges associated with bringing NLIDBs into use
-        (e.g. semantic inaccuracy, linguistic ambiguity, unclear language
-        coverage etc.)
-    \item The value of systems and approaches that emphasize reliability
-        and semantic accuracy rather than giving promising but incorrect
-        answers.
+    \item Trade-off characteristics derived from choosing a machine
+        learning over a traditional NLP approach (e.g. \textsc{Chill} vs.
+        \textsc{Precise}).
+    \item Linguistic challenges associated with bringing NLIDBs into use
+        which include semantic inaccuracy and linguistic ambiguity.
+    \item Value of systems that emphasize reliability and semantic accuracy
+        rather than giving promising but incorrect answers.
 \end{enumerate}
 
 These challenges are comprehensively discussed in the foundational works by
 \citeauthor*{NLIDBs}, \citeauthor*{ILPParsing}, and \citeauthor*{NLIDBTheory}
 \citep{NLIDBs, ILPParsing, NLIDBTheory}.
 
-This highlights the tension between the
-characteristics of natural language, which can be ambiguous,
-\textit{semantically intractable} or incomplete in meaning and
+This highlights the tension between natural language, which can be ambiguous,
+semantically intractable or incomplete in meaning and
 formal languages like SQL which always have one deterministic and
-\textit{semantically tractable} meaning in each statement. As
-Schneiderman and Norman have pointed out, users are ``unwilling to trade
-reliable and predictable user interfaces for intelligent but unreliable ones''
-which induces performance expectations on NLIDB implementations to be highly
-certain about the questions it can, and can't answer, whilst maintaining
-high natural language coverage.
+semantically tractable meaning in each statement.
