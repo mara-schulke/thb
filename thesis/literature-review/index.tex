@@ -1,8 +1,36 @@
 \section{Literature Review}
 
-% https://github.com/HKUSTDial/NL2SQL_Handbook/blob/main/assets/river.svg
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    era/.style={draw, rectangle,
+                minimum width=3.5cm, minimum height=1.2cm,
+                text width=3.3cm, align=center},
+    arr/.style={->, thick, >=stealth}
+  ]
+    \node[era, fill=gray!8]  (rule)   at (0,0)    {\textbf{Rule-based}\\{\small 1990s -- 2000s}};
+    \node[era, fill=gray!18] (neural) at (4.5,0)  {\textbf{Neural}\\{\small mid-2010s}};
+    \node[era, fill=gray!28] (plm)    at (9.0,0)  {\textbf{Pre-trained LMs}\\{\small late 2010s}};
+    \node[era, fill=gray!38] (llm)    at (13.5,0) {\textbf{LLMs}\\{\small 2020s}};
 
-% TODO: Add a visual timeline or figure showing the paradigm shifts from rule-based → neural → PLM → LLM
+    \draw[arr] (rule) -- (neural);
+    \draw[arr] (neural) -- (plm);
+    \draw[arr] (plm) -- (llm);
+
+    % Representative systems / datasets per era
+    \node[font=\small, align=center] at (0,-1.2)
+      {\textsc{Lunar}, \textsc{Ladder}\\grammar / rules};
+    \node[font=\small, align=center] at (4.5,-1.2)
+      {\textsc{Seq2SQL}\\WikiSQL};
+    \node[font=\small, align=center] at (9.0,-1.2)
+      {BERT, T5\\\textsc{Spider}};
+    \node[font=\small, align=center] at (13.5,-1.2)
+      {GPT-4, Codex\\\textsc{Bird}, \textsc{Spider}2.0};
+  \end{tikzpicture}
+  \caption{Paradigm shifts in NL2SQL research from rule-based systems to large language models, with representative systems and benchmarks.}
+  \label{figure:nl2sql-paradigm-shifts}
+\end{figure}
+
 In this section a comprehensive literature review is performed to assess the research landscape on NL2SQL
 (sometimes also referred to as Text-to-SQL or T2SQL) and NLIDBs. From the time their development accelerated in
 the late 1990s and early 2000s \citep{NLIDBs, NLIDBTheory, ILPParsing, ILPParsing2} until now, observing multiple
@@ -21,11 +49,3 @@ the research questions introduced in the previous chapter in context.
 \subimport{}{llm-approaches}
 \subimport{}{benchmarking}
 \subimport{}{research-gaps}
-
-
-
-
-
-
-
-
