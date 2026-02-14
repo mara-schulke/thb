@@ -24,18 +24,48 @@ The system consists of five components:
 
 The system processes queries using the following algorithm:
 
-\begin{verbatim}
-  Natural Language Query
-→ Sketch Generation
-→ Example Selection
-→ k-times [
-    → Schema Subsetting
-    → Few-Shot Generation
-    → Self-Correction
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    pstep/.style={draw, rectangle,
+                  minimum width=3.0cm, minimum height=0.8cm, align=center},
+    io/.style={draw, rectangle,
+               minimum width=3.5cm, minimum height=0.8cm,
+               align=center, fill=gray!15},
+    arr/.style={->, thick, >=stealth}
   ]
-→ Consensus Voting
-→ SQL Query
-\end{verbatim}
+    \node[io]    (nl)      at (0, 8.5) {Natural Language Query};
+
+    \draw[thick]
+      (-8.2, 4.2) rectangle (9.0, 7.8);
+    \node[anchor=mid, font=\small\bfseries, fill=white, inner sep=2pt]
+      at (-7.0, 7.8) {\textsc{Natural}};
+
+    \node[pstep] (subset)   at (-6.0, 6.6) {Schema Subsetting};
+    \node[pstep] (example)  at (-2.0, 6.6) {Example Selection};
+    \node[pstep] (project)  at ( 2.0, 6.6) {Query Projection};
+    \node[pstep] (refine)   at ( 6.0, 6.6) {Self Refinement};
+
+    \draw[dashed, thick]
+      (-7.8, 6.0) rectangle (7.8, 7.2);
+    \node[anchor=west, font=\small\itshape] at (8.0, 6.6) {$\times\,k$};
+
+    \node[pstep] (voting)   at (0, 4.9) {Voting};
+
+    \node[io]    (sql)      at (0, 3.4) {SQL Query};
+
+    \draw[arr] (nl.south) -- ++(0,-0.6) -| (subset.north);
+
+    \draw[arr] (subset)  -- (example);
+    \draw[arr] (example) -- (project);
+    \draw[arr] (project) -- (refine);
+
+    \draw[arr] (refine.south) -- ++(0,-0.5) -| (voting.north);
+    \draw[arr] (voting)  -- (sql);
+  \end{tikzpicture}
+  \caption{Pipeline algorithm of \textsc{Natural} (\texttt{Full} configuration): all four inner steps execute once per iteration, producing candidates resolved by majority voting.}
+  \label{figure:pipeline-algorithm}
+\end{figure}
 
 This design builds upon few-shot learning concepts from DAIL-SQL
 \citep{DAIL-SQL} and OmniSQL \citep{OmniSQL} but incorporates novel
