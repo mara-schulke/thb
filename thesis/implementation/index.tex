@@ -42,10 +42,42 @@ decisions.
 \end{enumerate}
 
 % Inter-crate communication patterns and shared data structures
-% TODO: CRITICAL - Add architecture diagram showing inter-crate communication patterns and data flow
-\begin{verbatim}
-    THIS NEEDS A DIAGRAM TO UNDERSTAND THE SOFTWARE ARCH.
-\end{verbatim}
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    crate/.style={draw, rectangle,
+                  minimum width=4.8cm, minimum height=1cm,
+                  text width=4.6cm, align=center, inner sep=8pt},
+    dep/.style={->, thick, >=stealth}
+  ]
+
+    \node[fill=white, font=\small\itshape, inner sep=2pt] at (0.0, 4.125) {Sampling};
+
+    \draw[dashed, gray] (3.25,-1.1) -- (3.25,4.125);
+
+    \node[fill=white, font=\small\itshape, inner sep=2pt] at (6.5, 4.125) {Runtime};
+
+    \node[crate, fill=gray!32] (models) at (6.5,-0.5)
+      {\texttt{natural-models}\\{\small Model Inference}};
+    \node[crate, fill=gray!32] (graphs) at (0,-0.5)
+      {\texttt{natural-graphs}\\{\small Database Graphs}};
+
+    \node[crate, fill=gray!12] (inference) at (6.5,1.25)
+      {\texttt{natural-inference}\\{\small Pipeline Implementation}};
+    \node[crate, fill=gray!12] (sampling) at (0,1.25)
+      {\texttt{natural-sampling}\\{\small Sampling and Indexing}};
+
+    \node[crate] (benchmark) at (6.5,3.0)
+      {\texttt{natural-benchmark}\\{\small Evaluation and Benchmarking}};
+
+    \draw[dep] (inference) -- (models);
+    \draw[dep] (sampling)  -- (models);
+    \draw[dep] (sampling)  -- (graphs);
+    \draw[dep] (benchmark) -- (inference);
+  \end{tikzpicture}
+  \caption{Software architecture of \textsc{Natural}: dependency graph between the five Cargo crates. Arrows point from a dependent crate to the crate it depends on.}
+  \label{figure:software-architecture}
+\end{figure}
 
 This separation emerged as the split between inference, sampling
 and evaluation code required shared fundamentals like model execution and graph
@@ -539,15 +571,43 @@ possible to reconstruct the input semantic seamlessly. This optimization is
 used to embed the questions and sql queries alongside while maintaining clear
 separation in the embedding output.
 
-% TODO: Add a diagram showing batch embedding architecture and data flow
-% TODO: Incorporate these performance numbers (200ms → 2ms per item) into main text
-\begin{verbatim}
-    INSERT DIAGRAM
-\end{verbatim}
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    box/.style={draw, rectangle,
+                minimum width=3.5cm, minimum height=0.9cm,
+                text width=3.3cm, align=center, inner sep=8pt},
+    gpu/.style={draw, rectangle,
+                minimum width=3.5cm, minimum height=1.5cm,
+                text width=3.25cm, align=center, inner sep=6pt, fill=gray!12},
+    arr/.style={->, thick, >=stealth}
+  ]
+    \node[gpu] (model) at (6.75,0.75)
+    {{\small\textbf{Qwen3 Embedding}}\\{\small 4B Model in Q8\_0}};
 
-% NOTE: Batch embedding computation time down from 200ms per item to
-% approximately 2ms per item when processing 1000-item batches.
-% PUT INTO TEXT/diagram description
+    \node[box] (seq_in)  at (0,2)    {\texttt{[\&str]}\\{\small Sequence}};
+    \node[box] (seq_out) at (13,2)   {\texttt{[SemanticString]}\\{\small Sequence}};
+
+    \node[box] (chunk_in)  at (0,-0.5)  {\texttt{[[\&str]]}\\{\small Chunks}};
+    \node[box] (chunk_out) at (13,-0.5) {\texttt{[[SemanticString]]}\\{\small Chunks}};
+
+    \draw[arr] (seq_in.east)   -- ++(1.5,0) |- ([yshift=3mm]model.west);
+    \draw[arr] (chunk_in.east) -- ++(1.5,0) |- ([yshift=-3mm]model.west);
+
+    \node[font=\small, fill=white, inner sep=2pt] at (3.35, 1.5)  {\texttt{embed\_seq}};
+    \node[font=\small, fill=white, inner sep=2pt] at (3.35, 0.0) {\texttt{embed\_chunked}};
+
+    \draw[arr] ([yshift=3mm]model.east)  -- ++(1.25,0) |- (seq_out.west);
+    \draw[arr] ([yshift=-3mm]model.east) -- ++(1.25,0) |- (chunk_out.west);
+
+    \node[align=center, font=\small] at (6.5,-1.8)
+      {$\approx$\,200\,ms/item (serial)
+       $\;\longrightarrow\;$
+       $\approx$\,2\,ms/item (batch, $n = 1000$)};
+  \end{tikzpicture}
+  \caption{Batch embedding data flow. Inputs are either flat sequences (\texttt{embed\_seq}) or pre-chunked slices (\texttt{embed\_chunked}); the chunked path preserves the original layout for seamless reconstruction. Batch processing reduces per-item embedding time from $\approx$\,200\,ms to $\approx$\,2\,ms.}
+  \label{figure:batch-embedding}
+\end{figure}
 
 \subsubsection{Wasserstein-Weisfeiler-Leman Kernels}
 
@@ -573,7 +633,6 @@ using Rust that were discussed above.
 % - Precomputation during initialization vs dynamic updates
 % - Node labeling strategy: constraints vs data types hierarchy
 % - Distance index caching: initialization time vs query performance
-
 
 \paragraph{Rust-Python Integration Architecture}
 
