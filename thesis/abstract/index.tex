@@ -1,15 +1,14 @@
 \begin{abstract}
 
-As current state-of-the-art NL2SQL systems largely rely on proprietary models,
-open-source models like \textsc{OmniSQL} recently emerged and show competitive
-NL2SQL performance on prevalent benchmarks. Since proprietary models are
-primarily accessible through external APIs, they require transmitting database
-schemas and contents across the wire. This induces serious data sovereignty,
-data privacy and reliability concerns for sensitive industries such as
-healthcare, finance and aerospace \& defense. A fundamental challenge in NL2SQL
-is the gap between theoretical research performance and production-ready
-systems that leverage open-source models for sensitive and potentially air
-gapped environments.
+Current state-of-the-art NL2SQL systems largely rely on proprietary models
+for inference, which in turn poses serious data sovereignty, data privacy and
+reliability concerns on their users as they require transmitting database
+schemas and contents across the wire. This applies especially to sensitive
+industries such as healthcare, finance, aerospace and defense. Recently
+open-source modele like \textsc{OmniSQL} emerged which show competitive NL2SQL
+performance on prevalent benchmarks, addressing the fundamental gap between
+theoretical research performance and production-ready systems that leverage
+open-source models for sensitive air gapped environments.
 
 This thesis presents \textsc{Natural}, a sovereign NL2SQL system built
 on the open-source \textsc{OmniSQL}-7B model. The system employs a five-stage
@@ -27,11 +26,11 @@ interactions, with example selection providing the largest gains (+19.8pp on
 Bird). Synthetic training examples outperform smaller reference datasets by
 5.4pp, validating structure-aware selection. A 28.1pp reproducibility gap
 between the published model performance of \textsc{OmniSQL} and local
-measurements exposes substantial evaluation challenges for LLM-based NL2SQL
+measurements highlighted substantial evaluation challenges in LLM-based NL2SQL
 research. The resulting candidate latency of 7-16 seconds on \textsc{Spider}
 queries suits analytical workloads but limits interactive applications.
 
-This work further demonstrates that open-source NL2SQL systems can achieve
+This work demonstrates that open-source NL2SQL systems can achieve
 competitive performance while maintaining portability and sovereignty,
 establishing a foundation for secure database access in enterprise and
 government environments.
