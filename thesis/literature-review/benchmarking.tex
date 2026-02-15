@@ -1,46 +1,32 @@
 \subsection{Benchmarking}
 
-% TODO: Condense this section
-
-In order to evaluate NL2SQL systems standardized benchmarks like
-\textsc{Spider} and \textsc{Bird} have emerged. These benchmarks can measure
-performance across different approaches and models, enable meaningful ablation
-studies and are a useful indicator for the state of the research field. In the
-past decade significant advancements have been made with \textsc{Spider} being
-released in \citeyear{Spider} the first major, widely adopted, benchmark
-emerged in this field \citep{Spider}.
+In \citeyear{Spider} \textsc{Spider} was introduced as a standardized benchmark
+and was recently followed by \textsc{Bird} in \citeyear{BIRD} and
+\textsc{Spider 2.0} in \citeyear{Spider2}. These benchmarks emerged to allow
+cross system comparisons within the NL2SQL research community.
 
 \subsubsection{Spider}\label{lit:benchmarks:spider}
 
 \textsc{Spider}, introduced by \citeauthor{Spider} in \citeyear{Spider}, has
 become the de facto standard benchmark for evaluating complex and cross-domain
 Text-to-SQL systems. It consists of 10,181 questions and 5,693 unique SQL
-queries spanning 200 databases across 138 domains. Previous benchmarks like
-WikiSQL lacked complexity and cross-domain distribution of datapoints which
-prevented the \textit{transferability} of approaches or models to be accounted
-for in benchmarks. With \textsc{Spider} the capability to be database agnostic
-was required to achieve meaningful accuracy scores. Furthermore \textsc{Spider}
+queries spanning 200 databases across 138 domains. \textsc{Spider}
 was split in training and test sets which contain different database in order
-to prevent overfitting models from succeeding. This design specifically tests a
-model's ability to handle schema linking and generalization challenges rather
-than memorizing specific database patterns. \textsc{Spider} evaluates both
+to prevent overfitting models from succeeding. \textsc{Spider} evaluates both
 \textit{exact matching accuracy} and \textit{execution accuracy}, with
-contemporary state-of-the-art systems achieving approximately 85-90\%
-\textit{execution accuracy} (as of 2025) \citep{Spider, OmniSQL, XiYan, CHASE}.
+contemporary SOTA systems achieving approximately 85-90\% \textit{execution
+accuracy} (as of 2025) \citep{Spider, OmniSQL, XiYan, CHASE}.
 
 \subsubsection{Bird}\label{lit:benchmarks:bird}
 
-The \textsc{Bird} benchmark (BIg bench for large-scale database gRounded
-Text-to-SQLs), released in \citeyear{BIRD}, and addresses the gap between
+The \textsc{Bird} benchmark, released in \citeyear{BIRD}, and addresses the gap between
 academic benchmarks and real-world applications by focusing on large-scale
 databases with actual data content \citep{BIRD}. \textsc{Bird} contains 12,751
 text-to-SQL pairs and 95 databases with a total size of 33.4 GB across 37
-professional domains. Unlike \textsc{Spider}, which primarily evaluates against
-database schemas with minimal content, \textsc{Bird} emphasizes challenges
+professional domains. \textsc{Bird} emphasizes challenges
 related to dirty database contents, external knowledge between natural language
-questions and database values, and SQL efficiency in massive databases. This
-places \textsc{Bird} as a relevant benchmark for real world feasibility of
-approaches and models. Even state-of-the-art LLMs like GPT-4 achieve only
+questions and database values, and SQL efficiency in massive databases.
+Even SOTA LLMs like GPT-4 achieve only
 54.89\% execution accuracy on \textsc{Bird}, compared to human performance of
 92.96\%, highlighting the significant challenges posed by real-world database
 scenarios on NLIDBs \citep{BIRD}.
@@ -49,61 +35,13 @@ scenarios on NLIDBs \citep{BIRD}.
 
 \textsc{Spider 2.0} which was introduced by \citeauthor*{Spider2} in
 \citeyear{Spider2} represents the most recent advancements of benchmarks for
-NL2SQL systems. It represents a significant evolution in NL2SQL benchmarking
-and focuses primarily on enterprise level database challenges. \textsc{Spider
-2.0} is much smaller with only 632 real-world problems which were derived from
-enterprise database use cases, but yet represents a meaningful indicator for the
-complexity of databases that approaches and models can handle. \textsc{Spider
-2.0} goes beyond simple query generation tasks and moves towards testing the
-deep understanding of the database, requiring models to understand metadata,
-SQL dialect documentation and project-level codebases \citep{Spider2}. The
-tasks contained in \textsc{Spider 2.0} often demand multiple complex SQL
-queries often exceeding the 100-line mark and require incorporating a diverse
-set of database operation from transformation to analytics.
+NL2SQL systems. \textsc{Spider 2.0} is much smaller with only 632 real-world
+problems which were derived from enterprise database use cases. \textsc{Spider
+2.0} moves towards testing the deep understanding of the database, requiring
+models to understand metadata, SQL dialect documentation and project-level
+codebases \citep{Spider2}. The tasks contained in \textsc{Spider 2.0} often
+demand multiple complex SQL queries often exceeding the 100-line mark.
 \citeauthor{Spider2} further highlights the gap between academic research and
 enterprise-level environments with even advanced approaches achieving only
 21.3\% on \textsc{Spider2.0} compared to 91.2\% on \textsc{Spider 1.0}
 \citep{Spider, Spider2}.
-
-\subsection{Research Gaps}
-
-This literature review highlights that significant progress was made in the
-development of real world feasible NL2SQL systems and that the research domain
-has undergone multiple large paradigm shifts from rule-based to
-neural-network-based to PLM-based and most recently to LLM-based approaches.
-Despite these advancement several critical research gaps remained open or
-emerged which limit the practical deployment of NL2SQL systems and their
-widespread adoption as natural language database interfaces in real world
-scenarios.
-
-\subsubsection{Advanced Open-Source Approaches}
-
-While recent research papers have made remarkable progress on both open-source
-model development (\textsc{CodeS} and \textsc{OmniSQL}) aswell as advanced
-architecture development like CHASE and \textsc{XiYan-SQL} (which utilize
-multi-path generation and candidate selection, self-correction and RAG), a
-significant research gap evolved around state-of-the-art approaches that dont
-rely on proprietary LLMs and only utilize open-source models. Most contemporary
-research proposes solutions at least partially rely on proprietary LLMs in
-order to achieve state-of-the-art results. Whilst these efforts yield meaningful
-signal to the effect that specific prompt engineering techniques,
-self-correction mechanisms and candidate selection models have, they are not
-yet feasible for real world scenarios due to the cost and data privacy concerns
-they introduce.
-
-\begin{enumerate}
-    \item \textbf{Limited Exploration of Technique Synergies} — Contemporary
-        research primarily focuses on techniques like candidate selection, RAG,
-        and self-correction in isolation or with specific closed-source LLMs. A
-        gap remains in understanding how these techniques can be optimally
-        combined, especially with emerging open-source models.
-    \item \textbf{Efficiency-Accuracy Tradeoffs} — Whilst recent research
-        efforts focus primarily on achieving a new state-of-the-art execution
-        accuracy metric on prevalent benchmarks, the relationship of
-        computational requirements and performance gains achieved remains
-        unclear.
-    \item \textbf{Cross-Technique Optimization} — There is limited research on
-        how to optimize the interplay between the various NL2SQL techniques.
-        Subsequent research needs to clarify how different components of NL2SQL
-        pipelines influence each other.
-\end{enumerate}
