@@ -105,8 +105,8 @@ As an embedding model is required for semantic search of samples in the
 pipeline a companion model is required to embed the sample datasets
 (\textsc{SynSQL}, \textsc{Bird} and \textsc{Spider}) during sampling and
 the user provided natural language question during inference. The Qwen3
-embedding models ranked first on the MTEB multilingual leaderboard.
-The Q8\_0 quantized version of the 8B model consumes 8 gigabytes of VRAM which
+embedding models ranked first on the MTEB multilingual leaderboard. The Q8\_0
+quantized version of the 8B model consumes 8 gigabytes of VRAM which
 cannot fit into 24 gigabytes when accounting for KV-Cache
 requirements. Instead of choosing a heavily quantized version of the
 8B variant (ie, Q4\_KM or below), the 4B model with Q8\_0 shows similar
@@ -154,8 +154,8 @@ resource utilization they represent a trade-off between performance
 optimization and portability vs. iteration speed and research ecosystems.
 
 R and Julia are inferior to Python for adoption, machine learning
-frameworks and natural language processing. Java requires a Java Virtual
-Machine (JVM) at runtime which yields worse portability than C / C++ and Rust
+frameworks and natural language processing. Java requires the java virtual
+machine at runtime which yields worse portability than C / C++ and Rust
 while offering little advantage over interpreted languages like Python.
 Python, C / C++ and Rust emerge as strong contenders for implementing
 \textsc{Natural}. C and C++ have the downside that they are prone to
@@ -375,7 +375,7 @@ document with the most likely answer usually output at the end. This
 approach ensures returned query candidates are executable and
 contain valid SQL. \textsc{Natural} addresses the
 difficulty of generating perfect SQL queries by acknowledging
-limitations of large language models and implementing recovery and refinement
+limitations of LLMs and implementing recovery and refinement
 mechanisms in the subsequent pipeline.
 
 \subsubsection{Self-Refinement Mechanism ($\rho$)}
@@ -912,12 +912,12 @@ powerful hardware and computing infrastructure for faster iteration cycles.
 
 While the 24GB VRAM constraint of the RTX 3090, may be reasonable for most
 consumer grade applications, it proved insufficient for efficient iteration in
-this field, especially given the involvement of large language models.
-Systems with 48GB+ of VRAM would have enabled the usage of larger, more capable
-models without the quantization compromises that may impact system accuracy.
-More modern hardware (even on the consumer grade level) would allow for a
-tremendous benchmarking speed up (eg, using a 5090 would have resulted in
-nearly 200\% increase in speed).
+this field, especially given the involvement of LLMs. Systems with 48GB+ of
+VRAM would have enabled the usage of larger, more capable models without the
+quantization compromises that may impact system accuracy. More modern hardware
+(even on the consumer grade level) would allow for a tremendous benchmarking
+speed up (eg, using a 5090 would have resulted in nearly 200\% increase in
+speed).
 
 More critically, the availability of multiple GPUs would have enabled parallel
 experimentation and benchmarking, which could transform multi-day iteration

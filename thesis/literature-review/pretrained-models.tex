@@ -67,19 +67,19 @@ A major challenge in NL2SQL research is ensuring model generated queries are
 syntactically valid. \citeauthor*{PICARD} released \textsc{Picard} in
 \citeyear{PICARD}, a constrained decoding mechanism which utilizes SQL grammar
 to incrementally parse generated SQL, rejecting invalid tokens. \textsc{Picard}
-significantly improved performance of pre-trained language models like T5 and
+significantly improved performance of PLMs like T5 and
 BERT, lifting them from mid-level to top-performing solutions on
 \textsc{Spider} \citep{PICARD}.
 
-This addresses an issue associated with pre-trained language models — while
-they outperform in natural language understanding, they often lack SQL grammar
-knowledge and tend to generate queries that are not executable due to
-unconstrained output space \citep{PICARD}.
+This addresses an issue associated with PLMs — while they outperform in natural
+language understanding, they often lack SQL grammar knowledge and tend to
+generate queries that are not executable due to unconstrained output space
+\citep{PICARD}.
 
 \subsubsection{Advantages of PLM Approaches}
 
 PLM approaches to NL2SQL tasks yielded performance improvements and primed the
-field towards large language models. PLM approaches brought upsides:
+field towards LLMs. PLM approaches brought upsides:
 
 \begin{enumerate}
     \item \textbf{Compute Efficiency} — PLMs like \textsc{RESDSQL} achieve up
