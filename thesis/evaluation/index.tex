@@ -132,8 +132,7 @@ only the inference logic ($\pi$) without all other pipeline components,
 representing the performance contribution of \textsc{OmniSQL} as closely as
 possible. Additionally the \textit{Zero-Shot} configuration of \Natural
 is introduced and measures the performance of \Natural with all
-pipeline components activated but without any examples available to use during
-in-context learning.
+pipeline components activated but without any examples available to use during ICL.
 
 \paragraph{External Baselines}
 
@@ -327,8 +326,8 @@ configurations show a steep improvement over the three baselines with largest
 \EM~deltas being observed between \textit{Zero-Shot} and \textit{Train} with
 +15.1\% on \Spider~(dev) and between \textit{Baseline} and \textit{Train} with
 +21.4\% on \Spider~(test). These double digit improvements in accuracy point
-towards the conclusion that in-context learning is an effective mechanism for
-further improving the performance of already fine-tuned models. The performance
+towards the conclusion that ICL is an effective mechanism for further improving
+the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
 \EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
 on \Spider~(dev) and 82.8\% on \Spider~(test)
@@ -478,8 +477,7 @@ subsetting and SQL generation without example retrieval or refinement.
 The \textit{Zero-Shot} pipeline configuration approximately doubles the end to
 end latency to (14.0s, 15.3s, 18.7s respectively) highlighting that the
 schema subsetting, self-refinement and voting components contribute to a
-significant increase in computational cost. Configurations with example
-selection and in-context learning show further latency increases. The
+significant increase in computational cost. Configurations with example selection and ICL show further latency increases. The
 \textit{Train} and \textit{Syn} configurations achieve 15s-17s \CL~on
 \textsc{Spider} and 33s-44s on \textsc{Bird}, with the \textit{Syn}
 configuration yielding the highest latency (43.7s on \textsc{Bird}).
@@ -657,8 +655,7 @@ The prompt template used in the local benchmarks for \Natural is shown in
 Appendix~\ref{appendix:prompt:natural:inference} and for \OmniSQL in
 Appendix~\ref{appendix:prompt:omnisql:inference}. \Natural's prompt deviated
 from the presumed original format through the addition of similarity scores for
-in-context learning examples, more explicit instructions and the likely
-modified schema representation.
+ICL examples, more explicit instructions and the likely modified schema representation.
 
 \subsubsection{Implications for Evaluation Validity}
 
@@ -731,7 +728,7 @@ deploying choosing model sizes and quantization into resource constrained
 environments. Prior research exists on the general impact of quantization on
 model performance, but having concrete datapoints specific to NL2SQL would
 clarify the observed behavior \citep{Int8AtScale}. This study should evaluate
-state of the art NL2SQL systems across multiple quantization levels (F16, Q8,
+SOTA NL2SQL systems across multiple quantization levels (F16, Q8,
 Q6, Q4 and Q3) on all major NL2SQL benchmarks like \Spider, \Spider~2.0 and
 \Bird~measuring both the accuracy and latency implications of different
 configurations. Furthermore an analysis could reveal correlation in performance
@@ -742,7 +739,7 @@ behavior between quantization levels and query and schema complexity.
 To isolate inference engine effects and subtle differences implied through
 different model formats the same model should be evaluated across multiple
 frameworks. This study could include PyTorch and Transformers, llama.cpp, vLLM
-and ONNX and evaluate state of the art NL2SQL models in varying sizes against
+and ONNX and evaluate SOTA NL2SQL models in varying sizes against
 prevalent benchmarks. Consistent results across the frameworks would further
 increase the confidence in reproducibility of results where discrepancies would
 highlight discrepancies in implementation-specific details of algorithms and

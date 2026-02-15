@@ -38,7 +38,7 @@ despite doubling the candidate latency from 7.3s to 14.0s. \Natural~
 configurations with active ICL and example selection yield up to +2.3pp on
 \Spider~dev, +3.9pp on \Spider~test and and +19.8pp on \Bird compared to
 \textit{Zero-Shot}. This shows that both schema subsetting and self-refinement
-techniques provide minimal benefit without in-context learning and example
+techniques provide minimal benefit without ICL and example
 selection. Further ablation would help to understand the potential cross
 effects of components and the implications of disabling pipeline
 components like schema-subsetting, self-refinement and majority voting.
@@ -51,7 +51,7 @@ same dataset using the \Natural~example selection algorithm. Synthetic examples
 outperformed domain-similar training examples on \Bird by 5.4pp (53.8\% vs.
 48.4\%), while perfect example selection yielded 55.8\% accuracy and thus adds
 +2.0pp over schema-aware selection. This indicates diminishing returns of
-in-context learning from increasingly sophisticated example strategies.
+ICL from increasingly sophisticated example strategies.
 
 % TODO: Discuss implications of the 28.1pp gap more prominently earlier in this section
 Observed performance characteristics reveal a complex tradeoff for real-world
@@ -87,7 +87,7 @@ The capabilities of open-source NL2SQL models achieve \textit{partially
 competitive} performance on prevalent, structured NL2SQL benchmarks. Especially
 through the composition of different algorithms the performance can be
 significantly improved. The evaluation performed in this thesis demonstrates
-that a combination of in-context learning, schema subsetting, self-refinement
+that a combination of ICL, schema subsetting, self-refinement
 and majority voting boosts the competitiveness of fine-tuned base models.
 Nonetheless significant gaps in execution accuracy remain for enterprise-level
 real-world deployments.
@@ -126,7 +126,7 @@ significant. \textit{Baseline} achieved only about 32.4\% \EA~while
 baseline performance through an altered pipeline composition.
 
 The ablation study shows that the effectiveness of a pipeline configuration 
-heavily depends on in-context learning and example selection, as the
+heavily depends on ICL and example selection, as the
 \textit{Zero-Shot} configuration showed only marginal gains (+0.8pp on
 \Spider~(dev), +0.5pp on \Spider~(test) and +1.6pp on \Bird) over the
 \textit{Baseline} configuration while effectively doubling the candidate
@@ -147,7 +147,7 @@ performing close to them. Further improvements would likely require better
 foundation models or a different architecture altogether. A visual comparison
 across the different configurations
 (Figure~\ref{fig:eval:execution-accuracy-overview}) confirms that
-in-context-learning-based approaches (\textit{Syn}, \textit{Train},
+ICL-based approaches (\textit{Syn}, \textit{Train},
 \textit{Ground}) outperform other configurations with diminishing
 returns from increasingly sophisticated example selection strategies.
 
@@ -275,7 +275,7 @@ by impact as follows:
         the overall system while introducing relatively little candidate
         latency (eg, only +0.1-+2.3s on \Spider). The impact that ICL showed on
         \Bird demonstrates that example selection is not only helpful for LLMs
-        generating SQL queries but a \textit{necessary} measure for enabling
+        generating SQL queries but a \textit{highly impactful} measure for enabling
         them to handle complex query generation tasks on real-world data.
     \item \textbf{Consensus Voting ($\nu$)} – The consesus voting algorithm
         selects the most prevalent result set amogst multiple generation
@@ -295,7 +295,7 @@ by impact as follows:
         diminishing returns. The results of the \textit{Zero-Shot}
         configuration, especially on the \Bird~benchmark, suggest that
         self-refinement is unable to correct significant semantic errors on its
-        own without in-context learning.
+        own without ICL.
     \item \textbf{Schema-Subsetting ($\phi$)} – Schema subsetting aims to
         reduce the noise for the model by filtering out unused table from the
         SQL schema before running query projection, thus improving token
@@ -442,17 +442,18 @@ which offer distinct trade-offs:
         DBMS such as PostgreSQLs extension system a tight coupling between the
         underlying database and the NL2SQL system can be achieved which allow
         for potentially drastically reduced latency if \Natural~is used for
-        expensive OLAP queries. This is largely implied by the pipeline
-        architecture loading data from the database during inference.
-        Furthermore the embedded architecture allows for enhanced data privacy
-        as no data needs to leave the DBMS during inference. To enable access
-        control patterns \Natural~can hook into row level access control and
-        PostgreSQLs access control system. This architecture comes with two
-        significant downsides. First, the database systems host needs to have
-        access to a powerful GPU in order to load the model and run inference
-        directly. Second, this architecture does not scale well, as a linear
-        number of equally sized nodes with GPUs would be required and would
-        thus likely yield a resource under utilization most of the time.
+        expensive Online Analytical Processing (OLAP) queries. This is largely
+        implied by the pipeline architecture loading data from the database
+        during inference. Furthermore the embedded architecture allows for
+        enhanced data privacy as no data needs to leave the DBMS during
+        inference. To enable access control patterns \Natural~can hook into row
+        level access control and PostgreSQLs access control system. This
+        architecture comes with two significant downsides. First, the database
+        systems host needs to have access to a powerful GPU in order to load
+        the model and run inference directly. Second, this architecture does
+        not scale well, as a linear number of equally sized nodes with GPUs
+        would be required and would thus likely yield a resource under
+        utilization most of the time.
     \item \textbf{Inference Service} — The alternative architecture is the
         service oriented architecture which is trivially supported by embedding
         the Rust crate of \Natural~into a gRPC or REST API. This architecture
