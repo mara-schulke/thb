@@ -87,13 +87,13 @@ measurements and locally observed measurements.
 \paragraph{Exact Match (\EM)}
 
 Exact Match (or \EM) measures the syntactic equivalence between
-candidate and ground truth SQL queries after normalization (ie, whitespace
-trimming, casing adjustments etc). Unlike execution accuracy which validates
-semantic correctness through result comparison, exact match determines whether
-the generated query structurally matches the reference query. \EM~acts as a
-lower bound for execution accuracy as queries must be identical which is
-therefore more restrictive as semantically equivalent queries with different
-syntax (ie, using a different join order) are marked as incorrect.
+candidate and ground truth SQL queries after syntax normalization. Compared to
+\EA, which validates semantic correctness through result comparison,
+\EM~determines whether the generated query structurally matches the ground
+truth query. \EM~thus acts as a lower bound for execution accuracy as queries
+must be identical which is therefore more restrictive as semantically
+equivalent queries with different syntax (e.g., using a different join order)
+are marked as incorrect.
 
 \paragraph{Error Rate (\ER)}
 
@@ -523,12 +523,11 @@ further performance optimizations need to be introduced.
   \caption{
     Latency vs.\ execution accuracy trade-off across all verified system
     configurations and benchmarks. Each point represents a
-    (configuration, benchmark) pair. The plot illustrates an efficiency
-    frontier: moving from \textit{Baseline} to ICL-enabled configurations
-    increases accuracy substantially but incurs significant latency costs,
-    particularly on \Bird~where the latency penalty reaches 43s. The
-    \textit{Zero-Shot} configuration represents an inefficient operating
-    point — high latency relative to accuracy gains over \textit{Baseline}.
+    (configuration, benchmark) pair. This figure highlights that moving from
+    \textit{Baseline} to ICL-enabled configurations increases \EA~, but yields
+    significant higher \CL, particularly on \Bird~with a \CL of 43s. The
+    \textit{Zero-Shot} configuration represents an inefficient operating point
+    with a comparatively high latency to accuracy.
   }
   \label{fig:eval:latency-accuracy-tradeoff}
 \end{figure}
@@ -738,18 +737,13 @@ reproductions increase the confidence in claimed results.
 \subsubsection{Summary}
 
 Overall the gap of 28.1pp on \Bird~between the published \OmniSQL~7B results
-(66.1\% \EA) and local measurements (38.0\% \EA) represents a significant
-challenge for the absolute performance interpretation from this evaluation.
-While strong incremental performance gains could be observed (eg, \textit{Syn}
-achieving 53.8\% vs. \OmniSQL~7B-gguf achieving 38.0\% on \Bird) by applying
-the techniques outlined in this thesis (schema aware example selection,
-self-refinement, majority voting) no clear statement can be made on the
-absolute performance of \Natural. Multiple factors are possibly contributing to
-the observed gap which include model format, inference implementation,
-hyperparameter uncertainty, prompt template drifting and potential dataset or
-evaluation script version differences.
-
-Despite these limitations, the gap does \textit{not} invalidate the core
-contributions of this thesis. The relative comparisons within the consistent
-local evaluation environment remain reliable, therefore enabling valid, but
-thesis-local conclusions.
+(66.1\% \EA) and local measurements (38.0\% \EA) represents a challenge for
+deriving absolute conclusions. While strong incremental performance gains could
+be observed (eg, \textit{Syn} achieving 53.8\% vs. \OmniSQL~7B-gguf achieving
+38.0\% on \Bird) by applying the techniques outlined in this thesis (schema
+aware example selection, self-refinement, majority voting) no clear statement can be made on the
+absolute performance of \Natural. Multiple factors influence the the observed
+performance gap, including the model format, inference implementation,
+hyperparameter, prompt template and dataset version used. Nonetheless, the
+relative comparisons within the local evaluation environments remain
+reliable, therefore enabling valid, but thesis-local conclusions.
