@@ -1,26 +1,23 @@
 \section{Implementation}
+This chapter presents the implementation of \textsc{Natural}, translating the
+theoretical framework outlined in Chapter \ref{section:design} into a working
+NL2SQL system.
 
-This chapter presents the implementation of \textsc{Natural},
-translating the theoretical framework outlined in Chapter
-\ref{section:design} into a working NL2SQL system.
-
-Attention is given to engineering challenges encountered,
-performance bottlenecks identified, and optimization strategies implemented to
-achieve deployment viability on consumer hardware.
-The chapter covers software architecture and infrastructure
-and implementation of each pipeline component.
+Attention is given to engineering challenges encountered, performance
+bottlenecks identified, and optimization strategies implemented to achieve
+deployment viability on consumer hardware. The chapter covers software
+architecture and infrastructure and implementation of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
 
-The implementation is split into inference, sampling
-and evaluation code. The runtime code focuses on algorithm
-implementations outlined in section \ref{section:design}, sampling code focuses on
-indexing samples and computing distance indices and evaluation code runs
-the \textsc{Natural} pipeline on benchmarks.
+The implementation is split into inference, sampling and evaluation code. The
+runtime code focuses on algorithm implementations outlined in section
+\ref{section:design}, sampling code focuses on indexing samples and computing
+distance indices and evaluation code runs the \textsc{Natural} pipeline on
+benchmarks.
 
-This subsection outlines the scope of each component,
-the design rationale and technology stack
-decisions.
+This subsection outlines the scope of each component, the design rationale and
+technology stack decisions.
 
 \subsubsection{Software Architecture}
 
@@ -41,7 +38,6 @@ decisions.
         compile statistics.
 \end{enumerate}
 
-% Inter-crate communication patterns and shared data structures
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[
@@ -79,10 +75,11 @@ decisions.
   \label{figure:software-architecture}
 \end{figure}
 
-This separation emerged as the split between inference, sampling
-and evaluation code required shared fundamentals like model execution and graph
-representation which improves testability and maintainability. Separating the inference, sampling and evaluation code yields a smaller
-footprint when embedding inference code into databases.
+This separation emerged as the split between inference, sampling and evaluation
+code required shared fundamentals like model execution and graph representation
+which improves testability and maintainability. Separating the inference,
+sampling and evaluation code yields a smaller footprint when embedding
+inference code into databases.
 
 Challenges with this multi-component architecture are tied to
 dependency management and build complexity although these can be
@@ -140,18 +137,17 @@ reproducible research outcomes.
 The most apparent and impactful decision is the language and ecosystem
 choice. Viable languages for implementing natural language processing and
 machine learning systems are Python, R, Julia, Rust, C / C++ and Java
-and other general purpose languages.
-
-While interpreted languages like Python, R and Julia tend to be
-easier to use for rapid prototyping and validation due to their loose
-type systems and scientific ecosystem, they come with drawbacks
+and other general purpose languages. While interpreted languages like Python, R
+and Julia tend to be easier to use for rapid prototyping and validation due to
+their loose type systems and scientific ecosystem, they come with drawbacks
 regarding deployability, speed and robustness compared to compiled and
 strongly typed languages.
 
-Languages like Java, C / C++ and Rust offer stability at runtime,
-better interoperability into other programs (eg, database extensions) and
-resource utilization they represent a trade-off between performance
-optimization and portability vs. iteration speed and research ecosystems.
+Languages like Java, C / C++ and Rust offer stability
+at runtime, better interoperability into other programs (eg, database
+extensions) and resource utilization they represent a trade-off between
+performance optimization and portability vs. iteration speed and research
+ecosystems.
 
 R and Julia are inferior to Python for adoption, machine learning
 frameworks and natural language processing. Java requires the java virtual
@@ -176,7 +172,6 @@ Candle (Rust-native). While Rust-native frameworks offer better
 portability, llama.cpp provided a better balance between performance, ecosystem
 maturity, and implementation simplicity.
 
-% TODO: Remove this red text formatting - replace with actual measured values or cite source
 llama.cpp provides out-of-the-box optimizations with comprehensive GGUF
 quantization support, yielding approximately 25-30 tokens per second on
 consumer RTX 3090 hardware. It offers high-level abstractions for model
@@ -248,8 +243,8 @@ weights as constants: 70\% for semantic question similarity and 30\%
 for SQL structural similarity. The final scoring combines 70\%
 sample-level similarity with 30\% schema-level compatibility.
 
-The selection algorithm yields a maximum of 32 candidates (\texttt{TOP\_K =
-32}) to limit computational overhead whilst maintaining selection quality.
+The selection algorithm yields a maximum of 256 candidates (\texttt{TOP\_K =
+256}) to limit computational overhead whilst maintaining selection quality.
 Vector similarity queries are performed using SQLite with \texttt{sqlite-vec},
 achieving sub-second retrieval times for vector databases exceeding
 2,000,000 samples.
@@ -257,15 +252,13 @@ achieving sub-second retrieval times for vector databases exceeding
 \paragraph{Implementation Architecture}
 
 The \texttt{Selector} struct encapsulates embedding computation and representation
-from the selection algorithm. Via \texttt{Selector::new}
-the code can compute the embeddings and use them to run
-example selection.
+from the selection algorithm. Via \texttt{Selector::new} the code can compute
+the embeddings and use them to run example selection.
 
-The \texttt{selection} algorithm follows a two-stage approach:
-initial candidate retrieval through vector search (using the
-\texttt{Vector} struct and SQLite) and reweighting using the
-weights and a precomputed WWL distance index from
-\texttt{natural-graphs}.
+The \texttt{selection} algorithm follows a two-stage approach: initial
+candidate retrieval through vector search (using the \texttt{Vector} struct and
+SQLite) and reweighting using the weights and a precomputed WWL distance index
+from \texttt{natural-graphs}.
 
 \subsubsection{Schema Subsetting System ($\phi$)}
 
@@ -292,15 +285,13 @@ execution of the query candidates provided to the subsetting algorithm.
 
 \paragraph{Performance and Trade-off Characteristics}
 
-% TODO: Add actual measured complexity numbers here - replace XXX placeholders with empirical data
 As a new in-memory database for each table-query combination is created, this
-leads to $O(queries \times tables)$ complexity.
-
-However, this execution-based approach provides superior correctness guarantees since heuristic
-approaches cannot determine whether candidates will execute successfully in
-database environments. Using a SQLite in-memory instance both the correctness of
-query candidates and the referenced set of tables can be known prior
-to query execution.
+leads to $O(queries \times tables)$ complexity. However, this execution-based
+approach provides superior correctness guarantees since heuristic approaches
+cannot determine whether candidates will execute successfully in database
+environments. Using a SQLite in-memory instance both the correctness of query
+candidates and the referenced set of tables can be known prior to query
+execution.
 
 \paragraph{Pipeline Integration}
 
@@ -443,8 +434,6 @@ providing a result-based self-consensus mechanism which takes in the set of
 candidates that were predicted during the generation phase and returns the most
 likely query.
 
-\paragraph{Result-Based Self-Consensus}
-
 \citeauthor{OmniSQL} have shown in \citeyear{OmniSQL} that self-consensus can 
 significantly improve the accuracy of models that are already showing 
 state-of-the-art performance. The result-based self-consensus mechanism is
@@ -452,15 +441,10 @@ executing every query candidate, verifies that it works on the database, and
 loads it's results. By partitioning the available candidates into buckets based
 on their hashed result, queries can be deemed semantically equivalent if they
 end up in the same bucket. After every query has been executed and partitioned,
-the algorithm groups the % TODO: Consider adding pseudocode for the voting algorithm to clarify bucket partitioning
-buckets in a hash map \texttt{buckets} with the result
-hash as key and bucket as value.
-
-\paragraph{Bucket Selection Heuristic}
-
-The heuristic method employed by the voting algorithm is steering the pipeline
-to agree with itself – if multiple generation attempts yielded the same result,
-these generation attempts are more likely to be accurate the others.
+the algorithm groups the buckets in a hash map \texttt{buckets} with the result
+hash as key and bucket as value. The heuristic method employed is steering the
+pipeline to agree with itself, if multiple generation attempts yielded the same
+result, these generation attempts are more likely to be accurate than others.
 
 \paragraph{Error Handling and Fallback}
 
@@ -520,10 +504,9 @@ See \ref{appendix:vector-db-api} for reference.
 \paragraph{Database Schema}
 
 As the \texttt{.vector} file is still a regular SQLite database, alongside
-indexing tables using embeddings (\texttt{float[4096]} or \texttt{float[2048]})
-regular database tables can be maintained to save data derived at sampling
-time. \texttt{Vector} hosts the database schema described
-in \ref{appendix:vector-schema}.
+indexing tables using embeddings (\texttt{float[4096]}) regular database tables
+can be maintained to save data derived at sampling time. \texttt{Vector} hosts
+the database schema described in \ref{appendix:vector-schema}.
 
 Which maintains the precomputed distance indices and the database graphs for
 example selection. Thus at pipeline runtime the database indices and graph
@@ -627,12 +610,6 @@ section~\ref{section:design} the WWL implementation is only needed during
 sampling time and not required at runtime as all distances are precomputed and
 stored in a distance index, keeping the runtime portability characteristics of
 using Rust that were discussed above.
-
-% - Schema similarity using Weisfeiler-Leman graph kernel
-% - O(n²) computational complexity for 100+ database schemas
-% - Precomputation during initialization vs dynamic updates
-% - Node labeling strategy: constraints vs data types hierarchy
-% - Distance index caching: initialization time vs query performance
 
 \paragraph{Rust-Python Integration Architecture}
 

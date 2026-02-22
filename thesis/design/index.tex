@@ -2,11 +2,8 @@
 
 This chapter describes \textsc{Natural}, a proposed NL2SQL system,
 addressing limitations and research gaps identified in the literature review.
-
-\textsc{Natural} is a pipeline that transforms natural
-language questions into SQL queries using example selection ($\sigma$),
-schema subsetting ($\phi$), self refinement ($\rho$) and voting ($\nu$).
-The system consists of five components:
+\textsc{Natural} is a pipeline that transforms natural language questions into
+SQL queries consisting of five components:
 
 \begin{enumerate}
     \item \textbf{Example Selection} $\sigma$ – Identifies semantically and
@@ -22,7 +19,7 @@ The system consists of five components:
         most likely result from multiple generation attempts.
 \end{enumerate}
 
-The system processes queries using the following algorithm:
+The system processes queries using the following architecture:
 
 \begin{figure}[ht]
   \centering
@@ -63,7 +60,10 @@ The system processes queries using the following algorithm:
     \draw[arr] (refine.south) -- ++(0,-0.5) -| (voting.north);
     \draw[arr] (voting)  -- (sql);
   \end{tikzpicture}
-  \caption{Pipeline algorithm of \textsc{Natural} (\texttt{Full} configuration): all four inner steps execute once per iteration, producing candidates resolved by majority voting.}
+  \caption{
+    \textsc{Natural} (\textit{Full}): All four inner steps execute once per
+    iteration, producing candidates resolved by majority voting.
+    }
   \label{figure:pipeline-algorithm}
 \end{figure}
 

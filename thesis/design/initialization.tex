@@ -42,7 +42,7 @@ sample quality.
 \begin{figure}[ht]
   \vspace{1em}
   \hfill
-  \begin{minipage}[b]{0.45\linewidth}
+  \begin{minipage}[b]{0.40\linewidth}
     \begin{verbatim}
 CREATE TABLE users (
   id TEXT PRIMARY KEY
@@ -56,11 +56,11 @@ CREATE TABLE contacts (
   PRIMARY KEY (user_id, name)
 );
     \end{verbatim}
-    \caption{Normalized schema}
+    \caption{Normalized SQL database schema with separate tables for users and contacts.}
     \label{figure:schema-normalized}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.35\linewidth}
+  \begin{minipage}[b]{0.4\linewidth}
     \begin{verbatim}
 CREATE TABLE users (
   id TEXT PRIMARY KEY,
@@ -68,7 +68,7 @@ CREATE TABLE users (
 );
     \end{verbatim}
     \vspace{3.75em}
-    \caption{Denormalized schema}
+    \caption{Denormalized SQL database schema with contacts stored within an array column.}
     \label{figure:schema-denormalized}
   \end{minipage}
   \hfill
@@ -82,7 +82,7 @@ and~\ref{figure:sql-array-example}.
 \begin{figure}[ht]
   \vspace{1em}
   \hfill
-  \begin{minipage}[b]{0.45\linewidth}
+  \begin{minipage}[b]{0.4\linewidth}
     \begin{verbatim}
 SELECT contacts.name
 FROM users
@@ -90,11 +90,11 @@ JOIN contacts
   ON contacts.user_id = users.id
 WHERE users.id = 10;
     \end{verbatim}
-    \caption{SQL JOIN selection}
+    \caption{Using JOIN on a normalized database schema in SQL.}
     \label{figure:sql-join-example}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.35\linewidth}
+  \begin{minipage}[b]{0.4\linewidth}
     \centering
     \begin{verbatim}
 SELECT contacts
@@ -102,7 +102,7 @@ FROM users
 WHERE id = 10;
     \end{verbatim}
     \vspace{1.3em}
-    \caption{SQL Array selection}
+    \caption{Using array access on a denormalized database schemas in SQL.}
     \label{figure:sql-array-example}
   \end{minipage}
   \hfill
@@ -120,7 +120,8 @@ To determine structural similarity of database schemas, this thesis proposes
 using graph representation for the representation of database structures. A
 graph representation allows leveraging established methods for measuring graph
 similarity such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. 
-Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell, w)$ as:
+Given a database schema $s$ the corresponding graph $G_s = (V, E, \ell, w)$ is
+defined as:
 
 \begin{enumerate}
     \item $V = V_t \cup V_c$ where $V_t$ represents table nodes and $V_c$ represents column nodes
@@ -150,8 +151,8 @@ Given a database schema $s$ we define the corresponding graph $G_s = (V, E, \ell
         \end{itemize}
 \end{enumerate}
 
-We define the structural similarity of two databases as the topological distance
-of their graphs. The graph representation captures essential
+The structural similarity of two databases is defined as the topological
+distance of their graphs. The graph representation captures essential
 structure through semantic node labeling that prioritizes constraints over data
 types: primary key columns receive label 3 regardless of data
 type, foreign key columns receive label 4, and only then are remaining columns
@@ -186,7 +187,7 @@ and~\ref{figure:schema-denormalized} are therefore:
       
       \draw (users_id) to [out=10, in=170] (contacts_user_id); 
     \end{tikzpicture} 
-    \caption{Normalized graph repr.}
+    \caption{Graph representation of a normalized schema.}
     \label{figure:normalized-graph-representation}
   \end{minipage}
   \hfill
@@ -201,7 +202,7 @@ and~\ref{figure:schema-denormalized} are therefore:
       \draw[dashed] (users) -- (users_id); 
       \draw[dashed] (users) -- (users_contacts); 
     \end{tikzpicture} 
-    \caption{Denormalized graph repr.}
+    \caption{Graph representation of a denormalized schema.}
     \label{figure:denormalized-graph-representation}
   \end{minipage}
   \hfill
@@ -221,9 +222,10 @@ further highlight the structural difference between the two schemas.
 
 \paragraph{Distance Measurement}
 
-To measure the distance between the graphs displayed in~\ref{figure:normalized-graph-representation}
-and~\ref{figure:denormalized-graph-representation}, we employ the
-Wasserstein Weisfeiler-Lehman (WWL) graph kernel method \citep{WWL}.
+To measure the distance between the graphs displayed
+in~\ref{figure:normalized-graph-representation}
+and~\ref{figure:denormalized-graph-representation}, the Wasserstein
+Weisfeiler-Lehman (WWL) graph kernel method is used \citep{WWL}.
 
 WWL kernels compute structural similarity by combining discrete Weisfeiler-Lehman
 graph features with continuous optimal transport theory. The method first extracts
