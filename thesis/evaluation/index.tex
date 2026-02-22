@@ -100,7 +100,7 @@ are marked as incorrect.
 Error Rate (or \ER) describes the system reliability by measuring the
 frequency of SQL generation failures that prevent query execution. \ER~is
 reported in failures per hundred queries and monitors system reliability
-(schema violations, syntax errors, out-of-memory errors etc).
+(schema violations, syntax errors, out-of-memory errors etc.).
 
 \paragraph{Candidate Latency (\CL)}
 
@@ -118,7 +118,7 @@ To determine the performance impact of methods and components
 applied in \Natural~a baseline helps to measure relative performance
 gains or losses compared to existing systems. Therefore two sets of baseline
 systems are introduced: Internal baselines (measuring the system without
-crucial components) and external baselines (eg, proprietary system
+crucial components) and external baselines (e.g., proprietary system
 performance and raw model performance).
 
 \paragraph{Internal Baselines}
@@ -181,31 +181,6 @@ characteristics and improvement trends are quantitatively and qualitatively
 analyzed.
 
 \subsubsection{Overview}
-
-The evaluation of \Natural~revealed five primary insights:
-
-\begin{enumerate}
-    \item \textbf{Relative Improvements} – \Natural~\textit{Full} achieves
-        higher scores than the baseline configration and models throughout.
-        \Natural~achieves 81.0\% \EA~on \Spider (dev), 81.4\% on \Spider~(test)
-        and 53.8\% on \Bird~(dev), compared to \OmniSQL-7B-gguf with
-        79.0\% on \Spider~(dev and test) and 38.0\% on \Bird.
-    \item \textbf{Examples Structure} – Synthetic examples outperformed
-        domain-specific training data on \Bird~(dev) by +5.4pp (53.8\% vs
-        48.4\%), and +0.6pp on \Spider(dev) (81.0\% vs 80.4\%), suggesting
-        structural similarity matters more than domain relevance in ICL.
-    \item \textbf{Suboptimal Latency} – Candidate latency of \Natural~ranges
-        from 7.3s (\textit{Baseline}) to 43.8s (full pipeline on \Bird),
-        making it primarily suitable for analytical but not for interactive
-        workloads.
-    \item \textbf{Semantic Errors} – 99\%+ of failures are semantic (wrong
-        results) rather than syntactic (malformed SQL), indicating strong SQL
-        generation and validation but weak semantic understanding.
-    \item \textbf{Limited Validity} – A $\Delta$ of 28.1pp exists
-        between published \OmniSQL-7B results (66.1\%) and the local
-        reproduction (38.0\%) on \Bird, limiting absolute performance
-        comparisons.
-\end{enumerate}
 
 The following sections present these findings across benchmarks and
 configurations in detail. The system metrics are presented in
@@ -303,7 +278,7 @@ prompt template for ICL ($\pi$) without other pipeline components, achieving
 (dev). These results further fall below the published \OmniSQL-7B
 performance of 81.6\%, 89.8\%, and 66.1\% respectively, representing gaps of
 3.7, 12.8, and 33.7 percentage points. This continued degradation of
-performance indicates that a misaligned prompt template (ie, divergent from
+performance indicates that a misaligned prompt template (i.e., divergent from
 training phase) harms performance if not paired with counter measures such as
 ICL, self-correction or majority voting. These performance numbers mark the
 \textit{Baseline} configuration the worst performing variant of \Natural~on
@@ -691,9 +666,9 @@ the published performance numbers and the locally measured ones.
 
 The substantial gap between the published vs reproduced baselines undermines
 the confidence in \textit{absolute} performance gains. The \textit{relative}
-performance gains are excellent (eg, \textit{Syn} achieving 53.8\% vs.
+performance gains are excellent (e.g., \textit{Syn} achieving 53.8\% vs.
 \OmniSQL~7B-gguf achieving 38.0\% on \Bird) but given that no clear absolute
-improvement could be measured (eg, \textit{Syn} achieving 53.8\% vs \OmniSQL~7B
+improvement could be measured (e.g., \textit{Syn} achieving 53.8\% vs \OmniSQL~7B
 achieving 66.1\% on \Bird). Furthermore the comparisons with other external
 systems become unclear if local measurements face a significant gap in
 compared to the published performance numbers.
@@ -739,7 +714,7 @@ reproductions increase the confidence in claimed results.
 Overall the gap of 28.1pp on \Bird~between the published \OmniSQL~7B results
 (66.1\% \EA) and local measurements (38.0\% \EA) represents a challenge for
 deriving absolute conclusions. While strong incremental performance gains could
-be observed (eg, \textit{Syn} achieving 53.8\% vs. \OmniSQL~7B-gguf achieving
+be observed (e.g., \textit{Syn} achieving 53.8\% vs. \OmniSQL~7B-gguf achieving
 38.0\% on \Bird) by applying the techniques outlined in this thesis (schema
 aware example selection, self-refinement, majority voting) no clear statement can be made on the
 absolute performance of \Natural. Multiple factors influence the the observed
