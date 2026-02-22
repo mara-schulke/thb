@@ -740,23 +740,6 @@ based on possible row and column permutations as well as optional order
 sensitivity. The \textsc{Exact Match} metric is determined by exact equivalence
 of the ground truth query $\omega_{ground}$ and the candidate query $\omega$.
 
-\subsubsection{Benchmarking Challenges}
-
-Two primary issues emerged while developing the benchmarking infrastructure for
-\textsc{Natural}:
-
-While loading result sets from the provided test database, a faulty
-code path failed to parse query result with types other than
-\texttt{Text}. This caused empty result sets to be returned as query results
-from both the ground truth query and the candidate query, resulting in a false
-positive, skewing the \textsc{EA} metric significantly upwards.
-
-Furthermore frequent pipeline failures of \textsc{Natural} made it hard to get
-compute reliable performance metrics as context window constraints, out
-of memory issues and CUDA issues caused a significant number of test
-cases to fail, making subsequently computed metrics unreliable as only
-a subset of the dataset was included in the results.
-
 \subsection{Engineering Challenges and Lessons Learned}
 
 The implementation approach of \textsc{Natural} highlighted significant
@@ -789,18 +772,16 @@ dataset required around 12-36 hours depending on the number of
 candidates generated and refinement algorithm used during the benchmark. 
 This made continuous validation during development a non trivial task,
 requiring extensive evaluation phases between times of active development.
-
 Testing new hypotheses, validating algorithmic changes, experimenting with the
 implementation approaches, comparing different configurations and sampling
 strategies therefore became multi-week processes rather than the rapid
-iteration typically desired in research environments.
-
-The prolonged evaluation cycles created a cascading effect on development
-velocity. Rather simple adjustments that would normally be validated within
-hours required days of computational time, effectively preventing what should
-have been normal experimentation. The hardware constraints forced a rather
-conservative approach to experimentation, where each change needed to be
-carefully considered before committing to multiple days of benchmarking.
+iteration typically desired in research environments. The prolonged evaluation
+cycles created a cascading effect on development velocity. Rather simple
+adjustments that would normally be validated within hours required days of
+computational time, effectively preventing what should have been normal
+experimentation. The hardware constraints forced a rather conservative approach
+to experimentation, where each change needed to be carefully considered before
+committing to multiple days of benchmarking.
 
 \paragraph{Memory Management and CUDA Issues}
 
@@ -886,7 +867,6 @@ projects in this field.
 Research of modern NL2SQL systems induces steep hardware requirements onto
 researchers. Priority should be given to securing access to significantly
 powerful hardware and computing infrastructure for faster iteration cycles.
-
 While the 24GB VRAM constraint of the RTX 3090, may be reasonable for most
 consumer grade applications, it proved insufficient for efficient iteration in
 this field, especially given the involvement of LLMs. Systems with 48GB+ of
@@ -894,11 +874,9 @@ VRAM would have enabled the usage of larger, more capable models without the
 quantization compromises that may impact system accuracy. More modern hardware
 (even on the consumer grade level) would allow for a tremendous benchmarking
 speed up (eg, using a 5090 would have resulted in nearly 200\% increase in
-speed).
-
-More critically, the availability of multiple GPUs would have enabled parallel
-experimentation and benchmarking, which could transform multi-day iteration
-cycles into more manageable timeframes. The ability to run concurrent
+speed). More critically, the availability of multiple GPUs would have enabled
+parallel experimentation and benchmarking, which could transform multi-day
+iteration cycles into more manageable timeframes. The ability to run concurrent
 experiments with different configurations, models, or algorithmic approaches
 would dramatically accelerate the research and development process and enable
 more thorough experimental validation.
@@ -926,27 +904,21 @@ language like Rust once the algorithmic approach is validated and stable.
 \paragraph{Development Methodology Recommendations}
 
 The challenges encountered suggest several methodological improvements for
-future projects:
-
-Implementing benchmarking and validation infrastructure early in the
-development process is crucial when doing algorithmic development to gain an
-understanding of the relative improvement or setback of different approaches.
-
-Establishing performance baselines and using incremental validation procedures
-can help ensure that development effort is focused on improvements that in fact
-improve performance.
-
-The long running benchmarks made it difficult to validate whether
-individual changes were beneficial, leading to uncertainty about the
-effectiveness of specific optimizations. In situations with highly constrained
-compute resources, a representative subset of prevalent benchmarking datasets
-like \textsc{Spider} and \textsc{Bird} may be defined to determine the relative
-improvement between approaches before executing a full benchmark run.
-
-Finally, maintaining detailed logs and metrics throughout the development
-process showed to be crucial when unexpected errors occur. Identifying root
-causes of pipeline failures was rather trivial due to having an advanced
-benchmarking setup with log collection.
+future projects. Implementing benchmarking and validation infrastructure early
+in the development process is crucial when doing algorithmic development to
+gain an understanding of the relative improvement or setback of different
+approaches. Establishing performance baselines and using incremental validation
+procedures can help ensure that development effort is focused on improvements
+that in fact improve performance. The long running benchmarks made it difficult
+to validate whether individual changes were beneficial, leading to uncertainty
+about the effectiveness of specific optimizations. In situations with highly
+constrained compute resources, a representative subset of prevalent
+benchmarking datasets like \textsc{Spider} and \textsc{Bird} may be defined to
+determine the relative improvement between approaches before executing a full
+benchmark run. Finally, maintaining detailed logs and metrics throughout the
+development process showed to be crucial when unexpected errors occur.
+Identifying root causes of pipeline failures was rather trivial due to having
+an advanced benchmarking setup with log collection.
 
 \paragraph{Research Impact and Production Readiness}
 
