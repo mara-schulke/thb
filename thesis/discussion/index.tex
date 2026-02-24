@@ -70,7 +70,7 @@ ICL from increasingly sophisticated example strategies.
 Performance characteristics reveal a complex tradeoff for real-world
 applications. All NL2SQL systems that were evaluated maintain remarkably
 low error rates of less than 0.7 failures per 1000 queries (see
-Figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominately
+Figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominantly
 semantic (i.e., incorrect results). Candidate latency ranges from
 7.3s for \Natural~(\textit{Baseline}) to 16.3s for ICL configurations on
 \Spider~and 43.8s on \Bird. \Natural~is viable for experimental,
@@ -275,7 +275,7 @@ by impact as follows:
 \begin{enumerate}
     \item \textbf{Query Projection ($\pi$)} – The query projection component
         itself remains the largest single contributor in performance and the
-        foundation models used predominately drives the performance of the
+        foundation models used predominantly drives the performance of the
         system. All other components are orchestrated around query projection.
         This was shown through the \textit{Baseline} configuration which
         achieved 77.9\% and 77.0\% on \Spider~(dev and test) and 32.4\% on
@@ -408,7 +408,7 @@ ablations will help to evaluate the concrete contribution of individual
 components, making iterations simpler and faster. Components should be
 evaluated against realistic benchmarks (e.g., \Bird~or \Spider~2.0) to measure
 their real-world effects. Lastly, it is desirable to enable the system to be
-fine-tunable to an specific deployment scenario. Reference data used,
+fine-tunable to a specific deployment scenario. Reference data used,
 fine-tuned models or specialized example generation can help to improve the
 accuracy scores on a concrete deployment case beyond the theoretical benchmark
 results that are cross-domain.
@@ -443,7 +443,7 @@ less appealing to employ NL2SQL systems.
 
 \paragraph{System Integration Approaches}
 
-The portability of \Natural~is predominately defined by its self
+The portability of \Natural~is predominantly defined by its self
 contained architecture which enables two recommended deployment architectures
 offering distinct trade-offs:
 
@@ -489,7 +489,7 @@ denominator of the use cases it is viable for; e.g., high latency systems
 are primarily sensible for asynchronous tasks whereas low latency systems are
 viable for fast and iterative use cases like query interfaces (e.g., snowflake)
 and chatbot integrations. The currently achieved latency of all NL2SQL
-system that were benchmark on consumer hardware is not viable for interactive
+systems that were benchmarked on consumer hardware is not viable for interactive
 user interfaces. Significantly more powerful hardware (e.g., Factor 10)
 would be required to make fully interactive systems viable for users.
 
@@ -554,7 +554,7 @@ would risk frequent semantic inaccuracy. The evaluation results show that the
 accuracy of \Natural~and \OmniSQL~is severely constrained on \Bird~which
 contains complex schemas and external knowledge requirements. This indicates
 that the accuracy of NL2SQL systems on complex, real-world relevant databases
-and questions is still substantially to low in order to sunset the need for
+and questions is still substantially too low in order to sunset the need for
 SQL.
 
 NL2SQL can speed up various workflows, easing the need to explore and

@@ -57,7 +57,7 @@ behavior and real world applicability.
 
 Execution Accuracy (or \EA) is the primary success metric of
 NL2SQL systems as it represents the semantic accuracy of the SQL queries
-produced NL2SQL systems. Execution accuracy is computed by determining whether
+produced by NL2SQL systems. Execution accuracy is computed by determining whether
 the rows in the candidate results are a permutation of the rows returned by
 ground truth results. 
 
@@ -377,7 +377,7 @@ significantly more challenging benchmark. While the \textit{Zero-Shot}
 configuration shows incremental improvements over the baseline with a relative
 improvement of +1.6pp in \EA~(34.0\% absolute), the overall performance shows
 to be behind the reported numbers of \OmniSQL~(7B) and GPT-4 by \cite{OmniSQL}
-which were reported to had an \EA of 66.1\% and 61.5\% respectively. The
+which were reported to have an \EA of 66.1\% and 61.5\% respectively. The
 locally reproduced measurement of \OmniSQL~(7B-gguf) yielded a drop in \EA~of
 -28.1pp compared to the officially reported \EA~yielding 38.0\% in absolute
 accuracy.
@@ -560,7 +560,7 @@ correlates strongly with benchmark complexity: \Spider~(dev), the simplest
 of the three benchmarks with well-structured schemas and clean data is showing
 only a minimal performance degradation of -2.6pp. \Spider~(test) which is not
 included in any training dataset, using more diverse domains and more complex
-queries is showing a moderate degreation of -10.8pp. \Bird~(dev) which is the
+queries is showing a moderate degradation of -10.8pp. \Bird~(dev) which is the
 most complex benchmark of the three, featuring larger schemas, dirty data and
 external knowledge is showing an extreme degradation of -28.1pp.
 
@@ -635,7 +635,7 @@ deviation from this format can significantly degrade performance.
 The local benchmarking implementation used the published prompt template but
 likely had a slightly diverging code representation implementation than the
 authors of \OmniSQL. The code representation implementation used by the
-benchmarking harness is based around a the \texttt{sqlparser} crate in Rust
+benchmarking harness is based around the \texttt{sqlparser} crate in Rust
 which includes an implementation for human readable formatting of SQL queries.
 While these modifications are subtle, they may inadvertently misalign with the
 model's learned expectations on the code representation format, confusing the
@@ -685,7 +685,7 @@ not infect the validity results measured between different variants of
 \OmniSQL~7B-gguf have been evaluated using the same evaluation framework and
 are therefore strictly comparable. \Natural~showed strong performance
 improvements across increasingly complex pipeline configurations. \textit{Syn}
-showed an improvement of +21.4pp pver \textit{Baseline} on \Bird~which was
+showed an improvement of +21.4pp over \textit{Baseline} on \Bird~which was
 reliably measurable regardless of the absolute baseline uncertainty.
 
 Furthermore component ablations in the evaluation provide valid evidence for
@@ -717,7 +717,7 @@ deriving absolute conclusions. While strong incremental performance gains could
 be observed (e.g., \textit{Syn} achieving 53.8\% vs. \OmniSQL~7B-gguf achieving
 38.0\% on \Bird) by applying the techniques outlined in this thesis (schema
 aware example selection, self-refinement, majority voting) no clear statement can be made on the
-absolute performance of \Natural. Multiple factors influence the the observed
+absolute performance of \Natural. Multiple factors influence the observed
 performance gap, including the model format, inference implementation,
 hyperparameter, prompt template and dataset version used. Nonetheless, the
 relative comparisons within the local evaluation environments remain

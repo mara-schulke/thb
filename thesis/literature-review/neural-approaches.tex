@@ -23,7 +23,7 @@ outperformed \textsc{Seq2SQL} by 7.7\% on WikiSQL (dev) and by 6.4\% on WikiSQL
 improving performance by 4.7\% above \textsc{SQLNet} while reducing the
 required training time by half \citep{TypeSQL}. 
 
-\textsc{SyntaxSQLNet} improved the abaility of NL2SQL systems on complex
+\textsc{SyntaxSQLNet} improved the ability of NL2SQL systems on complex
 queries and marked the transitional period to \textsc{Spider} (see section
 \ref{lit:benchmarks:spider}, \cite{Spider}). \textsc{Spider} is a comparatively
 large NL2SQL benchmark incorporating 10181 questions answer pairs across 138
@@ -33,10 +33,10 @@ accuracy over \textsc{SyntaxSQLNet} by +28.4pp on \textsc{Spider} (dev) and by
 representation (IR) format (SemQL) and approached NL2SQL with three-phase
 processing: \textit{schema linking}, IR synthesis using SemQL, and
 deterministic SQL translation \citep{IRNet}. Notably, graph neural networks
-(GNNs) were explored for neutral network representation of database schemas.
+(GNNs) were explored for neural network representation of database schemas.
 \textsc{GNN} outperformed \textsc{SyntaxSQLNet} and performed on par ($\Delta$
 of +1.3pp) with \textsc{IRNet}, achieving 54.5\% on \textsc{Spider} (dev). No
-evaluations were performed on \textsc{Spider} (test) \citep{GNN}
+evaluations were performed on \textsc{Spider} (test) \citep{GNN}.
 
 \subsubsection{Relation-Aware Transformer Approaches}
 
@@ -61,10 +61,10 @@ its capability advancement \citep{RATSQL}.
 
 \subsubsection{Comparative Analysis}
 
-Neural approaches progressively improved eachother in multiple dimensions:
+Neural approaches progressively improved upon each other in multiple dimensions:
 
 \begin{enumerate}
-    \item \textbf{Model Sophistication} — From from sequence-to-sequence
+    \item \textbf{Model Sophistication} — From sequence-to-sequence
         (\textsc{Seq2SQL}) to sketch-based and type-augmented approaches
         (\textsc{SQLNet}, \textsc{TypeSQL}), graph-based methods
         (\textsc{GNN}), and relation-aware self-attention (\textsc{RAT-SQL})
@@ -81,10 +81,10 @@ Neural approaches progressively improved eachother in multiple dimensions:
         of synonyms, spelling mistakes, and language variations, thus
         successfully addressing the limitations of traditional approaches
         \citep{SyntaxSQLNet, IRNet, RATSQL}.
-    \item \textbf{Query Complexity} —The performance on complex queries
+    \item \textbf{Query Complexity} — The performance on complex queries
         involving multiple tables, relying on complex aggregations, nested
-        structures and joins improved dramatically. \textsc{RAT-SQL} marked the 
-        the at-the-time capability ceiling on complex queries using neural
+        structures and joins improved dramatically. \textsc{RAT-SQL} marked the
+        at-the-time capability ceiling on complex queries using neural
         approaches, outperforming \textsc{IRNet} by 10.5\% \citep{IRNet,
         RATSQL}.
     \item \textbf{Schema Understanding} — Approaches like \textsc{TypeSQL},
@@ -111,13 +111,13 @@ suffered from serious shortcomings and unsolved challenges:
         correctness remained a challenge across multiple iterations of neural
         systems \citep{SyntaxSQLNet}.
     \item \textbf{Domain Language} — Despite the increased transferability
-        of neural approache, they still had a limited vocabulary and
+        of neural approaches, they still had a limited vocabulary and
         inter-domain understanding of terminology and relation
         between concepts. This yielded highly domain specific natural language
         to be challenging for these systems.
     \item \textbf{Observability} — The black-box nature of neural networks made
         approaches relying on them, particularly the systems utilizing complex
-        neural network architectures, hard do understand and explain in case
+        neural network architectures, hard to understand and explain in case
         where they yielded undesirable output. 
 \end{enumerate}
 

@@ -46,7 +46,7 @@ graph \citep{WWL}:
 \end{enumerate}
 
 This algorithm is repeated for $w$ iterations (typically $w = 3-5$, due to
-deminishing returns). After the iterative vertex label computation, labels
+diminishing returns). After the iterative vertex label computation, labels
 encode the $w$-hop neighborhood structure. Subsequently a label histogram can
 be used as the graph-level feature vector, enabling efficient structural
 comparison.
@@ -85,7 +85,7 @@ measure graph distance \citep{WWL}:
 
 The resulting graph kernel captures both local neighborhood structures (using
 the WL algorithm) and global distributional properties (using the Wasserstein
-distance) \citep{WWL}. For database schemas, WWL kernels can similar structural
+distance) \citep{WWL}. For database schemas, WWL kernels can capture similar structural
 patterns (table structures, possible joins, constraints) while remaining robust
 to minor structure variations. This makes them well suited for NL2SQL example
 selection algorithms that factor in schema similarity.

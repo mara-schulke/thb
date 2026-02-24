@@ -97,7 +97,7 @@ determining how much attention to pay to each value.
 This concept proved to be a foundational advancement to transformer
 architectures seen in natural language processing and subsequently recent
 NL2SQL research. Transformers extended the concept of attention into
-self-attention and multi-head attention patterns that underpin todays LLMs.
+self-attention and multi-head attention patterns that underpin today's LLMs.
 
 \subsubsection{Transformer Architecture}
 
@@ -112,7 +112,7 @@ sequences.
 \paragraph{Self-Attention Mechanism}
 
 Self-attention allows each position in a sequence to be weighted to all other
-positions in the sequence, thus resulting in a representations that can capture
+positions in the sequence, thus resulting in representations that can capture
 contextual relationships between input tokens. For an input sequence of tokens
 $x_1, \ldots, x_n$, the self-attention mechanism computes:
 
@@ -145,7 +145,7 @@ where each $head$ computes:
 Each attention head can specialize in capturing a different type of semantic
 relationship. For example one head might focus on syntactic structure (e.g.,
 linking SQL keywords to their arguments), while others might capture semantic
-relationships between works (e.g., List all x where y). This multi-attention
+relationships between words (e.g., List all x where y). This multi-attention
 mechanism is essential for the complex tasks which require capturing multiple
 different semantic relationships between words. 
 

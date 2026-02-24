@@ -13,7 +13,7 @@ information that was derived from processing the Natural Language Query (NLQ).
 \citep{Rendezvous, Lunar, Ladder}. These approaches mostly tried to translate
 NLQs into formal grammars which could then be deterministically mapped into a
 valid SQL query \citep{Lunar}. These approaches have a limited number of
-language patterns they can process and require adoption for new or unknown
+language patterns they can process and require adaptation for new or unknown
 databases, query patterns etc. A potential upside of this class of NL2SQL
 systems is that they can confidently and reproducibly identify questions they
 can, and can't answer — thus leading to reliable and predictable user
@@ -26,7 +26,7 @@ models to NLP, specifically to NLQ \citep{GraphMatching}. Graph matching was
 applied once the NLQ was parsed using a Combinatory Categorial Grammar (CCG)
 into a semantic graph which modeled the relationship between semantic entities.
 Subsequently, the graph could be matched against the actual graph derived from
-the database. This architecture lead to better transferability across databases
+the database. This architecture led to better transferability across databases
 and domains as no fine-tuning per database was needed. Even though graph
 matching was an improvement over existing approaches, it quickly reached its
 limitations. Graph matching significantly relied on the CCG parser's accuracy,
@@ -74,16 +74,16 @@ transferability \citep[p.22-23]{SQLizer}.
 
 \subsubsection{Limitations of Traditional Approaches to NL2SQL}
 
-Many of the outlined approaches faced severe challenges when moving outside of
-of research environments. Frequently systems performed comparatively good on
-research benchmarks that were often compriised of controlled question types and
-limited data variety. Ultimatively no standard benchmarks existed for NL2SQL in
+Many of the outlined approaches faced severe challenges when moving outside
+of research environments. Frequently systems performed comparatively well on
+research benchmarks that were often comprised of controlled question types and
+limited data variety. Ultimately no standard benchmarks existed for NL2SQL in
 this time, hence comparing multiple NL2SQL systems with each other was not
 easily feasible. Nonetheless, several fundamental challenges emerged:
 
 \begin{enumerate}
     \item \textbf{Limited language coverage} — Traditional NL2SQL systems were
-        only able to process the a small subset of natural language constructs
+        only able to process a small subset of natural language constructs
         they were programmed for \citep{StringKernels, UnnaturalQueryLanguage,
         Lunar, Ladder}.
     \item \textbf{Transferability} — Traditional approaches typically required
@@ -91,7 +91,7 @@ easily feasible. Nonetheless, several fundamental challenges emerged:
         deployed for, making cross domain usage expensive and time-consuming
         \citep{NLIDBs, Lunar}.
     \item \textbf{Brittleness} — Legacy systems did not handle synonyms,
-        paraphrasing, or spelling errors. Manual adaption and handling was
+        paraphrasing, or spelling errors. Manual adaptation and handling was
         needed to remediate. \citep{StringKernels, SQLizer}.
     \item \textbf{Poor scalability} — With potentially more complex underlying
         databases, traditional solutions often showed to perform worse.
@@ -106,4 +106,4 @@ brittleness since users are ``unwilling to trade reliable and predictable user
 interfaces for intelligent but unreliable ones'' according to
 \cite{NLIDBTheory}. Whilst many approaches outlined tractable ways to increase
 user satisfaction and accuracy (e.g. through conversational approaches like
-\cite{Rendezvoue}), NLIDBs were and are not considered to be a solved problem.
+\cite{Rendezvous}), NLIDBs were and are not considered to be a solved problem.

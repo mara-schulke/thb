@@ -404,9 +404,9 @@ context rather than loading separate models. This design choice
 significantly reduces memory requirements but potentially impacts refinement
 quality compared to having dedicated refinement models with different prompt
 conditioning. Due to the limited available hardware the effects of having a
-separate, distinc refinement model could not be verified. \citeauthor{XiYan}
+separate, distinct refinement model could not be verified. \citeauthor{XiYan}
 have implemented multi model generation pipelines in \citeyear{XiYan} and
-achieved promising results which.
+achieved promising results.
 
 \paragraph{Output Processing and Validation}
 
@@ -438,7 +438,7 @@ likely query.
 significantly improve the accuracy of models that are already showing 
 state-of-the-art performance. The result-based self-consensus mechanism is
 executing every query candidate, verifies that it works on the database, and
-loads it's results. By partitioning the available candidates into buckets based
+loads its results. By partitioning the available candidates into buckets based
 on their hashed result, queries can be deemed semantically equivalent if they
 end up in the same bucket. After every query has been executed and partitioned,
 the algorithm groups the buckets in a hash map \texttt{buckets} with the result
@@ -494,7 +494,7 @@ sampling to construct the vector db and runtime to run the sample selection
 algorithm. Using SQLite and \texttt{sqlite-vec} to implement cosine search in
 text corpora of up to a few million samples dramatically simplified the
 development of \textsc{Natural} as no manual performance optimizations had to
-be implemnented. SQLite has a second architectural benefit besides relatively
+be implemented. SQLite has a second architectural benefit besides relatively
 good performance, which is the portability characteristics of having all
 % TODO: Consider adding example showing how to swap vector databases for different domains
 samples indexed in a single file on disk. This enables swapping out the
@@ -604,7 +604,7 @@ as Rust and Python FFI is not directly possible. In order to buy into the
 Python libraries and ecosystem (eg, optimal transport) and utilize the existing
 implementation of the WWL kernels, writing a thin layer of Rust bindings around
 \citeauthor{WWL}'s implementation was deemed most sensible. Using \texttt{pyo3}
-calling Python code is made possible and let's \textsc{Natural} hook into
+calling Python code is made possible and lets \textsc{Natural} hook into
 existing ecosystems where needed. Due to the design laid out in
 section~\ref{section:design} the WWL implementation is only needed during
 sampling time and not required at runtime as all distances are precomputed and
@@ -651,7 +651,7 @@ sinkhorn approximation settings etc.
 
 The pairwise Wasserstein distance is computed between the current database
 schema and each sample database during sampling phase. The distance index is
-a \texttt{HashMap} of a sample database name to it's distance to the current
+a \texttt{HashMap} of a sample database name to its distance to the current
 database \textsc{Natural} is running on. Caching of this computation is an
 efficient strategy to minimise runtime inference time as the distance index is
 static as long as database schemas are not mutated. \textsc{Natural} is storing
@@ -695,7 +695,7 @@ which are single benchmark runs against a specific benchmark dataset
 (defaulting to \textsc{Spider}). An execution is the set of tests that have
 been executed using a version of \textsc{Natural} against a benchmark. The
 interface of \texttt{natural-benchmark} offers multiple options to create
-executions and subsequentlty understand \textsc{Natural}'s performance:
+executions and subsequently understand \textsc{Natural}'s performance:
 
 \begin{enumerate}
     \item Running new benchmarks via: \\ \texttt{natural-benchmark new}
@@ -712,14 +712,14 @@ introspection as well as comparison of approaches.
 
 In order to measure the performance of \textsc{Natural} against multiple
 benchmarking datasets, the benchmarking and execution system in
-\texttt{natural-benchmark} must be generalize across one dataset. The
+\texttt{natural-benchmark} must generalize across one dataset. The
 benchmarking setup achieves this through a set of rust traits (eg, type
 characteristics) to model benchmarking datasets. 
 
 The traits \texttt{Benchmark}, \texttt{BenchmarkDatabase} and
 \texttt{BenchmarkTest} allow to abstract the file system layout of different
 evaluation datasets. Thus when implementing benchmark support against
-\textsc{Spider} the implementation absatracts the fact that \textsc{Spider} is
+\textsc{Spider} the implementation abstracts the fact that \textsc{Spider} is
 using SQLite for test databases, and uses a JSON file to store the questions.
 The file system layout of \textsc{Spider} and \textsc{Bird} is largely similar.
 
@@ -788,7 +788,7 @@ committing to multiple days of benchmarking.
 Frequent CUDA out-of-memory (OOM) errors made the evaluation interpretation non
 trivial as accuracy scores became inaccurate due to pipeline failures. This
 persisted as a second development challenge throughout the implementation
-phase. These memory exhaustion issues occurred rather unpredictable during both
+phase. These memory exhaustion issues occurred rather unpredictably during both
 development and benchmarking, depending on the database schema and question
 asked. As \textsc{Natural} uses a code representation prompt, the database
 schema is inlined into the prompt during inference. If \textsc{Natural} is
@@ -923,7 +923,7 @@ an advanced benchmarking setup with log collection.
 \paragraph{Research Impact and Production Readiness}
 
 Despite all challenges encountered in the implementation phase, the Rust
-implementation of \textsc{Natural} demonstrate that it is possible to port
+implementation of \textsc{Natural} demonstrates that it is possible to port
 research algorithms from academic environments into production-ready systems.
 The resulting implementation provides a strong foundation for real-world
 deployments in database environments, which would be significantly more
