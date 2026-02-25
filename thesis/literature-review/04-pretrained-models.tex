@@ -12,22 +12,21 @@ identification of semantic relationships.
 
 \subsubsection{Early Pre-trained Language Model Adaptations}
 
-\textsc{Grappa} presented a grammar-augmented pre-training approach in
-\citeyear*{GRAPPA} which was built on RoBERTa\textsubscript{\tiny{LARGE}},
-is a derivative model from BERT \citep{GRAPPA}. It was trained by generating
-synthetic training data using a Synchronous Context-Free Grammar which
-identifies patterns in natural language queries as templates for synthesizing
-training data. Specialized pre-training allowed \textsc{Grappa} to establish a
-connection between natural-language and database schema elements, showing
-improvements on existing approaches on benchmarks like \textsc{Spider} and
-\textsc{WikiSQL} \citep{GRAPPA}.
+\citeauthor{Grappa} presented \textsc{Grappa} a, grammar augmented pre-training
+approach in \citeyear{GRAPPA} which was built on
+RoBERTa\textsubscript{\tiny{LARGE}}, is a derivative model from BERT
+\citep{GRAPPA}. It was trained by generating synthetic training data using a
+Synchronous Context-Free Grammar which identifies patterns in NLQ as templates
+for synthesizing training data. Specialized pre-training allowed
+\textsc{Grappa} to establish a connection between natural language and database
+schema elements, showing improvements on existing approaches on benchmarks like
+\textsc{Spider} and \textsc{WikiSQL} \citep{GRAPPA}.
 
-\textsc{StruG}, a structure-grounded pre-training approach, was subsequently
-introduced in \citeyear{STRUG} by \citeauthor*{STRUG} and presented a
-pretraining approach that improves model abilities for schema linking,
-separating the problem in three facets: column grounding, value grounding and
-column-value mapping. \textsc{StruG} achieves similar performance to
-\textsc{Grappa} while being cheaper to train \citep{STRUG}.
+\textsc{StruG} (Structure-Grounded Pre-Training) was subsequently introduced in
+\citeyear{STRUG} by \citeauthor*{STRUG} which improved model abilities for
+schema linking, separating the problem in three facets: column grounding, value
+grounding and column-value mapping. \textsc{StruG} achieves similar performance
+to \textsc{Grappa} while being cheaper to train \citep{STRUG}.
 
 \subsubsection{Advanced Pre-trained Language Model Approaches}
 
@@ -36,10 +35,7 @@ implemented a sketch-based approach for decomposing complex SQL generation into
 smaller problems. \textsc{Ryansql} transformed nested statements into top-level
 statements using the Statement Position Code technique, achieving 58.2\%
 accuracy on \textsc{Spider}, a 3.2\% improvement over prior best
-\citep{RYANSQL}.
-
-T5-3B for NL2SQL yielded 71.4\% execution accuracy, a breakthrough in this
-domain \citep{T2SQL-LLM-Bench-3}.
+\citep{RYANSQL}. 
 
 \citeauthor*{GRAPHIX} introduced GRAPHIX-T5 in \citeyear{GRAPHIX}, which
 combined T5 PLMs with graph-aware layers for NL2SQL tasks. GRAPHIX-T5
@@ -53,7 +49,7 @@ the absolute $\Delta$ between them jumped to 7.6\%, reaching 81.0\% on
 \textsc{Spider} dev \citep{GRAPHIX}.
 
 \citeauthor*{RESDSQL} proposed \textsc{Resdsql} in \citeyear{RESDSQL}, which
-decoupled \textit{schema linking} and \textit{skeleton parsing}. \textsc{Resdsql}
+decoupled schema linking and skeleton parsing. \textsc{Resdsql}
 employed a ranking approach to filter schema elements before passing them to
 the model for query generation, improving token efficiency and achieving
 leading performance on \textsc{Spider}, outperforming
@@ -69,12 +65,10 @@ syntactically valid. \citeauthor*{PICARD} released \textsc{Picard} in
 to incrementally parse generated SQL, rejecting invalid tokens. \textsc{Picard}
 significantly improved performance of PLMs like T5 and
 BERT, lifting them from mid-level to top-performing solutions on
-\textsc{Spider} \citep{PICARD}.
-
-This addresses an issue associated with PLMs — while they outperform in natural
-language understanding, they often lack SQL grammar knowledge and tend to
-generate queries that are not executable due to unconstrained output space
-\citep{PICARD}.
+\textsc{Spider} \citep{PICARD}. This addresses an issue associated with PLMs —
+while they outperform in natural language understanding, they often lack SQL
+grammar knowledge and tend to generate queries that are not executable due to
+unconstrained output space \citep{PICARD}.
 
 \subsubsection{Advantages of PLM Approaches}
 
@@ -118,11 +112,11 @@ associated with their non-NL2SQL nature:
 
 \subsubsection{Comparison with Large Language Models}
 
-Research on applying PLMs for NL2SQL primed the field for transition towards
-LLM usage. While PLMs range from millions to a few billion parameters,
+Research on applying PLMs for NL2SQL primed the field for a transition towards
+LLMs. While PLMs range from millions to a few billion parameters,
 prevalent LLMs such as GPT-3 and GPT-4 operate at larger scales, enabling
-in-context learning (ICL) techniques for easier transferability
-across domains \citep{DAIL-SQL}. While PLMs require extensive fine-tuning on
+In Context Learning (ICL) techniques for easier transferability
+across domains \citep{DAIL-SQL}. While PLMs require fine-tuning on
 domain-specific data \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer
 cost to inference. Approaches like \textsc{DinSQL} show that with LLMs the
 engineering challenges around model instruction gained relevance while model

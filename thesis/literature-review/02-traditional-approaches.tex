@@ -9,15 +9,14 @@ Foundational research of NL2SQL system mostly focused around applying rule
 engines that were tedious to set up, expensive to maintain and transfer
 across database systems. These rule engines mostly relied on the systematic
 identification of linguistic patterns and were trying to template SQL from
-information that was derived from processing the Natural Language Query (NLQ).
-\citep{Rendezvous, Lunar, Ladder}. These approaches mostly tried to translate
-NLQs into formal grammars which could then be deterministically mapped into a
-valid SQL query \citep{Lunar}. These approaches have a limited number of
-language patterns they can process and require adaptation for new or unknown
-databases, query patterns etc. A potential upside of this class of NL2SQL
-systems is that they can confidently and reproducibly identify questions they
-can, and can't answer — thus leading to reliable and predictable user
-interfaces.
+information that was derived from processing the NLQ. \citep{Rendezvous, Lunar,
+Ladder}. These approaches mostly tried to translate NLQs into formal grammars
+which could then be deterministically mapped into a valid SQL query
+\citep{Lunar}. These approaches have a limited number of language patterns they
+can process and require adaptation for new or unknown databases, query patterns
+etc. A potential upside of this class of NL2SQL systems is that they can
+confidently and reproducibly identify questions they can, and can't answer —
+thus leading to reliable and predictable user interfaces.
 
 \subsubsection{Graph Matching Methods}
 
@@ -37,10 +36,10 @@ complex databases schemas which could not be matched
 
 \subsubsection{Interactive Systems}
 
-In \citeyear{NALIR} \citeauthor*{NALIR} identified that perfect translation of
-natural language into SQL was challenging due to natural language not being
-made for query expressions as it heavily relies on contextual information and
-clarifying questions in order to disambiguate conversations. These learnings
+In \citeyear{NALIR} \citeauthor*{NALIR} highlighted that a perfect translation
+of natural language into SQL was challenging as natural language is not made
+for query expressions and heavily relies on contextual information and
+clarifying questions in order to disambiguate in conversations. These learnings
 relate to early prior art from \citeauthor{UnnaturalQueryLanguage} and
 \citeauthor{Rendezvous} which also made this observation — ``natural language
 is not a natural query language'' \citep{UnnaturalQueryLanguage}.

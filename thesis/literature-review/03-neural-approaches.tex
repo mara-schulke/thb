@@ -31,12 +31,12 @@ domains. Subsequently, \textsc{IRNet} substantially improved the execution
 accuracy over \textsc{SyntaxSQLNet} by +28.4pp on \textsc{Spider} (dev) and by
 +19.5pp on \textsc{Spider} (test). \textsc{IRNet} introduced an intermediate
 representation (IR) format (SemQL) and approached NL2SQL with three-phase
-processing: \textit{schema linking}, IR synthesis using SemQL, and
-deterministic SQL translation \citep{IRNet}. Notably, graph neural networks
-(GNNs) were explored for neural network representation of database schemas.
-\textsc{GNN} outperformed \textsc{SyntaxSQLNet} and performed on par ($\Delta$
-of +1.3pp) with \textsc{IRNet}, achieving 54.5\% on \textsc{Spider} (dev). No
-evaluations were performed on \textsc{Spider} (test) \citep{GNN}.
+processing: schema linking, IR synthesis using SemQL, and deterministic SQL
+translation \citep{IRNet}. Notably, graph neural networks (GNNs) were explored
+for neural network representation of database schemas. \textsc{GNN}
+outperformed \textsc{SyntaxSQLNet} and performed on par ($\Delta$ of +1.3pp)
+with \textsc{IRNet}, achieving 54.5\% on \textsc{Spider} (dev). No evaluations
+were performed on \textsc{Spider} (test) \citep{GNN}.
 
 \subsubsection{Relation-Aware Transformer Approaches}
 
@@ -87,10 +87,10 @@ Neural approaches progressively improved upon each other in multiple dimensions:
         at-the-time capability ceiling on complex queries using neural
         approaches, outperforming \textsc{IRNet} by 10.5\% \citep{IRNet,
         RATSQL}.
-    \item \textbf{Schema Understanding} — Approaches like \textsc{TypeSQL},
-        \textsc{GNN}, \textsc{RAT-SQL} each demonstrated enhanced schema
-        linking capabilities, yielding the ability to accurately reason about
-        user intent and traverse the database schema during query generation
+    \item \textbf{Schema Understanding} — \textsc{TypeSQL}, \textsc{GNN} and
+        \textsc{RAT-SQL} each demonstrated enhanced schema linking
+        capabilities, yielding the ability to accurately reason about user
+        intent and traverse the database schema during query generation
         \citep{TypeSQL, GNN, RATSQL}.
 \end{enumerate}
 

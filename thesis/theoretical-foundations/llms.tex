@@ -104,15 +104,15 @@ question presentation mechanisms \citep{DAIL-SQL, OmniSQL}.
 
 \subsubsection{Chain-of-Thought Reasoning}
 
-Prompting or training models to output their chain-of-thought encourages models 
-to generate reasoning traces before producing their final answer to a question
-or input. For NL2SQL, this usually involves generating explanations of query
-logic, analysing the input database schema, and planning the query structure
-before generating a query.
+Prompting or training models to output their COT encourages models to generate
+reasoning traces before producing their final answer to a question or input.
+For NL2SQL, this usually involves generating explanations of query logic,
+analysing the input database schema, and planning the query structure before
+generating a query.
 
-Fine-tuned models like \textsc{OmniSQL} are fine-tuned to produce
-chain-of-thought output during generation in markdown which enables debugging
-model behaviour and understanding the query generation approach. 
+Fine-tuned models like \textsc{OmniSQL} are fine-tuned to produce COT output
+during generation in markdown which enables debugging model behaviour and
+understanding the query generation approach. 
 
 \subsubsection{Model Limitations}
 
