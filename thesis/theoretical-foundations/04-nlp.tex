@@ -13,7 +13,7 @@ used for semantic search.
 Before neural networks can process text, raw text must be converted into
 structured representations that models can process. This transformation is
 called tokenization, which refers to the process of segmenting text into
-discrete units (tokens) for processing.
+discrete units called tokens for processing.
 
 \paragraph{Tokenization Approaches}
 
@@ -31,10 +31,10 @@ approaches handle unseen words by decomposing them into meaningful tokens.
 
 \paragraph{Tokenization in NL2SQL Contexts}
 
-For NL2SQL systems, tokenization must be capable of both encoding natural
-language queries and SQL queries. SQL presents a challenge in NLP as it relies
-on a structured syntax and usage of special characters (dots, underscores,
-SQL operators, etc.) which are less commonly found in natural language.
+For NL2SQL systems, tokenization must be capable of both encoding NL queries
+and SQL queries. SQL presents a challenge in NLP as it relies on a structured
+syntax and usage of special characters (e.g., punctuation, underscores, SQL
+operators) which are less commonly found in natural language.
 
 \subsubsection{Word Embeddings and Semantic Representations}
 
@@ -56,12 +56,11 @@ where $d$ is the embedding dimensionality (usually between 256-8192 for modern
 models). The key property of the vector space $\mathbb{R}^d$ is that
 semantically similar words occupy nearby regions in this vector space, hence
 vector operations and proximity in the vector space allows for computation of
-semantic properties such as semantic distance.
-
-Early embedding methods like Word2Vec and GloVe learned static representations
-where each word has a single vector regardless of its surrounding context.
-Modern contextual embeddings, generate different vectors for the same word
-based on its context, thus capturing meaning more accurately.
+semantic properties such as semantic distance. Early embedding methods like
+Word2Vec and GloVe learned static representations where each word has a single
+vector regardless of its surrounding context. Modern contextual embeddings,
+generate different vectors for the same word based on its context, thus
+capturing meaning more accurately.
 
 \paragraph{Sentence Embeddings}
 
@@ -76,10 +75,10 @@ $\mathbb{R}^d$, thus representing complete sentences or texts in one vector.
     e_{s}: (v_0, .., v_n) \rightarrow \mathbb{R}^d
 \end{equation}
 
-Different pooling strategies emerged, like mean pooling, max
-pooling, using a CLS token or learned aggregation. \textsc{Natural} uses
-an embedding model (Qwen3-Embedding-8B) trained specifically for generating
-high-quality sentence representations for subsequent searching.
+Different pooling strategies emerged, like mean pooling, max pooling, using a
+CLS token or learned aggregation. \Natural~uses an embedding model
+(Qwen3-Embedding-4B) trained specifically for generating high-quality sentence
+representations for subsequent searching.
 
 \subsubsection{Semantic Similarity Metrics}
 

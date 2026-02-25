@@ -82,18 +82,16 @@ outperform larger LLMs for NL2SQL tasks using a fraction of the parameters
 
 \subsubsection{In-Context Learning}
 
-In-context learning (ICL) is the process of teaching a model how to perform a
-certain task by providing examples in its prompt, without updating models
-parameters. Thus ICL and Fine-tuning differ by their timing: runtime vs
-learning.
+ICL is the process of teaching a model how to perform a certain task by
+providing examples in its prompt, without updating models parameters. Thus ICL
+and Fine-tuning differ by their timing: runtime vs learning.
 
 This capability emerged with sufficiently large models which have large enough
 context windows to fit in examples of solutions for similar problems. This
-method was shown to be very effective by \citeauthor{DAIL-SQL} in \citeyear{DAIL-SQL},
-improving the performance of general purpose LLMs as well as fine-tuned LLMs
-when being presented with relevant examples \citep{DAIL-SQL}. The combination of
-fine-tuned models like \textsc{OmniSQL} with ICL is therefore a promising
-research for NL2SQL systems.
+method was shown to be very effective by \citeauthor{DAIL-SQL} in
+\citeyear{DAIL-SQL}, improving the performance of general purpose LLMs as well
+as fine-tuned LLMs when being presented with relevant examples
+\citep{DAIL-SQL}.
 
 \subsubsection{Prompt Engineering}
 
@@ -116,21 +114,23 @@ understanding the query generation approach.
 
 \subsubsection{Model Limitations}
 
+% TODO: Better intro sentence
+
 Understanding the limitations of LLMs is essential for designing robust NL2SQL
 systems.
 
 \paragraph{Hallucination}
 
-As LLMs are just predicting a sequence of output tokens, they have no inherent
+As LLMs are predicting sequences of output tokens, they have no underlying
 understanding of the actual problem domain and solution space they are
 presented with. Thus in NL2SQL systems, LLMs might generate invalid SQL queries
 which might reference non existent tables, columns or relationships, output
 invalid syntax or generate promising but semantically invalid queries.
 
-These flaws are inherent to a text based representation and are non
-recoverable, although through candidate validation and self-refinement
-approaches most obviously invalid queries can be recovered. Detecting semantic
-invalidity is a hard research problem on its own.
+These flaws are inherent to a text oriented processing model and are non
+recoverable, although using candidate validation and self-refinement invalid
+queries can be recovered. Detecting semantic invalidity is a research problem
+on its own.
 
 \paragraph{Context Window Limitations}
 
