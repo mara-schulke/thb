@@ -1,9 +1,9 @@
 \section{System Design}\label{section:design}
 
-This chapter describes \textsc{Natural}, a proposed NL2SQL system,
-addressing limitations and research gaps identified in the literature review.
-\textsc{Natural} is a pipeline that transforms natural language questions into
-SQL queries consisting of five components:
+This chapter introduces the architecture of the NL2SQL system \textsc{Natural},
+which addresses limitations and research gaps identified in the literature
+review. \Natural~is architected as a pipeline that transforms NLQs into SQL
+queries consisting of five components:
 
 \begin{enumerate}
     \item \textbf{Example Selection} $\sigma$ – Identifies semantically and
@@ -68,10 +68,10 @@ The system processes queries using the following architecture:
 \end{figure}
 
 This design builds upon few-shot learning concepts from DAIL-SQL
-\citep{DAIL-SQL} and OmniSQL \citep{OmniSQL} but incorporates novel
-contributions in schema-aware example selection using a graph-based structural
-similarity metric.
+\citep{DAIL-SQL} and OmniSQL \citep{OmniSQL} but incorporates a novel
+schema-aware example selection technique which uses graph kernels for
+structural similarity between databases.
 
-\subimport{}{initialization}
-\subimport{}{functions}
-\subimport{}{composition}
+\subimport{}{01-initialization}
+\subimport{}{02-functions}
+\subimport{}{03-composition}

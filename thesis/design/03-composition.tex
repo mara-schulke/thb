@@ -22,16 +22,14 @@ $$
 where $q \in \mathcal{Q}$ is the input natural language query, $s \in \mathcal{S}$
 is the database schema, $e \in \mathcal{E}$ is the execution function for validation,
 $v \in \mathcal{V}$ is the embedding space, $d \in \mathcal{D}$ is the distance index,
-and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query.
-
-The $nq$ function implements Algorithm~\ref{algorithms:nq}.
+and $\omega \in \Omega_{\mathcal{S}}$ is the generated SQL query. The $nq$
+function implements Algorithm~\ref{algorithms:nq}.
 
 \begin{algorithm}
 \caption{$nq$ - Natural Query Pipeline}\label{algorithms:nq}
 \begin{algorithmic}[1]
 \Require $q \in \mathcal{Q}$, $s \in \mathcal{S}$, $e \in \mathcal{E}$, $v \in \mathcal{V}$, $d \in \mathcal{D}$
 \Require $k \in \mathbb{N}$, $k \geq 1$             \Comment{Number of candidates to generate}
-\State $C \gets \emptyset$                          \Comment{Initialize candidate set}
 \While{$|C| < k$}                                   \Comment{Generate k candidates}
     \State $s' \gets \phi(C, s)$                    \Comment{Subset schema using generated candidates}
     \State $\mathcal{C}' \gets \sigma(q, C, s, v, d)$ \Comment{Select examples using current candidates}
