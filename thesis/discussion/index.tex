@@ -10,25 +10,24 @@ The evaluation of \Natural~revealed five primary insights from the results:
 
 \begin{enumerate}
     \item \textbf{Relative Improvements} – \Natural~\textit{Full} achieves
-        higher scores than the \textit{Baseline} configuration and models
-        throughout. \Natural~achieves 81.0\% \EA~on \Spider~(dev), 81.4\% on
-        \Spider~(test) and 53.8\% on \Bird~(dev), compared to \OmniSQL-7B-gguf
-        with 79.0\% on \Spider~(dev and test) and 38.0\% on \Bird.
+        higher scores than the \textit{Baseline} configuration and
+        \OmniSQL-7B-gguf throughout. \Natural~achieves 81.0\% \EA~on
+        \Spider~(dev), 81.4\% on \Spider~(test) and 53.8\% on \Bird~(dev),
+        compared to \OmniSQL-7B-gguf with 79.0\% on \Spider~(dev and test) and
+        38.0\% on \Bird.
     \item \textbf{Examples Structure} – Synthetic examples outperformed
         domain-specific training data on \Bird~(dev) by +5.4pp (53.8\% vs
-        48.4\%), and +0.6pp on \Spider(dev) (81.0\% vs 80.4\%), suggesting
+        48.4\%), and +0.6pp on \Spider~(dev) (81.0\% vs 80.4\%), suggesting
         structural similarity matters more than domain relevance in ICL.
     \item \textbf{Suboptimal Latency} – Candidate latency of \Natural~ranges
-        from 7.3s (\textit{Baseline}) to 43.8s (full pipeline on \Bird),
-        making it primarily suitable for analytical but not for interactive
-        workloads.
-    \item \textbf{Semantic Errors} – 99\%+ of failures are semantic (wrong
-        results) rather than syntactic (malformed SQL), indicating strong SQL
-        generation and validation but weak semantic understanding.
-    \item \textbf{Limited Validity} – A $\Delta$ of 28.1pp exists
-        between published \OmniSQL-7B results (66.1\%) and the local
-        reproduction (38.0\%) on \Bird, limiting absolute performance
-        comparisons.
+        from 7.3s (\textit{Baseline}) to 43.8s (\textit{Full}) on \Bird, making
+        it primarily suitable for analytical but not for interactive workloads.
+    \item \textbf{Semantic Errors} – 99\%+ of failures are semantic (i.e.,
+        wrong results) rather than syntactic (i.e., malformed SQL), indicating
+        strong SQL generation and validation but weak semantic understanding.
+    \item \textbf{Limited Validity} – A $\Delta$ of 28.1pp exists between
+        published \OmniSQL-7B results (66.1\%) and the local reproduction
+        (38.0\%) on \Bird, limiting absolute performance comparisons.
 \end{enumerate}
 
 On the complex \Bird~benchmark, the \textit{Syn} configuration reaches a 53.8\%
@@ -48,11 +47,11 @@ which uses schema subsetting, self-refinement, and majority voting but does not
 apply example selection achieves only a +0.8pp improvement on \Spider~
 despite doubling the candidate latency from 7.3s to 14.0s. \Natural~
 configurations with active ICL and example selection yield up to +2.3pp on
-\Spider~dev, +3.9pp on \Spider~test and +19.8pp on \Bird~compared to
+\Spider~(dev), +3.9pp on \Spider~(test) and +19.8pp on \Bird~compared to
 \textit{Zero-Shot}. This shows that both schema subsetting and self-refinement
 techniques provide minimal benefit without ICL and example
 selection. Further ablation would help to understand the potential cross
-effects of components and the implications of disabling pipeline
+effects between components and the implications of disabling pipeline
 components like schema-subsetting, self-refinement and majority voting.
 Furthermore increasing the pipeline iterations from 1 to $k$ would yield
 insights into self balancing and self correction across iterations of \Natural.
@@ -70,7 +69,7 @@ ICL from increasingly sophisticated example strategies.
 Performance characteristics reveal a complex tradeoff for real-world
 applications. All NL2SQL systems that were evaluated maintain remarkably
 low error rates of less than 0.7 failures per 1000 queries (see
-Figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominantly
+figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominantly
 semantic (i.e., incorrect results). Candidate latency ranges from
 7.3s for \Natural~(\textit{Baseline}) to 16.3s for ICL configurations on
 \Spider~and 43.8s on \Bird. \Natural~is viable for experimental,
@@ -100,17 +99,17 @@ answered using the evaluation results.
 \subsubsection{RQ1: To what extent can open-source LLMs achieve
 competitive NL2SQL performance through pipeline composition and optimization?}
 
-Open-source NL2SQL models achieve \textit{partially
-competitive} performance on prevalent, structured NL2SQL benchmarks. Through
-the composition of different algorithms the performance can be significantly
-improved. The evaluation demonstrates that a combination of ICL, schema
-subsetting, self-refinement and majority voting boosts the competitiveness of
-fine-tuned base models. Significant gaps in execution accuracy remain for
-enterprise-level real-world deployments.
+Open-source NL2SQL models can achieve partially competitive performance on
+prevalent NL2SQL benchmarks in controlled environments. Through the composition
+of different algorithms the performance can be significantly improved. The
+evaluation demonstrates that a combination of ICL, schema subsetting,
+self-refinement and majority voting boosts the competitiveness of fine-tuned
+base models. Significant gaps in execution accuracy remain for enterprise-level
+real-world deployments.
 
 \Natural~achieves up to 81.0\% \EA~on the \Spider~(dev) benchmark using the
 \textit{Syn} configuration (examples selected from the SynSQL-2.5m dataset,
-Table~\ref{tab:eval:overall-results}). This represents a +3.1pp
+table~\ref{tab:eval:overall-results}). This represents a +3.1pp
 improvement over \textit{Baseline} configuration and a +2.0pp increase over the
 baseline model performance of \OmniSQL-7B-gguf. On the test set of \Spider~the
 \textit{Train} configuration outperforms the \textit{Syn} configuration by
@@ -152,7 +151,7 @@ strategy of simply enabling all available algorithms is not cost effective
 and might produce counter productive returns on user experience as the latency
 increases are significant.
 
-Lastly the \textit{Ground} configuration of \Natural~establishes a theoretical
+The \textit{Ground} configuration of \Natural~establishes a theoretical
 performance ceiling using perfect data during example selection and
 consistently performed best-in class during local measurements. \textit{Ground}
 achieved 84.2\% on \Spider~(dev), 82.8\% on \Spider~(test) and 55.8\% on \Bird,
@@ -161,8 +160,8 @@ representing a relative gain to the next-best performing configuration of
 learning and example selection strategies have limits and are already
 performing close to them. Further improvements would likely require better
 foundation models or a different architecture altogether. A visual comparison
-across the different configurations
-(Figure~\ref{fig:eval:execution-accuracy-overview}) confirms that ICL-based
+across the different configurations (see
+figure~\ref{fig:eval:execution-accuracy-overview}) confirms that ICL-based
 approaches (\textit{Syn}, \textit{Train}, \textit{Ground}) outperform other
 configurations with diminishing returns from increasingly sophisticated example
 selection strategies.
@@ -190,32 +189,31 @@ alternative to closed-source systems.
 As \Natural~was developed and evaluated on consumer hardware, the hardware
 constraints induced by it imply a ceiling of possible model size and speed
 characteristics. The RTX 3090 has 24GB VRAM and can theoretically accommodate
-\OmniSQL~7B and \OmniSQL~14B. However, \Natural~uses additional embedding
+\OmniSQL-7B and \OmniSQL-14B. However, \Natural~uses additional embedding
 models and leaves 2-4GB headroom for KV-caches etc. to prevent out-of-memory
-crashes. Therefore only the \OmniSQL~7B model (15GB without quantization) is
+crashes. Therefore only the \OmniSQL-7B model (15GB without quantization) is
 supported unless heavier quantization formats are used.
 
 This makes \Natural~accessible to consumers with high-end consumer-grade
-hardware (~\$1,500 as of 2024-2025) without requiring enterprise-level
-hardware. The performance impact of using larger foundation models
-such as 14B and 32B was not evaluated. For enterprise real-world scenarios 
-larger base models could be used if the available hardware allows for it.
-The evaluation suggests that with the selected model sizes and the available
-hardware \Natural~has a theoretical execution accuracy ceiling of 84.2\% and
-82.8\% on \Spider~(dev and test) and 55.8\% on \Bird. This marks an upper bound
-achievable with the 7B models and the algorithms used. The foundation model
-capabilities emerge as the limiting factor unless an entirely different
-pipeline architecture such as agentic usage of LLMs is used. Scaling the
-hardware and parameter sizes to 14B or 32B would likely yield significant gains
-in execution accuracy. 
+hardware (\$1,500 as of 2026) without requiring enterprise-level hardware. The
+performance impact of using larger foundation models such as 14B and 32B was
+not evaluated. For enterprise real-world scenarios larger base models could be
+used if the available hardware allows for it. The evaluation suggests that with
+the selected model sizes and the available hardware \Natural~has a theoretical
+execution accuracy ceiling of 84.2\% and 82.8\% on \Spider~(dev and test) and
+55.8\% on \Bird. This marks an upper bound achievable with the 7B models and
+the algorithms used. The foundation model capabilities emerge as the limiting
+factor unless an entirely different pipeline architecture such as agentic usage
+of LLMs is used. Scaling the hardware and parameter sizes to 14B or 32B would
+likely yield significant gains in execution accuracy. 
 
 The latency characteristics of \Natural~remain in the practical range for
 non-interactive workflows but pose a significant challenge for local,
 interactive applications. While the \textit{Baseline} configuration achieves
 7.3s \CL, the optimal configurations of \Natural~(\textit{Syn} and \textit{Train})
-only achieve a \CL~of 15.4-16.3s (Table~\ref{tab:eval:overall-results}).
+only achieve a \CL~of 15.4-16.3s (see table~\ref{tab:eval:overall-results}).
 This makes \Natural~viable for exploratory analytics and report generation but
-not for interactive environments such as SQL learning or interactive natural
+not for interactive environments such as chatbots or interactive natural
 language driven data analysis platforms which would require sub-second latency.
 
 \paragraph{Conclusion}
@@ -224,19 +222,19 @@ Overall, open-source LLMs \textit{can} achieve competitive NL2SQL performance
 as fine-tuning and ICL prove to be effective and efficient mechanisms to
 achieve high accuracy values in constrained hardware environments. The measured
 performance yields significant challenges in enterprise environments as an
-execution accuracy of 53.8\% on \Bird with a latency of 43.7s is unacceptable
+execution accuracy of 53.8\% on \Bird~with a latency of 43.7s is unacceptable
 for end users. While promising, a performance gap remains to be closed. These
 insights must be interpreted with caution due to the limited evaluation. 
 
 \subsubsection{RQ2: How do NL2SQL pipeline components interact,
 and which configurations optimize the accuracy-latency tradeoff?}
 
-The pipeline components $\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$ work best
-synergistically rather than additively with $\sigma$ representing the primary
-performance driver of the pipeline $nq$. The ablation study reveals this
-through a systematic evaluation of the three types of configurations:
-\textit{Baseline}, \textit{Zero-Shot} and \textit{Full}. The evaluation results
-reveal the behaviour of the individual pipeline components in synergy, where
+Combining all pipeline components ($\sigma$, $\phi$, $\pi$, $\rho$ and $\nu$)
+outperformed configurations with only selective components enabled. The
+ablation study reveals $\sigma$ as the primary performance driver through a
+systematic evaluation of the three types of configurations: \textit{Baseline},
+\textit{Zero-Shot} and \textit{Full}. The evaluation results reveal the
+behaviour of the individual pipeline components in synergy, where
 \textit{Zero-Shot} only provides a marginal improvement over \textit{Baseline}
 (e.g., +0.8pp on \Spider) while nearly doubling the latency. All configurations
 with active ICL demonstrated significant improvement over their non-ICL
@@ -248,28 +246,28 @@ benefit (+0.8pp on \Spider~(dev), +0.5pp on \Spider~(test) and +1.6pp on \Bird)
 to the \EA~performance of a pipeline while significantly impacting (i.e.,
 approximately doubling) the \CL.
 
-The pattern of component interactions becomes apparent
-through examining \Natural's failure modes. Without examples \Natural~(and thus
-\OmniSQL) generate semantically inaccurate SQL candidates more often; usually
-incorrect column or table selection, misunderstanding of column semantics and
-value ranges or wrong join patterns result in syntactically correct queries
-which result in wrong result sets. For example the schema subsetting component
-is unable to work correctly if the initial query candidate is using the wrong
-set of tables altogether, the majority voting algorithm fails to select the
-best candidate when all SQL candidates correspond to different result sets and
-self-refinement can only rarely repair semantically mislead initial queries. 
-In-context learning helps \Natural~to guide the foundational model by supplying
-a set of highly relevant, ranked examples which steers the model to put its
-attention on specific parts of the SQL schema. The schema-aware example
-selection algorithm works particularly well and was shown to be effective even
-on data that did not originate from the training splits of the corresponding
-benchmarks (\ref{tab:eval:overall-results}). 
+The component interactions become apparent when examining \Natural's failure
+modes. Without examples \Natural~(and thus \OmniSQL) generate semantically
+invalid SQL candidates more often; usually incorrect column or table selection,
+misunderstanding of column semantics and value ranges or wrong join patterns
+result in syntactically correct queries which result in wrong result sets. For
+example the schema subsetting component is unable to work correctly if the
+initial query candidate is using the wrong set of tables altogether, the
+majority voting algorithm fails to select the best candidate when all SQL
+candidates correspond to different result sets and self-refinement can only
+rarely repair semantically mislead initial queries. In-context learning helps
+\Natural~to guide the foundational model by supplying a set of highly relevant,
+ranked examples which steers the model to put its attention on specific parts
+of the SQL schema. The schema-aware example selection algorithm works
+particularly well and was shown to be effective even on data that did not
+originate from the training splits of the corresponding benchmarks
+(\ref{tab:eval:overall-results}). 
 
 \paragraph{Component Contribution Ranking}
 
 These insights allow for a ranking of components by their estimated impact
-based on the ablation evidence from Table~\ref{tab:eval:overall-results} and
-Figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
+based on the ablation evidence from table~\ref{tab:eval:overall-results} and
+figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
 by impact as follows:
 
 \begin{enumerate}
@@ -285,7 +283,7 @@ by impact as follows:
     \item \textbf{Example Selection ($\sigma$)} – Example selection provides a
         non-negligible improvement in performance to the overall system while
         introducing relatively little candidate latency (e.g., only +0.1-+2.3s
-        on \Spider). The impact that ICL showed on \Bird demonstrates that
+        on \Spider). The impact that ICL showed on \Bird~demonstrates that
         example selection is not only helpful for LLMs generating SQL queries
         but a \textit{highly impactful} measure for enabling them to handle
         complex query generation tasks on real-world data.
@@ -294,7 +292,7 @@ by impact as follows:
         attempts and validates that queries execute without any errors prior to
         returning them to the user. This self-consensus mechanism ensures low
         syntactic error rates across all configurations
-        (Figure~\ref{fig:eval:error-rates}). The voting strategy only
+        (see figure~\ref{fig:eval:error-rates}). The voting strategy only
         gains in performance impact with an increasing number of
         internal candidates. The evaluation was performed with 1-2 internal
         candidates due to computational complexity of increasing the pipeline
@@ -303,7 +301,7 @@ by impact as follows:
         prompting the underlying model for repairing or improving its initially
         produced query candidate. This results in an overall marginal
         improvement of \EA, but comes at a significant computational cost.
-        Adding self-refinement nearly doubles the \CL on average and provides
+        Adding self-refinement nearly doubles the \CL~on average and provides
         diminishing returns. The results of the \textit{Zero-Shot}
         configuration, especially on the \Bird~benchmark, suggest that
         self-refinement is unable to correct significant semantic errors on its
@@ -321,8 +319,8 @@ by impact as follows:
 \paragraph{Accuracy-Latency Tradeoff}
 
 The accuracy-latency measurements visualized in
-Figure~\ref{fig:eval:candidate-latency} and
-Table~\ref{tab:eval:overall-results} reveal three efficiency profiles
+figure~\ref{fig:eval:candidate-latency} and
+table~\ref{tab:eval:overall-results} reveal three efficiency profiles
 across the benchmarked systems.
 
 \begin{enumerate}
@@ -354,21 +352,19 @@ interactivity of the use case and the complexity of the domain.
 Recommendations for common use cases:
 
 \begin{enumerate}
-    \item \textbf{Exploratory queries against simple databases} — For mostly
-        interaction heavy systems like interactive query interfaces, data
-        exploration and well-structured and smaller databases the
-        \textbf{Baseline} configuration provides the overall best tradeoff
-        given the lower latency which will significantly impact user
-        experience. On simpler databases, the baseline configuration provides
-        the best accuracy to latency ratio.
-
+    \item \textbf{Exploratory queries against simple databases} — For
+        interaction heavy systems like query interfaces, data exploration and
+        well-structured and smaller databases the \textit{Baseline}
+        configuration provides the overall best tradeoff given the lower
+        latency which will significantly impact user experience. On simpler
+        databases, the \textit{Baseline} configuration provides the best
+        accuracy to latency ratio.
     \item \textbf{Mixed complexity use cases} — For general purpose, mixed
         complexity use cases like internal analytical tools, asynchronous
         report generation and potentially complex databases the \textbf{Full}
         profile excels. If latency is generally less important than accuracy
         the latency problem can be eased by provisioning more powerful
         hardware, especially in enterprise or professional scenarios.
-
     \item \textbf{Enterprise databases} — For large, complex databases with
         tens or even hundreds of tables, dirty data and potential external
         knowledge requirements (e.g., resembling \Bird) the \textbf{Full}
@@ -377,16 +373,15 @@ Recommendations for common use cases:
         can achieve meaningful accuracy values in complex environments.
         Especially when manual querying would take significant amounts of time
         \Natural~can speed up the workflow.
-
     \item \textbf{Research deployments} — For research deployments and user
         experience evaluations of NL2SQL databases the \textbf{Full} profile
         with potential ground truth samples is deemed optimal. \Natural~could
-        serve for pure, theoretical evaluation of potential NL2SQL systems and
-        their upper bound performance. Such a research deployment could
-        reference past conversations and historical examples to form a
-        self-learning system. This configuration is not sensible for real
-        world deployments as it would require a ground truth entry for all
-        possibly asked questions. 
+        serve for evaluations of the potential of NL2SQL systems and their
+        upper bound performance. Such a research deployment could reference
+        past conversations and historical examples to form a self-learning
+        system. This configuration is not sensible for real world deployments
+        as it would require a ground truth entry for all possibly asked
+        questions. 
 \end{enumerate}
 
 Concluding, for highly interactive systems like chat applications and
@@ -400,15 +395,15 @@ the \textbf{Zero-Shot} profile mostly undesirable.
 \paragraph{Implications for NL2SQL Pipeline Design}
 
 Implications for future NL2SQL pipeline and system design can be
-derived from this work. First, the example selection and self-learning
-capabilities of any NL2SQL system that is based on LLMs will notably drive up
-its accuracy. Focusing on example quality, example selection and example
-presentation will result in a good return on investment. Second, detailed component
-ablations will help to evaluate the concrete contribution of individual
-components, making iterations simpler and faster. Components should be
-evaluated against realistic benchmarks (e.g., \Bird~or \Spider~2.0) to measure
-their real-world effects. Lastly, it is desirable to enable the system to be
-fine-tunable to a specific deployment scenario. Reference data used,
+derived from this work. First, using example selection and self-learning
+capabilities for NL2SQL systems using LLMs will notably drive up their
+accuracy. Focusing on example quality, example selection and example
+presentation will result in a good return on investment. Second, detailed
+component ablations will help to evaluate the concrete contribution of
+individual components, making iterations simpler and faster. Components should
+be evaluated against realistic benchmarks (e.g., \Bird~or \Spider~2.0) to
+measure their real-world effects. Lastly, it is desirable to enable the system
+to be fine-tunable to a specific deployment scenario. Reference data used,
 fine-tuned models or specialized example generation can help to improve the
 accuracy scores on a concrete deployment case beyond the theoretical benchmark
 results that are cross-domain.
@@ -418,10 +413,8 @@ results that are cross-domain.
 \Natural~is a portable NL2SQL system which achieves largely
 competitive performance for a range of NL2SQL tasks. The \textbf{Full} profile
 of \Natural~delivers significant accuracy gains over the \textbf{Baseline}
-profile on complex use cases. \Natural~suffers from poor latency
-characteristics compared to the foundation models making it not always the
-better choice.
-
+profile on complex use cases. \Natural~has poor latency characteristics
+compared to the foundation models making it not always the better choice.
 Therefore, the optimal NL2SQL system depends on the use case at hand, for
 enterprise level complexity using the advanced pipeline components can be
 beneficial, especially if continuously learning systems are desirable. For
@@ -443,27 +436,26 @@ less appealing to employ NL2SQL systems.
 
 \paragraph{System Integration Approaches}
 
-The portability of \Natural~is predominantly defined by its self
-contained architecture which enables two recommended deployment architectures
-offering distinct trade-offs:
+The portability of \Natural~is predominantly defined by its self- contained
+architecture which enables two recommended deployment architectures offering
+distinct trade-offs:
 
 \begin{enumerate}
     \item \textbf{Database Extension} — By directly integrating \Natural~into a
-        DBMS such as PostgreSQLs extension system a tight coupling between the
-        underlying database and the NL2SQL system can be achieved which allow
-        for potentially drastically reduced latency if \Natural~is used for
-        expensive Online Analytical Processing (OLAP) queries. This is largely
-        implied by the pipeline architecture loading data from the database
-        during inference. Furthermore the embedded architecture allows for
-        enhanced data privacy as no data needs to leave the DBMS during
-        inference. To enable access control patterns \Natural~can hook into row
-        level access control and PostgreSQLs access control system. This
-        architecture comes with two significant downsides. First, the database
-        systems host needs to have access to a powerful GPU in order to load
-        the model and run inference directly. Second, this architecture does
-        not scale well, as a linear number of equally sized nodes with GPUs
-        would be required and would thus likely yield a resource under
-        utilization most of the time.
+        DBMS a tight coupling between the underlying database and the NL2SQL
+        system can be achieved which allow for potentially drastically reduced
+        latency if \Natural~is used for expensive Online Analytical Processing
+        (OLAP) queries. This is largely implied by the pipeline architecture
+        loading data from the database during inference. Furthermore the
+        embedded architecture allows for enhanced data privacy as no data needs
+        to leave the DBMS during inference. To enable access control patterns
+        \Natural~can hook into row level access control and PostgreSQLs access
+        control system. This architecture comes with two significant downsides.
+        First, the DBMS nodes need to have access to GPUs in order to load the
+        model and run inference directly. Second, this architecture does not
+        scale well, as a linear number of equally sized nodes with GPUs would
+        be required and would thus likely yield a resource under utilization
+        most of the time.
     \item \textbf{Inference Service} — The alternative architecture is the
         service oriented architecture which is trivially supported by embedding
         the Rust crate of \Natural~into a gRPC or REST API. This architecture
@@ -480,22 +472,22 @@ scenarios.
 
 \paragraph{Latency and Interactivity}
 
-As shown in the evaluation results (See Table~\ref{tab:eval:overall-results})
+As shown in the evaluation results (See table~\ref{tab:eval:overall-results})
 the \CL~consistently increases with the pipeline accuracy. This means that more
 powerful profiles of \Natural~require more powerful hardware in order to
 maintain stable latency characteristics. As described in
-\ref{sec:discussion:deployment-scenarios} the latency of a NL2SQL system is a primary
-denominator of the use cases it is viable for; e.g., high latency systems
+\ref{sec:discussion:deployment-scenarios} the latency of a NL2SQL system is a
+primary denominator of the use cases it is viable for. High latency systems
 are primarily sensible for asynchronous tasks whereas low latency systems are
 viable for fast and iterative use cases like query interfaces (e.g., snowflake)
 and chatbot integrations. The currently achieved latency of all NL2SQL
 systems that were benchmarked on consumer hardware is not viable for interactive
-user interfaces. Significantly more powerful hardware (e.g., Factor 10)
+user interfaces. Significantly more powerful hardware (e.g., factor 10)
 would be required to make fully interactive systems viable for users.
 
 \paragraph{Trust, Transparency, and Error Communication}
 
-As shown in Figure \ref{fig:eval:error-rates}~and
+As shown in figure \ref{fig:eval:error-rates}~and
 \ref{fig:eval:execution-accuracy-overview} the errors of \Natural~and other
 NL2SQL systems are primarily semantic errors, rather than syntactic errors.
 This makes error detection and communication significantly harder, as the
@@ -516,28 +508,25 @@ accessibility implications are discussed.
 
 \paragraph{Optimal Use Cases}
 
-Natural language query interfaces are most viable when the query complexity is
-moderate, e.g., simple joins, filtering and aggregations. The schema is
-well-documented, with clear table and column names that closely match domain
-language used during querying. Lastly, users need to have domain knowledge in
-order gauge whether returned results are accurate and iterations must be
-acceptable, e.g., no bulk deletion is automatically performed.
-
-Traditional SQL interfaces will remain superior for use cases where production
-systems are altered, complex analytical queries are asked which require window
-functions, advanced aggregations and many joins as well as the exact behavior
-of a query must be user controllable.
-
-In an ideal scenario, natural language would be combined with SQL, enabling
-drafting and iterating on queries with natural languages but eventually
-transitioning to SQL if precise control is required (e.g., before deleting
-data). This approach would leverage \Natural's strength (rapid formulation of
-reasonable queries) while mitigating its primary weakness when it comes to
-definite semantic accuracy. Traditional SQL tooling can be further employed for
-query validation and optimization before executing them. Lower level
-database interfaces could surface both options simultaneously in the future,
-allowing users to generate queries in natural language and refine them in SQL
-within the same workflow, removing the gap.
+NLIDBs are most viable when the query complexity is moderate, e.g., simple
+joins, filtering and aggregations. The schema is well-documented, with clear
+table and column names that closely match domain language used during querying.
+Lastly, users need to have domain knowledge in order gauge whether returned
+results are accurate and iterations must be acceptable, e.g., no bulk deletion
+is automatically performed. Traditional SQL interfaces will remain superior for
+use cases where production systems are altered, complex analytical queries are
+asked which require window functions, advanced aggregations and many joins as
+well as the exact behavior of a query must be user controllable. In an ideal
+scenario, natural language would be combined with SQL, enabling drafting and
+iterating on queries with natural languages but eventually transitioning to SQL
+if precise control is required (e.g., before deleting data). This approach
+would leverage \Natural's strengths (e.g., rapid drafting of reasonable
+queries) while mitigating its primary weakness when it comes to definite
+semantic accuracy. Traditional SQL tooling can be further employed for query
+validation and optimization before executing them. Lower level database
+interfaces could surface both options simultaneously in the future, allowing
+users to generate queries in natural language and refine them in SQL within the
+same workflow, removing the gap.
 
 \paragraph{Accessibility and Democratization}
 
@@ -569,8 +558,8 @@ trend will likely change.
 \subsection{Threats to Validity}
 
 Given the substantial differences between published and locally reproduced
-result, the constrained benchmark selection (excluding more advanced benchmarks
-like \Spider~2.0) and the constrained hardware that was available during the
+result, the constrained benchmark selection, excluding more advanced benchmarks
+like \Spider~2.0, and the constrained hardware that was available during the
 evaluation the results of this thesis need to be treated as rather unreliable.
 
 \subsubsection{Experimental Limitations}
@@ -580,7 +569,7 @@ sizes, reproducibility and the constrained benchmark selection.
 
 \paragraph{Benchmark Representativeness}
 
-The evaluation relies on only two benchmarks - \Spider~and \Bird~- which likely
+The evaluation relies on only two benchmarks, \Spider~and \Bird, which likely
 do not accurately represent the real-world query distributions and databases
 schemas that NL2SQL systems will encounter. The results are not indicative of
 guaranteed real-world performance, but highlight patterns where
@@ -596,46 +585,42 @@ by \Spider~and \Bird and the SQLite dialect.
 
 \paragraph{Model and Hardware Specificity}
 
-All results shown in Table~\ref{tab:eval:overall-results} are subject to the
+All results shown in table~\ref{tab:eval:overall-results} are subject to the
 configurations and models used due to the hardware constraints during
-benchmarking. More powerful hardware than the RTX 3090 would allow for larger
-models (e.g., \OmniSQL-32B and better embedding models) as well as likely
-substantially improve the candidate latency measurements.
-
-Additionally there exists a risk of \OmniSQL~being fine-tuned to perform well
-on \Spider~training and development sets which would further limit the ability
-to transfer the performance into real-world deployments. 
+benchmarking. More powerful hardware would allow for larger models (e.g.,
+\OmniSQL-32B and Qwen Embedding 8B) as well as likely substantially improve the
+candidate latency measurements. Additionally there exists a risk of
+\OmniSQL~being fine-tuned to perform well on \Spider~training and development
+sets which would further limit the ability to transfer the performance into
+real-world deployments. 
 
 \paragraph{Reproducibility Challenges}
 
 The most significant threat to validity is the observed performance gap between
 the published \OmniSQL~results and locally achieved results. This gap is
-substantial on \Bird, where published results report 66.1\% \EA for \OmniSQL~7B
+substantial on \Bird, where published results report 66.1\% \EA~for \OmniSQL-7B
 while locally only 38.0\% \EA~could be achieved. This represents a 28.1pp
 difference in accuracy. As discussed in section~\ref{sec:eval:performance-gap},
 this might be caused by factors such as model format differences, diverging
-hyperparameters, prompt drifting and dataset versioning.
-
-The existence of this gap \textbf{severely} undermines the confidence in the
-absolute performance of \Natural~compared to \OmniSQL~and other systems,
-resulting in uncertainty on whether the steep, relative performance gains shown
-by \Natural~are transferable into environments where this gap does not exist.
-It highlights reproducibility challenges prevalent in LLM-based research.
+hyperparameters, prompt drifting and dataset versioning. The existence of this
+gap severely undermines the confidence in the absolute performance of
+\Natural~compared to \OmniSQL~and other systems, resulting in uncertainty on
+whether the steep, relative performance gains shown by \Natural~are
+transferable into environments where this gap does not exist. It highlights
+reproducibility challenges prevalent in LLM-based research.
 
 The implications for this thesis are twofold; First, no absolute performance
 assessment can be made and any claims of absolute performance superiority of
 \Natural~over \OmniSQL~or GPT-4 would be premature. Further research and
 extensive evaluations are required to solve this gap and make a reliable,
 absolute assessment possible. Second, while absolute performance is unreliable,
-relative performance increases can be treated with more confidence. The machine
-learning algorithm introduced in \Natural~offers a reliable improvement of up
-to +21.4pp over the \textit{baseline} configuration. It is unclear whether this
+relative performance increases can be treated with more confidence. The
+algorithms introduced in \Natural~offer a reliable improvement of up to +21.4pp
+over the \textit{Baseline} configuration. It is unclear whether this
 improvement in accuracy would persist or substantially shrink with increasingly
-better \textit{baseline} performance.
-
-Relative improvements achieved
-through pipeline composition can be substantial, but must be verified
-through independent research before any deployment decision is made.
+better \textit{Baseline} performance. Relative improvements achieved through
+pipeline composition can be substantial, but must be verified through
+independent research before any deployment decision is made.
 
 \subsubsection{Methodological Constraints}
 
@@ -656,38 +641,33 @@ and perceived usefulness are not evaluated and learning effectiveness and
 productivity gains are not measured. This makes the evaluation primarily
 machine learning bound, rather than impact bound which is acceptable given the
 rather early stage of NL2SQL systems but limit the ability to forecast the
-actual benefit of using it.
-
-The \EM~metric is overly strict, limiting the solution space to one exact style
-of writing SQL and risks that optimizing for \EM~needs fine-tuned models to
-perform well.
-
-These limitations indicate that a system with good metric performance
-might still bring questionable real world benefits to users (e.g., through a
-poor user experience, inefficient SQL etc.). Future evaluations should define
-reasonable metrics that look beyond the functional performance of a system.
+actual benefit of using it. The \EM~metric is overly strict, limiting the
+solution space to one exact style of writing SQL and risks that optimizing for
+\EM~needs fine-tuned models to perform well. These limitations indicate that a
+system with good metric performance might still bring questionable real world
+benefits to users (e.g., through a poor user experience, inefficient SQL etc.).
+Future evaluations should define reasonable metrics that look beyond the
+functional performance of a system.
 
 \paragraph{Comparison Validity}
 
-The comparisons with SOTA results (GPT-4, \OmniSQL~variants, etc.) face
-additional validity challenges beyond the observed performance gaps. Variables
-that influence the validity of the performed comparisons include the
-potentially diverging hardware platforms, model configurations and evaluation
-environments that were used. The results from \OmniSQL~would benefit from an
-independent reproduction which would substantially strengthen their reliability
-and enable a conclusion to be drawn on whether the local measurements are
-faulty and what could have caused them to diverge.
+The comparisons with published results face additional validity challenges
+beyond the observed performance gaps. Variables that influence the validity of
+the performed comparisons include the potentially diverging hardware platforms,
+model configurations and evaluation environments that were used. The results
+from \OmniSQL~would benefit from an independent reproduction which would
+substantially strengthen their reliability and enable a conclusion to be drawn
+on whether the local measurements are faulty and what could have caused them to
+diverge.
 
 \paragraph{Internal Validity}
 
 Beyond the comparisons validity with other systems, the internal validity is
 questionable as there were several significant limitations during the
-evaluation.
-
-Hyperparameters and example selection weights were experimentally estimated,
-not empirically optimized. The configurations were only a small subset of
-possible configurations due to the extreme length of benchmark runtimes
-(12-36h). No statistical testing and observation of performance characteristics
-was performed. Further evaluations should include detailed case studies,
-fine-grained performance metrics by query and schema complexity and more
-benchmark datasets.
+evaluation. Hyperparameters and example selection weights were experimentally
+estimated, not empirically optimized. The configurations were only a small
+subset of possible configurations due to the extreme length of benchmark
+runtimes (12-36h). No statistical testing and observation of performance
+characteristics was performed. Further evaluations should include detailed case
+studies, fine-grained performance metrics by query and schema complexity and
+more benchmark datasets.
