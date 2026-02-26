@@ -5,29 +5,25 @@ multiple techniques such as schema-aware example selection ($\sigma$), schema
 subsetting ($\phi$), query projection ($\pi$), self-refinement ($\rho$) and
 consensus voting ($\nu$) while remaining executable on consumer-grade systems.
 It was evaluated against multiple variants of \OmniSQL~and GPT-4 on \Spider~and
-\Bird and a brief ablation study was performed to identify the impact of
+\Bird~and a brief ablation study was performed to identify the impact of
 pipeline components and ICL example sources. The results are presented in the
-evaluation and discussion sections respectively.
-
-The key contributions of this thesis are:
+evaluation and discussion sections respectively. The key contributions of this
+thesis are:
 
 \begin{enumerate}
-    \item \textbf{Graph-Based Example Selection}: A novel schema-aware example
+    \item \textbf{Graph-Based Example Selection} — A novel schema-aware example
         selection mechanism using Wasserstein-Weisfeiler-Lehman graph kernels
         to measure the structural similarity between two database schemas.
-
-    \item \textbf{Portable Pipeline Design}: A five-stage pipeline design
+    \item \textbf{Portable Pipeline Design} — A five-stage pipeline design
         combining example selection ($\sigma$), schema subsetting ($\phi$),
         few-shot generation ($\pi$), self-refinement ($\rho$), and consensus
         voting ($\nu$) that demonstrated substantial accuracy improvements in
         a local, controlled environment.
-
-    \item \textbf{Production Implementation}: A complete, production-grade Rust
+    \item \textbf{Production Implementation} — A complete, production-grade Rust
         implementation optimized for consumer-grade hardware (RTX 3090, 24GB
         VRAM), achieving a latency of 7.3-16.0s on \Spider~and 9.3-43.8s on
         \Bird~depending on the configuration used.
-
-    \item \textbf{Highlighted Reproducibility Gap}: Documentation and
+    \item \textbf{Highlighted Reproducibility Gap} — Documentation and
         discussion of the 28.1pp performance gap between published and
         reproduced results of \OmniSQL, highlighting critical challenges in
         LLM-based research reproducibility and transferability of models,
@@ -41,7 +37,7 @@ production-ready, portable and sovereign NL2SQL system which avoids the
 dependency on proprietary APIs for inference. This goal was achieved by
 introducing \Natural, which showed that small and portable LLMs, paired with
 schema-aware example selection can achieve meaningful performance on imperfect,
-real-world databases. In local evaluations \Natural~performed 2.0-15.8pp
+real-world databases. In local evaluations \Natural~performed +2.0-15.8pp
 better than the \OmniSQL-7B-gguf model, but a gap remains to the published
 \OmniSQL~results. This is subject to further evaluations as a full
 reproduction of the reported baseline model performance was not possible and a
@@ -106,31 +102,30 @@ prompting.
 \paragraph{Schema and Example Presentation}
 
 While research on schema and example presentation exists within the NL2SQL
-community, it is not exhaustive and includes evaluations of different classes of
-schema and query presentation \citep{DAIL-SQL, XiYan}. Further research in this
-field could highlight differences introduced through subtle changes in
+community, it is not exhaustive and includes evaluations of different classes
+of schema and query presentation \citep{DAIL-SQL, XiYan}. Further research in
+this field could highlight differences introduced through subtle changes in
 presentation of examples or schemas and recommend mitigation techniques such as
 identifying the most performant presentation formats or fine-tuning base models
 to a specific presentation format.
 
 \subsubsection{System Improvements}
 
-One significant opportunity for future research involves further system and
-performance improvements to enable deployments on less powerful
-hardware. The overall candidate latency of \Natural~emerged as a critical
-blocker for real-world adoption, as requiring users to procure expensive
-research or enterprise-grade GPUs is suboptimal. Substantial
-performance optimization is needed to achieve a democratization
-effect.
+Significant opportunities for future research revolve around further system and
+performance improvements to enable deployments on less powerful hardware. The
+overall candidate latency of \Natural~emerged as a critical blocker for
+real-world adoption, as requiring users to procure expensive research or
+enterprise-grade GPUs is suboptimal. Substantial performance optimization is
+needed to achieve a democratization effect.
 
-\paragraph{Model Quantization and Distillation}
+\paragraph{Model Distillation}
 
-Through further research on quantization effects on NL2SQL models and
-applied model distillation, significantly smaller LLMs could yield
-a noticeable increase in performance and drop the hardware
-requirements. For users with existing high-end hardware, this could yield a
-significant candidate latency reduction and unlock interactive use cases that
-are not viable with the latency values measured in this thesis.
+Through further research on NL2SQL models and the potential of model
+distillation, significantly smaller LLMs could yield a noticeable increase in
+performance and drop the hardware requirements. For users with existing
+high-end hardware, this could yield a significant candidate latency reduction
+and unlock interactive use cases that are not viable with the latency values
+measured in this thesis.
 
 \paragraph{Component Refinement}
 
@@ -159,12 +154,11 @@ government, healthcare, and finance feasible. Significant challenges remain,
 particularly regarding latency, semantic accuracy on complex databases, and
 reproducibility of research results. The algorithms introduced in this thesis,
 especially the schema-aware example selection, prove that additional
-algorithmic support systems can partially close the performance gap
-between open-source and closed-source models in controlled environments.
-
-Contributions were made both through a practical implementation of \Natural and
+algorithmic support systems can partially close the performance gap between
+open-source and closed-source models in controlled environments. Contributions
+were made both through a practical implementation of \Natural and
 methodological insights for future NL2SQL research, particularly by
-highlighting the importance of example sources and selection algorithms.
-As foundational models continue to improve and hardware becomes more
-accessible, NL2SQL systems will play an increasingly important role in
-democratizing data access while maintaining data sovereignty.
+highlighting the importance of example sources and selection algorithms. As
+foundational models continue to improve and hardware becomes more accessible,
+NL2SQL systems will play an increasingly important role in democratizing data
+access while maintaining data sovereignty.
