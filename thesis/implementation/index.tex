@@ -1,11 +1,10 @@
 \section{Implementation}
+
 This chapter presents the implementation of \textsc{Natural}, translating the
 theoretical framework outlined in Chapter \ref{section:design} into a working
-NL2SQL system.
-
-Attention is given to engineering challenges encountered, performance
-bottlenecks identified, and optimization strategies implemented to achieve
-deployment viability on consumer hardware. The chapter covers software
+NL2SQL system. Attention is given to engineering challenges encountered,
+performance bottlenecks identified, and optimization strategies implemented to
+achieve deployment viability on consumer hardware. The chapter covers software
 architecture and infrastructure and implementation of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
@@ -14,10 +13,8 @@ The implementation is split into inference, sampling and evaluation code. The
 runtime code focuses on algorithm implementations outlined in section
 \ref{section:design}, sampling code focuses on indexing samples and computing
 distance indices and evaluation code runs the \textsc{Natural} pipeline on
-benchmarks.
-
-This subsection outlines the scope of each component, the design rationale and
-technology stack decisions.
+benchmarks. This subsection outlines the scope of each component, the design
+rationale and technology stack decisions.
 
 \subsubsection{Software Architecture}
 
@@ -79,11 +76,9 @@ This separation emerged as the split between inference, sampling and evaluation
 code required shared fundamentals like model execution and graph representation
 which improves testability and maintainability. Separating the inference,
 sampling and evaluation code yields a smaller footprint when embedding
-inference code into databases.
-
-Challenges with this multi-component architecture are tied to
-dependency management and build complexity although these can be
-mitigated through \texttt{cargo}'s workspace support.
+inference code into databases. Challenges with this multi-component
+architecture are tied to dependency management and build complexity although
+these can be mitigated through \texttt{cargo}'s workspace support.
 
 \subsubsection{Resource Management Strategy}
 
@@ -103,12 +98,11 @@ pipeline a companion model is required to embed the sample datasets
 (\textsc{SynSQL}, \textsc{Bird} and \textsc{Spider}) during sampling and
 the user provided natural language question during inference. The Qwen3
 embedding models ranked first on the MTEB multilingual leaderboard. The Q8\_0
-quantized version of the 8B model consumes 8 gigabytes of VRAM which
-cannot fit into 24 gigabytes when accounting for KV-Cache
-requirements. Instead of choosing a heavily quantized version of the
-8B variant (ie, Q4\_KM or below), the 4B model with Q8\_0 shows similar
-performance on simple use cases while offering a
-smaller memory footprint at 2 gigabytes.
+quantized version of the 8B model consumes 8 gigabytes of VRAM which cannot fit
+into 24 gigabytes when accounting for KV-Cache requirements. Instead of
+choosing a heavily quantized version of the 8B variant (i.e., Q4\_KM or
+below), the 4B model with Q8\_0 shows similar performance on simple use cases
+while offering a smaller memory footprint at 2 gigabytes.
 \citep{Qwen3Embed}.
 
 As models have significant loading times, the system loads models globally
@@ -119,18 +113,17 @@ would lead to a crash.
 
 \subsubsection{Technology Stack Decisions}
 
-The choice of programming language, inference frameworks, and
-libraries determines system performance and deployment characteristics,
-and development velocity. This section analyzes key decisions
-for \textsc{Natural}, discussing trade-offs between research
-flexibility and production readiness, performance optimization and development
-speed, and ecosystem maturity versus cutting-edge capabilities.
+The choice of programming language, inference frameworks, and libraries
+determines system performance and deployment characteristics, and development
+velocity. This section analyzes key decisions for \Natural, discussing
+trade-offs between research flexibility and production readiness, performance
+optimization and development speed, and ecosystem maturity versus cutting-edge
+capabilities.
 
-Critical decisions are the programming language, model
-inference framework, and vector similarity search solution. Each
-decision was evaluated against limited hardware resources
-(24GB VRAM), database integration capabilities, and
-reproducible research outcomes.
+Critical decisions are the programming language, model inference framework, and
+vector similarity search solution. Each decision was evaluated against limited
+hardware resources, database integration capabilities, and reproducible
+research outcomes.
 
 \paragraph{Language and Ecosystem}
 
@@ -141,10 +134,8 @@ and other general purpose languages. While interpreted languages like Python, R
 and Julia tend to be easier to use for rapid prototyping and validation due to
 their loose type systems and scientific ecosystem, they come with drawbacks
 regarding deployability, speed and robustness compared to compiled and
-strongly typed languages.
-
-Languages like Java, C / C++ and Rust offer stability
-at runtime, better interoperability into other programs (eg, database
+strongly typed languages. Languages like Java, C / C++ and Rust offer stability
+at runtime, better interoperability into other programs (e.g., database
 extensions) and resource utilization they represent a trade-off between
 performance optimization and portability vs. iteration speed and research
 ecosystems.
@@ -167,10 +158,10 @@ for ML systems at the cost of development speed.
 
 \paragraph{Inference Framework}
 
-For local model inference, two frameworks emerged: llama.cpp (FFI),
-Candle (Rust-native). While Rust-native frameworks offer better
-portability, llama.cpp provided a better balance between performance, ecosystem
-maturity, and implementation simplicity.
+For local model inference, two frameworks emerged: llama.cpp (FFI), Candle
+(Rust-native). While Rust-native frameworks offer better portability, llama.cpp
+provided a better balance between performance, ecosystem maturity and
+implementation simplicity.
 
 llama.cpp provides out-of-the-box optimizations with comprehensive GGUF
 quantization support, yielding approximately 25-30 tokens per second on
@@ -179,36 +170,31 @@ loading, tokenization and sampling. The GGML ecosystem and advanced
 quantization schemes (like \texttt{Q4\_K\_M}, \texttt{Q8\_0}) justified the FFI
 complexity.
 
-Candle, even though it offered comparable inference speeds, required
-extensive low-level implementation work and proved incompatibility with
-scenarios where the binary is embedded into a database (e.g. PostgreSQL).
-The combination of manual tensor management, convoluted quantization support,
-and deployment constraints made llama.cpp a better alternative for
-production-ready systems.
+Candle, even though it offered comparable inference speeds, required extensive
+low-level implementation work and proved incompatibility with scenarios where
+the binary is embedded into a database (e.g., PostgreSQL). The combination of
+manual tensor management, convoluted quantization support, and deployment
+constraints made llama.cpp a better alternative for production-ready systems.
 
 \paragraph{Similarity Search Framework}
 
-For lightweight similarity search SQLite with its
-\texttt{sqlite-vec} extension is a sensible option. For smaller data
-loads introducing the complexity of \texttt{faiss} and vector search
-solutions like \texttt{qdrant} outweighs their speed benefits.
-
-The \texttt{sqlite-vec} extension is a ``fast enough'' vector
-search solution, allowing reduced complexity and compatibility with
-graphical database interfaces that support SQLite to inspect the embedding
+For lightweight similarity search SQLite with its \texttt{sqlite-vec} extension
+is a sensible option. For smaller data loads introducing the complexity of
+\texttt{faiss} and vector search implementations like \texttt{qdrant} outweighs
+their speed benefits. The \texttt{sqlite-vec} extension is a ``fast enough''
+vector search implementation, allowing reduced complexity and compatibility
+with graphical database interfaces that support SQLite to inspect the embedding
 space.
 
 \paragraph{Trade-offs}
 
-The development overhead of choosing Rust over Python for the
-implementation was noticeable; Rust's machine learning and natural
-language processing frameworks are less advanced, porting research code written
-in python from other papers (like \cite{OmniSQL}) turned out to be non-trivial.
-This decision likely doubled the time for implementation, but
-provides a clear path for the algorithms to be
-productionized. The implementation has significantly better
-performance and portability than Python would have
-allowed.
+The development overhead of choosing Rust over Python for the implementation
+was noticeable; Rust's machine learning and natural language processing
+frameworks are less advanced, porting research code written in Python from
+other papers (like \cite{OmniSQL}) turned out to be non-trivial. This decision
+likely doubled the time for implementation, but provides a clear path for the
+algorithms to be productionized. The implementation has significantly better
+performance and portability than Python would have allowed.
 
 \subsection{Pipeline Implementation}
 
@@ -218,16 +204,16 @@ algorithmic details, performance characteristics and trade-offs.
 
 \subsubsection{Example Selection Engine ($\sigma$)}
 
-The example selection system is implemented using a multi-dimensional similarity
-scoring system that identifies relevant samples previously
-indexed for in-context learning. The component addresses the
-challenge of selecting contextually appropriate examples from large
-training corpora whilst balancing semantic relevance and structural compatibility.
+The example selection system is implemented using a multi-dimensional
+similarity scoring system that identifies relevant samples previously indexed
+for ICL. The component addresses the challenge of selecting contextually
+appropriate examples from large training corpora whilst balancing semantic
+relevance and structural compatibility.
 
 \paragraph{Similarity Computation}
 
 The selection mechanism combines three distinct similarity measures implemented
-in the selection module in \texttt{natural-sampling::selection}. The 
+in the selection module in \texttt{natural-sampling::selection}. The
 \texttt{selection} algorithm computes semantic similarity through cosine
 distance of the question embedding. Structural SQL similarity is computed via
 measuring the cosine distance of the SQL embedding, and schema compatibility
@@ -236,6 +222,8 @@ embeddings are computed using the Qwen3-Embedding model (4B) using the
 embedding implementation in \texttt{natural-sampling}.
 
 \paragraph{Weighting Strategy and Performance Characteristics}
+
+% TODO: REWRITE THIS FROM HERE
 
 As this algorithm is aware of three ways to measure sample similarity
 (question, query, structural), the implementation employs empirically optimized
@@ -248,6 +236,8 @@ The selection algorithm yields a maximum of 256 candidates (\texttt{TOP\_K =
 Vector similarity queries are performed using SQLite with \texttt{sqlite-vec},
 achieving sub-second retrieval times for vector databases exceeding
 2,000,000 samples.
+
+% TODO: REWRITE THIS TO HERE
 
 \paragraph{Implementation Architecture}
 
@@ -308,14 +298,16 @@ The ICL module implements the query projection algorithm described in
 section~\ref{design:projection-function}. It is implemented in the
 \texttt{ICLGenerator} struct and wraps the \texttt{SqlModel} struct from
 \texttt{natural-models}. Using llama.cpp it runs model inference using a
-prompt optimized for in-context-learning with \textsc{OmniSQL}.
+prompt optimized for ICL with \textsc{OmniSQL}.
 
 \paragraph{In-Context Learning}
 
-\texttt{ICLGenerator::generate} implements few-shot prompting
-with relevance filtering. Relevance filtering refers to removing selected
-samples with a similarity of less than 0.5 (this value was empirically derived
-from evaluations). Thus only semantically or structurally similar samples are
+% TODO: Add explanation for why 0.5
+
+\texttt{ICLGenerator::generate} implements few-shot learning with relevance
+filtering. Relevance filtering refers to removing selected samples with a
+similarity of less than 0.5 which was empirically derived from
+evaluations. Thus only semantically or structurally similar samples are
 provided to the model.
 
 The prompt is constructed based on an adapted version of \textsc{OmniSQL}
@@ -356,26 +348,24 @@ As \textsc{OmniSQL} was finetuned to output thoughts and predictions using
 markdown a markdown postprocessing module is needed, and a module to
 identify whether a SQL query is syntactically valid.
 
-To extract candidates all generated responses are post-processed
-through a markdown parser (\texttt{pulldown-cmark}) which parses the model
-output and looks for code-block fence characters \texttt{```}.
-All candidates are processed in reversed order and the first
-valid query is returned as a candidate. Reversing processing
-order is needed as the model outputs thoughts top-to-bottom as a markdown
-document with the most likely answer usually output at the end. This
-approach ensures returned query candidates are executable and
-contain valid SQL. \textsc{Natural} addresses the
-difficulty of generating perfect SQL queries by acknowledging
-limitations of LLMs and implementing recovery and refinement
-mechanisms in the subsequent pipeline.
+To extract candidates all generated responses are post-processed through a
+markdown parser (\texttt{pulldown-cmark}) which parses the model output and
+looks for code-block fence characters \texttt{```}. All candidates are
+processed in reversed order and the first valid query is returned as a
+candidate. Reversing processing order is needed as the model outputs thoughts
+top-to-bottom as a markdown document with the answer usually being output at
+the end as \OmniSQL~is trained to use COT. This approach ensures returned
+query candidates are executable and contain valid SQL. \textsc{Natural}
+addresses the difficulty of generating perfect SQL queries by acknowledging
+limitations of LLMs and implementing recovery and refinement mechanisms in the
+subsequent pipeline.
 
 \subsubsection{Self-Refinement Mechanism ($\rho$)}
 
-The self-refinement algorithm described in~\ref{design:refinement-function}
-is implemented in \texttt{natural-inference::pipeline::refinement}.
-This implementation corresponds to the $\rho$ function, providing
-error correction through execution feedback and iterative
-improvement of generated SQL queries.
+The self-refinement mechanism described in~\ref{design:refinement-function}
+is implemented in \texttt{natural-inference::pipeline::refinement}. This
+implementation corresponds to the $\rho$ function, providing error correction
+through execution feedback and iterative improvement of generated SQL queries.
 
 \paragraph{Error Correction Through Execution Feedback}
 
@@ -385,9 +375,9 @@ explicitly instructs the model to ``spot any errors in the SQL query, correct
 them'' and provides the original question, schema context, and the candidate
 query that needs improvement.
 
-Contrary to the ICL generation which uses few-shot examples, the
-refinement process focuses on single-query self-correction with explicit
-error-fixing instructions.
+Contrary to the ICL generation which uses few-shot examples, the refinement
+process focuses on single-query self-correction with explicit error-fixing
+instructions.
 
 \paragraph{Prompt Engineering for Correction}
 
@@ -448,10 +438,11 @@ result, these generation attempts are more likely to be accurate than others.
 
 \paragraph{Error Handling and Fallback}
 
-Queries that fail execution are contained in an \texttt{errors} hash set rather
-than being included in voting buckets. If all candidates fail execution, the
-voting function fails with an error that contains all collected execution
-errors to provide diagnostic information to the calling side.
+Queries that fail execution are contained in an \texttt{errors}
+\texttt{HashSet} rather than being included in voting buckets. If all
+candidates fail execution, the voting function fails with an error that
+contains all collected execution errors to provide diagnostic information to
+the calling side.
 
 \paragraph{Limitations and Trade-offs}
 
@@ -506,20 +497,18 @@ See \ref{appendix:vector-db-api} for reference.
 As the \texttt{.vector} file is still a regular SQLite database, alongside
 indexing tables using embeddings (\texttt{float[4096]}) regular database tables
 can be maintained to save data derived at sampling time. \texttt{Vector} hosts
-the database schema described in \ref{appendix:vector-schema}.
-
-Which maintains the precomputed distance indices and the database graphs for
-example selection. Thus at pipeline runtime the database indices and graph
-representations can be reconstructed through a cheap selection from
-\texttt{Vector} even though they are not indexed through embeddings.
+the database schema described in \ref{appendix:vector-schema}. Which maintains
+the precomputed distance indices and the database graphs for example selection.
+Thus at pipeline runtime the database indices and graph representations can be
+reconstructed through a cheap selection from \texttt{Vector} even though they
+are not indexed through embeddings.
 
 The schema of the \texttt{samples} table largely enables the example selection
 at runtime, it maintains embeddings of the sql query and natural language
 question respectively. Thus after cosine similarity search the original query
 or question can be reconstructed as well as the graph layout of the underlying
-database can be accessed through the \texttt{database} table.
-
-The \texttt{database} and \texttt{database\_indices} table contain \texttt{JSON}
+database can be accessed through the \texttt{database} table. The
+\texttt{database} and \texttt{database\_indices} table contain \texttt{JSON}
 columns respectively for serializing complex graph and graph index structures
 to the database.
 
@@ -542,7 +531,7 @@ During sampling, offloading data to the GPUs memory is an expensive operation.
 When sampling hundred thousands or millions of samples, incurring the IO
 roundtrip from CPU to GPU for computing a single embedding is a
 performance bottleneck that increases the sampling time to an order of days
-(eg, when sampling the \textsc{SynSQL}) dataset. Thus batch processing can help to
+(e.g., when sampling the \textsc{SynSQL}) dataset. Thus batch processing can help to
 minimise the IO roundtrips needed between the CPU and GPU before computing
 embeddings and better utilise the available computing power.
 
@@ -600,8 +589,8 @@ by computing schema distance through graph-based distance metrics. The
 underlying WWL implementation used by \textsc{Natural} is the reference
 implementation of WWL kernels from \citeauthor{WWL}, which is implemented in
 Python. Thus \textsc{Natural} can't directly use the WWL implementation
-as Rust and Python FFI is not directly possible. In order to buy into the
-Python libraries and ecosystem (eg, optimal transport) and utilize the existing
+as Rust and Python FFI is not directly possible. In order to utilize the
+Python libraries and ecosystem (e.g., optimal transport) and utilize the existing
 implementation of the WWL kernels, writing a thin layer of Rust bindings around
 \citeauthor{WWL}'s implementation was deemed most sensible. Using \texttt{pyo3}
 calling Python code is made possible and lets \textsc{Natural} hook into
@@ -644,8 +633,8 @@ projects the database schema into a graph representation with categorical node
 labels, the categorical propagation scheme is used in \texttt{natural-graphs}
 to determine schema distance. The \texttt{wwl} bindings allow configuration of
 the kernel through the \texttt{KernelConfig} and \texttt{DistanceConfig}
-structs, which provide control over the iteration count (which defaults to 3),
-sinkhorn approximation settings etc. 
+structs, which provide control over the iteration count (defaulting to 3),
+sinkhorn approximation settings etc.
 
 \paragraph{Distance Computation and Caching}
 
@@ -672,21 +661,19 @@ cached distance index is loaded from \texttt{Vector} for distance lookups.
 The distance index is used for weighting the schema compatibility in the
 selection algorithm (see section~\ref{design:selection-function}) to balance
 structural similarity against question-level semantic relevance for improved
-in-context learning effectiveness.
+ICL effectiveness.
 
 \subsection{Benchmarking Infrastructure}\label{impl:benchmark}
 
-\textsc{Natural}'s benchmarking infrastructure is implemented in
+\Natural's benchmarking infrastructure is implemented in
 \texttt{natural-benchmark}. This benchmarking infrastructure is enabling the
 development, verification and ultimately deployment of \textsc{Natural}
 pipeline. This section focuses on the respective benchmarking infrastructure
 development, performance optimizations that were required and engineering
-challenges encountered. 
-
-Whilst \textsc{Natural}'s benchmarking infrastructure is not part of the core
-pipeline, it helps to develop and test hypotheses for extensions or design
-changes confidently, compare performance across pipeline versions, models and
-understand the benchmark performance.
+challenges encountered. Whilst \Natural's benchmarking infrastructure
+is not part of the core pipeline, it helps to develop and test hypotheses for
+extensions or design changes confidently, compare performance across pipeline
+versions, models and understand the benchmark performance.
 
 \subsubsection{Execution-Based Evaluation System}
 
@@ -699,9 +686,9 @@ executions and subsequently understand \textsc{Natural}'s performance:
 
 \begin{enumerate}
     \item Running new benchmarks via: \\ \texttt{natural-benchmark new}
-    \item Continuing a halted execution via: \\ \texttt{natural-benchmark continue --execution <id>}
-    \item Comparing performance on previous (partial) executions via: \\ \texttt{natural-benchmark compare-to --previous <id>}
-    \item Computing statistics on past executions via: \\ \texttt{natural-benchmark stats --execution <id>}
+    \item Continuing a halted execution via: \\ \texttt{natural-benchmark continue \-\-execution <id>}
+    \item Comparing performance on previous (partial) executions via: \\ \texttt{natural-benchmark compare-to \-\-previous <id>}
+    \item Computing statistics on past executions via: \\ \texttt{natural-benchmark stats \-\-execution <id>}
 \end{enumerate}
 
 While benchmarking \texttt{natural-benchmark} maintains a local SQLite database
@@ -713,7 +700,7 @@ introspection as well as comparison of approaches.
 In order to measure the performance of \textsc{Natural} against multiple
 benchmarking datasets, the benchmarking and execution system in
 \texttt{natural-benchmark} must generalize across one dataset. The
-benchmarking setup achieves this through a set of rust traits (eg, type
+benchmarking setup achieves this through a set of rust traits (e.g., type
 characteristics) to model benchmarking datasets. 
 
 The traits \texttt{Benchmark}, \texttt{BenchmarkDatabase} and
@@ -721,41 +708,41 @@ The traits \texttt{Benchmark}, \texttt{BenchmarkDatabase} and
 evaluation datasets. Thus when implementing benchmark support against
 \textsc{Spider} the implementation abstracts the fact that \textsc{Spider} is
 using SQLite for test databases, and uses a JSON file to store the questions.
-The file system layout of \textsc{Spider} and \textsc{Bird} is largely similar.
+While the file system layout of \Spider~and \Bird~is largely similar but not
+identical.
 
 This abstracted benchmarking system (see \ref{appendix:benchmark-traits})
-allows integrating further benchmarks in the future (eg, \textsc{Spider2} which
+allows integrating further benchmarks in the future (e.g., \textsc{Spider2} which
 relies on cloud databases like Snowflake) while maintaining the same ergonomics
-and tooling across benchmark datasets (eg, recording and indexing all test
+and tooling across benchmark datasets (e.g., recording and indexing all test
 executions in a local database, recording pipeline logs etc). 
 
 \subsubsection{Metric Computation}
 
-The benchmarking infrastructure computes the two metrics \textsc{Execution
-Accuracy} and \textsc{Exact Match} found in prevalent benchmark leaderboards
-(eg, \textsc{Spider} and \textsc{Bird}) through a Rust port of the Python
-reference implementation found in \textsc{Spider}. \textsc{Spider} determines
-the \textsc{Execution Accuracy} by comparing the result sets of two queries
-based on possible row and column permutations as well as optional order
-sensitivity. The \textsc{Exact Match} metric is determined by exact equivalence
-of the ground truth query $\omega_{ground}$ and the candidate query $\omega$.
+The benchmarking infrastructure computes the metrics execution accuracy, exact
+match, candidate latency and error rate (see \ref{eval:metrics}). The execution
+accuracy and exact match are found in prevalent benchmarks (e.g., \Spider~and
+\Bird) and allow cross study comparison. \Spider determines the
+execution accuracy by comparing the result sets of two queries based on
+possible row and column permutations as well as optional order sensitivity. The
+exact Match metric is determined by exact equivalence of the ground truth query
+$\omega_{ground}$ and the candidate query $\omega$.
 
 \subsection{Engineering Challenges and Lessons Learned}
 
-The implementation approach of \textsc{Natural} highlighted significant
-challenges in terms of practicability that were independent of the algorithmic
-design and theoretical problems. While \textsc{Natural} turned out to
-demonstrate the approaches recommended in the system design section, the
-development process was significantly slowed down due to constrained hardware
-availability, technology stack decisions and research methodology. The overall
-system architecture turned out positive, but the timeline was noticeably expanded.
+The implementation approach of \Natural~highlighted significant challenges
+regarding practicability that were independent of the algorithmic design and
+theoretical problems. The development process was significantly slowed down due
+to constrained hardware availability, technology stack decisions and research
+methodology. The overall system architecture turned out positive, but the
+timeline was noticeably expanded.
 
 This section reflects on the most impactful challenges that were encountered
-during the implementation of \textsc{Natural} and analyzes how hardware
-limitations influenced design decisions, confidence in the performance of
-\textsc{Natural} and the overall impact on development velocity. These insights
-are transferable beyond \textsc{Natural} and are applicable to any
-production-grade implementation of research algorithms.
+during the implementation of \Natural~and analyzes how hardware limitations
+influenced design decisions, confidence in the performance of \Natural~and the
+overall impact on development velocity. These insights are transferable beyond
+\Natural~and are applicable to any production-grade implementation of research
+algorithms.
 
 \subsubsection{Hardware Constraints and Development Velocity}
 
@@ -769,7 +756,7 @@ iteration speed was severely slowed down.
 
 A full benchmark execution of \textsc{Natural} against the \textsc{Spider} test
 dataset required around 12-36 hours depending on the number of
-candidates generated and refinement algorithm used during the benchmark. 
+candidates generated and refinement mechanism used during the benchmark. 
 This made continuous validation during development a non trivial task,
 requiring extensive evaluation phases between times of active development.
 Testing new hypotheses, validating algorithmic changes, experimenting with the
@@ -778,10 +765,10 @@ strategies therefore became multi-week processes rather than the rapid
 iteration typically desired in research environments. The prolonged evaluation
 cycles created a cascading effect on development velocity. Rather simple
 adjustments that would normally be validated within hours required days of
-computational time, effectively preventing what should have been normal
-experimentation. The hardware constraints forced a rather conservative approach
-to experimentation, where each change needed to be carefully considered before
-committing to multiple days of benchmarking.
+evaluations, effectively preventing fast experimentation. The hardware
+constraints forced a rather conservative approach to experimentation, where
+each change needed to be carefully considered before committing to multiple
+days of benchmarking.
 
 \paragraph{Memory Management and CUDA Issues}
 
@@ -794,7 +781,7 @@ asked. As \textsc{Natural} uses a code representation prompt, the database
 schema is inlined into the prompt during inference. If \textsc{Natural} is
 executed against large databases, even with schema subsetting, the context
 window can be exceeded or the KV-Cache can exhaust the rest of the available
-GPU memory (typically around 2-4 gigabytes) after models have been loaded. This
+GPU memory (typically around 2-4GB) after models have been loaded. This
 required extensive trial-and-error debugging to identify the root causes and
 implement workarounds. 
 
@@ -816,16 +803,16 @@ research system into production environments soon after, but came at the cost
 of having to port existing benchmarking infrastructure and not being able to
 exactly reuse the inference code used by \textsc{OmniSQL}. This decision
 significantly increased implementation time, likely doubling the development
-effort compared to what would have been required in Python. Using Python would
-have provided immediate access to existing machine learning infrastructure and
-could have leveraged existing implementations by previous researchers directly
-in the implementation of \textsc{Natural}. The rather mature Python ecosystem
-for NLP and ML would have eliminated the need to develop abstractions for model
-inference, vector database operations, and benchmark evaluation.
+effort compared to Python. Using Python would have provided immediate access to
+existing machine learning infrastructure and could have leveraged existing
+implementations by previous researchers directly in the implementation of
+\Natural. The mature Python ecosystem for NLP and ML eliminates the need to
+develop abstractions for model inference, vector database operations, and
+benchmark evaluation.
 
-However, the Rust implementation as is provides significant benefits for production
-deployment and system integration. The resulting system can be embedded
-directly into database systems such as PostgreSQL through extensions,
+However, the Rust implementation as is provides significant benefits for
+production deployment and system integration. The resulting system can be
+embedded directly into database systems such as PostgreSQL through extensions,
 providing a path toward true production deployment that would be impractical
 with Python. The ability to compile an entire NL2SQL system into a single,
 standalone binary offers superior portability characteristics.
@@ -842,16 +829,14 @@ choosing a proprietary inference service was deemed unviable.
 
 The machine learning ecosystem of Rust proved to be significantly less mature
 than anticipated, requiring extensive custom development and research for
-functionality that would be available off-the-shelf in prevalent Python packages.
-The integration with Python libraries for specialized components like the
+functionality that would be available off-the-shelf Python packages. The
+integration with Python libraries for specialized components like the
 Wasserstein-Weisfeiler-Leman kernels required rather complex FFI code using
 \texttt{pyo3}, further adding architectural complexity and potential stability
-concerns.
-
-Despite these challenges, the resulting architecture demonstrates that multi
-language approaches can be viable when different components have distinct
-requirements. The Python integration was isolated to the sampling phase,
-preserving the runtime portability characteristics of the core Rust
+concerns. Despite these challenges, the resulting architecture demonstrates
+that multi language approaches can be viable when different components have
+distinct requirements. The Python integration was isolated to the sampling
+phase, preserving the runtime portability characteristics of the core Rust
 implementation while still leveraging existing, specialized libraries where
 appropriate.
 
@@ -871,15 +856,15 @@ While the 24GB VRAM constraint of the RTX 3090, may be reasonable for most
 consumer grade applications, it proved insufficient for efficient iteration in
 this field, especially given the involvement of LLMs. Systems with 48GB+ of
 VRAM would have enabled the usage of larger, more capable models without the
-quantization compromises that may impact system accuracy. More modern hardware
-(even on the consumer grade level) would allow for a tremendous benchmarking
-speed up (eg, using a 5090 would have resulted in nearly 200\% increase in
-speed). More critically, the availability of multiple GPUs would have enabled
-parallel experimentation and benchmarking, which could transform multi-day
-iteration cycles into more manageable timeframes. The ability to run concurrent
-experiments with different configurations, models, or algorithmic approaches
-would dramatically accelerate the research and development process and enable
-more thorough experimental validation.
+quantization compromises that may impact system accuracy. More modern hardware,
+even on the consumer grade level, would allow for a tremendous benchmarking
+speed up (e.g., using a RTX 5090 would have resulted in nearly 200\% increase
+in speed). More critically, the availability of multiple GPUs would have
+enabled parallel experimentation and benchmarking, which could transform
+multi-day iteration cycles into more manageable timeframes. The ability to run
+concurrent experiments with different configurations, models, or algorithmic
+approaches would dramatically accelerate the research and development process
+and enable more thorough experimental validation.
 
 \paragraph{Technology Stack}
 
@@ -896,10 +881,10 @@ additional development overhead of systems programming languages like Rust can
 be justified. Overall, hardware availability weighs significantly more than
 language choices when it comes to the implementation timeline.
 
-Future implementations in this field should likely consider a two-staged
-approach: prototyping and algorithm validation in Python to leverage existing
-tools and accelerate iteration, followed by a production port in a systems
-language like Rust once the algorithmic approach is validated and stable.
+Implementations in this field should follow a two-staged approach:
+prototyping and algorithm validation in Python to leverage existing tools and
+accelerate iteration, followed by a production port in a systems language like
+Rust once the algorithmic approach is validated and stable.
 
 \paragraph{Development Methodology Recommendations}
 
