@@ -9,7 +9,7 @@ architecture and infrastructure and implementation of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
 
-The implementation is split into inference, sampling and evaluation code. The
+The architecture is split into inference, sampling and evaluation. The
 runtime code focuses on algorithm implementations outlined in section
 \ref{section:design}, sampling code focuses on indexing samples and computing
 distance indices and evaluation code runs the \textsc{Natural} pipeline on
@@ -226,16 +226,14 @@ embedding implementation in \texttt{natural-sampling}.
 % TODO: REWRITE THIS FROM HERE
 
 As this algorithm is aware of three ways to measure sample similarity
-(question, query, structural), the implementation employs empirically optimized
-weights as constants: 70\% for semantic question similarity and 30\%
-for SQL structural similarity. The final scoring combines 70\%
-sample-level similarity with 30\% schema-level compatibility.
-
-The selection algorithm yields a maximum of 256 candidates (\texttt{TOP\_K =
-256}) to limit computational overhead whilst maintaining selection quality.
-Vector similarity queries are performed using SQLite with \texttt{sqlite-vec},
-achieving sub-second retrieval times for vector databases exceeding
-2,000,000 samples.
+(question, query, structural), the implementation employs constant weights
+which were empirically determined: 70\% for semantic question similarity and
+30\% for SQL structural similarity. The final scoring combines 70\%
+sample-level similarity with 30\% schema-level compatibility. The selection
+algorithm yields a maximum of 256 candidates (\texttt{TOP\_K = 256}) to limit
+computational overhead whilst maintaining selection quality. Vector similarity
+queries are performed using SQLite with \texttt{sqlite-vec}, achieving
+sub-second retrieval times for vector databases exceeding 2,000,000 samples.
 
 % TODO: REWRITE THIS TO HERE
 
@@ -308,11 +306,9 @@ prompt optimized for ICL with \textsc{OmniSQL}.
 filtering. Relevance filtering refers to removing selected samples with a
 similarity of less than 0.5 which was empirically derived from
 evaluations. Thus only semantically or structurally similar samples are
-provided to the model.
-
-The prompt is constructed based on an adapted version of \textsc{OmniSQL}
-format \citep{OmniSQL}: task overview, sql schema, filtered examples with
-similarity scores, explicit instructions, and target question.
+provided to the model. The prompt is constructed based on an adapted version of
+\textsc{OmniSQL} format \citep{OmniSQL}: task overview, sql schema, filtered
+examples with similarity scores, explicit instructions, and target question.
 The biggest differentiation to \citeauthor{OmniSQL}'s prompt is the
 example section including similarity. For SQL query presentation the
 code representation prompt format is used, inspired by DAIL-SQL
@@ -325,7 +321,7 @@ and formatted SQL query.
 \textsc{Natural}'s prompt with a code representation prompt.
 \textsc{Natural} uses more explicit instructions
 (see~\ref{appendix:prompt:natural:inference}) compared to DAIL-SQL. Key
-differentiations include the inclusion of similarity scores to give the model
+differentiations include the encoding of similarity scores to give the model
 the ability to weight samples.
 
 This prompt steers the model towards precision and COT reasoning.
@@ -345,7 +341,7 @@ context size and generation limits is handled automatically.
 \paragraph{Output Processing and Validation}
 
 As \textsc{OmniSQL} was finetuned to output thoughts and predictions using
-markdown a markdown postprocessing module is needed, and a module to
+markdown, a postprocessing module is needed, and a module to
 identify whether a SQL query is syntactically valid.
 
 To extract candidates all generated responses are post-processed through a
@@ -577,7 +573,13 @@ separation in the embedding output.
        $\;\longrightarrow\;$
        $\approx$\,2\,ms/item (batch, $n = 1000$)};
   \end{tikzpicture}
-  \caption{Batch embedding data flow. Inputs are either flat sequences (\texttt{embed\_seq}) or pre-chunked slices (\texttt{embed\_chunked}); the chunked path preserves the original layout for seamless reconstruction. Batch processing reduces per-item embedding time from $\approx$\,200\,ms to $\approx$\,2\,ms.}
+  \caption{
+    Batch embedding data flow. Inputs are either flat sequences
+    (\texttt{embed\_seq}) or pre-chunked slices (\texttt{embed\_chunked}); the
+    chunked path preserves the original layout for seamless reconstruction. Batch
+    processing reduces per-item embedding time from $\approx$\,200\,ms to
+    $\approx$\,2\,ms.
+  }
   \label{figure:batch-embedding}
 \end{figure}
 

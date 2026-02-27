@@ -46,11 +46,11 @@ model to self-correct errors, repairing schema linking, syntactic or semantic
 errors by reviewing its output against the schema, user input and database
 errors. DIN-SQL achieves 85.3\% execution accuracy on \textsc{Spider},
 surpassed by DAIL-SQL by 1.3\% \citep{DINSQL, DAIL-SQL}. \citeauthor{DINSQL}
-found that generic self-correction — assuming the query contains errors — lowers
-execution accuracy by 4.2\% on \textsc{Spider} compared to gentle
-self-correction, which assumes nothing about the validity of the query. Smaller
-models perform better with generic and larger models with gentle correction
-\citep{DINSQL}.
+found that generic self-correction which assumes that the query contains
+errors, lowers execution accuracy by 4.2\% on \textsc{Spider} compared to
+gentle self-correction, which assumes nothing about the validity of the query.
+Smaller models perform better with generic and larger models with gentle
+correction \citep{DINSQL}.
 
 Building upon DIN-SQL's self-correction module, \cite{MAGIC} proposed MAGIC
 (Multi-Agent Guideline for In-Context Text-to-SQL) which automates
@@ -155,7 +155,7 @@ both outperform \textsc{CodeS}, CHASE relies on proprietary models and
 \citeauthor*{OmniSQL} published a follow-up paper in \citeyear{OmniSQL} which
 introduced the next-generation \textsc{OmniSQL} models with 7B, 14B and 32B
 sizes, trained using synthetic data generation. The models achieve execution
-accuracy improvements on both \textsc{Spider} and \textsc{Bird} — the 7B model
+accuracy improvements on both \textsc{Spider} and \textsc{Bird}; the 7B model
 reaches 88.9\% on \textsc{Spider} and 66.1\% on \textsc{Bird}, a 5\%+
 improvement over comparable alternatives \citep{OmniSQL}. These results were
 achieved without combining \textsc{OmniSQL} with advanced ICL, self-correction,
@@ -164,17 +164,19 @@ are possible.
 
 \subsubsection{Limitations and Challenges}
 
+Despite the advancements of LLM-based NL2SQL systems, a set of limitations and
+challenges emerged that prevent real-world adoption:
+
 \begin{enumerate}
-    \item \textbf{Hallucination and Accuracy Concerns} — LLM-based NL2SQL
-        systems suffer from incorrect, but syntactically correct SQL queries.
-        They produce subtle semantic errors like reversing the order of
-        aggregations or using the wrong aggregation method are hard to catch.
-        This is contrary to traditional approaches which fail visibly on
-        unknown questions and databases. As noted by
-        \citeauthor{NL2SQLUnsolved}, ``achieving Enterprise-Grade NL2SQL is
-        still far from being resolved'' even with SOTA models, complex
-        real-world database schemas and ambiguous queries remain challenging
-        \citep{NL2SQLUnsolved, Spider2}.
+    \item \textbf{Hallucination} — LLM-based NL2SQL systems suffer from
+        incorrect, but syntactically correct SQL queries. They produce subtle
+        semantic errors like reversing the order of aggregations or using the
+        wrong aggregation method are hard to catch. This is contrary to
+        traditional approaches which fail visibly on unknown questions and
+        databases. As noted by \citeauthor{NL2SQLUnsolved}, ``achieving
+        Enterprise-Grade NL2SQL is still far from being resolved'' even with
+        SOTA models, complex real-world database schemas and ambiguous queries
+        remain challenging \citep{NL2SQLUnsolved, Spider2}.
     \item \textbf{Resource Requirements} — SOTA models require
         significant resources during inference, making them
         expensive to deploy at scale. While smaller LLMs exist, they
@@ -184,18 +186,19 @@ are possible.
         parameter sizes, but maintain higher parameter efficiency over
         general purpose LLMs.
     \item \textbf{Data Privacy and Security Implications} — Using LLMs through
-        proprietary APIs brings concerns with regards to data privacy and
-        security as sensitive data may be transferred to respective model
-        vendors. Recent open-source model developments like \textsc{CodeS} and
-        \textsc{OmniSQL} mitigate this problem partially, but using local
-        inference with LLMs increases hardware requirements.
+        proprietary APIs imposes data privacy and security threats as sensitive
+        data may be transferred to respective model vendors. Recent open-source
+        model developments like \textsc{CodeS} and \textsc{OmniSQL} mitigate
+        this problem partially, but using local inference with LLMs increases
+        hardware requirements.
     \item \textbf{Ambiguity Handling in Complex Scenarios} — LLMs continue to
-        struggle with ambiguity resolution in NLQ, especially on complex
-        database schemas. This becomes prominent in enterprise databases
-        where similar columns exist across multiple tables, or domain-specific
-        terminology has multiple potential interpretations. Approaches
-        like multi-path reasoning and candidate selection show improvements in
-        execution accuracy, but often increase inference time and complexity
+        struggle with ambiguity resolution in NLQs, especially on complex
+        database schemas. This becomes particularly prominent in enterprise
+        databases where similar columns exist across multiple tables, or
+        domain-specific terminology which might have multiple possible
+        interpretations. Approaches like multi-path reasoning and candidate
+        selection show improvements in execution accuracy, but often increase
+        inference time and complexity
         \citep{CHASE, XiYan}.
     \item \textbf{Competitive PLM Approaches} — Approaches like
         \textsc{Resdsql} and GRAPHIX-T5 achieved competitive execution accuracy

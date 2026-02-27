@@ -1,17 +1,19 @@
 \subsection{Large Language Models}
 
 LLMs are an advancement built on the transformer architecture for natural
-language processing, demonstrating state of the art capabilities in
-understanding, reasoning and text generation. These models form the core of
-most modern NL2SQL systems like \textsc{XiYan-SQL}, \textsc{DAIL} and others.
-They have wide language understanding as they have been trained on large text
-corpora, are exposed to different domains of training data and have an inherent
+language processing, demonstrating SOTA capabilities in understanding,
+reasoning and text generation. These models form the core of most modern NL2SQL
+systems like \textsc{XiYan-SQL}, \textsc{DAIL} and others. They have a wide
+language understanding as they have been trained on large text corpora, are
+exposed to different domains of training data and have an inherent
 understanding of the SQL syntax as they have been exposed to it during
 pre-training. This shifted the approach while developing NL2SQL systems to
-focus on in-context learning methods instead of training dedicated models from
+focus on ICL learning methods instead of training dedicated models from
 scratch.
 
 \subsubsection{Feedforward and Residual Connections}
+
+% TODO: Double check
 
 Every layer in a transformer combines a multi-head attention with position-wise
 feedforward networks:
@@ -65,11 +67,11 @@ continuations of text sequences.
 
 \paragraph{Fine-tuning}
 
-Fine-tuning is the process of adapting a pre-trained model, for example for
+Fine-tuning is the process of adapting a pre-trained model, e.g., for
 solving NL2SQL tasks, by continuing model training on a labeled dataset
-(eg, natural language question to expected sql query). During fine-tuning, the
-model can learn to map natural language questions to expected SQL queries when
-being presented with a question and a database schema.
+(e.g., natural language question to expected sql query). During fine-tuning,
+the model can learn to map natural language questions to expected SQL queries
+when being presented with a question and database schema.
 
 Fine-tuning usually requires smaller datasets (thousands to hundreds of
 thousands of examples) compared to pre-training (billions to trillions of
@@ -106,11 +108,9 @@ Prompting or training models to output their COT encourages models to generate
 reasoning traces before producing their final answer to a question or input.
 For NL2SQL, this usually involves generating explanations of query logic,
 analysing the input database schema, and planning the query structure before
-generating a query.
-
-Fine-tuned models like \textsc{OmniSQL} are fine-tuned to produce COT output
-during generation in markdown which enables debugging model behaviour and
-understanding the query generation approach. 
+generating a query. Fine-tuned models like \textsc{OmniSQL} are trained to
+produce COT output during generation in markdown which enables debugging model
+behaviour and understanding the query generation approach. 
 
 \subsubsection{Model Limitations}
 

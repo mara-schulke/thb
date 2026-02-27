@@ -36,30 +36,29 @@ include:
         entities (e.g., employees, products) or relationships (e.g.,
         enrollment, purchases). Each relation has a fixed structure.
     \item \textbf{Tuples} — Tuples represent rows of data, grouping several
-        attributes into one logical unit (e.g., one purchase, containing the
+        attributes into one logical unit (e.g., one purchase containing the
         amount, date and shop). All tuples in the same relation share the same
         structure.
-    \item \textbf{Attributes} — Attributes are frequently referred to as
-        columns, representing a dimension of a tuple (e.g., customers have
-        names). Attributes are represented in a fixed domain.
-    \item \textbf{Domains} — Domains are sets of allowed values for attributes,
+    \item \textbf{Attributes} — Frequently referred to as columns, representing
+        a dimension of a tuple (e.g., customers have names). Attributes are
+        represented in a fixed domain.
+    \item \textbf{Domains} — Sets of allowed values for attributes,
         mathematically formalizing data types and constraints.
     \item \textbf{Schemas} — Structural definitions specifying relations, their
         attribute names, domains, and integrity constraints.
-    \item \textbf{Primary Keys} — Attributes that uniquely identify tuples
-        within a relation. These ensure entity integrity and referential
-        relationships.
-    \item \textbf{Foreign Keys} — Attributes referencing primary keys in other
-        relations, allowing databases to maintain referential integrity and
-        enabling semantically correct complex queries across multiple tables
-        through joins.
+    \item \textbf{Primary Keys} — Uniquely identify tuples within a relation.
+        These ensure entity integrity and referential relationships.
+    \item \textbf{Foreign Keys} — Reference primary keys in other relations,
+        allowing databases to maintain referential integrity and enabling
+        semantically correct complex queries across multiple tables through
+        joins.
 \end{itemize}
 
-These concepts form the semantic foundation that natural language interfaces
-must navigate when translating user queries into formal database operations. As
-shown in the literature review schema linking is a crucial problem of NLIDBs,
-establishing an understanding of which relations a natural language query
-refers to is the first step of formalizing a database operation for retrieval.
+These concepts form the semantic foundation that NLIDBs must navigate when
+translating user queries into formal database operations. As shown in the
+literature review schema linking is a crucial problem of NLIDBs, establishing
+an understanding of which relations a natural language query refers to is the
+first step of formalizing a database operation for retrieval.
 
 \subsubsection{SQL as a Declarative Query Language}
 
@@ -70,7 +69,7 @@ contents. SQL's design is influenced by relational algebra and tuple relational
 calculus. It enables complex data retrieval through a readable query syntax
 incorporating relational algebra operations like:
 
-\begin{itemize}
+\begin{enumerate}
     \item \textbf{Selection} ($\sigma$) — Filtering tuples based on specified
         conditions
     \item \textbf{Projection} ($\pi$) — Extracting specific attributes from
@@ -79,7 +78,7 @@ incorporating relational algebra operations like:
         based on common attributes
     \item \textbf{Aggregation} — Computing summary statistics over groups of
         tuples
-\end{itemize}
+\end{enumerate}
 
 The basic syntax of SQL queries follows a logical pattern that reflects these
 theoretical operations:

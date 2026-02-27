@@ -36,7 +36,7 @@ NL2SQL systems from research environments to real-world deployments:
         even though responsiveness is an important metric for user experience.
     \item \textbf{Privacy and Security} — While open-source models address some
         privacy concerns by enabling a local deployment of LLMs, research gaps
-        remain in ensuring that NL2SQL systems respect database access controls
+        remain regarding NL2SQL systems which respect database access controls
         and security policies.
 \end{enumerate}
 
@@ -49,7 +49,8 @@ benchmarks does not focus sufficiently on ambiguity detection and resolution.
 
 \subsubsection{Evaluation and Benchmarking Gaps}
 
-% TODO: missing intro sentence
+Two primary gaps remain in the evaluation and benchmarking infrastructure of
+NL2SQL systems:
 
 \begin{enumerate}
     \item \textbf{Performance Metrics} — Current benchmarks often don't capture
@@ -65,16 +66,12 @@ benchmarks does not focus sufficiently on ambiguity detection and resolution.
 
 \subsubsection{Thesis Placement}
 
-% TODO: Revisit this
-
-The three primary identified gaps: Performance gaps between proprietary and
-open-source models, inadequate ambiguity resolution and semantic accuracy and
-the lack of production-ready implementations exploring performance
-characteristics, motivate the implementation of \Natural. Specifically this
-thesis researches the ability of schema-aware example selection for in-context
-learning using graph-kernels to improve the semantic accuracy of NL2SQL
-systems.
-
-By providing a production-ready implementation of a \Natural, this work
-further bridges the gaps between theoretical advancements and their practical
-deployability, whilst exploring performance and portability characteristics.
+The under researched aspects regarding the performance gap between proprietary
+and open-source models as well as the integration, privacy and security
+concerns mentioned above, motivate the implementation of \Natural. Specifically
+this thesis researches the ability of schema-aware example selection for
+in-context learning using graph-kernels to improve the semantic accuracy of
+offline only NL2SQL systems. By providing a production-ready implementation of
+a \Natural, this work further bridges the gaps between theoretical advancements
+and their practical deployability, whilst exploring performance and portability
+boundaries.
