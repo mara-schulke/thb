@@ -69,7 +69,7 @@ ICL from increasingly sophisticated example strategies.
 Performance characteristics reveal a complex tradeoff for real-world
 applications. All NL2SQL systems that were evaluated maintain remarkably
 low error rates of less than 0.7 failures per 1000 queries (see
-figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominantly
+Figure~\ref{fig:eval:error-rates}) errors are therefore becoming predominantly
 semantic (i.e., incorrect results). Candidate latency ranges from
 7.3s for \Natural~(\textit{Baseline}) to 16.3s for ICL configurations on
 \Spider~and 43.8s on \Bird. \Natural~is viable for experimental,
@@ -92,7 +92,7 @@ environment.
 
 \subsection{Research Questions}
 
-The research questions that were outlined in section
+The research questions that were outlined in Section
 \ref{section:introduction:research-questions} are subsequently discussed and
 answered using the evaluation results.
 
@@ -109,7 +109,7 @@ real-world deployments.
 
 \Natural~achieves up to 81.0\% \EA~on the \Spider~(dev) benchmark using the
 \textit{Syn} configuration (examples selected from the SynSQL-2.5m dataset,
-table~\ref{tab:eval:overall-results}). This represents a +3.1pp
+Table~\ref{tab:eval:overall-results}). This represents a +3.1pp
 improvement over \textit{Baseline} configuration and a +2.0pp increase over the
 baseline model performance of \OmniSQL-7B-gguf. On the test set of \Spider~the
 \textit{Train} configuration outperforms the \textit{Syn} configuration by
@@ -161,7 +161,7 @@ learning and example selection strategies have limits and are already
 performing close to them. Further improvements would likely require better
 foundation models or a different architecture altogether. A visual comparison
 across the different configurations (see
-figure~\ref{fig:eval:execution-accuracy-overview}) confirms that ICL-based
+Figure~\ref{fig:eval:execution-accuracy-overview}) confirms that ICL-based
 approaches (\textit{Syn}, \textit{Train}, \textit{Ground}) outperform other
 configurations with diminishing returns from increasingly sophisticated example
 selection strategies.
@@ -211,7 +211,7 @@ The latency characteristics of \Natural~remain in the practical range for
 non-interactive workflows but pose a significant challenge for local,
 interactive applications. While the \textit{Baseline} configuration achieves
 7.3s \CL, the optimal configurations of \Natural~(\textit{Syn} and \textit{Train})
-only achieve a \CL~of 15.4-16.3s (see table~\ref{tab:eval:overall-results}).
+only achieve a \CL~of 15.4-16.3s (see Table~\ref{tab:eval:overall-results}).
 This makes \Natural~viable for exploratory analytics and report generation but
 not for interactive environments such as chatbots or interactive natural
 language driven data analysis platforms which would require sub-second latency.
@@ -266,8 +266,8 @@ originate from the training splits of the corresponding benchmarks
 \paragraph{Component Contribution Ranking}
 
 These insights allow for a ranking of components by their estimated impact
-based on the ablation evidence from table~\ref{tab:eval:overall-results} and
-figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
+based on the ablation evidence from Table~\ref{tab:eval:overall-results} and
+Figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
 by impact as follows:
 
 \begin{enumerate}
@@ -292,7 +292,7 @@ by impact as follows:
         attempts and validates that queries execute without any errors prior to
         returning them to the user. This self-consensus mechanism ensures low
         syntactic error rates across all configurations
-        (see figure~\ref{fig:eval:error-rates}). The voting strategy only
+        (see Figure~\ref{fig:eval:error-rates}). The voting strategy only
         gains in performance impact with an increasing number of
         internal candidates. The evaluation was performed with 1-2 internal
         candidates due to computational complexity of increasing the pipeline
@@ -319,8 +319,8 @@ by impact as follows:
 \paragraph{Accuracy-Latency Tradeoff}
 
 The accuracy-latency measurements visualized in
-figure~\ref{fig:eval:candidate-latency} and
-table~\ref{tab:eval:overall-results} reveal three efficiency profiles
+Figure~\ref{fig:eval:candidate-latency} and
+Table~\ref{tab:eval:overall-results} reveal three efficiency profiles
 across the benchmarked systems.
 
 \begin{enumerate}
@@ -472,7 +472,7 @@ scenarios.
 
 \paragraph{Latency and Interactivity}
 
-As shown in the evaluation results (See table~\ref{tab:eval:overall-results})
+As shown in the evaluation results (see Table~\ref{tab:eval:overall-results})
 the \CL~consistently increases with the pipeline accuracy. This means that more
 powerful profiles of \Natural~require more powerful hardware in order to
 maintain stable latency characteristics. As described in
@@ -487,7 +487,7 @@ would be required to make fully interactive systems viable for users.
 
 \paragraph{Trust, Transparency, and Error Communication}
 
-As shown in figure \ref{fig:eval:error-rates}~and
+As shown in Figure \ref{fig:eval:error-rates}~and
 \ref{fig:eval:execution-accuracy-overview} the errors of \Natural~and other
 NL2SQL systems are primarily semantic errors, rather than syntactic errors.
 This makes error detection and communication significantly harder, as the
@@ -533,7 +533,7 @@ same workflow, removing the gap.
 The hypothesis of NL2SQL systems to significantly lower the entry barrier to
 data science and analytics holds true, but the evaluation of \Natural~and
 similar NL2SQL systems showed significant caveats due to the limited semantic
-accuracy (see figure \ref{fig:eval:execution-accuracy-overview}).
+accuracy (see Figure \ref{fig:eval:execution-accuracy-overview}).
 
 The primary user groups benefitting from NL2SQL systems are domain experts with
 limited SQL knowledge, occasional database users and users wanting to learn
@@ -585,7 +585,7 @@ by \Spider~and \Bird and the SQLite dialect.
 
 \paragraph{Model and Hardware Specificity}
 
-All results shown in table~\ref{tab:eval:overall-results} are subject to the
+All results shown in Table~\ref{tab:eval:overall-results} are subject to the
 configurations and models used due to the hardware constraints during
 benchmarking. More powerful hardware would allow for larger models (e.g.,
 \OmniSQL-32B and Qwen Embedding 8B) as well as likely substantially improve the
@@ -600,7 +600,7 @@ The most significant threat to validity is the observed performance gap between
 the published \OmniSQL~results and locally achieved results. This gap is
 substantial on \Bird, where published results report 66.1\% \EA~for \OmniSQL-7B
 while locally only 38.0\% \EA~could be achieved. This represents a 28.1pp
-difference in accuracy. As discussed in section~\ref{sec:eval:performance-gap},
+difference in accuracy. As discussed in Section~\ref{sec:eval:performance-gap},
 this might be caused by factors such as model format differences, diverging
 hyperparameters, prompt drifting and dataset versioning. The existence of this
 gap severely undermines the confidence in the absolute performance of

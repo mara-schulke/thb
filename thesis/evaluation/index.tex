@@ -1,7 +1,7 @@
 \section{Evaluation}
 
 The evaluation of \Natural~builds utilizes the benchmarking infrastructure
-implemented in section~\ref{impl:benchmark}. This section is evaluating the
+implemented in Section~\ref{impl:benchmark}. This section is evaluating the
 performance metrics of different \Natural~configurations on two prevalent
 benchmarking datasets: \Spider~and \Bird. A representative baseline is
 introduced, aiming to mirror the base-model performance. Subsequently an
@@ -39,10 +39,10 @@ and embedding respectively.
 
 \Spider~and \Bird~were used as benchmarking datasets as they are prevalently
 used for the evaluation of NL2SQL systems and therefore enable cross study
-evaluations (see section \ref{lit:benchmarks:spider} and
+evaluations (see Section \ref{lit:benchmarks:spider} and
 \ref{lit:benchmarks:bird}). The complex \Spider~2.0 version of \Spider~was
 excluded from this evaluation due to the lack of time and hardware required to
-develop a competitive approach (see section \ref{lit:benchmarks:spider2}).
+develop a competitive approach (see Section \ref{lit:benchmarks:spider2}).
 Comparable research publishes the execution accuracy and exact match metrics on
 these benchmarks which enables relative and absolute performance comparisons of
 \Natural~with other studies.
@@ -184,8 +184,8 @@ analyzed.
 % TODO: Table or table, Figure or figure? Unify.
 The following sections present these findings across benchmarks and
 configurations in detail. The system metrics are presented in
-table~\ref{tab:eval:overall-results} and visualized in
-figures~\ref{fig:eval:execution-accuracy-overview}
+Table~\ref{tab:eval:overall-results} and visualized in
+Figures~\ref{fig:eval:execution-accuracy-overview}
 and~\ref{fig:eval:exact-match-overview}, which displays the performance for all
 system configurations across the \Spider~and \Bird~datasets, the execution
 accuracy (\EA), exact match (\EM), error rate (\ER) and candidate latency (\CL)
@@ -291,7 +291,7 @@ configuration the worst performing variant of \Natural~on \EA~and \EM~across
 
 The results of the \Spider~benchmarks demonstrate consistent performance
 characteristics of \Natural~and \OmniSQL~across the development and test splits
-(detailed breakdown in appendix~\ref{sec:appendix:benchmark-results-spider}).
+(detailed breakdown in Appendix~\ref{sec:appendix:benchmark-results-spider}).
 The \OmniSQL-7B-gguf system outperforms the two \Natural~baseline configurations
 \textit{Baseline} and \textit{Zero-Shot} in \EA~and \EM~by 2.1\% and 0.3\% on
 the development split and by 2.0\% and 1.5\% on the test split respectively.
@@ -334,7 +334,7 @@ the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
 \EA~achievable on top of \OmniSQL~with example selection algorithms with 84.2\%
 on \Spider~(dev) and 82.8\% on \Spider~(test)
-(see appendix~\ref{sec:appendix:benchmark-results-spider}).
+(see Appendix~\ref{sec:appendix:benchmark-results-spider}).
 
 \begin{figure}[htbp]
   \centering
@@ -363,7 +363,7 @@ on \Spider~(dev) and 82.8\% on \Spider~(test)
 \end{figure}
 
 Error rates remain consistently low across all configurations (<0.7 failures
-per hundred queries), see figure~\ref{fig:eval:error-rates}, indicating that
+per hundred queries), see Figure~\ref{fig:eval:error-rates}, indicating that
 failures are predominantly semantic rather than syntactic, which validates
 the robustness of \OmniSQL's SQL generation capabilities.
 
@@ -510,7 +510,7 @@ optimizations need to be introduced.
 \subsection{Performance Gap}\label{sec:eval:performance-gap}
 
 During baseline validations of the foundational models a critical performance
-discrepancy emerged (see figure~\ref{fig:eval:omnisql-gap}) between the locally
+discrepancy emerged (see Figure~\ref{fig:eval:omnisql-gap}) between the locally
 measured performance of \OmniSQL~7B and the published performance by
 \citeauthor{OmniSQL}. This section systematically breaks down the magnitude,
 potential causes and implications of this gap. 
