@@ -1,5 +1,20 @@
 \subsection{Code}
 
+\subsubsection{Source Code Repository}\label{appendix:source-code}
+
+The source code for \textsc{Natural}, including all pipeline components,
+benchmarking infrastructure, and libraries, is available under the AGPL
+license:
+
+\begin{center}
+\url{https://github.com/mara-schulke/natural}
+\end{center}
+
+The repository contains the implementation of all five software components
+(\texttt{natural-models}, \texttt{natural-graphs}, \texttt{natural-inference},
+\texttt{natural-sampling}, and \texttt{natural-benchmark}) as described in
+Section~\ref{section:implementation}.
+
 \subsubsection{Vector Database API}\label{appendix:vector-db-api}
 
 \begin{verbatim}
@@ -83,3 +98,46 @@ pub trait BenchmarkTest {
     fn query(&self) -> &str;
 }
 \end{verbatim}
+
+\subsubsection{System Configuration}\label{appendix:system-config}
+
+The following table documents all hyperparameters and configuration parameters
+used in the \textsc{Natural} system.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Component} & \textbf{Parameter} & \textbf{Value} \\
+\midrule
+\multicolumn{3}{c}{\textbf{Example Selection ($\sigma$)}} \\
+\midrule
+Similarity Weights & Question semantic similarity & 70\% \\
+                   & SQL structural similarity    & 30\% \\
+Schema Weighting   & Sample-level similarity      & 70\% \\
+                   & Schema-level compatibility   & 30\% \\
+Retrieval          & TOP\_K candidates            & 256 \\
+                   & Relevance threshold          & 0.5 \\
+\midrule
+\multicolumn{3}{c}{\textbf{Models}} \\
+\midrule
+SQL Generation     & Model                        & OmniSQL-7B \\
+                   & Quantization                 & GGUF (F16) \\
+                   & VRAM usage                   & $\sim$14 GB \\
+Embedding          & Model                        & Qwen3-Embedding-4B \\
+                   & Quantization                 & Q8\_0 \\
+                   & VRAM usage                   & $\sim$2 GB \\
+                   & Embedding dimension          & 4096 \\
+\midrule
+\multicolumn{3}{c}{\textbf{WWL Kernel ($\mathcal{D}$)}} \\
+\midrule
+Propagation        & Mode                         & Categorical \\
+                   & Iterations                   & 3 \\
+Distance           & Metric                       & Wasserstein \\
+                   & Approximation                & Sinkhorn \\
+\bottomrule
+\end{tabular}
+\caption{Complete system configuration and hyperparameters for \textsc{Natural}.}
+\label{tab:system-config}
+\end{table}

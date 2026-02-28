@@ -1,28 +1,29 @@
 \section{Implementation}
 
-This chapter presents the implementation of \textsc{Natural}, translating the
-theoretical framework outlined in Chapter \ref{section:design} into a working
-NL2SQL system. Attention is given to engineering challenges encountered,
-performance bottlenecks identified, and optimization strategies implemented to
-achieve deployment viability on consumer hardware. The chapter covers software
-architecture and infrastructure and implementation of each pipeline component.
+This section discusses the implementation phase of \textsc{Natural},
+translating the system design outlined in Section \ref{section:design}
+into a working NL2SQL system. Engineering challenges encountered, performance
+bottlenecks identified, and optimization strategies implemented to achieve
+deployment viability on consumer hardware are discussed and examined.
+Furthermore, the section covers software architecture and infrastructure and
+implementation of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
 
-The architecture is split into inference, sampling and evaluation. The
+The architecture is split into inference, sampling, and evaluation. The
 runtime code focuses on algorithm implementations outlined in Section
 \ref{section:design}, sampling code focuses on indexing samples and computing
-distance indices and evaluation code runs the \textsc{Natural} pipeline on
+distance indices, and evaluation code runs the \textsc{Natural} pipeline on
 benchmarks. This subsection outlines the scope of each component, the design
-rationale and technology stack decisions.
+rationale, and technology stack decisions.
 
 \subsubsection{Software Architecture}
 
 \textsc{Natural} consists of five software components:
 
 \begin{enumerate}
-    \item \texttt{natural-models} – Handles model
-        execution on GPUs for inference and embedding.
+    \item \texttt{natural-models} – Handling model execution on GPUs for
+        inference and embedding.
     \item \texttt{natural-graphs} – Graph library for representing
         database schemas as graphs and computing graph similarities and
         distances.
@@ -31,7 +32,7 @@ rationale and technology stack decisions.
     \item \texttt{natural-sampling} – Sampling setup for
         indexing samples and computing graph distance indices.
     \item \texttt{natural-benchmark} – Benchmarking setup to run
-        experiments, evaluate system accuracy and
+        experiments, evaluate system accuracy, and
         compile statistics.
 \end{enumerate}
 
@@ -82,7 +83,7 @@ these can be mitigated through \texttt{cargo}'s workspace support.
 
 \subsubsection{Resource Management Strategy}
 
-Given the 24 gigabytes of VRAM capacity of the RTX 3090 not all
+Given the 24GB of VRAM capacity of the RTX 3090 not all
 model sizes can be used. While 14B model variants theoretically work,
 the need for an embedding model typically exhausts VRAM unless using
 steep quantization formats. \textsc{OmniSQL} 7B models show
@@ -98,12 +99,11 @@ pipeline a companion model is required to embed the sample datasets
 (\textsc{SynSQL}, \textsc{Bird} and \textsc{Spider}) during sampling and
 the user provided natural language question during inference. The Qwen3
 embedding models ranked first on the MTEB multilingual leaderboard. The Q8\_0
-quantized version of the 8B model consumes 8 gigabytes of VRAM which cannot fit
-into 24 gigabytes when accounting for KV-Cache requirements. Instead of
+quantized version of the 8B model consumes 8GB of VRAM which cannot fit
+into 24GB when accounting for KV-Cache requirements. Instead of
 choosing a heavily quantized version of the 8B variant (i.e., Q4\_KM or
 below), the 4B model with Q8\_0 shows similar performance on simple use cases
-while offering a smaller memory footprint at 2 gigabytes.
-\citep{Qwen3Embed}.
+while offering a smaller memory footprint at 2GB \citep{Qwen3Embed}.
 
 As models have significant loading times, the system loads models globally
 at startup and passes references using atomic reference counting
@@ -115,13 +115,13 @@ would lead to a crash.
 
 The choice of programming language, inference frameworks, and libraries
 determines system performance and deployment characteristics, and development
-velocity. This section analyzes key decisions for \Natural, discussing
-trade-offs between research flexibility and production readiness, performance
-optimization and development speed, and ecosystem maturity versus cutting-edge
-capabilities.
+velocity. This section analyzes crucial technology decisions for \Natural,
+discussing trade-offs between research velocity and production readiness,
+performance optimization and development speed, and ecosystem maturity vs.
+cutting-edge capabilities.
 
-Critical decisions are the programming language, model inference framework, and
-vector similarity search solution. Each decision was evaluated against limited
+Critical decisions include the programming language, model inference framework,
+and vector search implementation. Each decision was evaluated against limited
 hardware resources, database integration capabilities, and reproducible
 research outcomes.
 
@@ -133,7 +133,7 @@ machine learning systems are Python, R, Julia, Rust, C / C++ and Java
 and other general purpose languages. While interpreted languages like Python, R
 and Julia tend to be easier to use for rapid prototyping and validation due to
 their loose type systems and scientific ecosystem, they come with drawbacks
-regarding deployability, speed and robustness compared to compiled and
+regarding deployability, speed, and robustness compared to compiled and
 strongly typed languages. Languages like Java, C / C++ and Rust offer stability
 at runtime, better interoperability into other programs (e.g., database
 extensions) and resource utilization they represent a trade-off between
@@ -141,7 +141,7 @@ performance optimization and portability vs. iteration speed and research
 ecosystems.
 
 R and Julia are inferior to Python for adoption, machine learning
-frameworks and natural language processing. Java requires the java virtual
+frameworks, and natural language processing. Java requires the java virtual
 machine at runtime which yields worse portability than C / C++ and Rust
 while offering little advantage over interpreted languages like Python.
 Python, C / C++ and Rust emerge as strong contenders for implementing
@@ -202,28 +202,28 @@ This subsection describes the system design realization of each pipeline
 component ($\sigma$, $\phi$, $\pi$, $\rho$, $\nu$) into working code, their
 algorithmic details, performance characteristics and trade-offs.
 
-\subsubsection{Example Selection Engine ($\sigma$)}
+% TODO: REWRITE THIS FROM HERE
 
-The example selection system is implemented using a multi-dimensional
-similarity scoring system that identifies relevant samples previously indexed
-for ICL. The component addresses the challenge of selecting contextually
-appropriate examples from large training corpora whilst balancing semantic
-relevance and structural compatibility.
+\subsubsection{Example Selection ($\sigma$)}
+
+The example selection component is implemented by using a multi-modal
+similarity scoring which identifies relevant samples from a previously indexed
+dataset for ICL. The component addresses the challenge of selecting
+contextually appropriate examples from large training corpora whilst balancing
+semantic relevance and structural compatibility.
 
 \paragraph{Similarity Computation}
 
 The selection mechanism combines three distinct similarity measures implemented
 in the selection module in \texttt{natural-sampling::selection}. The
 \texttt{selection} algorithm computes semantic similarity through cosine
-distance of the question embedding. Structural SQL similarity is computed via
-measuring the cosine distance of the SQL embedding, and schema compatibility
-using WWL kernel distance from the \texttt{natural-graphs} component. The
-embeddings are computed using the Qwen3-Embedding model (4B) using the
-embedding implementation in \texttt{natural-sampling}.
+distance of the question embedding. Structural SQL similarity is computed using
+the cosine distance of the SQL embedding, and schema distance using WWL kernel
+distance from the \texttt{natural-graphs} component. The embeddings are
+computed using the Qwen3-Embedding-4B model using the embedding
+implementation in \texttt{natural-sampling}.
 
 \paragraph{Weighting Strategy and Performance Characteristics}
-
-% TODO: REWRITE THIS FROM HERE
 
 As this algorithm is aware of three ways to measure sample similarity
 (question, query, structural), the implementation employs constant weights
@@ -352,64 +352,62 @@ candidate. Reversing processing order is needed as the model outputs thoughts
 top-to-bottom as a markdown document with the answer usually being output at
 the end as \OmniSQL~is trained to use COT. This approach ensures returned
 query candidates are executable and contain valid SQL. \textsc{Natural}
-addresses the difficulty of generating perfect SQL queries by acknowledging
-limitations of LLMs and implementing recovery and refinement mechanisms in the
-subsequent pipeline.
+addresses the limitation of LLMs when it comes to generating perfect SQL
+queries by implementing recovery and refinement mechanisms in the subsequent
+pipeline.
 
 \subsubsection{Self-Refinement Mechanism ($\rho$)}
 
-The self-refinement mechanism described in Section~\ref{design:refinement-function}
-is implemented in \texttt{natural-inference::pipeline::refinement}. This
-implementation corresponds to the $\rho$ function, providing error correction
-through execution feedback and iterative improvement of generated SQL queries.
+The self-refinement mechanism described in
+Section~\ref{design:refinement-function} is implemented in
+\texttt{natural-inference::pipeline::refinement}. This implementation
+corresponds to the $\rho$ function, providing error correction through
+execution feedback and iterative improvement of the generated SQL queries.
 
-\paragraph{Error Correction Through Execution Feedback}
+\paragraph{Error Correction}
 
 The \texttt{Refinement::optimize} method takes a \texttt{RawQueryCandidate} and
-attempts to improve it through targeted prompting. The refinement prompt
-explicitly instructs the model to ``spot any errors in the SQL query, correct
-them'' and provides the original question, schema context, and the candidate
-query that needs improvement.
+attempts to improve it through reprompting the underlying model. Contrary to
+the ICL generation which uses few-shot examples, the refinement process focuses
+on single-query self-refinement with explicit instructions on how to fix
+errors, thus allowing the model to perform quality assurance on its own output.
 
-Contrary to the ICL generation which uses few-shot examples, the refinement
-process focuses on single-query self-correction with explicit error-fixing
-instructions.
+\paragraph{Correction Prompt}
 
-\paragraph{Prompt Engineering for Correction}
-
-The refinement prompt uses a structured format similar to ICL generation but
-with key differences: it includes the original question as context, provides
-the candidate query that needs fixing, and uses explicit correction language
+The refinement prompt uses the same structured format as the ICL generation but
+with a few key differences: the prompt explicitly instructs the model to
+``spot any errors in the SQL query, correct them'' and provides the original
+question, schema context, and the candidate query that needs improvement
 (see Appendix~\ref{appendix:prompt:natural:refinementprompt}).
 
 \paragraph{Model Resource Management}
 
 As both the ICL implementation and the refinement are ultimately generating
 SQL, they reuse the same underlying \texttt{SqlModel} from the shared pipeline
-context rather than loading separate models. This design choice
-significantly reduces memory requirements but potentially impacts refinement
-quality compared to having dedicated refinement models with different prompt
-conditioning. Due to the limited available hardware the effects of having a
-separate, distinct refinement model could not be verified. \citeauthor{XiYan}
-have implemented multi model generation pipelines in \citeyear{XiYan} and
-achieved promising results.
+context rather than loading two separate models. This design choice
+significantly reduces memory requirements but potentially impacts the
+refinement capabilities compared to having a dedicated quality assurance model
+with different prompt conditioning. Due to the limited available hardware the
+effects of having a separate, distinct refinement model could not be verified.
+\citeauthor{XiYan} have implemented multi model generation pipelines in
+\citeyear{XiYan} and achieved promising results.
 
 \paragraph{Output Processing and Validation}
 
-Similar to ICL generation, refined responses are processed through the same
-\texttt{Markdown} parser to extract the predicted SQL. The system validates each
-extracted candidate by trying to parse it using \texttt{QueryCandidate::try\_from}
-and returns the first syntactically valid refinement starting from the bottom.
-This ensures that refinement produces executable SQL whilst falling back
-gracefully if refinement fails.
+Similar to ICL generation, the refinement responses are processed through the
+same \texttt{Markdown} parser to extract the predicted SQL. The system
+validates each extracted candidate by trying to parse it using
+\texttt{QueryCandidate::try\_from} and returns the first syntactically valid
+refinement starting from the bottom. This ensures that refinement produces
+executable SQL whilst falling back gracefully if refinement fails.
 
 \paragraph{Integration with Pipeline}
 
 The refinement module is integrated into the main pipeline after the ICL
-generator. It processes the \texttt{RawQueryCandidate} and provides a
-self-correction mechanism that improves overall pipeline robustness. Notably both
-the unrefined and the refined query candidates are kept in the candidate set
-for majority voting.
+generation. It processes the \texttt{RawQueryCandidate} and provides a
+self-correction mechanism that improves overall pipeline robustness. Notably
+both the unrefined and the refined query candidates are kept in the candidate
+set for majority voting.
 
 \subsubsection{Consensus Voting System ($\nu$)}
 
@@ -757,20 +755,20 @@ iteration speed was severely slowed down.
 \paragraph{Benchmarking and Evaluation Bottlenecks}
 
 A full benchmark execution of \textsc{Natural} against the \textsc{Spider} test
-dataset required around 12-36 hours depending on the number of
-candidates generated and refinement mechanism used during the benchmark. 
-This made continuous validation during development a non trivial task,
-requiring extensive evaluation phases between times of active development.
-Testing new hypotheses, validating algorithmic changes, experimenting with the
-implementation approaches, comparing different configurations and sampling
-strategies therefore became multi-week processes rather than the rapid
-iteration typically desired in research environments. The prolonged evaluation
-cycles created a cascading effect on development velocity. Rather simple
-adjustments that would normally be validated within hours required days of
-evaluations, effectively preventing fast experimentation. The hardware
-constraints forced a rather conservative approach to experimentation, where
-each change needed to be carefully considered before committing to multiple
-days of benchmarking.
+dataset requires around 12-36 hours depending on the number of
+candidates generated and whether the refinement mechanism is used during the
+benchmark. This made continuous validations during development a non trivial
+task, requiring extensive evaluation phases between times of active
+development. Testing new hypotheses, validating algorithmic changes,
+experimenting with the implementation approaches, comparing different
+configurations and sampling strategies therefore became multi-week processes
+rather than the rapid iteration typically desired in research environments. The
+prolonged evaluation cycles created a cascading effect on development velocity.
+Rather simple adjustments that would normally be validated within hours
+required days of evaluations, effectively preventing fast experimentation. The
+hardware constraints forced a rather conservative approach to experimentation,
+where each change needed to be carefully considered before committing to
+multiple days of benchmarking.
 
 \paragraph{Memory Management and CUDA Issues}
 
@@ -812,12 +810,11 @@ implementations by previous researchers directly in the implementation of
 develop abstractions for model inference, vector database operations, and
 benchmark evaluation.
 
-However, the Rust implementation as is provides significant benefits for
-production deployment and system integration. The resulting system can be
-embedded directly into database systems such as PostgreSQL through extensions,
-providing a path toward true production deployment that would be impractical
-with Python. The ability to compile an entire NL2SQL system into a single,
-standalone binary offers superior portability characteristics.
+However, the Rust implementation provides significant benefits for
+production-grade deployments and system integration. The resulting system can
+be embedded directly into DBMS such as PostgreSQL using extensions, which would
+be impractical when using Python. The ability to compile an entire NL2SQL
+system into a single, standalone binary offers better portability.
 
 \paragraph{Model Deployment: Local vs Cloud-Based Inference}
 
@@ -830,7 +827,7 @@ choosing a proprietary inference service was deemed unviable.
 \paragraph{Integration Complexity and Ecosystem Maturity}
 
 The machine learning ecosystem of Rust proved to be significantly less mature
-than anticipated, requiring extensive custom development and research for
+than anticipated, requiring extensive development and research for
 functionality that would be available off-the-shelf Python packages. The
 integration with Python libraries for specialized components like the
 Wasserstein-Weisfeiler-Leman kernels required rather complex FFI code using
@@ -861,31 +858,30 @@ VRAM would have enabled the usage of larger, more capable models without the
 quantization compromises that may impact system accuracy. More modern hardware,
 even on the consumer grade level, would allow for a tremendous benchmarking
 speed up (e.g., using a RTX 5090 would have resulted in nearly 200\% increase
-in speed). More critically, the availability of multiple GPUs would have
-enabled parallel experimentation and benchmarking, which could transform
-multi-day iteration cycles into more manageable timeframes. The ability to run
-concurrent experiments with different configurations, models, or algorithmic
-approaches would dramatically accelerate the research and development process
-and enable more thorough experimental validation.
+in speed). The availability of multiple GPUs would have enabled parallel
+experimentation and benchmarking, which could transform multi-day iteration
+cycles into more manageable timeframes. The ability to run concurrent
+experiments with different configurations, models, or algorithmic approaches
+would have dramatically accelerated the research and development process and
+enabled more experimental validation.
 
 \paragraph{Technology Stack}
 
 The implications of choosing between Rust and Python underlines the importance
 of technology choices with research goals and time constraints. For pure
 research projects focused on algorithmic development and experimentation,
-Python's ecosystem and extensive existing implementations provide clear
-advantages that likely outweigh the deployment benefits of compiled languages
-like Rust.
+Python's ecosystem and extensive existing tooling provide clear advantages that
+outweigh the benefits of compiled languages like Rust.
 
-However, for projects with a clear path to production deployments or those
+For projects with a clear path to production deployments or those
 intended to bridge academic research with real-world applications, the
 additional development overhead of systems programming languages like Rust can
-be justified. Overall, hardware availability weighs significantly more than
-language choices when it comes to the implementation timeline.
+be justified. Overall, the availability of hardware impacts the implementation
+timeline significantly more than language chosen.
 
 Implementations in this field should follow a two-staged approach:
 prototyping and algorithm validation in Python to leverage existing tools and
-accelerate iteration, followed by a production port in a systems language like
+speed up iteration, followed by a production port in a systems language like
 Rust once the algorithmic approach is validated and stable.
 
 \paragraph{Development Methodology Recommendations}

@@ -291,7 +291,9 @@ configuration the worst performing variant of \Natural~on \EA~and \EM~across
 
 The results of the \Spider~benchmarks demonstrate consistent performance
 characteristics of \Natural~and \OmniSQL~across the development and test splits
-(detailed breakdown in Appendix~\ref{sec:appendix:benchmark-results-spider}).
+(detailed breakdown in Appendix~\ref{sec:appendix:benchmark-results-spider},
+Figures~\ref{fig:appendix:spider-dev-ea}, \ref{fig:appendix:spider-test-ea},
+\ref{fig:appendix:spider-dev-em}, and~\ref{fig:appendix:spider-test-em}).
 The \OmniSQL-7B-gguf system outperforms the two \Natural~baseline configurations
 \textit{Baseline} and \textit{Zero-Shot} in \EA~and \EM~by 2.1\% and 0.3\% on
 the development split and by 2.0\% and 1.5\% on the test split respectively.
@@ -328,7 +330,8 @@ configuration outperformed \textit{Syn} by 1.8\% in \EA. For \EM~both system
 configurations show a steep improvement over the three baselines with largest
 \EM~deltas being observed between \textit{Zero-Shot} and \textit{Train} with
 +15.1\% on \Spider~(dev) and between \textit{Baseline} and \textit{Train} with
-+21.4\% on \Spider~(test). These double digit improvements in accuracy point
++21.4\% on \Spider~(test). These double digit improvements in accuracy, as shown
+in Figure~\ref{fig:eval:baseline-improvement-ea}, point
 towards the conclusion that ICL is an effective mechanism for further improving
 the performance of already fine-tuned models. The performance
 of the \textit{Ground} configuration shows the theoretical upper limits in
@@ -409,10 +412,11 @@ The other metrics \EM, \ER~and \CL~further show a substantial difference between
 \textit{Baseline} and \textit{Zero-Shot} and \OmniSQL-7B-gguf) showed the
 same 0.03\% in \EM~indicating a potential overfitting of \OmniSQL~to the SQL
 style used in \Spider. Notably ICL based systems showed a significant
-improvement with +13.17pp for \textit{Train} and +18.77pp for \textit{Syn}.
+improvement with +13.17pp for \textit{Train} and +18.77pp for \textit{Syn}
+(see Figure~\ref{fig:appendix:baseline-improvement-em} for detailed \EM~improvements).
 The \CL~metric showed a similar pattern to the \Spider~benchmarks with the \CL~
 increasing with pipeline complexity from 9.3s for \textit{Baseline} to 43.8s
-for \textit{Ground}.
+for \textit{Ground}, as illustrated in Figure~\ref{fig:eval:candidate-latency-bird}.
 
 \begin{figure}[htbp]
   \centering
@@ -485,7 +489,9 @@ Overall \OmniSQL-7B-gguf consistently showed the lowest \CL~values with
 (6.6s, 6.7s and 8.2s) for \Spider~(dev and test) and \Bird~respectively. This is
 unsurprising as the \OmniSQL-7B-gguf system provides a realistic estimation
 for the $\pi$ component of \Natural. These characteristics inform hardware
-requirements and deployment decisions. For interactive applications
+requirements and deployment decisions. As shown in
+Figure~\ref{fig:eval:latency-accuracy-tradeoff}, the trade-off between latency
+and accuracy varies significantly across configurations and benchmarks. For interactive applications
 sub-second response times of these models are recommended. \Natural~clearly
 exceeds these thresholds by a factor of up to 45 on complex databases and
 questions (e.g., \Bird). Thus either significantly better hardware is

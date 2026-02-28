@@ -1,25 +1,26 @@
 \section{System Design}\label{section:design}
 
-This chapter introduces the architecture of the NL2SQL system \textsc{Natural},
-which addresses limitations and research gaps identified in the literature
-review. \Natural~is architected as a pipeline that transforms NLQs into SQL
-queries consisting of five components:
+This section outlines the architecture of the NL2SQL system \textsc{Natural},
+addressing limitations and research gaps identified in the literature
+review. \Natural~is a pipeline that transforms NLQs into SQL queries consisting
+of five components:
 
 \begin{enumerate}
-    \item \textbf{Example Selection} $\sigma$ – Identifies semantically and
-        structurally similar examples using cosine similarity and schema
+    \item \textbf{Example Selection} $\sigma$ – Identifying semantically and
+        structurally similar example queries using cosine similarity and schema
         distance.
     \item \textbf{Schema Subsetting} $\phi$ – Reducing schema complexity by
         subsetting to relevant tables and relationships.
-    \item \textbf{Query Projection} $\pi$ – Few-shot learning with a finetuned
-        model to project natural language queries to SQL statements.
-    \item \textbf{Self Refinement} $\rho$ – Self refinement of generated SQL
-        statements through execution feedback and error analysis.
+    \item \textbf{Query Projection} $\pi$ – Using ICL with a fine-tuned
+        model to project NLQs to SQL statements.
+    \item \textbf{Self Refinement} $\rho$ – Refinement of generated
+        SQL statements through execution feedback and error analysis using the
+        underlying model.
     \item \textbf{Voting} $\nu$ – Self consensus voting mechanism to choose the
         most likely result from multiple generation attempts.
 \end{enumerate}
 
-The system processes queries using the following architecture:
+\Natural~processes queries using the following execution flow:
 
 \begin{figure}[ht]
   \centering
@@ -67,10 +68,10 @@ The system processes queries using the following architecture:
   \label{figure:pipeline-algorithm}
 \end{figure}
 
-This design builds upon few-shot learning concepts from DAIL-SQL
-\citep{DAIL-SQL} and OmniSQL \citep{OmniSQL} but incorporates a new
-schema-aware example selection technique which uses graph kernels for
-structural similarity between databases.
+This design builds upon the ICL architecture from DAIL-SQL \citep{DAIL-SQL} and
+OmniSQL \citep{OmniSQL} but incorporates a new schema-aware example selection
+technique which uses graph kernels for measuring structural similarity between
+databases.
 
 \subimport{}{01-initialization}
 \subimport{}{02-functions}
