@@ -372,22 +372,21 @@ the robustness of \OmniSQL's SQL generation capabilities.
 
 \subsubsection{BIRD Results}
 
-% TODO: Maybe refer to the lit review?
-
-Measurements on \Bird, which is designed to represent real-world
-databases with imperfect data, external knowledge requirements and hard to
-reason about database schemas yields significantly lower absolute performance
-numbers but shows improvements through ICL based systems. While the
-\textit{Baseline} configuration of \Natural~only achieves 32.4\% \EA~(less than
-half the accuracy than on \Spider~with 77.9\% and 77.0\% for dev and test
-splits respectively). This performance confirms that \Bird~is a significantly
-more challenging benchmark. While the \textit{Zero-Shot} configuration shows
-incremental improvements over the baseline with a relative improvement of
-+1.6pp in \EA~(34.0\% absolute), the overall performance shows to be behind the
-reported numbers of \OmniSQL-7B and GPT-4 by \cite{OmniSQL} which were
-reported to have an \EA~of 66.1\% and 61.5\% respectively. The locally
-reproduced measurement of \OmniSQL-7B-gguf yielded a drop in \EA~of -28.1pp
-compared to the officially reported \EA~yielding 38.0\% in absolute accuracy.
+Measurements on \Bird, which is designed to represent real-world databases with
+imperfect data (see Section~\ref{lit:benchmarks:bird}), external knowledge
+requirements and hard to reason about database schemas yields significantly
+lower absolute performance numbers but shows improvements through ICL based
+systems. While the \textit{Baseline} configuration of \Natural~only achieves
+32.4\% \EA~(less than half the accuracy than on \Spider~with 77.9\% and 77.0\%
+for dev and test splits respectively). This performance confirms that \Bird~is
+a significantly more challenging benchmark. While the \textit{Zero-Shot}
+configuration shows incremental improvements over the baseline with a relative
+improvement of +1.6pp in \EA~(34.0\% absolute), the overall performance shows
+to be behind the reported numbers of \OmniSQL-7B and GPT-4 by \cite{OmniSQL}
+which were reported to have an \EA~of 66.1\% and 61.5\% respectively. The
+locally reproduced measurement of \OmniSQL-7B-gguf yielded a drop in \EA~of
+-28.1pp compared to the officially reported \EA~yielding 38.0\% in absolute
+accuracy.
 
 Both the \textit{Syn} and \textit{Train} configurations of \Natural~outperform
 all baselines. \textit{Syn} shows an improvement of +21.4pp over
