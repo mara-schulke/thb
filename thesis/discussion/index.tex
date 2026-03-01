@@ -4,7 +4,7 @@ This section determines the applicability of \Natural, answers the
 research questions based on the evaluation and derives recommendations for
 future research.
 
-\subsection{Summary of Results}
+\subsection{Results}
 
 The evaluation of \Natural~revealed five primary insights from the results:
 
@@ -40,16 +40,16 @@ scores of closed-source model results (GPT-4o: 84.9\% \Spider, 64.0\% \Bird).
 
 \subsubsection{Ablation}
 
-The ablation study showed that ICL was the crucial differentiator for
-performance, other pipeline components have not been ablated individually but
-showed to add unclear performance gains. The \textit{Zero-Shot} configuration
-which uses schema subsetting, self-refinement, and majority voting but does not
-apply example selection achieves only a +0.8pp improvement on \Spider~
-despite doubling the candidate latency from 7.3s to 14.0s. \Natural~
-configurations with active ICL and example selection yield up to +2.3pp on
-\Spider~(dev), +3.9pp on \Spider~(test) and +19.8pp on \Bird~compared to
-\textit{Zero-Shot}. This shows that both schema subsetting and self-refinement
-techniques provide minimal benefit without ICL and example
+The ablation showed that example selection was the differentiating
+component for performance, other pipeline components have not been ablated
+individually but showed to add unclear performance gains. The
+\textit{Zero-Shot} configuration which uses schema subsetting, self-refinement,
+and majority voting but does not apply example selection achieves only a +0.8pp
+improvement on \Spider~despite doubling the candidate latency from 7.3s to
+14.0s. \Natural~configurations with active ICL and example selection yield up
+to +2.3pp on \Spider~(dev), +3.9pp on \Spider~(test) and +19.8pp on
+\Bird~compared to \textit{Zero-Shot}. This shows that both schema subsetting
+and self-refinement techniques provide minimal benefit without ICL and example
 selection. Further ablation would help to understand the potential cross
 effects between components and the implications of disabling pipeline
 components like schema-subsetting, self-refinement and majority voting.
@@ -347,9 +347,8 @@ pattern
 \paragraph{Optimal Configurations for Different Deployment Scenarios}\label{sec:discussion:deployment-scenarios}
 
 Given the tradeoffs, a recommendation by deployment scenarios can be made.
-The choice of profile depends on the reliability requirements, the
-interactivity of the use case and the complexity of the domain.
-Recommendations for common use cases:
+The recommended profile depends on the reliability requirements, the user
+interaction model and the complexity of the domain and its terminology:
 
 \begin{enumerate}
     \item \textbf{Exploratory queries against simple databases} — For
