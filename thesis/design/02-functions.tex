@@ -67,7 +67,7 @@ The exact weighting of these can be adjusted through three constants, $w_q$, $w_
 \Require $k \in \mathbb{N}$, $k \geq 1$                            \Comment{Number of examples to select}
 \State $\hat{\omega} \gets \nu(C)$ if $C \neq \emptyset$, else $\perp$ \Comment{Best current candidate, if any}
 \State $candidates  \gets \emptyset$                               \Comment{Initialize candidate set}
-\For{$(q_i, s_i, \omega_i) \in v$}                                 \Comment{For each sample}
+\For{$(q_i, s_i, \omega_i) \in v$}                                 \Comment{For each example}
     \State $sim_q \gets cosine(\iota(q), \iota(q_i))$              \Comment{Calculate question similarity}
     \State $sim_s \gets cosine(\iota(\hat{\omega}), \iota(\omega_i))$ if $\hat{\omega} \neq \perp$, else $0$ \Comment{SQL similarity}
     \State $sim_d \gets d(s, s_i)$                                 \Comment{Calculate schema distance}

@@ -122,53 +122,62 @@ To determine structural similarity of database schemas, this thesis proposes
 using graph representation for the representation of database structures. A
 graph representation allows leveraging established methods for measuring graph
 similarity such as Wasserstein-Weisfeiler-Lehman graph kernels \citep{WWL}. 
-Given a database schema $s$ the corresponding graph $G_s = (V, E, \ell, w)$ is
-defined as:
+Given a database schema $s$ the corresponding graph mapping $G_s = (V, E, \ell,
+w)$ is defined in Tables~\ref{table:nodes} and~\ref{table:edges}.
 
-\begin{enumerate}
-    \item $V = V_t \cup V_c$ where $V_t$ represents table nodes and $V_c$
-      represents column nodes
-    \item $E = E_{tc} \cup E_{fk} \cup E_{ref}$ where:
-        \begin{itemize}
-            \item $E_{tc}$ are table-column edges
-            \item $E_{fk}$ are foreign key relationship edges between tables
-            \item $E_{ref}$ are reference edges between foreign key columns
-        \end{itemize}
-    \item Each node $v \in V$ has a semantic label $\ell(v) \in \{1, 2, \ldots,
-      9\}$ where:
-        \begin{itemize}
-            \item $\ell(v) = 1$ for table nodes
-            \item $\ell(v) = 2$ for generic column nodes
-            \item $\ell(v) = 3$ for primary key columns
-            \item $\ell(v) = 4$ for foreign key columns
-            \item $\ell(v) = 5$ for text columns
-            \item $\ell(v) = 6$ for numeric columns
-            \item $\ell(v) = 7$ for datetime columns
-            \item $\ell(v) = 8$ for boolean columns
-            \item $\ell(v) = 9$ for other/unknown data types
-        \end{itemize}
-    \item Each edge $e \in E$ has a weight $w(e) \in \{0.5, 0.9, 1.0\}$
-      reflecting its structural importance:
-        \begin{itemize}
-            \item $w(e) = 1.0$ for foreign key relationships (highest
-              importance)
-            \item $w(e) = 0.9$ for column foreign key reference edges
-            \item $w(e) = 0.5$ for table-column edges
-        \end{itemize}
-\end{enumerate}
+\begin{table}[ht]
+  \hfill
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tabular}{clc}
+      \hline
+      \textbf{Node Type} & \textbf{Description} & \textbf{Label $\ell(v)$} \\
+      \hline
+      $v \in V_t$ & Tables & 1 \\
+      $v \in V_c$ & Generic columns & 2 \\
+      $v \in V_c$ & Primary keys & 3 \\
+      $v \in V_c$ & Foreign keys & 4 \\
+      $v \in V_c$ & Text columns  & 5 \\
+      $v \in V_c$ & Numeric columns & 6 \\
+      $v \in V_c$ & Datetime columns & 7 \\
+      $v \in V_c$ & Boolean columns & 8 \\
+      $v \in V_c$ & Other columns & 9 \\
+      \hline
+    \end{tabular}
+    \caption{
+      Node types and semantic labels where $V = V_t \cup V_c$ where $V_t$ represents
+      table nodes and $V_c$ represents column nodes
+    }
+    \label{table:nodes}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \begin{tabular}{clc}
+      \hline
+      \textbf{Edge Type} & \textbf{Description} & \textbf{Weight $w(e)$} \\
+      \hline
+      $e \in E_{tc}$ & Ownership & 0.5 \\
+      $e \in E_{fk}$ & FK references & 0.9 \\
+      $e \in E_{rel}$ & Relationships & 1.0 \\
+      \hline
+    \end{tabular}
+    \vspace{3.5em}
+    \caption{Edge types and weights where $E = E_{tc} \cup E_{fk} \cup E_{rel}$}
+    \label{table:edges}
+    \vspace{1em}
+  \end{minipage}
+  \hfill
+  \vspace{1em}
+\end{table}
 
-% TODO: Clarify the mapping
 
-The structural similarity of two databases is defined as the topological
+The structural similarity of two databases is defined as the wasserstein
 distance of their graphs. The graph representation captures essential
-structure through semantic node labeling that prioritizes constraints over data
-types: primary key columns receive label 3 regardless of data
-type, foreign key columns receive label 4, and only then are remaining columns
-categorized by data type (text=5, numeric=6, datetime=7, boolean=8, other=9).
-This hierarchical labeling ensures that structural relationships take
-precedence over exact content, while omitting table names, column names and
-domain terminology for schema-agnostic comparison.
-
+topology through node and edge labeling, prioritizing constraints over
+types. This hierarchical labeling ensures that structural relationships
+take precedence over exact content, while omitting table names, column names
+and domain terminology for schema-agnostic comparison.
 The graph representation of the database schemas introduced
 in~\ref{figure:schema-normalized} and~\ref{figure:schema-denormalized} are
 therefore:
@@ -232,37 +241,35 @@ structural difference between the two schemas.
 
 \paragraph{Distance Measurement}
 
-To measure the distance between the graphs displayed
-in~\ref{figure:normalized-graph-representation}
+To measure the distance between the graphs shown
+in Figures~\ref{figure:normalized-graph-representation}
 and~\ref{figure:denormalized-graph-representation}, the Wasserstein
 Weisfeiler-Lehman (WWL) graph kernel method is used \citep{WWL}. WWL kernels
 compute structural similarity by combining discrete Weisfeiler-Lehman graph
 features with continuous optimal transport theory. The method first extracts WL
 features from the labeled graph structure, then computes the Wasserstein
 distance between the resulting feature distributions. For two graphs $G$ and
-$G'$ with semantic node labels, the distance is computed as:
+$G'$ with semantic node labels, the distance is computed as introduced by
+\citeauthor{WWL} in \citeyear{WWL}:
 
 \begin{equation}
 D^{f}_{W}(G, G') = W_1(f(G), f(G'))
 \end{equation}
 
-as introduced by \citeauthor{WWL} in \citeyear{WWL}.
-
-For the database schemas, the normalized schema $G_{norm}$ (see
+The graph representation of the normalized schema $G_{norm}$ (see
 Figure~\ref{figure:normalized-graph-representation}) with 5 nodes and 5 edges
 and denormalized schema $G_{denorm}$ (see
 Figure~\ref{figure:denormalized-graph-representation}) with 3 nodes and 2 edges
-show significant topological differences. The WWL distance captures the
-reduction in graph complexity (fewer nodes and edges) and the loss of
-relational structure (elimination of foreign key relationships), resulting in a
-substantial distance reflecting their structural dissimilarity despite
-equivalent logical data: $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
+show significant topological differences. The WWL distance measures the
+reduced graph complexity (i.e., fewer nodes and edges) and the loss of
+relational structure (i.e., elimination of foreign key relationships),
+which results in a higher distance measurement despite modeling logically
+equivalent data: $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
 
 \paragraph{Distance Index}
 
-The distance index $d$ maintains precomputed distances between observed
-database schemas, enabling efficient retrieval of structurally similar
-databases during sample selection. This index is constructed as a set of
-schema-distance tuples $\{(sm_1, di_1), \ldots, (sm_i, di_i)\}$ where $sm_i$ is
-a database schema name and $di_i$ denotes its WWL distance to the current
-schema.
+The distance index $d$ contains precomputed distances between observed the
+database schemas, which enables an efficient retrieval during example
+selection. This index is constructed as a set of schema-distance tuples
+$\{(sm_1, di_1), \ldots, (sm_i, di_i)\}$ where $sm_i$ is a database schema name
+and $di_i$ denotes its WWL distance to the current schema.
