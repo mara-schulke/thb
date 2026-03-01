@@ -17,7 +17,7 @@ similarity search \citep{DAIL-SQL}. It uses cosine similarity to identify
 relevant examples based on natural language queries and SQL statements,
 allowing efficient retrieval from large collections of question-answer pairs.
 
-Therefore a set of training samples can be embedded $\mathcal{T} = \{(q_1,
+Therefore, a set of training samples can be embedded $\mathcal{T} = \{(q_1,
 \omega_1), ..., (q_n, \omega_n)\}$ into an embedding space $v$, where each
 $q_i$ is a natural language question and $\omega_i$ is the corresponding SQL
 query.
@@ -35,7 +35,7 @@ use structurally similar database schemas to minimize the structural difference
 between the selected samples and the ground truth query for a natural language
 question.
 
-For example $\omega_{ground}$ the question ``Give me all contacts for the user
+For example, for $\omega_{ground}$, the question ``Give me all contacts for the user
 with the id 10'' might look different depending on the database schema, thus
 selecting samples based only on the similarity of the natural language question
 will yield inferior sample quality.
@@ -77,7 +77,7 @@ CREATE TABLE users (
 \end{figure}
 
 Given the database schemas in Figures~\ref{figure:schema-normalized}
-and~\ref{figure:schema-denormalized} respective definitions of
+and~\ref{figure:schema-denormalized}, the respective definitions of
 $\omega_{ground}$ would be~\ref{figure:sql-join-example}
 and~\ref{figure:sql-array-example}.
 
@@ -104,7 +104,7 @@ FROM users
 WHERE id = 10;
     \end{verbatim}
     \vspace{1.3em}
-    \caption{Using array access on a denormalized database schemas in SQL.}
+    \caption{Using array access on a denormalized database schema in SQL.}
     \label{figure:sql-array-example}
   \end{minipage}
   \hfill
@@ -172,7 +172,7 @@ w)$ is defined in Tables~\ref{table:nodes} and~\ref{table:edges}.
 \end{table}
 
 
-The structural similarity of two databases is defined as the wasserstein
+The structural similarity of two databases is defined as the Wasserstein
 distance of their graphs. The graph representation captures essential
 topology through node and edge labeling, prioritizing constraints over
 types. This hierarchical labeling ensures that structural relationships
@@ -268,8 +268,8 @@ equivalent data: $D^{f}_{W}(G_{norm}, G_{denorm}) \approx 0.78$.
 
 \paragraph{Distance Index}
 
-The distance index $d$ contains precomputed distances between observed the
-database schemas, which enables an efficient retrieval during example
+The distance index $d$ contains precomputed distances between observed
+database schemas, which enables efficient retrieval during example
 selection. This index is constructed as a set of schema-distance tuples
 $\{(sm_1, di_1), \ldots, (sm_i, di_i)\}$ where $sm_i$ is a database schema name
 and $di_i$ denotes its WWL distance to the current schema.
