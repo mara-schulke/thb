@@ -64,7 +64,7 @@ the process of learning:
         modeling and heuristics to infer structure and yield predictions.
         Unsupervised learning is appropriate when there is no clear answer and
         the domain provides large datasets that are not feasible to label
-        manually (eg, dataset gathered through webscraping the internet).
+        manually (e.g., dataset gathered through webscraping the internet).
     \item \textbf{Reinforcement Learning} – The process of learning through
         reward signals, commonly known as the reward function. Applied to
         NL2SQL systems this could transfer to training a model's SQL generation
@@ -72,18 +72,26 @@ the process of learning:
         pattern is not widely used in NL2SQL approaches.
 \end{enumerate}
 
-\subsubsection{Attention Mechanisms}
+\subsubsection{Transformer Architecture}
 
-Attention mechanisms allow machine learning models to selectively focus on
-relevant parts of their input by learning to weight different sections of the
-input sequence based on its relevance to the current computation. While RNNs
-processed sequences sequentially, attention enables direct modeling of
-relationships between any positions in a sequence, which enabled the
-transformer architecture to become prevalent for natural language processing
-\citep{Attention}.
+The transformer architecture, introduced by \citeauthor{Attention}
+in \citeyear{Attention}, introduced the model architecture found in
+modern LLMs \citep{Attention}. Unlike earlier sequence to sequence models,
+transformers are capable of processing entire sequences of inputs in parallel
+by using a self-attention mechanism. This enabled more efficient training on
+massive datasets and a better representation of complex dependencies within
+inputs.
 
-Attention can be computed by retrieving the weighted sum of values $V$
-based on the compatibility between queries $Q$ and keys $K$:
+\paragraph{Attention}
+
+Attention allows models to selectively focus on parts of the input by learning
+to weight different sections of the input sequence based on its relevance to
+the current computation. While RNNs processed sequences sequentially, attention
+enables direct modeling of relationships between any positions in a sequence,
+which enabled the transformer architecture to become prevalent for natural
+language processing \citep{Attention}. Attention can be computed by retrieving
+the weighted sum of values $V$ based on the compatibility between queries $Q$
+and keys $K$:
 
 \begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
@@ -99,38 +107,11 @@ architectures seen in natural language processing and subsequently recent
 NL2SQL research. Transformers extended the concept of attention into
 self-attention and multi-head attention patterns that underpin today's LLMs.
 
-\subsubsection{Transformer Architecture}
-
-The transformer architecture, introduced by \citeauthor{Attention}
-in \citeyear{Attention}, introduced the model architecture found in
-modern LLMs \citep{Attention}. Unlike earlier sequence to sequence models,
-transformers are capable of processing entire sequences of inputs in parallel
-by using a self-attention mechanism. This enabled more efficient training on
-massive datasets and superior representation of complex dependencies in input
-sequences.
-
-\paragraph{Self-Attention Mechanism}
-
-Self-attention allows each position in a sequence to be weighted to all other
-positions in the sequence, thus resulting in representations that can capture
-contextual relationships between input tokens. For an input sequence of tokens
-$x_1, \ldots, x_n$, the self-attention mechanism computes:
-
-\begin{equation}
-\text{SelfAttention}(X) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-\end{equation}
-
-where $Q = XW_Q$, $K = XW_K$, and $V = XW_V$ are learned linear projections of
-$X$ into the query, key and value representations. This mechanism enables
-transformers to weigh the importance of different tokens while encoding each
-position. This maintains semantic and syntactic relationships which are crucial
-for understanding natural language queries in NL2SQL systems.
-
 \paragraph{Multi-Head Attention}
 
-Multi-head attention extended the self-attention concept by computing multiple
-attention operations in parallel, allowing the model to put focus to different
-aspects of the input at the same time:
+Multi-head attention is an extension of the attention architecture, computing
+it in parallel on different dimensions which allows models to capture different
+semantic meanings in the input at the same time:
 
 \begin{equation}
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O
@@ -142,9 +123,9 @@ where each $head$ computes:
 \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
 \end{equation}
 
-Each attention head can specialize in capturing a different type of semantic
-relationship. For example one head might focus on syntactic structure (e.g.,
-linking SQL keywords to their arguments), while others might capture semantic
-relationships between words (e.g., list all x where y). This multi-attention
-mechanism is essential for the complex tasks which require capturing multiple
-different semantic relationships between words. 
+Each head can specialize in capturing a different type of semantic meaning. For
+example one head might focus on syntactic structure (e.g., linking SQL keywords
+to their arguments), while others might capture semantic relationships between
+words (e.g., list all x where y). This mechanism is essential for the complex
+tasks which require capturing multiple different semantic relationships between
+words.

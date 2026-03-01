@@ -13,8 +13,8 @@ The relational model was introduced by \citeauthor{RelationalModel} in
 database systems \citep{RelationalModel, Rendezvous}. A relational database
 organizes data in relations (i.e., tables), where each relation consists of
 tuples (i.e., rows) containing attributes (i.e., columns) of specific domains
-(i.e., data types and constraints). The mathematical origins of this model root
-in set theory and first-order predicate logic \citep{RelationalModel,
+(i.e., data types and constraints). The mathematical origins of this model are
+rooted in set theory and first-order predicate logic \citep{RelationalModel,
 DatabaseSystemIntro}.
 
 The relational model abstracts data storage and physical implementation details
@@ -37,7 +37,7 @@ include:
         enrollment, purchases). Each relation has a fixed structure.
     \item \textbf{Tuples} — Tuples represent rows of data, grouping several
         attributes into one logical unit (e.g., one purchase containing the
-        amount, date and shop). All tuples in the same relation share the same
+        amount, date, and shop). All tuples in the same relation share the same
         structure.
     \item \textbf{Attributes} — Frequently referred to as columns, representing
         a dimension of a tuple (e.g., customers have names). Attributes are
@@ -56,7 +56,7 @@ include:
 
 These concepts form the semantic foundation that NLIDBs must navigate when
 translating user queries into formal database operations. As shown in the
-literature review schema linking is a crucial problem of NLIDBs, establishing
+literature review, schema linking is a crucial problem of NLIDBs, establishing
 an understanding of which relations a natural language query refers to is the
 first step of formalizing a database operation for retrieval.
 
@@ -112,7 +112,7 @@ LIMIT 5
 \end{verbatim}
 
 This semantic gap between natural language and formal queries represents the
-core challenge that this thesis addresses. SQL's syntax nature allows complex
+core challenge that this thesis addresses. SQL's syntax allows complex
 queries to be built from simpler components through nesting and combination of
 operations. NL2SQL systems must fill in the individual query components and how
 to compose these to semantically accurate and syntactically correct query
@@ -128,7 +128,7 @@ guidelines and rules for relational database design to reduce duplication,
 inconsistencies and anomalies \citep{DatabaseSystemIntro}.
 
 Understanding normalization forms is crucial for NL2SQL systems to handle the
-the accompanying challenges. Specifically, normalized schemas often contain
+accompanying challenges. Specifically, normalized schemas often contain
 multiple tables to store a single piece of information, which requires
 NLIDBs to understand relationships and generate appropriate joins. Humans
 typically think about data in denormalized, conceptual terms, which means that
