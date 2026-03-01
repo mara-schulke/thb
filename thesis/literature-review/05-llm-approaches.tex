@@ -28,7 +28,7 @@ masking domain-specific words and prioritizing examples that exceed a
 similarity threshold of $\tau$ \citep[p.~5]{DAIL-SQL}. DAIL-SQL encodes
 examples as question-SQL-pairs without the respective schema to improve token
 efficiency. Using a Code Representation Prompt for question and schema encoding
-yielded DAIL-SQL to achieve 86.6\% execution accuracy on \Spider. While GPT-4
+enabled DAIL-SQL to achieve 86.6\% execution accuracy on \Spider. While GPT-4
 achieves 72.3\% execution accuracy zero-shot on \textsc{Spider} \citep[Table 1,
 p.~8]{DAIL-SQL}, few-shot learning shows to improve model performance. One-shot
 boosts GPT-4's execution accuracy to 80.2\%, a 7.9\% increase, while five-shot
@@ -40,7 +40,7 @@ and Din-SQL} all utilize variations of ICL to achieve their results
 
 \cite{DINSQL} proposed DIN-SQL as an approach to NLIDBs that rely on LLMs.
 DIN-SQL decomposes complex queries into sub-parts and utilizes ICL and
-self-correction during the generation phase. Compared to DAIL-SQL which relies
+self-correction during the generation phase. Compared to DAIL-SQL, which relies
 on example selection, DIN-SQL focuses on a refinement loop that allows the
 model to self-correct errors, repairing schema linking, syntactic or semantic
 errors by reviewing its output against the schema, user input and database

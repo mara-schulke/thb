@@ -12,9 +12,9 @@ identification of semantic relationships.
 
 \subsubsection{Early Pre-trained Language Model Adaptations}
 
-\citeauthor{Grappa} presented \textsc{Grappa} a, grammar augmented pre-training
+\citeauthor{Grappa} presented \textsc{Grappa}, a grammar-augmented pre-training
 approach in \citeyear{GRAPPA} which was built on
-RoBERTa\textsubscript{\tiny{LARGE}}, is a derivative model from BERT
+RoBERTa\textsubscript{\tiny{LARGE}}, a derivative model of BERT
 \citep{GRAPPA}. It was trained by generating synthetic training data using a
 Synchronous Context-Free Grammar which identifies patterns in NLQ as templates
 for synthesizing training data. Specialized pre-training allowed
@@ -42,7 +42,7 @@ combined T5 PLMs with graph-aware layers for NL2SQL tasks. GRAPHIX-T5
 constructs a schema graph where nodes represent tables and columns and edges
 represent relationships between them, such as foreign keys or column
 association \citep{GRAPHIX}. GRAPHIX-T5 outperformed standard T5 models, with
-GRAPHIX-T5\textsubscript{\tiny{LARGE}} showing 6.6\% increase in execution
+GRAPHIX-T5\textsubscript{\tiny{LARGE}} showing a 6.6\% increase in execution
 accuracy over T5\textsubscript{\tiny{LARGE}}. When both GRAPHIX and baseline T5
 models were combined with \textsc{Picard}, a constrained decoding mechanism,
 the absolute $\Delta$ between them jumped to 7.6\%, reaching 81.0\% on
@@ -115,7 +115,7 @@ associated with their non-NL2SQL nature:
 Research on applying PLMs for NL2SQL primed the field for a transition towards
 LLMs. While PLMs range from millions to a few billion parameters,
 prevalent LLMs such as GPT-3 and GPT-4 operate at larger scales, enabling
-In Context Learning (ICL) techniques for easier transferability
+in-context learning (ICL) techniques for improved transferability
 across domains \citep{DAIL-SQL}. While PLMs require fine-tuning on
 domain-specific data \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer
 cost to inference. Approaches like \textsc{DinSQL} show that with LLMs the

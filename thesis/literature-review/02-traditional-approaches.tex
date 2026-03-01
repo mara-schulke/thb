@@ -1,11 +1,11 @@
 \subsection{Traditional NL2SQL Approaches}
 
-Prior to the wide-spread dominance of machine learning approaches for NLP
+Prior to the widespread dominance of machine learning approaches for NLP
 a variety of traditional approaches have been explored in the field of NL2SQL.
 
 \subsubsection{Rule-based and Grammar-based Systems}
 
-Foundational research of NL2SQL system mostly focused around applying rule
+Foundational research of NL2SQL systems mostly focused around applying rule
 engines that were tedious to set up, expensive to maintain and transfer
 across database systems. These rule engines mostly relied on the systematic
 identification of linguistic patterns and were trying to template SQL from
@@ -51,7 +51,7 @@ to resolve ambiguities present in their NLQ without forcing
 them to entirely rephrase their query. NaLIR proved that choosing the right
 interaction model could offset system limitations — ``In our system, we
 generate multiple possible interpretations for a NLQ and
-translate all of them in  language for the user to choose from''
+translate all of them in natural language for the user to choose from''
 \citep{NALIR}.
 
 \subsubsection{Query Synthesis}
@@ -93,7 +93,7 @@ easily feasible. Nonetheless, several fundamental challenges emerged:
         paraphrasing, or spelling errors. Manual adaptation and handling was
         needed to remediate. \citep{StringKernels, SQLizer}.
     \item \textbf{Poor scalability} — With potentially more complex underlying
-        databases, traditional solutions often showed to perform worse.
+        databases, traditional solutions often performed worse.
         \citeauthor*{GraphMatching} found, that with increasing schema
         complexity more compute was required to resolve the natural language
         query, thus harming scalability \citep{GraphMatching}.
