@@ -6,17 +6,17 @@ reliability concerns on their users as they require transmitting database
 schemas and contents across the wire. This applies especially to sensitive
 industries such as healthcare, finance, aerospace and defense. Recently
 open-source models like \textsc{OmniSQL} emerged which show competitive NL2SQL
-performance on benchmarks and thus address the gap between theoretical research
-systems and production-ready systems that leverage open-source models for
-sensitive air gapped environments.
+performance on benchmarks and thus address the gap between research and
+production-ready systems that leverage open-source models for sensitive air
+gapped environments.
 
 This thesis introduces \textsc{Natural}, a sovereign NL2SQL pipeline built
-around the open-source \textsc{OmniSQL} model series. The system consists of
+around the open-source \textsc{OmniSQL} models. The system consists of
 five components: schema-aware example selection using
 Wasserstein-Weisfeiler-Lehman kernels ($\sigma$), schema subsetting ($\phi$),
 few-shot query projection ($\pi$), self-refinement ($\rho$), and consensus
 voting ($\nu$). \textsc{Natural} can be deployed as a database extension or as
-a inference service without external dependencies.
+an inference service without external dependencies.
 
 Benchmark results on \textsc{Spider} and \textsc{Bird} demonstrate a 81.0\%
 execution accuracy on \textsc{Spider} (dev), 81.4\% on \textsc{Spider}
