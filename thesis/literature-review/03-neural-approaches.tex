@@ -19,9 +19,9 @@ order-sensitivity of sequence-to-sequence neural networks harmed accuracy.
 Subsequent approaches addressed specific limitations: \textsc{SQLNet}
 eliminated order-sensitivity through a sketch-based generation approach which
 outperformed \textsc{Seq2SQL} by 7.7\% on WikiSQL (dev) and by 6.4\% on WikiSQL
-(test). \textsc{TypeSQL} incorporated type-aware encoding of inputs, further
-improving performance by 4.7\% above \textsc{SQLNet} while reducing the
-required training time by half \citep{TypeSQL}. 
+(test) \citep{SQLNet}. \textsc{TypeSQL} incorporated type-aware encoding of
+inputs, further improving performance by 4.7\% above \textsc{SQLNet} while
+reducing the required training time by half \citep{TypeSQL}. 
 
 \textsc{SyntaxSQLNet} improved the ability of NL2SQL systems on complex
 queries and marked the transitional period to \textsc{Spider} (see Section
@@ -70,7 +70,7 @@ Neural approaches progressively improved upon each other in multiple dimensions:
         (\textsc{GNN}), and relation-aware self-attention (\textsc{RAT-SQL})
         demonstrated increasing architectural sophistication in order to
         improve execution accuracy on benchmarks like \textsc{Spider}
-        \citep{Seq2SQL, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
+        \citep{Seq2SQL, SQLNet, TypeSQL, GNN, SyntaxSQLNet, RATSQL}.
     \item \textbf{Transferability} — The cross-domain generalization
         capabilities improved substantially, with RAT-SQL achieving the
         strongest performance on \textsc{Spider}'s independent test set,
