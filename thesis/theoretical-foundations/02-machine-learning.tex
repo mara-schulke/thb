@@ -11,12 +11,11 @@ Neural networks are the computational concept behind contemporary NL2SQL
 approaches, representing complex capabilities through compositions of simpler
 operations. A neural network is comprised of interconnected computational
 units, called neurons, organized in layers, where each connection has an
-associated and learnable weight and bias parameters.
-
-The computation paradigm of neural network outputs is called forward
-propagation, which is applying the weights ($W$) and biases ($b$) to the input
-parameter ($a$) and transforming it using a (non-linear) activation function
-$f$:
+associated and learnable weight and bias parameters. The
+computation paradigm of neural network outputs is called
+forward propagation, which is applying the weights ($W$) and
+biases ($b$) to the input parameter ($a$) and transforming
+it using a (non-linear) activation function $f$:
 
 \begin{equation}
 a^{l+1} = f(Wa^l + b)
@@ -76,7 +75,7 @@ the process of learning:
 
 The transformer architecture, introduced by \citeauthor{Attention}
 in \citeyear{Attention}, introduced the model architecture found in
-modern LLMs \citep{Attention}. Unlike earlier sequence to sequence models,
+modern LLMs. Unlike earlier sequence to sequence models,
 transformers are capable of processing entire sequences of inputs in parallel
 by using a self-attention mechanism. This enabled more efficient training on
 massive datasets and a better representation of complex dependencies within
@@ -89,7 +88,7 @@ to weight different sections of the input sequence based on its relevance to
 the current computation. While RNNs processed sequences sequentially, attention
 enables direct modeling of relationships between any positions in a sequence,
 which enabled the transformer architecture to become prevalent for natural
-language processing \citep{Attention}. Attention can be computed by retrieving
+language processing. Attention can be computed by retrieving
 the weighted sum of values $V$ based on the compatibility between queries $Q$
 and keys $K$:
 
@@ -100,12 +99,10 @@ and keys $K$:
 where $d_k$ is the dimensionality of the key vectors, used for scaling to
 prevent softmax saturation which would incur small gradients. The softmax
 operation converts compatibility scores into a probability distribution,
-determining how much attention to pay to each value.
-
-This concept proved to be a foundational advancement to transformer
-architectures seen in natural language processing and subsequently recent
-NL2SQL research. Transformers extended the concept of attention into
-self-attention and multi-head attention patterns that underpin today's LLMs.
+determining how much attention to pay to each value. Attention proved to be
+a foundational advancement in NLP and therefore recent NL2SQL research.
+Transformers extended the concept of attention into self-attention and
+multi-head attention patterns that underpin today's LLMs.
 
 \paragraph{Multi-Head Attention}
 

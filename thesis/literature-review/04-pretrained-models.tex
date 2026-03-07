@@ -65,7 +65,7 @@ syntactically valid. \citeauthor*{PICARD} released \textsc{Picard} in
 to incrementally parse generated SQL, rejecting invalid tokens. \textsc{Picard}
 significantly improved performance of PLMs like T5 and
 BERT, lifting them from mid-level to top-performing solutions on
-\textsc{Spider} \citep{PICARD}. This addresses an issue associated with PLMs —
+\textsc{Spider}. This addresses an issue associated with PLMs —
 while they outperform in natural language understanding, they often lack SQL
 grammar knowledge and tend to generate queries that are not executable due to
 unconstrained output space \citep{PICARD}.
@@ -117,7 +117,7 @@ LLMs. While PLMs range from millions to a few billion parameters,
 prevalent LLMs such as GPT-3 and GPT-4 operate at larger scales, enabling
 in-context learning (ICL) techniques for improved transferability
 across domains \citep{DAIL-SQL}. While PLMs require fine-tuning on
-domain-specific data \citep{GRAPHIX, RESDSQL, GRAPPA, STRUG}, LLMs transfer
+domain-specific data \citep{GRAPHIX, RESDSQL}, LLMs transfer
 cost to inference. Approaches like \textsc{DinSQL} show that with LLMs the
 engineering challenges around model instruction gained relevance while model
 training became less of a central problem \citep{DINSQL}.
