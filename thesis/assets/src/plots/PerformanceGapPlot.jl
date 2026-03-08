@@ -22,19 +22,39 @@ function PerformanceGapPlot(;
 end
 
 function render(plot_config::PerformanceGapPlot, data::BenchmarkData; plot_font, palette)
-    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
+    all_benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
+
+    # First pass: collect values and filter out benchmarks with no data for either system
+    valid_benchmarks = String[]
+    temp_system1_values = Float64[]
+    temp_system2_values = Float64[]
+    temp_differences = Float64[]
+
+    for benchmark in all_benchmark_keys
+        s1_val = get_value(data, benchmark, plot_config.system1_key, plot_config.metric)
+        s2_val = get_value(data, benchmark, plot_config.system2_key, plot_config.metric)
+
+        # Only include benchmarks where at least one system has data
+        if s1_val > 0.0 || s2_val > 0.0
+            push!(valid_benchmarks, benchmark)
+            push!(temp_system1_values, s1_val)
+            push!(temp_system2_values, s2_val)
+            push!(temp_differences, s2_val - s1_val)
+        end
+    end
+
+    # If no valid benchmarks, skip plotting
+    if isempty(valid_benchmarks)
+        println("Warning: No data for performance gap comparison")
+        return nothing
+    end
+
+    benchmark_keys = valid_benchmarks
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
     n_benchmarks = length(benchmark_keys)
-
-    system1_values = zeros(n_benchmarks)
-    system2_values = zeros(n_benchmarks)
-    differences = zeros(n_benchmarks)
-
-    for (i, benchmark) in enumerate(benchmark_keys)
-        system1_values[i] = get_value(data, benchmark, plot_config.system1_key, plot_config.metric)
-        system2_values[i] = get_value(data, benchmark, plot_config.system2_key, plot_config.metric)
-        differences[i] = system2_values[i] - system1_values[i]
-    end
+    system1_values = temp_system1_values
+    system2_values = temp_system2_values
+    differences = temp_differences
 
     system1_pipeline = data.pipelines[findfirst(p -> p.key == plot_config.system1_key, data.pipelines)]
     system2_pipeline = data.pipelines[findfirst(p -> p.key == plot_config.system2_key, data.pipelines)]

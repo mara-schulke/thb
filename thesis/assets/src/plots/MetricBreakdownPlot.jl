@@ -25,7 +25,7 @@ end
 
 function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font, palette)
     # Determine which pipelines to include
-    pipelines = if plot_config.include_all_pipelines
+    all_pipelines = if plot_config.include_all_pipelines
         data.pipelines
     elseif !isempty(plot_config.pipeline_keys)
         filter(p -> p.key in plot_config.pipeline_keys, data.pipelines)
@@ -34,25 +34,48 @@ function render(plot_config::MetricBreakdownPlot, data::BenchmarkData; plot_font
         filter(p -> !p.external, data.pipelines)
     end
 
-    pipeline_labels = [get_pipeline_label(p) for p in pipelines]
-    fillstyles = get_fillstyles(pipelines)
     all_benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_keys = if !isempty(plot_config.benchmark_keys)
         filter(k -> k in plot_config.benchmark_keys, all_benchmark_keys)
     else
         all_benchmark_keys
     end
-    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
-    n_pipelines = length(pipelines)
+    # First pass: collect values and filter out pipelines with no data
+    # Preserve original pipeline order
     n_benchmarks = length(benchmark_keys)
-    values = zeros(n_pipelines, n_benchmarks)
+    pipelines = Pipeline[]
+    pipeline_value_rows = Vector{Vector{Float64}}()
 
-    for (i, benchmark) in enumerate(benchmark_keys)
-        for (j, pipeline) in enumerate(pipelines)
-            values[j, i] = get_value(data, benchmark, pipeline.key, plot_config.metric, plot_config.scale)
+    for pipeline in all_pipelines
+        pipeline_values = Float64[]
+        for benchmark in benchmark_keys
+            push!(pipeline_values, get_value(data, benchmark, pipeline.key, plot_config.metric, plot_config.scale))
+        end
+        # Only include pipelines with at least one non-zero value
+        if any(v -> v > 0.0, pipeline_values)
+            push!(pipelines, pipeline)
+            push!(pipeline_value_rows, pipeline_values)
         end
     end
+
+    # If no valid pipelines, skip plotting
+    if isempty(pipelines)
+        println("Warning: No data for metric $(plot_config.metric)")
+        return nothing
+    end
+
+    # Build values matrix from collected rows
+    n_pipelines = length(pipelines)
+    values = zeros(n_pipelines, n_benchmarks)
+
+    for (j, pipeline_vals) in enumerate(pipeline_value_rows)
+        values[j, :] = pipeline_vals
+    end
+
+    pipeline_labels = [get_pipeline_label(p) for p in pipelines]
+    fillstyles = get_fillstyles(pipelines)
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
     # Get metric label and unit
     metric_label = haskey(data.metrics, plot_config.metric) ?

@@ -17,16 +17,30 @@ function PipelineBarsPlot(benchmark::String,
 end
 
 function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, palette)
-    n_pipelines = length(data.pipelines)
+    # Collect values for all pipelines, preserving order
+    all_values = Float64[]
+    valid_pipelines = Pipeline[]
 
-    values = zeros(n_pipelines)
-
-    for (i, pipeline) in enumerate(data.pipelines)
-        values[i] = get_value(data, plot_config.benchmark, pipeline.key, plot_config.metric)
+    # Iterate through pipelines in their original order
+    for pipeline in data.pipelines
+        value = get_value(data, plot_config.benchmark, pipeline.key, plot_config.metric)
+        # Only include pipelines with non-zero values
+        if value > 0.0
+            push!(all_values, value)
+            push!(valid_pipelines, pipeline)
+        end
     end
 
-    pipeline_labels = [get_pipeline_label(p) for p in data.pipelines]
-    fillstyles = get_fillstyles(data.pipelines)
+    # If no valid pipelines, skip plotting
+    if isempty(valid_pipelines)
+        println("Warning: No data for $(plot_config.benchmark) on metric $(plot_config.metric)")
+        return nothing
+    end
+
+    n_pipelines = length(valid_pipelines)
+    values = all_values
+    pipeline_labels = [get_pipeline_label(p) for p in valid_pipelines]
+    fillstyles = get_fillstyles(valid_pipelines)
 
     title = plot_config.title === nothing ?
             "Performance on $(get_benchmark_label(data, plot_config.benchmark))\n" :
@@ -51,7 +65,7 @@ function render(plot_config::PipelineBarsPlot, data::BenchmarkData; plot_font, p
         bar_width=0.8,
         label=permutedims(pipeline_labels),
         fillstyle=permutedims(fillstyles),
-        color_palette=readable(data.pipelines, palette),
+        color_palette=readable(valid_pipelines, palette),
         title=Title(title),
         xlabel=Label("Pipeline"),
         ylabel=Label(metric_label),

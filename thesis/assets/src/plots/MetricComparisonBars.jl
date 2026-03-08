@@ -17,26 +17,49 @@ function BenchmarkBarsPlot(metric::String;
 end
 
 function render(plot_config::BenchmarkBarsPlot, data::BenchmarkData; plot_font, palette)
-    pipelines = if plot_config.include_sota
+    all_pipelines = if plot_config.include_sota
         data.pipelines
     else
         filter(p -> !p.sota, data.pipelines)
     end
 
-    pipeline_labels = [get_pipeline_label(p) for p in pipelines]
-    fillstyles = get_fillstyles(pipelines)
     benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
     benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
 
-    n_pipelines = length(pipelines)
+    # First, collect all values to determine which pipelines have data
+    # Preserve original pipeline order
     n_benchmarks = length(benchmark_keys)
-    values = zeros(n_pipelines, n_benchmarks)
+    pipelines = Pipeline[]
+    pipeline_value_rows = Vector{Vector{Float64}}()
 
-    for (i, benchmark) in enumerate(benchmark_keys)
-        for (j, pipeline) in enumerate(pipelines)
-            values[j, i] = get_value(data, benchmark, pipeline.key, plot_config.metric)
+    for pipeline in all_pipelines
+        pipeline_values = Float64[]
+        for benchmark in benchmark_keys
+            push!(pipeline_values, get_value(data, benchmark, pipeline.key, plot_config.metric))
+        end
+        # Only include pipelines with at least one non-zero value
+        if any(v -> v > 0.0, pipeline_values)
+            push!(pipelines, pipeline)
+            push!(pipeline_value_rows, pipeline_values)
         end
     end
+
+    # If no valid pipelines, skip plotting
+    if isempty(pipelines)
+        println("Warning: No data for metric $(plot_config.metric)")
+        return nothing
+    end
+
+    # Build values matrix from collected rows
+    n_pipelines = length(pipelines)
+    values = zeros(n_pipelines, n_benchmarks)
+
+    for (j, pipeline_vals) in enumerate(pipeline_value_rows)
+        values[j, :] = pipeline_vals
+    end
+
+    pipeline_labels = [get_pipeline_label(p) for p in pipelines]
+    fillstyles = get_fillstyles(pipelines)
 
     metric_label = get_metric_label(data, plot_config.metric);
 

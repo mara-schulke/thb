@@ -20,31 +20,55 @@ function SotaBarsPlot(;
 end
 
 function render(plot_config::SotaBarsPlot, data::BenchmarkData; plot_font, palette)
+    # Preserve order: natural configs first, then sota configs
     all_configs = vcat(plot_config.natural, plot_config.sota)
-    config_pipelines = Pipeline[]
-    config_labels = String[]
+    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
+    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
+    n_benchmarks = length(benchmark_keys)
+
+    # First pass: collect values and filter out configs with no data
+    # Preserve original config order
+    valid_configs = String[]
+    valid_pipelines = Pipeline[]
+    valid_labels = String[]
+    temp_values = Vector{Vector{Float64}}()
 
     for config in all_configs
         pipeline_idx = findfirst(p -> p.key == config, data.pipelines)
         if pipeline_idx !== nothing
             pipeline = data.pipelines[pipeline_idx]
-            push!(config_pipelines, pipeline)
-            push!(config_labels, get_pipeline_label(pipeline))
+
+            # Collect values for this config across all benchmarks
+            config_values = Float64[]
+            for benchmark in benchmark_keys
+                push!(config_values, get_value(data, benchmark, config, plot_config.metric))
+            end
+
+            # Only include if at least one non-zero value
+            if any(v -> v > 0.0, config_values)
+                push!(valid_configs, config)
+                push!(valid_pipelines, pipeline)
+                push!(valid_labels, get_pipeline_label(pipeline))
+                push!(temp_values, config_values)
+            end
         end
     end
 
-    fillstyles = get_fillstyles(config_pipelines)
-    benchmark_keys = sort_benchmarks_by_order(data, collect(keys(data.results)))
-    benchmark_labels = [get_benchmark_label(data, b) for b in benchmark_keys]
-    n_configs = length(all_configs)
-    n_benchmarks = length(benchmark_keys)
+    # If no valid configs, skip plotting
+    if isempty(valid_configs)
+        println("Warning: No data for SOTA comparison on metric $(plot_config.metric)")
+        return nothing
+    end
+
+    n_configs = length(valid_configs)
     values = zeros(n_configs, n_benchmarks)
-
-    for (i, benchmark) in enumerate(benchmark_keys)
-        for (j, config) in enumerate(all_configs)
-            values[j, i] = get_value(data, benchmark, config, plot_config.metric)
-        end
+    for (j, config_vals) in enumerate(temp_values)
+        values[j, :] = config_vals
     end
+
+    config_pipelines = valid_pipelines
+    config_labels = valid_labels
+    fillstyles = get_fillstyles(config_pipelines)
 
     benchmark_label_objs = map(Label, benchmark_labels)
 
