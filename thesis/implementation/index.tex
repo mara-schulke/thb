@@ -1,11 +1,11 @@
 \section{Implementation}
 
 This section discusses the implementation phase of \Natural, translating the
-system design outlined in Section \ref{section:design} into a working system.
+system design outlined in Section~\ref{section:design} into a working system.
 Engineering challenges encountered, performance bottlenecks identified, and
 optimization strategies implemented to achieve deployment viability on consumer
 hardware are discussed and examined. Furthermore, the section covers software
-architecture and infrastructure and implementation of each pipeline component.
+architecture, infrastructure, and implementation of each pipeline component.
 
 \subsection{Architecture and Infrastructure}
 
@@ -82,16 +82,15 @@ these can be mitigated through \texttt{cargo}'s workspace support.
 
 \subsubsection{Resource Management Strategy}
 
-Given the 24GB of VRAM capacity of the RTX 3090, not all
-model sizes can be used. While 14B model variants theoretically work,
-the need for an embedding model typically exhausts VRAM unless using
-steep quantization formats. \textsc{OmniSQL} 7B models show
-an average performance degradation of only 0.3\% compared to their 14B
-counterparts by \citeauthor{OmniSQL} in \citeyear{OmniSQL}. On the spider test
-dataset the 7B model outperformed its 14B counterpart by 0.6\%.
-Due to unclear performance gains of the 14B model, the significant increase
-in inference time and limited VRAM, this thesis focuses on the 7B
-variant of \textsc{OmniSQL}.
+Given the 24GB of VRAM capacity of the RTX 3090, not all model sizes can be
+used. While 14B model variants theoretically work, the need for an embedding
+model typically exhausts VRAM, except when using steep quantization formats.
+\textsc{OmniSQL} 7B models show an average performance degradation of only
+0.3\% compared to their 14B counterparts by \citeauthor{OmniSQL} in
+\citeyear{OmniSQL}. On the spider test dataset the 7B model outperformed its
+14B counterpart by 0.6\%. Due to unclear performance gains of the 14B model,
+the significant increase in inference time and limited VRAM, this thesis
+focuses on the 7B variant of \textsc{OmniSQL}.
 
 As an embedding model is required for semantic search of samples in the
 pipeline, a companion model is required to embed the sample datasets
@@ -105,10 +104,9 @@ performance on simple use cases while offering a smaller memory footprint at
 2GB \citep{Qwen3Embed}.
 
 As models have significant loading times, the system loads models globally
-at startup and passes references using atomic reference counting
-(\texttt{std::sync::Arc}) to ensure models are not loaded twice, can be
-reused between inference calls and GPU memory is not exhausted which
-would lead to a crash.
+at startup and passes references using atomic reference counting to ensure
+models are not loaded twice, can be reused between inference calls and GPU
+memory is not exhausted which would lead to a crash.
 
 \subsubsection{Technology Stack Decisions}
 
@@ -478,11 +476,11 @@ batch computation of embeddings.
 
 During sampling, offloading data to the GPUs memory is an expensive operation.
 When sampling hundreds of thousands or millions of examples, incurring the IO
-roundtrip from CPU to GPU for computing a single embedding is a
-performance bottleneck that increases the sampling time to an order of days
-(e.g., when sampling the \textsc{SynSQL} dataset). Thus batch processing can help to
-minimise the IO roundtrips needed between the CPU and GPU before computing
-embeddings and better utilise the available computing power.
+roundtrip from CPU to GPU for computing a single embedding is a performance
+bottleneck that increases the sampling time from hours to days. Batch
+processing addresses this by minimising the IO roundtrips needed between the
+CPU and GPU before computing embeddings and better utilise the available
+computing power.
 
 Using the \texttt{embed\_seq} method, a sequence of strings can be embedded and
 a sequence of \texttt{SemanticStrings} is returned. Furthermore through the

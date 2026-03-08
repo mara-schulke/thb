@@ -40,7 +40,7 @@ scores of closed-source model results (GPT-4o: 84.9\% \Spider, 64.0\% \Bird).
 
 \subsubsection{Ablation}
 
-The ablation showed that example selection was the differentiating
+The ablation study showed that example selection was the differentiating
 component for performance, other pipeline components have not been ablated
 individually but showed to add unclear performance gains. The
 \textit{Zero-Shot} configuration which uses schema subsetting, self-refinement,
@@ -50,8 +50,8 @@ improvement on \Spider~despite doubling the candidate latency from 7.3s to
 to +2.3pp on \Spider~(dev), +3.9pp on \Spider~(test) and +19.8pp on
 \Bird~compared to \textit{Zero-Shot}. This shows that both schema subsetting
 and self-refinement techniques provide minimal benefit without ICL and example
-selection. Further ablation would help to understand the potential cross
-effects between components and the implications of disabling pipeline
+selection. Further ablation studies would help to understand the potential
+cross effects between components and the implications of disabling pipeline
 components like schema-subsetting, self-refinement and majority voting.
 Furthermore increasing the pipeline iterations from 1 to $k$ would yield
 insights into self balancing and self correction across iterations of \Natural.
@@ -266,9 +266,9 @@ originate from the training splits of the corresponding benchmarks
 \paragraph{Component Contribution Ranking}
 
 These insights allow for a ranking of components by their estimated impact
-based on the ablation evidence from Table~\ref{tab:eval:overall-results} and
-Figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components rank
-by impact as follows:
+based on the ablation study evidence from Table~\ref{tab:eval:overall-results}
+and Figure~\ref{fig:eval:execution-accuracy-overview}. The pipeline components
+rank by impact as follows:
 
 \begin{enumerate}
     \item \textbf{Query Projection ($\pi$)} – The query projection component
@@ -486,8 +486,8 @@ would be required to make fully interactive systems viable for users.
 
 \paragraph{Trust, Transparency, and Error Communication}
 
-As shown in Figure \ref{fig:eval:error-rates}~and
-\ref{fig:eval:execution-accuracy-overview} the errors of \Natural~and other
+As shown in Figure~\ref{fig:eval:error-rates} and
+Figure~\ref{fig:eval:execution-accuracy-overview} the errors of \Natural~and other
 NL2SQL systems are primarily semantic errors, rather than syntactic errors.
 This makes error detection and communication significantly harder, as the
 pipeline does not return information on potential semantic mistakes. A
@@ -531,7 +531,7 @@ same workflow, removing the gap.
 The hypothesis of NL2SQL systems to significantly lower the entry barrier to
 data science and analytics holds true, but the evaluation of \Natural~and
 similar NL2SQL systems showed significant caveats due to the limited semantic
-accuracy (see Figure \ref{fig:eval:execution-accuracy-overview}).
+accuracy (see Figure~\ref{fig:eval:execution-accuracy-overview}).
 
 The primary user groups benefitting from NL2SQL systems are domain experts with
 limited SQL knowledge, occasional database users and users wanting to learn
