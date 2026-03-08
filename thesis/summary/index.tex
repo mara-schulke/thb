@@ -51,12 +51,12 @@ portability.
 The research questions formulated in Section~\ref{section:introduction:research-questions}
 have been addressed in the discussion section. The systematic
 evaluation gathered and analyzed the performance characteristics and indicates
-that open-source models can achieve competitive NL2SQL performance. In the
-locally controlled environment, systematic pipeline composition with
-graph-based example selection showed to be the critical performance driver,
-especially on complex databases. Pipeline components show synergistic rather
-than additive tendencies, but further evaluations, especially better ablations
-are required to make an absolute assessment.
+that open-source models can achieve competitive NL2SQL performance in
+controlled environments. During local evaluations, systematic pipeline
+composition with graph-based example selection showed to be the critical
+performance driver, especially on complex databases. Pipeline components show
+synergistic rather than additive tendencies, but further evaluations,
+especially better ablations are required to make an absolute assessment.
 
 Notable tradeoff between accuracy and latency was observed across different
 configurations of \Natural, which informs deployment decisions and viability
@@ -153,7 +153,7 @@ proprietary APIs, making NL2SQL deployments in constrained domains such as
 government, healthcare, and finance feasible. Significant challenges remain,
 particularly regarding latency, semantic accuracy on complex databases, and
 reproducibility of research results. The algorithms introduced in this thesis,
-especially the schema-aware example selection, prove that additional
+especially the schema-aware example selection, show that additional
 algorithmic support systems can partially close the performance gap between
 open-source and closed-source models in controlled environments. Contributions
 were made both through a practical implementation of \Natural and

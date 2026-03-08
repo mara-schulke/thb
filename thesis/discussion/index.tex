@@ -103,9 +103,10 @@ Open-source NL2SQL models can achieve partially competitive performance on
 prevalent NL2SQL benchmarks in controlled environments. Through the composition
 of different algorithms the performance can be significantly improved. The
 evaluation demonstrates that a combination of ICL, schema subsetting,
-self-refinement and majority voting boosts the competitiveness of fine-tuned
+self-refinement and majority voting can boost the competitiveness of fine-tuned
 base models. Significant gaps in execution accuracy remain for enterprise-level
-real-world deployments.
+real-world deployments and further ablation studies are needed to understand
+the impact of individual algorithms.
 
 \Natural~achieves up to 81.0\% \EA~on the \Spider~(dev) benchmark using the
 \textit{Syn} configuration (examples selected from the SynSQL-2.5m dataset,
@@ -219,7 +220,7 @@ language driven data analysis platforms which would require sub-second latency.
 \paragraph{Conclusion}
 
 Overall, open-source LLMs \textit{can} achieve competitive NL2SQL performance
-as fine-tuning and ICL prove to be effective and efficient mechanisms to
+as fine-tuning and ICL showed to be effective and efficient mechanisms to
 achieve high accuracy values in constrained hardware environments. The measured
 performance yields significant challenges in enterprise environments as an
 execution accuracy of 53.8\% on \Bird~with a latency of 43.7s is unacceptable
